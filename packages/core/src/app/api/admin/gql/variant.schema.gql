@@ -1,6 +1,6 @@
 type Query {
-  variants(input: ListInput): ProductVariantList!
-  variant(id: ID!): ProductVariant
+  variants(input: ListInput): VariantList!
+  variant(id: ID!): Variant
 }
 
 type Mutation {

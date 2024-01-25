@@ -1,7 +1,7 @@
-import path from 'path';
+import * as path from 'path';
 
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
@@ -17,6 +17,7 @@ const ADMIN_API_SCHEMA_PATH = './admin/**/*.schema.gql';
       playground: false,
       // false in production, true in dev
       includeStacktraceInErrorResponses: true,
+      driver: ApolloDriver,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       formatError: (error) => {
         return {
@@ -26,10 +27,14 @@ const ADMIN_API_SCHEMA_PATH = './admin/**/*.schema.gql';
       },
       path: '/admin-api',
       typePaths: [COMMON_SCHEMA_PATH, ADMIN_API_SCHEMA_PATH].map((p) =>
-        path.join(process.cwd(), p),
+        path.join(process.cwd(), './src/app/api', p),
       ),
       definitions: {
-        path: path.join(process.cwd(), './common/types/gql.types.ts'),
+        path: path.join(
+          process.cwd(),
+          './src/app/api',
+          './common/types/gql.types.ts',
+        ),
         outputAs: 'class',
       },
       include: [AdminApiModule],
