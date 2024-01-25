@@ -10,12 +10,14 @@
   "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install && chmod ug+x .husky/*"
   },
   "dependencies": {},
   "devDependencies": {
-    "lerna": "^8.0.2",
-    "husky": "^8.0.0"
+    "@commitlint/cli": "^18.5.0",
+    "@commitlint/config-conventional": "^18.5.0",
+    "husky": "^8.0.0",
+    "lerna": "^8.0.2"
   },
   "gacp": {
     "push": false
