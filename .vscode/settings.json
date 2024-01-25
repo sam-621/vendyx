@@ -1,3 +1,8 @@
 {
-  "cSpell.words": ["clsx", "lucide", "sonner", "tailwindcss", "tanstack", "vendyx"]
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.format": "explicit"
+  },
+  "cSpell.words": ["clsx", "lucide", "sonner", "tailwindcss", "tanstack", "typeorm", "vendyx"]
 }
