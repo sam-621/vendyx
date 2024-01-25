@@ -1,0 +1,8 @@
+{
+  "name": "vendyx.dev",
+  "version": "1.0.0",
+  "description": "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.",
+  "repository": "git@github.com:sam-621/vendyx.dev.git",
+  "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
+  "license": "MIT"
+}
