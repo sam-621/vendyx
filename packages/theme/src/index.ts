@@ -6,4 +6,5 @@
 
 export * from './components'
 export * from './utils'
-export * from './styles/index.css'
+
+import './styles/index.css'

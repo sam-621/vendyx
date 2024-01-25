@@ -18,11 +18,12 @@ export default defineConfig(() => ({
     lib: {
       entry: resolve('src', 'index.ts'),
       name: 'lib',
-      formats: ['es', 'umd'],
+      formats: ['es'],
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
     },
+    copyPublicDir: false,
   },
 }))
