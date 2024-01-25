@@ -7,7 +7,7 @@ import {
 
 export abstract class Entity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: ID;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -18,3 +18,5 @@ export abstract class Entity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 }
+
+export type ID = string;

@@ -31,6 +31,6 @@ export class VariantEntity extends Entity {
   product: ProductEntity;
 
   @ManyToMany(() => OptionValueEntity)
-  @JoinTable({ name: 'option_value_on_product_variant' })
+  @JoinTable({ name: 'option_value_on_variant' })
   options: OptionValueEntity[];
 }

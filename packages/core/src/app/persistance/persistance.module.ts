@@ -10,7 +10,7 @@ import {
   VariantEntity,
 } from './entities';
 
-export const ENTITIES = [
+const ENTITIES = [
   AdminEntity,
   OptionEntity,
   OptionValueEntity,
