@@ -1,8 +1,19 @@
 {
-  "name": "vendyx.dev",
+  "name": "vendyx",
   "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "description": "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.",
   "repository": "git@github.com:sam-621/vendyx.dev.git",
   "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^8.0.2"
+  },
+  "gacp": {
+    "push": false
+  }
 }
