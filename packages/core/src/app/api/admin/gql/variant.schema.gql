@@ -1,0 +1,25 @@
+type Query {
+  variants(input: ListInput): ProductVariantList!
+  variant(id: ID!): ProductVariant
+}
+
+type Mutation {
+  createVariant(productId: ID! input: CreateVariantInput!): Variant!
+  updateVariant(id: ID!, input: UpdateVariantInput!): Variant!
+  removeVariant(id: ID!): Boolean!
+}
+
+input CreateVariantInput {
+  sku: String!
+  price: Int!
+  stock: Int!
+  published: Boolean!
+  optionValuesIds: [ID!]
+}
+
+input UpdateVariantInput {
+  sku: String
+  price: Int
+  stock: Int
+  published: Boolean
+}

@@ -1,0 +1,16 @@
+type Variant implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  sku: String!
+  price: Int!
+  published: Boolean!
+  enabled: Boolean!
+
+  optionValues: [OptionValue!]
+}
+
+type VariantList implements List {
+  items: [Variant]!
+  count: Int!
+}

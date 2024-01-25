@@ -1,0 +1,34 @@
+# Scalars
+scalar Date
+scalar ID
+
+# Common interfaces
+"""
+A node, each type that represents a entity should implement this interface
+"""
+interface Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+"""
+A list of items with count, each result that expose a array of items should implement this interface
+"""
+interface List {
+  items: [Node]!
+  count: Int!
+}
+
+# Common inputs
+input ListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the cursor is (skip position)
+  """
+  take: Int
+}

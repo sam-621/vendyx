@@ -1,0 +1,9 @@
+
+type Mutation {
+  createOption(input: CreateOptionInput!): Option!
+}
+
+input CreateOptionInput {
+  name: String!
+  values: [String!]
+}

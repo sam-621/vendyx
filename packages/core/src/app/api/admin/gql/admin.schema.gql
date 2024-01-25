@@ -1,0 +1,20 @@
+type Admin implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  username: String!
+  password: String!
+}
+
+input AuthenticateInput {
+  username: String!
+  password: String!
+}
+
+type Mutation {
+  authenticate(input: AuthenticateInput!): String
+}
+
+type Query {
+  validateToken: Boolean
+}

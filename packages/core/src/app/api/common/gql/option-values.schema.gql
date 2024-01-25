@@ -1,0 +1,6 @@
+type OptionValue implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  value: String!
+}
