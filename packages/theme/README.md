@@ -1,30 +1,97 @@
-# React + TypeScript + Vite
+# @vendyx/theme
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`@vendyx/theme` is a ui library for vendyx admin ui and admin ui extensions, built on top of [TailwindCSS](https://tailwindcss.com/) and [Shadcnshadcn/ui](https://ui.shadcn.com/).
 
-Currently, two official plugins are available:
+Although vendyx theme is built with react components, also exposes css styles like variables and classes and tailwind classes with `class-variance-authority`, so in case you cannot use react components, you can use the css styles.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Setup
 
-## Expanding the ESLint configuration
+Vendyx theme exposes react utilities (components, hooks, context), css styles (classes and variables) and typescript function utilities.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Requirements
 
-- Configure the top-level `parserOptions` property like this:
+[TailwindCSS](https://tailwindcss.com) installed and configured for your framework
 
-```js
+### Installation
+
+To install `@vendyx/theme` run the following commands in your terminal
+
+```bash
+yarn install @vendyx/theme
+```
+
+### Tailwind CSS setup
+
+Vendyx theme is built on top of Tailwind CSS, so you need to have installed and configured tailwind for your framework. Once that is complete, add the following code to your tailwind config
+
+```ts
+import { VendyxTailwindPreset } from '@vendyx/theme'
+
+/** @type {import('tailwindcss').Config} */
 export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
+  presets: [VendyxTailwindPreset],
+  content: [
+    // ...
+    /**
+     * Vendyx theme package is built on top of tailwindcss
+     * Vendyx theme is build without tailwind styles to avoid overriding styles
+     * So we need to add theme package location in tailwind config
+     * this will allow tailwind to scan theme package for styles
+     *
+     * NOTE: When using theme package as npm package, you will point to node_modules folder
+     */
+    '../theme/**/*.{js,ts,jsx,tsx}',
+  ],
 }
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Import CSS file
+
+Import css file into your entry point. This is going to load all our css styles, with this the @vendyx/theme components will have their appropriate styles and our styles will be ready to use by tailwind
+
+```ts
+import '@vendyx/theme/dist/style.css'
+```
+
+### Import theme provider
+
+Theme provider allows you to have dark and light mode functionality.
+
+```tsx
+// 1. Import Theme provider
+import { ThemeProvider } from '@vendyx/theme'
+
+function App() {
+  // 2. Wrap ThemeProvider at the root of your app
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  )
+}
+
+export default App
+```
+
+### Usage
+
+```jsx
+import { Button } from '@vendyx/theme'
+
+function App() {
+  return (
+    <>
+      // ...
+      <Button>Hello World</Button>
+    </>
+  )
+}
+```
+
+## Icons
+
+Vendyx theme uses [lucide icons](https://lucide.dev/icons/), if you want to use them in your ui extensions install `lucide-react` package in your project with the following command
+
+```bash
+yarn add lucide-react
+```
