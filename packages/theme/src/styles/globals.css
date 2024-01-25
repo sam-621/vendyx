@@ -1,3 +1,14 @@
+/*
+
+  We use a simple background and foreground convention for colors. 
+  The background variable is used for the background color of the component
+  and the foreground variable is used for the text color.
+
+  @see https://ui.shadcn.com/docs/theming#convention
+
+*/
+
+
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -26,8 +37,13 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-
+    
     --radius: 0.5rem;
+
+    /* Custom colors */
+    --distinct: 214 100% 50%;
+    --warning: 36 100% 50%;
+
   }
 
   .dark {
@@ -61,9 +77,10 @@
   }
 
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
