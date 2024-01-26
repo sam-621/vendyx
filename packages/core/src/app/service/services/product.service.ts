@@ -63,9 +63,11 @@ export class ProductService {
 
     const productToSave = this.productRepository.create({
       ...data,
-      assets: input.assets.map((asset) =>
-        this.assetRepository.create({ source: asset }),
-      ),
+      assets: input.assets
+        ? input.assets.map((asset) =>
+            this.assetRepository.create({ source: asset }),
+          )
+        : undefined,
     });
     await this.productRepository.insert(productToSave);
 
@@ -86,7 +88,7 @@ export class ProductService {
 
     if (input.slug) {
       const productExists = await this.productRepository.findOne({
-        where: { slug: data.slug, id: Not(id) },
+        where: { slug: getParsedSlug(input.slug), id: Not(id) },
       });
 
       if (productExists) {
@@ -96,7 +98,11 @@ export class ProductService {
       }
     }
 
-    return this.productRepository.update({ id }, data);
+    return await this.productRepository.save({
+      ...productToUpdate,
+      ...input,
+      slug: input.slug ? getParsedSlug(input.slug) : productToUpdate.slug,
+    });
   }
 
   async remove(id: ID) {
