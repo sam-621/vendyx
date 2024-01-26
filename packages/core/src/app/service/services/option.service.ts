@@ -13,13 +13,8 @@ export class OptionService {
     private optionValueRepository: Repository<OptionValueEntity>,
   ) {}
 
-  async create(name: string, values: string[]) {
-    const optionToSave = this.optionRepository.create({
-      name,
-      values: values.map((val) =>
-        this.optionValueRepository.create({ value: val }),
-      ),
-    });
+  async create(name: string) {
+    const optionToSave = this.optionRepository.create({ name });
 
     await this.optionRepository.insert(optionToSave);
 
