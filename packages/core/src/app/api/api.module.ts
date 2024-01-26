@@ -12,6 +12,7 @@ const ADMIN_API_SCHEMA_PATH = './admin/**/*.schema.gql';
 
 @Module({
   imports: [
+    AdminApiModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       // false to use apollo studio
       playground: false,
