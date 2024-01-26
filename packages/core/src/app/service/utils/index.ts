@@ -1,1 +1,1 @@
-export * from './string.util';
+export * from './product.util';

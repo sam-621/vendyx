@@ -67,9 +67,9 @@ export class ProductService {
         this.assetRepository.create({ source: asset }),
       ),
     });
-    const productSaved = await this.productRepository.insert(productToSave);
+    await this.productRepository.insert(productToSave);
 
-    return productSaved;
+    return productToSave;
   }
 
   async update(id: ID, input: UpdateProductInput) {
@@ -81,7 +81,7 @@ export class ProductService {
     const productToUpdate = await this.findById(id);
 
     if (!productToUpdate) {
-      throw new UserInputError('No product found with given id');
+      throw new UserInputError('No product found with the given id');
     }
 
     if (input.slug) {
@@ -103,7 +103,7 @@ export class ProductService {
     const productToRemove = await this.findById(id);
 
     if (!productToRemove) {
-      throw new UserInputError('No product found with given id');
+      throw new UserInputError('No product found with the given id');
     }
 
     await this.productRepository.softDelete({ id });

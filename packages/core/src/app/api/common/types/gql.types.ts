@@ -52,6 +52,7 @@ export class UpdateVariantInput {
     price?: Nullable<number>;
     stock?: Nullable<number>;
     published?: Nullable<boolean>;
+    optionValuesIds?: Nullable<string[]>;
 }
 
 export class ListInput {

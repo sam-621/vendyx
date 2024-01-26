@@ -22,4 +22,5 @@ input UpdateVariantInput {
   price: Int
   stock: Int
   published: Boolean
+  optionValuesIds: [ID!]
 }
