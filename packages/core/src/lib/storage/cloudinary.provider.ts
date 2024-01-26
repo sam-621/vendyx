@@ -5,14 +5,14 @@ import { v2 } from 'cloudinary';
 import { StorageProvider } from './storage.type';
 
 export class CloudinaryStorageProvider implements StorageProvider {
-  name: string;
-  code: string;
+  name = 'Cloudinary';
+  code = 'cloudinary';
 
   constructor(config: CloudinaryConfig) {
     v2.config({
       cloud_name: config.cloudName,
       api_key: config.apiKey,
-      api_secret: config.cloudName,
+      api_secret: config.apiSecret,
     });
   }
 

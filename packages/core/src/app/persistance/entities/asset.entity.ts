@@ -2,7 +2,7 @@ import { Column, Entity as TypeOrmEntity } from 'typeorm';
 
 import { Entity } from './entity';
 
-enum AssetType {
+export enum AssetType {
   IMAGE = 'IMAGE',
 }
 

@@ -1,4 +1,14 @@
+# Node
 node_modules/
+dist
 
 # OS
 .DS_Store
+
+# Envs
+.env.local
+.env
+.env.prod
+
+# Trash files
+uploads

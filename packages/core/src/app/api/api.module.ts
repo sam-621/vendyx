@@ -6,12 +6,14 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { AdminApiModule } from './admin';
+import { UploadModule } from './upload';
 
 const COMMON_SCHEMA_PATH = './common/**/*.schema.gql';
 const ADMIN_API_SCHEMA_PATH = './admin/**/*.schema.gql';
 
 @Module({
   imports: [
+    UploadModule,
     AdminApiModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       // false to use apollo studio
