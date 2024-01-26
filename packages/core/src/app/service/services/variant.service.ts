@@ -63,6 +63,7 @@ export class VariantService {
       price: convertToCent(input.price),
       options: optionValues,
     });
+
     await this.variantRepository.save(variantToSave);
 
     return variantToSave;

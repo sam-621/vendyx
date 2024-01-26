@@ -3,6 +3,8 @@ type Option implements Node {
   createdAt: Date!
   updatedAt: Date!
   name: String!
+
+  values: [OptionValue!]
 }
 
 type OptionList implements List {

@@ -135,6 +135,7 @@ export class Option implements Node {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+    values?: Nullable<OptionValue[]>;
 }
 
 export class OptionList implements List {

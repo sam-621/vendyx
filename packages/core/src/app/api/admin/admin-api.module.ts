@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
 
-import { AdminResolver, ProductResolver, VariantResolver } from './resolvers';
+import {
+  AdminResolver,
+  OptionResolver,
+  ProductResolver,
+  VariantResolver,
+} from './resolvers';
 
 import { ServiceModule } from '@/app/service';
 
 @Module({
   imports: [ServiceModule],
-  providers: [AdminResolver, ProductResolver, VariantResolver],
+  providers: [AdminResolver, ProductResolver, VariantResolver, OptionResolver],
 })
 export class AdminApiModule {}

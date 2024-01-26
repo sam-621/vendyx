@@ -2,22 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { OptionEntity, OptionValueEntity } from '@/app/persistance';
+import { OptionValueService } from './option-value.service';
+
+import { OptionEntity } from '@/app/persistance';
 
 @Injectable()
 export class OptionService {
   constructor(
     @InjectRepository(OptionEntity)
     private optionRepository: Repository<OptionEntity>,
-    @InjectRepository(OptionValueEntity)
-    private optionValueRepository: Repository<OptionValueEntity>,
+    private optionValueService: OptionValueService,
   ) {}
 
-  async create(name: string) {
-    const optionToSave = this.optionRepository.create({ name });
+  async create(name: string, values: string[]) {
+    const optionValues = await this.optionValueService.create(values);
 
-    await this.optionRepository.insert(optionToSave);
+    const optionToSave = this.optionRepository.create({
+      name,
+      values: optionValues,
+    });
 
-    return optionToSave;
+    return await this.optionRepository.save(optionToSave);
   }
 }

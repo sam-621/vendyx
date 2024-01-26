@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AdminService,
   OptionService,
+  OptionValueService,
   ProductService,
   VariantService,
 } from './services';
@@ -29,7 +30,19 @@ import { SecurityModule } from '../security';
       AssetEntity,
     ]),
   ],
-  providers: [AdminService, ProductService, VariantService, OptionService],
-  exports: [AdminService, ProductService, VariantService, OptionService],
+  providers: [
+    AdminService,
+    ProductService,
+    VariantService,
+    OptionService,
+    OptionValueService,
+  ],
+  exports: [
+    AdminService,
+    ProductService,
+    VariantService,
+    OptionService,
+    OptionValueService,
+  ],
 })
 export class ServiceModule {}
