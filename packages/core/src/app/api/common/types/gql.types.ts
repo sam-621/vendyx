@@ -166,8 +166,8 @@ export class Variant implements Node {
     updatedAt: Date;
     sku: string;
     price: number;
+    stock: number;
     published: boolean;
-    enabled: boolean;
     optionValues?: Nullable<OptionValue[]>;
 }
 

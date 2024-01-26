@@ -2,12 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 
+import { convertToCent } from '../utils/prices.util';
+
 import {
   CreateVariantInput,
   ListInput,
   UpdateVariantInput,
 } from '@/app/api/common';
-import { ID, OptionValueEntity, VariantEntity } from '@/app/persistance';
+import {
+  ID,
+  OptionValueEntity,
+  ProductEntity,
+  VariantEntity,
+} from '@/app/persistance';
 import { UserInputError, ValidationError } from '@/lib/errors';
 
 @Injectable()
@@ -15,6 +22,8 @@ export class VariantService {
   constructor(
     @InjectRepository(VariantEntity)
     private variantRepository: Repository<VariantEntity>,
+    @InjectRepository(ProductEntity)
+    private productRepository: Repository<ProductEntity>,
     @InjectRepository(OptionValueEntity)
     private optionValueRepository: Repository<OptionValueEntity>,
   ) {}
@@ -40,13 +49,18 @@ export class VariantService {
       }
     }
 
-    const optionValues = await this.optionValueRepository.find({
-      where: { id: In(input.optionValuesIds) },
-    });
+    const optionValues = input.optionValuesIds?.length
+      ? await this.optionValueRepository.find({
+          where: { id: In(input.optionValuesIds) },
+        })
+      : undefined;
+
+    const product = await this.productRepository.findOneBy({ id: productId });
 
     const variantToSave = this.variantRepository.create({
       ...input,
-      product: { id: productId },
+      product,
+      price: convertToCent(input.price),
       options: optionValues,
     });
     await this.variantRepository.save(variantToSave);
@@ -55,22 +69,24 @@ export class VariantService {
   }
 
   async update(id: ID, input: UpdateVariantInput) {
-    if (!(await this.findById(id))) {
+    const variantToUpdate = await this.findById(id);
+
+    if (!variantToUpdate) {
       throw new UserInputError('Variant not found');
     }
 
-    const optionValues = input.optionValuesIds.length
+    const optionValues = input.optionValuesIds?.length
       ? await this.optionValueRepository.find({
           where: { id: In(input.optionValuesIds) },
         })
       : undefined;
 
-    const variantToUpdate = this.variantRepository.update(
-      { id },
-      { ...input, options: optionValues },
-    );
-
-    return variantToUpdate;
+    return this.variantRepository.save({
+      ...variantToUpdate,
+      ...input,
+      price: input.price ? convertToCent(input.price) : variantToUpdate.price,
+      options: optionValues,
+    });
   }
 
   async remove(id: ID) {
@@ -80,7 +96,7 @@ export class VariantService {
       throw new UserInputError('Variant not found with the given id');
     }
 
-    await this.variantRepository.softDelete(variantToRemove);
+    await this.variantRepository.softDelete({ id });
 
     return true;
   }

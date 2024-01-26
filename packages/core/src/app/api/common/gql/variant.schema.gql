@@ -3,9 +3,9 @@ type Variant implements Node {
   createdAt: Date!
   updatedAt: Date!
   sku: String!
-  price: Int!
+  price: Float!
+  stock: Int!
   published: Boolean!
-  enabled: Boolean!
 
   optionValues: [OptionValue!]
 }

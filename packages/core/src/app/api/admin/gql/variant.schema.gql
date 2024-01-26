@@ -11,7 +11,7 @@ type Mutation {
 
 input CreateVariantInput {
   sku: String!
-  price: Int!
+  price: Float!
   stock: Int!
   published: Boolean!
   optionValuesIds: [ID!]
