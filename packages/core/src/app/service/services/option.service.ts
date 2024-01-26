@@ -13,6 +13,7 @@ export class OptionService {
 
   async create(name: string) {
     const optionToSave = this.optionRepository.create({ name });
+
     await this.optionRepository.insert(optionToSave);
 
     return optionToSave;
