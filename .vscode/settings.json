@@ -4,5 +4,14 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.format": "explicit"
   },
-  "cSpell.words": ["clsx", "lucide", "sonner", "tailwindcss", "tanstack", "typeorm", "vendyx"]
+  "cSpell.words": [
+    "Cloudinary",
+    "clsx",
+    "lucide",
+    "sonner",
+    "tailwindcss",
+    "tanstack",
+    "typeorm",
+    "vendyx"
+  ]
 }
