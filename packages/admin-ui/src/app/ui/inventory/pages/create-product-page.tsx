@@ -1,5 +1,4 @@
-import { FormInput } from '@/components/forms'
-import { FormTextarea } from '@/components/forms/form-textarea'
+import { Dropzone, FormInput, FormTextarea } from '@/components/forms'
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme'
 import { ArrowLeftIcon } from 'lucide-react'
 
@@ -21,18 +20,26 @@ export const CreateProductPage = () => {
           <Button>Save</Button>
         </div>
       </header>
-      <main>
+      <main className='flex flex-col gap-8'>
         <Card>
           <CardHeader>
             <CardTitle>General</CardTitle>
           </CardHeader>
-
           <CardContent className='flex flex-col gap-4'>
             <div className='flex gap-4 w-full'>
               <FormInput label='Name' />
               <FormInput label='Slug' />
             </div>
             <FormTextarea label='Description' />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Assets</CardTitle>
+          </CardHeader>
+          <CardContent className='flex flex-col gap-4'>
+            <Dropzone className='h-40' />
           </CardContent>
         </Card>
       </main>
