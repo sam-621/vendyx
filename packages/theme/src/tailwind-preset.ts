@@ -1,8 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./src/components/**/*.{ts,tsx}', './example/**/*.{ts,tsx}', './index.html'],
+import { Config } from 'tailwindcss'
+import * as twAnimate from 'tailwindcss-animate'
+
+export const VendyxTailwindPreset: Partial<Config> = {
   darkMode: ['class'],
-  prefix: '',
   theme: {
     container: {
       center: true,
@@ -68,5 +68,5 @@ export default {
       },
     },
   },
-  plugins: [import('tailwindcss-animate')],
+  plugins: [twAnimate],
 }
