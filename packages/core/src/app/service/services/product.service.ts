@@ -63,9 +63,9 @@ export class ProductService {
       );
     }
 
-    const assets = input.assets?.length
+    const assets = input.assetsIds?.length
       ? await this.assetRepository.find({
-          where: { id: In(input.assets) },
+          where: { id: In(input.assetsIds) },
         })
       : undefined;
 
@@ -96,9 +96,9 @@ export class ProductService {
     }
 
     const newAssets =
-      input.assets.length !== undefined
+      input.assetsIds?.length !== undefined
         ? await this.assetRepository.find({
-            where: { id: In(input.assets) },
+            where: { id: In(input.assetsIds) },
           })
         : undefined;
 

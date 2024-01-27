@@ -14,6 +14,7 @@ input CreateVariantInput {
   price: Float!
   stock: Int!
   published: Boolean!
+
   optionValuesIds: [ID!]
 }
 
@@ -22,5 +23,6 @@ input UpdateVariantInput {
   price: Int
   stock: Int
   published: Boolean
+  
   optionValuesIds: [ID!]
 }

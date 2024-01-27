@@ -28,7 +28,7 @@ export class CreateProductInput {
     description?: Nullable<string>;
     published: boolean;
     onlineOnly: boolean;
-    assets?: Nullable<string[]>;
+    assetsIds?: Nullable<string[]>;
 }
 
 export class UpdateProductInput {
@@ -37,7 +37,7 @@ export class UpdateProductInput {
     description?: Nullable<string>;
     published?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
-    assets?: Nullable<string[]>;
+    assetsIds?: Nullable<string[]>;
 }
 
 export class CreateVariantInput {

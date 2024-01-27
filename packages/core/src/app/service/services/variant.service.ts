@@ -74,11 +74,12 @@ export class VariantService {
       throw new UserInputError('Variant not found');
     }
 
-    const optionValues = input.optionValuesIds?.length
-      ? await this.optionValueRepository.find({
-          where: { id: In(input.optionValuesIds) },
-        })
-      : undefined;
+    const optionValues =
+      input.optionValuesIds?.length !== undefined
+        ? await this.optionValueRepository.find({
+            where: { id: In(input.optionValuesIds) },
+          })
+        : undefined;
 
     return this.variantRepository.save({
       ...variantToUpdate,

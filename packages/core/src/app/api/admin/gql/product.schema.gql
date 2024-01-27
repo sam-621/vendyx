@@ -16,7 +16,7 @@ input CreateProductInput {
   published: Boolean!
   onlineOnly: Boolean!
 
-  assets: [ID!]
+  assetsIds: [ID!]
 }
 
 input UpdateProductInput {
@@ -26,5 +26,5 @@ input UpdateProductInput {
   published: Boolean
   onlineOnly: Boolean
 
-  assets: [ID!]
+  assetsIds: [ID!]
 }
