@@ -25,4 +25,6 @@ input UpdateProductInput {
   description: String
   published: Boolean
   onlineOnly: Boolean
+
+  assets: [ID!]
 }

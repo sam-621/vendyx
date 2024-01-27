@@ -37,6 +37,7 @@ export class UpdateProductInput {
     description?: Nullable<string>;
     published?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
+    assets?: Nullable<string[]>;
 }
 
 export class CreateVariantInput {

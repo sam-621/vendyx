@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto';
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Not, Repository } from 'typeorm';
@@ -75,11 +77,6 @@ export class ProductService {
   }
 
   async update(id: ID, input: UpdateProductInput) {
-    const data = {
-      ...input,
-      slug: input.slug ? getParsedSlug(input.slug) : undefined,
-    };
-
     const productToUpdate = await this.findById(id);
 
     if (!productToUpdate) {
@@ -93,15 +90,23 @@ export class ProductService {
 
       if (productExists) {
         throw new UserInputError(
-          `A product with slug "${data.slug}" already exists`,
+          `A product with slug "${getParsedSlug(input.slug)}" already exists`,
         );
       }
     }
+
+    const newAssets =
+      input.assets.length !== undefined
+        ? await this.assetRepository.find({
+            where: { id: In(input.assets) },
+          })
+        : undefined;
 
     return await this.productRepository.save({
       ...productToUpdate,
       ...input,
       slug: input.slug ? getParsedSlug(input.slug) : productToUpdate.slug,
+      assets: newAssets,
     });
   }
 
@@ -121,7 +126,11 @@ export class ProductService {
       productToRemove.assets = productToRemove.assets = [];
     }
 
-    await this.productRepository.save(productToRemove);
+    await this.productRepository.save({
+      ...productToRemove,
+      // avoid slug duplication for new records
+      slug: randomUUID(),
+    });
     await this.productRepository.softDelete({ id });
 
     return true;
