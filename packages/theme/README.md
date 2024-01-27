@@ -2,7 +2,7 @@
 
 `@vendyx/theme` is a ui library for vendyx admin ui and admin ui extensions, built on top of [TailwindCSS](https://tailwindcss.com/) and [Shadcnshadcn/ui](https://ui.shadcn.com/).
 
-Although vendyx theme is built with react components, also exposes css styles like variables and classes and tailwind classes with `class-variance-authority`, so in case you cannot use react components, you can use the css styles.
+Although vendyx theme is built with react components, also exposes css styles like variables and tailwind classes with `class-variance-authority`, so in case you cannot use react components, you can use the css styles.
 
 ## Setup
 
