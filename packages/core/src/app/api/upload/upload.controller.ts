@@ -4,10 +4,10 @@ import {
   Controller,
   Post,
   Res,
-  UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 
 import { AssetService } from '@/app/service';
@@ -17,16 +17,25 @@ export class uploadController {
   constructor(private readonly assetService: AssetService) {}
 
   @Post('')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FilesInterceptor('files'))
   async upload(
-    @UploadedFile()
-    file: Express.Multer.File,
+    @UploadedFiles()
+    files: Express.Multer.File[],
     @Res() res: Response,
   ) {
-    const asset = await this.assetService.create(file);
+    const assetUploadPromises = files.map(async (file) => {
+      return this.assetService.create(file);
+    });
 
-    await unlink(file.path);
+    const result = await Promise.all(assetUploadPromises);
 
-    return res.status(200).json(asset);
+    // remove files from disk after upload
+    await Promise.all(
+      files.map(async (file) => {
+        await unlink(file.path);
+      }),
+    );
+
+    return res.status(200).json(result);
   }
 }
