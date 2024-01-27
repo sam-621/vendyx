@@ -64,9 +64,7 @@ export class VariantService {
       options: optionValues,
     });
 
-    await this.variantRepository.save(variantToSave);
-
-    return variantToSave;
+    return this.variantRepository.save(variantToSave);
   }
 
   async update(id: ID, input: UpdateVariantInput) {

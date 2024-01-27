@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 
 import { getParsedSlug } from '../utils';
 
@@ -61,17 +61,17 @@ export class ProductService {
       );
     }
 
+    const assets = input.assets?.length
+      ? await this.assetRepository.find({
+          where: { id: In(input.assets) },
+        })
+      : undefined;
+
     const productToSave = this.productRepository.create({
       ...data,
-      assets: input.assets
-        ? input.assets.map((asset) =>
-            this.assetRepository.create({ source: asset }),
-          )
-        : undefined,
+      assets,
     });
-    await this.productRepository.insert(productToSave);
-
-    return productToSave;
+    return this.productRepository.save(productToSave);
   }
 
   async update(id: ID, input: UpdateProductInput) {
@@ -106,12 +106,22 @@ export class ProductService {
   }
 
   async remove(id: ID) {
-    const productToRemove = await this.findById(id);
+    const productToRemove = await this.productRepository.findOne({
+      where: { id },
+      relations: {
+        assets: true,
+      },
+    });
 
     if (!productToRemove) {
       throw new UserInputError('No product found with the given id');
     }
 
+    if (productToRemove.assets?.length) {
+      productToRemove.assets = productToRemove.assets = [];
+    }
+
+    await this.productRepository.save(productToRemove);
     await this.productRepository.softDelete({ id });
 
     return true;

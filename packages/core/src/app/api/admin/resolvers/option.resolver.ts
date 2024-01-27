@@ -12,7 +12,6 @@ export class OptionResolver {
   @Mutation('createOption')
   async createOption(@Args('input') input: CreateOptionInput) {
     const option = await this.service.create(input.name, input.values);
-    console.log({ option });
 
     return option;
   }
