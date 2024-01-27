@@ -36,7 +36,7 @@ export class ProductEntity extends Entity {
   @OneToMany(() => VariantEntity, (v) => v.product)
   variants: VariantEntity[];
 
-  @ManyToMany(() => AssetEntity)
+  @ManyToMany(() => AssetEntity, (a) => a.products)
   @JoinTable({ name: 'asset_on_product' })
   assets: AssetEntity[];
 }

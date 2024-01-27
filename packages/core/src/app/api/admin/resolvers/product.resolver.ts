@@ -15,7 +15,12 @@ import {
   ListResponse,
   UpdateProductInput,
 } from '@/app/api/common';
-import { ID, ProductEntity, VariantEntity } from '@/app/persistance';
+import {
+  AssetEntity,
+  ID,
+  ProductEntity,
+  VariantEntity,
+} from '@/app/persistance';
 import { ProductService } from '@/app/service';
 
 @UseGuards(AdminJwtAuthGuard)
@@ -72,5 +77,15 @@ export class ProductResolver {
     );
 
     return new ListResponse<VariantEntity>(variants, variants.length);
+  }
+
+  @ResolveField('assets')
+  async assets(
+    @Parent() product: ProductEntity,
+    @Args('input') listInput: ListInput,
+  ) {
+    const assets = await this.productService.findAssets(product.id, listInput);
+
+    return new ListResponse<AssetEntity>(assets, assets.length);
   }
 }

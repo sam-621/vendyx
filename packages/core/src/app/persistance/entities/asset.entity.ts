@@ -1,6 +1,7 @@
-import { Column, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, ManyToMany, Entity as TypeOrmEntity } from 'typeorm';
 
 import { Entity } from './entity';
+import { ProductEntity } from './product.entity';
 
 export enum AssetType {
   IMAGE = 'IMAGE',
@@ -20,4 +21,7 @@ export class AssetEntity extends Entity {
     default: AssetType.IMAGE,
   })
   type: string;
+
+  @ManyToMany(() => ProductEntity, (p) => p.assets)
+  products: ProductEntity[];
 }

@@ -36,6 +36,14 @@ export class VariantService {
     return this.findById(id);
   }
 
+  async findOptionValues(id: ID) {
+    const optionValues = await this.optionValueRepository.find({
+      where: { variants: { id } },
+    });
+
+    return optionValues;
+  }
+
   async create(productId: ID, input: CreateVariantInput) {
     if (!input.optionValuesIds?.length) {
       const defaultVariantAlreadyCreated = await this.variantRepository.findOne(
@@ -60,8 +68,8 @@ export class VariantService {
     const variantToSave = this.variantRepository.create({
       ...input,
       product,
+      optionValues,
       price: convertToCent(input.price),
-      options: optionValues,
     });
 
     return this.variantRepository.save(variantToSave);
@@ -85,7 +93,7 @@ export class VariantService {
       ...variantToUpdate,
       ...input,
       price: input.price ? convertToCent(input.price) : variantToUpdate.price,
-      options: optionValues,
+      optionValues: optionValues,
     });
   }
 

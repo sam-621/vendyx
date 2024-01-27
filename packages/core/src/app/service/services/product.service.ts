@@ -11,7 +11,12 @@ import {
   ListInput,
   UpdateProductInput,
 } from '@/app/api/common';
-import { AssetEntity, ID, ProductEntity } from '@/app/persistance';
+import {
+  AssetEntity,
+  ID,
+  ProductEntity,
+  VariantEntity,
+} from '@/app/persistance';
 import { UserInputError } from '@/lib/errors';
 
 @Injectable()
@@ -21,6 +26,8 @@ export class ProductService {
     private productRepository: Repository<ProductEntity>,
     @InjectRepository(AssetEntity)
     private assetRepository: Repository<AssetEntity>,
+    @InjectRepository(VariantEntity)
+    private variantRepository: Repository<VariantEntity>,
   ) {}
 
   async find(input: ListInput) {
@@ -40,13 +47,21 @@ export class ProductService {
   }
 
   async findVariants(id: ID, listInput?: ListInput) {
-    const product = await this.productRepository.findOne({
-      where: { id },
-      relations: { variants: true },
+    const variants = await this.variantRepository.find({
+      where: { product: { id } },
       ...listInput,
     });
 
-    return product.variants;
+    return variants;
+  }
+
+  async findAssets(id: ID, listInput?: ListInput) {
+    const assets = await this.assetRepository.find({
+      where: { products: { id: id } },
+      ...listInput,
+    });
+
+    return assets;
   }
 
   async create(input: CreateProductInput) {
