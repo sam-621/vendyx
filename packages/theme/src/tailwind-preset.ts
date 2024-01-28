@@ -46,6 +46,7 @@ export const VendyxTailwindPreset: Partial<Config> = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        distinct: `hsl(var(--distinct))`,
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -74,6 +74,10 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
+
+    /* Custom colors */
+    --distinct: 214 100% 50%;
+    --warning: 36 100% 50%;
   }
 
   * {

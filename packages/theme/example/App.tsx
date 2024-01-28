@@ -15,6 +15,7 @@ function App() {
           <Button variant='destructive'>Destructive</Button>
           <Button variant='ghost'>Ghost</Button>
           <Button variant='link'>Link</Button>
+          <Button className='bg-distinct'>Link</Button>
 
           <Button size='sm'>Small</Button>
           <Button size='icon'>
