@@ -2,13 +2,18 @@ import { ThemeProvider } from '@vendyx/theme'
 
 import './styles.css'
 import '@vendyx/theme/dist/style.css'
-import { CreateProductPage } from './ui/inventory'
+import { LoginPage } from './ui/login'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 export const App = () => {
   return (
-    <ThemeProvider>
-      {/* <LoginPage /> */}
-      <CreateProductPage />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <LoginPage />
+        {/* <CreateProductPage /> */}
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }

@@ -1,8 +1,23 @@
 import { FormInput } from '@/components/forms'
 import { Logo } from '@/components/items'
+import { AuthenticateMutation } from '@/lib/vendyx/mutations/admin.mutation'
+import { useQuery } from '@tanstack/react-query'
 import { Button } from '@vendyx/theme'
+import request from 'graphql-request'
 
 export const LoginPage = () => {
+  const { data } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const { products } = await request('http://localhost:3000/admin-api', AuthenticateMutation)
+      return products
+    },
+  })
+
+  console.log({
+    data,
+  })
+
   return (
     <div className='h-screen grid grid-cols-2'>
       <section className='flex flex-col justify-between bg-black p-10'>
