@@ -23,7 +23,7 @@ import {
 } from '@/app/persistance';
 import { ProductService } from '@/app/service';
 
-// @UseGuards(AdminJwtAuthGuard)
+@UseGuards(AdminJwtAuthGuard)
 @Resolver('Product')
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}

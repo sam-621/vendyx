@@ -5,7 +5,7 @@ const config: CodegenConfig = {
   documents: ['./src/**/*.ts'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
-    './src/lib/vendyx/gql/': {
+    './src/lib/vendyx/codegen/': {
       preset: 'client',
     },
   },

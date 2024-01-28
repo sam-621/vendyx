@@ -1,8 +1,8 @@
-import { graphql } from '../gql'
+import { graphql } from '../codegen'
 
 export const AuthenticateMutation = graphql(/* GraphQL */ `
-  query GetProducts {
-    products {
+  query GetProducts($input: ListInput) {
+    products(input: $input) {
       count
       items {
         id
