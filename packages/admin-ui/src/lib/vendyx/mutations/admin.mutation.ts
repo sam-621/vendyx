@@ -1,7 +1,7 @@
-import { graphql } from '../codegen'
+import { graphql } from '../codegen';
 
 export const AuthenticateMutation = graphql(/* GraphQL */ `
   mutation Authenticate($input: AuthenticateInput!) {
     authenticate(input: $input)
   }
-`)
+`);

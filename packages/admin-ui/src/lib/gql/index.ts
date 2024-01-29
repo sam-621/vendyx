@@ -1,2 +1,2 @@
-export * from './use-gql-query'
-export * from './use-gql-mutation'
+export * from './use-gql-mutation';
+export * from './use-gql-query';

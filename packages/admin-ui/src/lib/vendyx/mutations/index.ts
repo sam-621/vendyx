@@ -1,1 +1,1 @@
-export * from './admin.mutation'
+export * from './admin.mutation';

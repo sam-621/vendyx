@@ -1,5 +1,5 @@
-import { Toaster } from 'sonner'
+import { Toaster } from 'sonner';
 
 export const Notification = () => {
-  return <Toaster />
-}
+  return <Toaster />;
+};

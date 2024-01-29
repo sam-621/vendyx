@@ -1,19 +1,21 @@
-import { ThemeProvider } from '@vendyx/theme'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@vendyx/theme';
 
-import './styles.css'
-import '@vendyx/theme/dist/style.css'
-import { LoginPage } from './ui/login'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Notification } from '@/lib/notifications'
+import { Notification } from '@/lib/notifications';
+
+import { LoginPage } from './ui/login';
+
+import './styles.css';
+import '@vendyx/theme/dist/style.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      retry: false,
-    },
-  },
-})
+      retry: false
+    }
+  }
+});
 
 export const App = () => {
   return (
@@ -24,5 +26,5 @@ export const App = () => {
         {/* <CreateProductPage /> */}
       </ThemeProvider>
     </QueryClientProvider>
-  )
-}
+  );
+};

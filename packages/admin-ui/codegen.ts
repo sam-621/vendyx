@@ -1,4 +1,4 @@
-import { CodegenConfig } from '@graphql-codegen/cli'
+import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   schema: 'http://localhost:3000/admin-api',
@@ -6,9 +6,9 @@ const config: CodegenConfig = {
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
     './src/lib/vendyx/codegen/': {
-      preset: 'client',
-    },
-  },
-}
+      preset: 'client'
+    }
+  }
+};
 
-export default config
+export default config;

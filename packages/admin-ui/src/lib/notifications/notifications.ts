@@ -1,4 +1,4 @@
-import { toast } from 'sonner'
+import { toast } from 'sonner';
 
 /**
  * Notification module
@@ -29,7 +29,7 @@ export const notification = {
    * @returns notification id
    */
   success: (msg: string, options?: NotificationOptions) => {
-    return toast.success(msg, options)
+    return toast.success(msg, options);
   },
 
   /**
@@ -38,7 +38,7 @@ export const notification = {
    * @returns notification id
    */
   error: (msg: string, options?: NotificationOptions) => {
-    return toast.error(msg, options)
+    return toast.error(msg, options);
   },
 
   /**
@@ -47,7 +47,7 @@ export const notification = {
    * @returns notification id
    */
   loading: (msg: string, options?: NotificationOptions) => {
-    return toast.loading(msg, options)
+    return toast.loading(msg, options);
   },
 
   /**
@@ -64,11 +64,11 @@ export const notification = {
    *
    */
   dismiss: (id: string) => {
-    toast.dismiss(id)
-  },
-}
+    toast.dismiss(id);
+  }
+};
 
 type NotificationOptions = {
-  id?: string | number
-  description?: string
-}
+  id?: string | number;
+  description?: string;
+};
