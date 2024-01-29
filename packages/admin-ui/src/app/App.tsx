@@ -5,7 +5,14 @@ import '@vendyx/theme/dist/style.css'
 import { LoginPage } from './ui/login'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+})
 
 export const App = () => {
   return (

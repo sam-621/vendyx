@@ -1,8 +1,15 @@
 import { FormInput } from '@/components/forms'
 import { Logo } from '@/components/items'
+import { useGqlQuery } from '@/lib/gql'
+import { AuthenticateMutation } from '@/lib/vendyx/mutations/admin.mutation'
 import { Button } from '@vendyx/theme'
 
 export const LoginPage = () => {
+  const { data, error, isLoading } = useGqlQuery({
+    document: AuthenticateMutation,
+    key: ['admin', 'authenticate'],
+  })
+
   return (
     <div className='h-screen grid grid-cols-2'>
       <section className='flex flex-col justify-between bg-black p-10'>
