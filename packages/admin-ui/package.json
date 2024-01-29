@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "codegen:watch": "yarn graphql-codegen"
+    "codegen": "yarn graphql-codegen",
+    "codegen:watch": "yarn graphql-codegen --watch"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.17.19",

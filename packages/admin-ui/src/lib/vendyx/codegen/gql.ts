@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        updatedAt\n        name\n        slug\n        description\n        onlineOnly\n        published\n        variants(input: { take: 0 }) {\n          count\n          items {\n            id\n            sku\n            stock\n            price\n            optionValues {\n              id\n              value\n            }\n          }\n        }\n        assets(input: { take: 1 }) {\n          count\n          items {\n            id\n            name\n          }\n        }\n      }\n    }\n  }\n": types.GetProductsDocument,
+    "\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input)\n  }\n": types.AuthenticateDocument,
 };
 
 /**
@@ -33,7 +33,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        updatedAt\n        name\n        slug\n        description\n        onlineOnly\n        published\n        variants(input: { take: 0 }) {\n          count\n          items {\n            id\n            sku\n            stock\n            price\n            optionValues {\n              id\n              value\n            }\n          }\n        }\n        assets(input: { take: 1 }) {\n          count\n          items {\n            id\n            name\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        updatedAt\n        name\n        slug\n        description\n        onlineOnly\n        published\n        variants(input: { take: 0 }) {\n          count\n          items {\n            id\n            sku\n            stock\n            price\n            optionValues {\n              id\n              value\n            }\n          }\n        }\n        assets(input: { take: 1 }) {\n          count\n          items {\n            id\n            name\n          }\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input)\n  }\n"): (typeof documents)["\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input)\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
