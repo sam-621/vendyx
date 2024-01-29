@@ -7,14 +7,9 @@ import { ApiError } from '../errors'
  * A wrapper around react-query's `useMutation` that uses graphql-request to fetch admin api.
  */
 export const useGqlMutation = <R, V>(
-  options: UseGqlMutationOptions<R, V>
-): UseMutationResult<R, ApiError> => {
-  return useMutation({
-    mutationFn: async () => await gqlFetcher(options.document, options.variables),
-  })
-}
-
-type UseGqlMutationOptions<R, V> = {
   document: TypedDocumentNode<R, V>
-  variables?: V
+): UseMutationResult<R, ApiError, V> => {
+  return useMutation({
+    mutationFn: (variables: V) => gqlFetcher(document, variables),
+  })
 }

@@ -1,13 +1,14 @@
 import { FormInput } from '@/components/forms'
 import { Logo } from '@/components/items'
-import { useGqlMutation, useGqlQuery } from '@/lib/gql'
-import { AuthenticateMutation } from '@/lib/vendyx/mutations/admin.mutation'
+import { useAuthenticate } from '@/core/admin'
+
 import { Button } from '@vendyx/theme'
+import { useState } from 'react'
 
 export const LoginPage = () => {
-  const { data, error, isLoading } = useGqlMutation({
-    document: AuthenticateMutation,
-  })
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const { authenticate, isPending } = useAuthenticate()
 
   return (
     <div className='h-screen grid grid-cols-2'>
@@ -32,11 +33,25 @@ export const LoginPage = () => {
             Enter your username and password
           </p>
         </div>
-        <div className='flex flex-col gap-6'>
-          <FormInput label='Username' placeholder='admin' />
-          <FormInput label='Password' placeholder='******' />
-          <Button>Login</Button>
-        </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            authenticate({ password, username })
+          }}
+          className='flex flex-col gap-6'
+        >
+          <FormInput
+            onChange={(e) => setUsername(e.target.value)}
+            label='Username'
+            placeholder='admin'
+          />
+          <FormInput
+            onChange={(e) => setPassword(e.target.value)}
+            label='Password'
+            placeholder='******'
+          />
+          <Button isLoading={isPending}>Login</Button>
+        </form>
       </section>
     </div>
   )

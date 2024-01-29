@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "example"],
+  "include": ["src", "example", "../admin-ui/src/lib/notifications"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
