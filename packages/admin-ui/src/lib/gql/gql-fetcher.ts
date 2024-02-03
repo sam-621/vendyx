@@ -1,7 +1,10 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core';
-import request, { type Variables } from 'graphql-request';
+import { GraphQLClient, type Variables } from 'graphql-request';
 
+import { cookies, CookiesKeys } from '../cookies';
 import { ApiError, UnexpectedError } from '../errors';
+
+const gqlClient = new GraphQLClient('http://localhost:3000/admin-api');
 
 /**
  * A wrapper around graphql-request's `request` that make graphql typed request and manage errors
@@ -11,8 +14,11 @@ export const gqlFetcher = async <R, V>(
   variables?: V
 ): Promise<R> => {
   try {
-    return await request({
-      url: 'http://localhost:3000/admin-api',
+    const token = cookies.get(CookiesKeys.TOKEN);
+
+    gqlClient.setHeader('Authorization', token ? `Bearer ${token}` : '');
+
+    return await gqlClient.request({
       document,
       variables: variables as Variables
     });
