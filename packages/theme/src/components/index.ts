@@ -11,3 +11,5 @@ export * from './switch';
 export * from './table';
 export * from './textarea';
 export * from './dropdown-menu';
+export * from './checkbox';
+export * from './select';
