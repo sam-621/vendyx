@@ -12,7 +12,7 @@ import {
 } from '@vendyx/theme';
 import { SlidersHorizontalIcon } from 'lucide-react';
 
-export function DataTableViewOptions<TData>({ table }: Props<TData>) {
+export const DataTableViewOptions = <TData,>({ table }: Props<TData>) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,7 +42,7 @@ export function DataTableViewOptions<TData>({ table }: Props<TData>) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
 
 type Props<TData> = {
   table: Table<TData>;

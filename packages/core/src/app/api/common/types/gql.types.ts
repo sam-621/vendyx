@@ -120,7 +120,7 @@ export class Asset implements Node {
 }
 
 export class AssetList implements List {
-    items: Nullable<Asset>[];
+    items: Asset[];
     count: number;
 }
 
@@ -140,7 +140,7 @@ export class Option implements Node {
 }
 
 export class OptionList implements List {
-    items: Nullable<Option>[];
+    items: Option[];
     count: number;
 }
 
@@ -158,7 +158,7 @@ export class Product implements Node {
 }
 
 export class ProductList implements List {
-    items: Nullable<Product>[];
+    items: Product[];
     count: number;
 }
 
@@ -174,7 +174,7 @@ export class Variant implements Node {
 }
 
 export class VariantList implements List {
-    items: Nullable<Variant>[];
+    items: Variant[];
     count: number;
 }
 
