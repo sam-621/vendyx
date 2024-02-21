@@ -15,17 +15,17 @@ export const ProductTable = () => {
   const data: TableProduct[] =
     products?.map(p => {
       const variant = p.variants.items[0];
-      const image = p.assets.items[0].source;
+      const image = p.assets.items[0];
 
       return {
         id: p.id,
         name: p.name,
         slug: p.slug,
         status: p.published ? 'enabled' : 'disabled',
-        image,
-        price: variant.price,
-        sku: variant.sku,
-        stock: variant.stock
+        image: image?.source,
+        price: variant?.price ?? 0,
+        sku: variant?.sku,
+        stock: variant?.stock
       };
     }) ?? [];
 
