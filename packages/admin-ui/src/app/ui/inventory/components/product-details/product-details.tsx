@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import {
   Badge,
   Button,
@@ -10,32 +8,13 @@ import {
   Label,
   Separator
 } from '@vendyx/theme';
-import { MoreHorizontalIcon, MoveLeftIcon, PlusIcon, Trash2Icon } from 'lucide-react';
+import { MoreHorizontalIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
-import { PageLayout } from '@/components/layout';
 
-export const CreateProductPage = () => {
+export const ProductDetails = () => {
   return (
-    <PageLayout
-      title="New product"
-      subtitle="Create a product, add prices, content and more"
-      actions={
-        <>
-          <Button variant="secondary">Cancel</Button>
-          <Button>Save</Button>
-        </>
-      }
-      icon={
-        <Link to={'/inventory'}>
-          <MoveLeftIcon />
-        </Link>
-      }
-      className={{
-        main: 'flex flex-col gap-8',
-        container: 'w-[775px] mx-auto'
-      }}
-    >
+    <>
       <Card>
         <CardHeader>
           <CardTitle>General</CardTitle>
@@ -203,6 +182,6 @@ export const CreateProductPage = () => {
           />
         </CardContent>
       </Card>
-    </PageLayout>
+    </>
   );
 };
