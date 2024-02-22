@@ -1,7 +1,6 @@
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
-import { PlusIcon } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
-import { FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
+import { Dropzone, FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
 
 import { VariantDetails } from './variant-details';
 
@@ -27,10 +26,10 @@ export const ProductDetails = () => {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           {/* Empty state */}
-          {/* <Dropzone className='h-40' /> */}
+          <Dropzone className="h-40" />
 
           {/* Filled state */}
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <img
               src="https://res-console.cloudinary.com/dnvp4s8pe/media_explorer_thumbnails/523a8b864942714d4d9a8659907733f6/detailed"
               width={154}
@@ -64,7 +63,7 @@ export const ProductDetails = () => {
                 </Button>
               </div>
             </div>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
 
