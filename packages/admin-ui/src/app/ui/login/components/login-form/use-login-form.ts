@@ -7,7 +7,11 @@ import { useForm } from '@/lib/form';
 
 export const useLoginForm = () => {
   const { authenticate } = useAuthenticate();
-  const { register, handleSubmit, errors, isSubmitting } = useForm<FromInput>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<FromInput>({
     resolver: zodResolver(schema)
   });
 

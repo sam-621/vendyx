@@ -5,32 +5,30 @@ import { FormMessages, type MakeAny } from '@/core/common';
 import { useForm } from '@/lib/form';
 
 export const useProductDetailsForm = () => {
-  const { register, handleSubmit, errors, isSubmitting, control } =
-    useForm<ProductDetailsFormInput>({
-      resolver: zodResolver(schema)
-    });
+  const methods = useForm<ProductDetailsFormInput>({
+    resolver: zodResolver(schema)
+  });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
     console.log(input);
   };
 
   return {
-    onSubmit: handleSubmit(onSubmit),
-    register,
-    errors,
-    isSubmitting,
-    control
+    onSubmit: methods.handleSubmit(onSubmit),
+    ...methods
   };
 };
 
 const schema = z.object({
   name: z.string().min(3, FormMessages.maxChars(3)),
   slug: z.string().min(3, FormMessages.maxChars(3)),
-  description: z.string().optional()
+  description: z.string().optional(),
+  assets: z.any()
 } satisfies MakeAny<ProductDetailsFormInput>);
 
 export type ProductDetailsFormInput = {
   name: string;
   slug: string;
   description: string;
+  assets: any;
 };

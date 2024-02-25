@@ -1,9 +1,11 @@
-import { type FC } from 'react';
+import { type Dispatch, type FC, type SetStateAction } from 'react';
 
 import { cn } from '@vendyx/theme';
 import { UploadCloudIcon } from 'lucide-react';
 
-export const Dropzone: FC<Props> = ({ className }) => {
+import { getFileListIntoArray } from '@/core/common';
+
+export const Dropzone: FC<Props> = ({ setAssets, className }) => {
   return (
     <label
       htmlFor="dropzone-file"
@@ -16,11 +18,18 @@ export const Dropzone: FC<Props> = ({ className }) => {
         <UploadCloudIcon width={24} className="text-muted-foreground" />
         <p className="text-sm text-muted-foreground">Accepts .jpg and .png</p>
       </div>
-      <input type="file" className="hidden" />
+      <input
+        onChange={e => setAssets(getFileListIntoArray(e.target.files))}
+        multiple
+        id="dropzone-file"
+        type="file"
+        className="hidden"
+      />
     </label>
   );
 };
 
 type Props = {
+  setAssets: Dispatch<SetStateAction<File[]>>;
   className?: string;
 };

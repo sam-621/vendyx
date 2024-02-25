@@ -1,14 +1,16 @@
-import { type FC } from 'react';
-import { type UseFormRegister } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
-import { Dropzone, FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
+import { FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
 
+import { AssetDetails } from './asset-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 import { VariantDetails } from './variant-details';
 
-export const ProductDetails: FC<Props> = ({ register }) => {
+export const ProductDetails = () => {
+  const { register } = useFormContext<ProductDetailsFormInput>();
+
   return (
     <>
       <Card>
@@ -24,52 +26,7 @@ export const ProductDetails: FC<Props> = ({ register }) => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Assets</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          {/* Empty state */}
-          <Dropzone className="h-40" />
-
-          {/* Filled state */}
-          {/* <div className="flex gap-4">
-            <img
-              src="https://res-console.cloudinary.com/dnvp4s8pe/media_explorer_thumbnails/523a8b864942714d4d9a8659907733f6/detailed"
-              width={154}
-              height={154}
-              className="rounded-md"
-            />
-            <div className="flex flex-col justify-between">
-              <div className="flex gap-2">
-                <img
-                  src="https://res-console.cloudinary.com/dnvp4s8pe/media_explorer_thumbnails/523a8b864942714d4d9a8659907733f6/detailed"
-                  width={50}
-                  height={50}
-                  className="rounded-md"
-                />
-                <img
-                  src="https://res-console.cloudinary.com/dnvp4s8pe/media_explorer_thumbnails/523a8b864942714d4d9a8659907733f6/detailed"
-                  width={50}
-                  height={50}
-                  className="rounded-md"
-                />
-                <img
-                  src="https://res-console.cloudinary.com/dnvp4s8pe/media_explorer_thumbnails/523a8b864942714d4d9a8659907733f6/detailed"
-                  width={50}
-                  height={50}
-                  className="rounded-md"
-                />
-              </div>
-              <div>
-                <Button variant="outline" className="flex gap-2">
-                  <PlusIcon size={16} /> Add asset
-                </Button>
-              </div>
-            </div>
-          </div> */}
-        </CardContent>
-      </Card>
+      <AssetDetails />
 
       <VariantDetails />
 
@@ -90,8 +47,4 @@ export const ProductDetails: FC<Props> = ({ register }) => {
       </Card>
     </>
   );
-};
-
-type Props = {
-  register: UseFormRegister<ProductDetailsFormInput>;
 };
