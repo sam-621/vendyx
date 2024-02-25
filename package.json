@@ -10,7 +10,9 @@
   "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install && chmod ug+x .husky/*"
+    "prepare": "husky install && chmod ug+x .husky/*",
+    "build": "lerna run build",
+    "start": "lerna run start --scope @vendyx/core"
   },
   "dependencies": {},
   "devDependencies": {

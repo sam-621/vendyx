@@ -7,7 +7,7 @@ import { LoginPage } from './ui/login';
 import { AuthWrapper } from './auth-wrapper';
 
 export const AppRouter = () => (
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     <Routes>
       <Route element={<AuthWrapper />}>
         <Route path="/login" element={<LoginPage />} />
