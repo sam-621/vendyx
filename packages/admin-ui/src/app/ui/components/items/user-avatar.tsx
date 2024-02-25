@@ -52,7 +52,7 @@ export const UserAvatar = () => {
           </DropdownMenuSub>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="p-0">
+        <DropdownMenuItem asChild className="p-0">
           <Button
             type="submit"
             variant={'ghost'}

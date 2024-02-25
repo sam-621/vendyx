@@ -10,7 +10,7 @@ export const AdminLayout: FC = () => {
   return (
     <div className="grid grid-cols-10">
       <aside className="col-span-2 px-4 py-8 flex flex-col gap-6 h-screen border-r sticky top-0">
-        <div>
+        <div className="pl-4">
           <Logo />
         </div>
         <div className="h-full flex flex-col justify-between">
@@ -22,10 +22,8 @@ export const AdminLayout: FC = () => {
               <ShoppingCartIcon size={16} /> Orders
             </Button>
           </div>
-          <div>
-            <Button variant="ghost" className="flex gap-2 justify-start text-base">
-              <UserAvatar />
-            </Button>
+          <div className="pl-4">
+            <UserAvatar />
           </div>
         </div>
       </aside>

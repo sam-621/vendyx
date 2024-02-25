@@ -1,10 +1,14 @@
+import { type FC } from 'react';
+import { type UseFormRegister } from 'react-hook-form';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
 import { Dropzone, FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
 
+import { type ProductDetailsFormInput } from './use-product-details-form';
 import { VariantDetails } from './variant-details';
 
-export const ProductDetails = () => {
+export const ProductDetails: FC<Props> = ({ register }) => {
   return (
     <>
       <Card>
@@ -13,10 +17,10 @@ export const ProductDetails = () => {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="flex gap-4 w-full">
-            <FormInput label="Name" placeholder="Black T-shirt" />
-            <FormInput label="Slug" placeholder="black-t-shirt" />
+            <FormInput {...register('name')} label="Name" placeholder="Black T-shirt" />
+            <FormInput {...register('slug')} label="Slug" placeholder="black-t-shirt" />
           </div>
-          <FormTextarea label="Description" />
+          <FormTextarea {...register('description')} label="Description" />
         </CardContent>
       </Card>
 
@@ -86,4 +90,8 @@ export const ProductDetails = () => {
       </Card>
     </>
   );
+};
+
+type Props = {
+  register: UseFormRegister<ProductDetailsFormInput>;
 };
