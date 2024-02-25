@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
 
-import { AssetDetails } from './asset-details';
+import { AssetDetails } from './forms/asset-details';
+import { VariantDetails } from './forms/variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
-import { VariantDetails } from './variant-details';
 
 export const ProductDetails = () => {
   const { register } = useFormContext<ProductDetailsFormInput>();

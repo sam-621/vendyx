@@ -7,7 +7,7 @@ import { PlusIcon } from 'lucide-react';
 import { Dropzone } from '@/components/forms';
 import { getFileListIntoArray } from '@/core/common';
 
-import { type ProductDetailsFormInput } from './use-product-details-form';
+import { type ProductDetailsFormInput } from '../use-product-details-form';
 
 export const AssetDetails = () => {
   const { setValue } = useFormContext<ProductDetailsFormInput>();

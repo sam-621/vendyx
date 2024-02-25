@@ -30,5 +30,5 @@ export type ProductDetailsFormInput = {
   name: string;
   slug: string;
   description: string;
-  assets: any;
+  assets: File[];
 };
