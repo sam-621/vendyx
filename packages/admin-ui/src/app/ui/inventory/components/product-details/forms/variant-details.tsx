@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import {
   Button,
@@ -14,16 +15,17 @@ import { PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/components/forms';
 
-export const VariantDetails = () => {
-  const [options, setOptions] = useState<Option[]>([]);
+import { type ProductDetailsFormInput } from '../use-product-details-form';
 
-  console.log(options);
+export const VariantDetails = () => {
+  const { register } = useFormContext<ProductDetailsFormInput>();
+  const [options, setOptions] = useState<Option[]>([]);
 
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle>Variants</CardTitle>
-        {!options.length && (
+        {/* {!options.length && (
           <Button
             variant="ghost"
             className="text-distinct flex gap-2 hover:bg-distinct/10 hover:text-distinct"
@@ -31,15 +33,15 @@ export const VariantDetails = () => {
           >
             <PlusIcon size={16} /> Add options
           </Button>
-        )}
+        )} */}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {/* Stateless */}
         {!options.length && (
           <div className="flex gap-4">
-            <FormInput label="Price" placeholder="$ 0.00" />
-            <FormInput label="SKU" placeholder="SKU - 000" />
-            <FormInput label="Quantity" placeholder="0" />
+            <FormInput {...register('price')} type="number" label="Price" placeholder="$ 0.00" />
+            <FormInput {...register('sku')} label="SKU" placeholder="SKU - 000" />
+            <FormInput {...register('quantity')} type="number" label="Quantity" placeholder="0" />
           </div>
         )}
 

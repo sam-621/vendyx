@@ -1,4 +1,4 @@
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
@@ -9,7 +9,7 @@ import { VariantDetails } from './forms/variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails = () => {
-  const { register } = useFormContext<ProductDetailsFormInput>();
+  const { register, control } = useFormContext<ProductDetailsFormInput>();
 
   return (
     <>
@@ -35,13 +35,29 @@ export const ProductDetails = () => {
           <CardTitle>Settings</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
-          <SwitchContainer
-            title="Display on storefront"
-            description="Decide if the product shows in your storefront or not"
+          <Controller
+            control={control}
+            name="published"
+            render={({ field }) => (
+              <SwitchContainer
+                title="Display on storefront"
+                description="Decide if the product shows in your storefront or not"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
-          <SwitchContainer
-            title="Online product"
-            description="Check if this is a online product and does not need to be shipped"
+          <Controller
+            control={control}
+            name="onlineOnly"
+            render={({ field }) => (
+              <SwitchContainer
+                title="Online product"
+                description="Check if this is a online product and does not need to be shipped"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            )}
           />
         </CardContent>
       </Card>
