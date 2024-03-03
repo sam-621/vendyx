@@ -10,7 +10,7 @@ export const useCreateProduct = () => {
       createProduct: { id: productId }
     } = await mutateAsync({ createProductInput: input });
 
-    console.log(productId);
+    return productId;
   };
 
   return {

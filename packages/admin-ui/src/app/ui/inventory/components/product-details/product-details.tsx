@@ -36,6 +36,7 @@ export const ProductDetails = () => {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Controller
+            defaultValue={false}
             control={control}
             name="published"
             render={({ field }) => (
@@ -48,6 +49,7 @@ export const ProductDetails = () => {
             )}
           />
           <Controller
+            defaultValue={false}
             control={control}
             name="onlineOnly"
             render={({ field }) => (

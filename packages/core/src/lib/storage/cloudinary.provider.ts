@@ -22,7 +22,7 @@ export class CloudinaryStorageProvider implements StorageProvider {
         folder: 'vendyx',
       });
 
-      return fileUploaded.public_id;
+      return fileUploaded.secure_url;
     } catch (error) {
       Logger.error({
         provider: this.code,

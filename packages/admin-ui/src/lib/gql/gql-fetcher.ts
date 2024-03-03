@@ -4,6 +4,7 @@ import { GraphQLClient, type Variables } from 'graphql-request';
 import { cookies, CookiesKeys } from '../cookies';
 import { ApiError, UnexpectedError } from '../errors';
 
+// TODO: Replace with the actual graphql endpoint
 const gqlClient = new GraphQLClient('http://localhost:3000/admin-api');
 
 /**
