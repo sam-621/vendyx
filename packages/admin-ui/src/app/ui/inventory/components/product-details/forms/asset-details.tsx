@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { buttonVariants, Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
@@ -6,18 +6,21 @@ import { PlusIcon } from 'lucide-react';
 
 import { Dropzone } from '@/components/forms';
 import { getFileListIntoArray } from '@/core/common';
+import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 
-export const AssetDetails = () => {
+export const AssetDetails: FC<Props> = ({ assets: defaultAssets }) => {
+  const defaultPreviews = defaultAssets?.items.map(a => a.source);
+
   const { setValue } = useFormContext<ProductDetailsFormInput>();
   const [assets, setAssets] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [previews, setPreviews] = useState<string[]>(defaultPreviews ?? []);
 
   useEffect(() => {
     if (!assets.length) return;
 
-    setPreviews(assets.map(file => URL.createObjectURL(file)));
+    setPreviews([...previews, ...assets.map(file => URL.createObjectURL(file))]);
     setValue('assets', assets);
   }, [assets]);
 
@@ -37,7 +40,11 @@ export const AssetDetails = () => {
             <div className="flex flex-col justify-between">
               <div className="flex gap-2">
                 {previews.slice(1, previews.length).map((preview, index) => (
-                  <img key={index} src={preview} width={50} height={50} className="rounded-md" />
+                  <img
+                    key={index}
+                    src={preview}
+                    className="rounded-md h-[50px] w-[50px] object-cover"
+                  />
                 ))}
               </div>
               <div>
@@ -50,7 +57,7 @@ export const AssetDetails = () => {
                 >
                   <PlusIcon size={16} /> Add asset
                   <input
-                    onChange={e => setAssets([...assets, ...getFileListIntoArray(e.target.files)])}
+                    onChange={e => setAssets([...getFileListIntoArray(e.target.files)])}
                     type="file"
                     multiple
                     name=""
@@ -65,4 +72,8 @@ export const AssetDetails = () => {
       </CardContent>
     </Card>
   );
+};
+
+type Props = {
+  assets?: ProductDetailsFragmentFragment['assets'];
 };

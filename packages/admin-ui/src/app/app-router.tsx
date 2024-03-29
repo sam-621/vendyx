@@ -2,13 +2,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AdminLayout } from '@/components/layout';
 
-import { CreateProductPage, ProductsPage } from './ui/inventory';
+import { CreateProductPage, ProductDetailsPage, ProductsPage } from './ui/inventory';
 import { LoginPage } from './ui/login';
 import { AuthWrapper } from './auth-wrapper';
 
 export const AppRouter = () => {
-  console.log(import.meta.env.BASE_URL);
-
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
@@ -17,6 +15,7 @@ export const AppRouter = () => {
           <Route path="/" element={<AdminLayout />}>
             <Route path="/inventory" element={<ProductsPage />} />
             <Route path="/inventory/new" element={<CreateProductPage />} />
+            <Route path="/inventory/:slug" element={<ProductDetailsPage />} />
           </Route>
         </Route>
       </Routes>
