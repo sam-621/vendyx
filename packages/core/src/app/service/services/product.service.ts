@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { randomUUID } from 'crypto';
 
 import { Injectable } from '@nestjs/common';
