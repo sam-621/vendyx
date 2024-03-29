@@ -18,6 +18,7 @@ export const useProductDetailsForm = () => {
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
     const assets = input.assets ? await createAsset(input.assets) : undefined;
+
     const productId = await createProduct({
       name: input.name,
       slug: input.slug,
@@ -26,6 +27,7 @@ export const useProductDetailsForm = () => {
       published: input.published,
       assetsIds: assets?.map(asset => asset.id) ?? []
     });
+
     await createVariant(productId, {
       price: input.price,
       sku: input.sku,

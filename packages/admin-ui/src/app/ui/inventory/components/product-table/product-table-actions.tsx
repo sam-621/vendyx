@@ -16,11 +16,14 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@vendyx/theme';
-import { MoreHorizontalIcon } from 'lucide-react';
+import { Loader2Icon, MoreHorizontalIcon } from 'lucide-react';
+
+import { useRemoveProduct } from '@/core/inventory';
 
 import { type TableProduct } from './product-table';
 
 export const InventoryTableActions: FC<Props> = ({ row }) => {
+  const { removeProduct, isLoading } = useRemoveProduct();
   const product: TableProduct = row.original;
   const productState = product.status === 'enabled' ? 'Enabled' : 'Disabled';
 
@@ -46,8 +49,15 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <span className="text-destructive font-medium">Delete</span>
+        <DropdownMenuItem
+          disabled={isLoading}
+          onClick={async () => await removeProduct(product.id)}
+          className="cursor-pointer"
+        >
+          <span className={`text-destructive font-medium`}>
+            {isLoading ? 'Removing...' : 'Remove'}
+          </span>
+          {isLoading && <Loader2Icon className="h-4 w-4 ml-2 text-destructive animate-spin" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

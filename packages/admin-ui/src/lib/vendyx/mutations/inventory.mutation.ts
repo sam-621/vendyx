@@ -15,3 +15,9 @@ export const CreateVariantMutation = graphql(`
     }
   }
 `);
+
+export const RemoveProductMutation = graphql(`
+  mutation RemoveProduct($productId: ID!) {
+    removeProduct(id: $productId)
+  }
+`);

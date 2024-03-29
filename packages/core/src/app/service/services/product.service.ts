@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { randomUUID } from 'crypto';
 
 import { Injectable } from '@nestjs/common';
@@ -125,20 +126,18 @@ export class ProductService {
     });
   }
 
+  /**
+   * Apply a soft delete for the current product and its variant
+   * We cannot remove permanently the product because it may have orders
+   * The assets are independent of the product so they are not removed
+   */
   async remove(id: ID) {
     const productToRemove = await this.productRepository.findOne({
       where: { id },
-      relations: {
-        assets: true,
-      },
     });
 
     if (!productToRemove) {
       throw new UserInputError('No product found with the given id');
-    }
-
-    if (productToRemove.assets?.length) {
-      productToRemove.assets = productToRemove.assets = [];
     }
 
     await this.productRepository.save({
@@ -147,6 +146,7 @@ export class ProductService {
       slug: randomUUID(),
     });
     await this.productRepository.softDelete({ id });
+    await this.variantRepository.softDelete({ product: { id } });
 
     return true;
   }
