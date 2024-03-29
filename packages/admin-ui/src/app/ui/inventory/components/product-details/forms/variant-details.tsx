@@ -9,8 +9,6 @@ import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphq
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 
 export const VariantDetails: FC<Props> = ({ variants }) => {
-  console.log(variants);
-
   const defaultVariant = variants?.items[0];
   const { register } = useFormContext<ProductDetailsFormInput>();
 

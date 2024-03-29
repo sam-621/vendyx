@@ -7,3 +7,11 @@ export const CreateProductMutation = graphql(`
     }
   }
 `);
+
+export const CreateVariantMutation = graphql(`
+  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {
+    createVariant(productId: $createVariantProductId, input: $createVariantInput) {
+      id
+    }
+  }
+`);

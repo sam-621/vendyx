@@ -20,7 +20,7 @@ export const AssetDetails: FC<Props> = ({ assets: defaultAssets }) => {
   useEffect(() => {
     if (!assets.length) return;
 
-    setPreviews([...previews, ...assets.map(file => URL.createObjectURL(file))]);
+    setPreviews([...(defaultPreviews ?? []), ...assets.map(file => URL.createObjectURL(file))]);
     setValue('assets', assets);
   }, [assets]);
 
@@ -57,7 +57,7 @@ export const AssetDetails: FC<Props> = ({ assets: defaultAssets }) => {
                 >
                   <PlusIcon size={16} /> Add asset
                   <input
-                    onChange={e => setAssets([...getFileListIntoArray(e.target.files)])}
+                    onChange={e => setAssets([...assets, ...getFileListIntoArray(e.target.files)])}
                     type="file"
                     multiple
                     name=""

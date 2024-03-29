@@ -1,8 +1,10 @@
 import { useGqlQuery } from '@/lib/gql';
 import { GetProductsQuery } from '@/lib/vendyx/queries';
 
+import { InventoryKeys } from './inventory.keys';
+
 export const useGetProducts = () => {
-  const { data, isLoading } = useGqlQuery({ document: GetProductsQuery });
+  const { data, isLoading } = useGqlQuery({ document: GetProductsQuery, key: InventoryKeys.all });
 
   return {
     products: data?.products.items,

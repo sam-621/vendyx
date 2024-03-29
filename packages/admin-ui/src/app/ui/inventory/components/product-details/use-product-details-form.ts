@@ -3,24 +3,20 @@ import { z } from 'zod';
 
 import { useCreateAsset } from '@/core/assets';
 import { FormMessages, type MakeAny } from '@/core/common';
-import { useCreateProduct } from '@/core/inventory';
+import { useCreateProduct, useCreateVariant } from '@/core/inventory';
 import { useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
 
 export const useProductDetailsForm = () => {
   const { createAsset } = useCreateAsset();
   const { createProduct } = useCreateProduct();
+  const { createVariant } = useCreateVariant();
+
   const methods = useForm<ProductDetailsFormInput>({
     resolver: zodResolver(schema)
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    const formData = new FormData();
-
-    input.assets?.forEach(file => {
-      formData.append(`files`, file);
-    });
-
     const assets = input.assets ? await createAsset(input.assets) : undefined;
     const productId = await createProduct({
       name: input.name,
@@ -29,6 +25,12 @@ export const useProductDetailsForm = () => {
       onlineOnly: input.onlineOnly,
       published: input.published,
       assetsIds: assets?.map(asset => asset.id) ?? []
+    });
+    await createVariant(productId, {
+      price: input.price,
+      sku: input.sku,
+      stock: input.quantity,
+      published: input.published
     });
 
     notification.success(`Product ${input.name} created with id ${productId}`);
