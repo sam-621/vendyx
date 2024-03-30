@@ -10,7 +10,8 @@ import { type ProductDetailsFormInput } from '../use-product-details-form';
 
 export const VariantDetails: FC<Props> = ({ variants }) => {
   const defaultVariant = variants?.items[0];
-  const { register } = useFormContext<ProductDetailsFormInput>();
+  const { register, formState } = useFormContext<ProductDetailsFormInput>();
+  const { errors } = formState;
 
   return (
     <Card>
@@ -21,6 +22,7 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
         <div className="flex gap-4">
           <FormInput
             {...register('price')}
+            error={errors.price?.message}
             defaultValue={defaultVariant?.price}
             type="number"
             label="Price"
@@ -28,12 +30,14 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
           />
           <FormInput
             {...register('sku')}
+            error={errors.sku?.message}
             defaultValue={defaultVariant?.sku}
             label="SKU"
             placeholder="SKU - 000"
           />
           <FormInput
             {...register('quantity')}
+            error={errors.quantity?.message}
             defaultValue={defaultVariant?.stock}
             type="number"
             label="Quantity"

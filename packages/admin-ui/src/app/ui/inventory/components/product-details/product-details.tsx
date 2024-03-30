@@ -11,7 +11,8 @@ import { VariantDetails } from './forms/variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
-  const { register, control } = useFormContext<ProductDetailsFormInput>();
+  const { register, control, formState } = useFormContext<ProductDetailsFormInput>();
+  const { errors } = formState;
 
   return (
     <>
@@ -23,12 +24,14 @@ export const ProductDetails: FC<Props> = ({ product }) => {
           <div className="flex gap-4 w-full">
             <FormInput
               {...register('name')}
+              error={errors.name?.message}
               defaultValue={product?.name}
               label="Name"
               placeholder="Black T-shirt"
             />
             <FormInput
               {...register('slug')}
+              error={errors.slug?.message}
               defaultValue={product?.slug}
               label="Slug"
               placeholder="black-t-shirt"

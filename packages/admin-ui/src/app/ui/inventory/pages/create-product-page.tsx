@@ -21,7 +21,9 @@ export const CreateProductPage = () => {
           actions={
             <>
               <Button variant="secondary">Cancel</Button>
-              <Button type="submit">Save</Button>
+              <Button isLoading={methods.formState.isSubmitting} type="submit">
+                Save
+              </Button>
             </>
           }
           icon={
