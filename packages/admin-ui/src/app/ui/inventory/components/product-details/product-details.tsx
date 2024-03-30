@@ -1,6 +1,7 @@
 import { type FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { getParsedSlug } from '@vendyx/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
@@ -11,8 +12,10 @@ import { VariantDetails } from './forms/variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
-  const { register, control, formState } = useFormContext<ProductDetailsFormInput>();
+  const { register, control, formState, watch } = useFormContext<ProductDetailsFormInput>();
   const { errors } = formState;
+
+  const parsedSlug = getParsedSlug(watch('name') ?? '');
 
   return (
     <>
@@ -31,10 +34,11 @@ export const ProductDetails: FC<Props> = ({ product }) => {
             />
             <FormInput
               {...register('slug')}
-              error={errors.slug?.message}
+              value={parsedSlug}
               defaultValue={product?.slug}
               label="Slug"
               placeholder="black-t-shirt"
+              disabled
             />
           </div>
           <FormTextarea
