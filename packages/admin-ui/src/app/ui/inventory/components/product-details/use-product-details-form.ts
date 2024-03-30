@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { type MakeAny } from '@vendyx/common';
 import { z } from 'zod';
 
 import { useCreateAsset } from '@/core/assets';
-import { FormMessages, type MakeAny } from '@/core/common';
+import { FormMessages } from '@/core/common';
 import { useCreateProduct, useCreateVariant } from '@/core/inventory';
 import { useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';

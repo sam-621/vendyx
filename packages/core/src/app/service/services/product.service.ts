@@ -2,9 +2,8 @@ import { randomUUID } from 'crypto';
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { getParsedSlug } from '@vendyx/common';
 import { In, Not, Repository } from 'typeorm';
-
-import { getParsedSlug } from '../utils';
 
 import {
   CreateProductInput,

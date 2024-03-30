@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 
 import { type ColumnDef } from '@tanstack/react-table';
+import { getFormattedPrice } from '@vendyx/common';
 import { Badge, Checkbox } from '@vendyx/theme';
 
 import { DataTableColumnHeader } from '@/components/data-table';
-import { getFormattedPrice } from '@/core/common';
 
 import { type TableProduct } from './product-table';
 import { InventoryTableActions } from './product-table-actions';

@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/typeorm": "^10.0.1",
+    "@vendyx/common": "*",
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.3",
     "graphql": "^16.8.1",
