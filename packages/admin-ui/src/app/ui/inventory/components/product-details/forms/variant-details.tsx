@@ -1,6 +1,7 @@
 import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { convertToDollar } from '@vendyx/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
 import { FormInput } from '@/components/forms';
@@ -23,7 +24,7 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
           <FormInput
             {...register('price')}
             error={errors.price?.message}
-            defaultValue={defaultVariant?.price}
+            defaultValue={convertToDollar(defaultVariant?.price ?? 0)}
             type="number"
             label="Price"
             placeholder="$ 0.00"

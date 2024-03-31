@@ -17,7 +17,6 @@ export const ProductDetails: FC<Props> = ({ product }) => {
   const { errors } = formState;
 
   const parsedSlug = getParsedSlug(watch('name') ?? product?.name ?? '');
-  console.log(parsedSlug);
 
   useEffect(() => {
     setValue('slug', parsedSlug);

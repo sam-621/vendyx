@@ -18,8 +18,9 @@ import {
 } from '@vendyx/theme';
 import { Loader2Icon, MoreHorizontalIcon } from 'lucide-react';
 
-import { useRemoveProduct, useUpdateProduct } from '@/core/inventory';
+import { InventoryKeys, useRemoveProduct, useUpdateProduct } from '@/core/inventory';
 import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
 
 import { type TableProduct } from './product-table';
 
@@ -33,6 +34,7 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
     const notificationId = notification.loading('Updating product state...');
 
     await updateProduct(product.id, { published });
+    await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
     notification.dismiss(notificationId);
     notification.success(`Product ${published ? 'enabled' : 'disabled'}`);
@@ -72,7 +74,15 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           disabled={isLoading}
-          onClick={async () => await removeProduct(product.id)}
+          onClick={async () => {
+            const notificationId = notification.loading('Removing product...');
+
+            await removeProduct(product.id);
+            await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+
+            notification.dismiss(notificationId);
+            notification.success('Product removed successfully');
+          }}
           className="cursor-pointer"
         >
           <span className={`text-destructive font-medium`}>

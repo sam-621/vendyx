@@ -20,7 +20,9 @@ export const CreateProductPage = () => {
           subtitle="Create a product, add prices, content and more"
           actions={
             <>
-              <Button variant="secondary">Cancel</Button>
+              <Button type="button" variant="secondary">
+                Cancel
+              </Button>
               <Button isLoading={methods.formState.isSubmitting} type="submit">
                 Save
               </Button>

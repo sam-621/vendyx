@@ -33,6 +33,7 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
     try {
+      const isUpdating = update?.productId && update?.variantId;
       const assets = input.assets ? await createAsset(input.assets) : undefined;
 
       const productInput = {
@@ -51,7 +52,7 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
         published: input.published
       };
 
-      if (update?.productId && update?.variantId) {
+      if (isUpdating) {
         const { productId, variantId } = update;
 
         await updateProduct(productId, productInput);
@@ -63,6 +64,8 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
         const createdProductId = await createProduct(productInput);
 
         await createVariant(createdProductId, variantInput);
+        await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+
         notification.success(`Product ${input.name} created with id ${createdProductId}`);
       }
     } catch (error) {
