@@ -49,8 +49,14 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Copy SKU</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={async () => {
+            await navigator.clipboard.writeText(product.sku);
+            notification.success('SKU copied to clipboard');
+          }}
+        >
+          Copy SKU
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>State</DropdownMenuSubTrigger>
