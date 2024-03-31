@@ -4,20 +4,28 @@ import { z } from 'zod';
 
 import { useCreateAsset } from '@/core/assets';
 import { FormMessages } from '@/core/common';
-import { useCreateProduct, useCreateVariant, useUpdateProduct } from '@/core/inventory';
+import {
+  useCreateProduct,
+  useCreateVariant,
+  useUpdateProduct,
+  useUpdateVariant
+} from '@/core/inventory';
+import { InventoryKeys } from '@/core/inventory/inventory.keys';
 import { useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
 
 /**
  * Hook to handle the product details form
- * @param productId If provided, the form will update the product with the given id
+ * @param update If provided, the form will update the product with the given id
  * @returns Form methods and state
  */
-export const useProductDetailsForm = (productId?: string) => {
+export const useProductDetailsForm = (update?: { productId: string; variantId: string }) => {
   const { createAsset } = useCreateAsset();
   const { createProduct } = useCreateProduct();
   const { createVariant } = useCreateVariant();
   const { updateProduct } = useUpdateProduct();
+  const { updateVariant } = useUpdateVariant();
 
   const methods = useForm<ProductDetailsFormInput>({
     resolver: zodResolver(schema)
@@ -43,14 +51,19 @@ export const useProductDetailsForm = (productId?: string) => {
         published: input.published
       };
 
-      if (productId) {
+      if (update?.productId && update?.variantId) {
+        const { productId, variantId } = update;
+
         await updateProduct(productId, productInput);
+        await updateVariant(variantId, variantInput);
+        await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+
         notification.success('Product updated');
       } else {
         const createdProductId = await createProduct(productInput);
 
         await createVariant(createdProductId, variantInput);
-        notification.success(`Product ${input.name} created with id ${productId}`);
+        notification.success(`Product ${input.name} created with id ${createdProductId}`);
       }
     } catch (error) {
       notification.error('An error occurred');

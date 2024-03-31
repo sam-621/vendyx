@@ -13,7 +13,11 @@ import { useProductDetailsForm } from '../components/product-details/use-product
 export const ProductDetailsPage = () => {
   const { slug } = useParams();
   const { isLoading, product } = useGetProductDetails(slug ?? '');
-  const methods = useProductDetailsForm(product?.id);
+  const defaultVariant = product?.variants.items[0];
+  const methods = useProductDetailsForm({
+    productId: product?.id ?? '',
+    variantId: defaultVariant?.id ?? ''
+  });
 
   if (isLoading) return <h1>Is loading</h1>;
 

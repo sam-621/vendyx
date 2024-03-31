@@ -29,3 +29,11 @@ export const UpdateProductMutation = graphql(`
     }
   }
 `);
+
+export const UpdateVariantMutation = graphql(`
+  mutation UpdateVariant($updateVariantId: ID!, $updateVariantInput: UpdateVariantInput!) {
+    updateVariant(id: $updateVariantId, input: $updateVariantInput) {
+      id
+    }
+  }
+`);
