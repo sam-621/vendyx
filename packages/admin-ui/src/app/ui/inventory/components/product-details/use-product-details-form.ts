@@ -4,39 +4,57 @@ import { z } from 'zod';
 
 import { useCreateAsset } from '@/core/assets';
 import { FormMessages } from '@/core/common';
-import { useCreateProduct, useCreateVariant } from '@/core/inventory';
+import { useCreateProduct, useCreateVariant, useUpdateProduct } from '@/core/inventory';
 import { useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
 
-export const useProductDetailsForm = () => {
+/**
+ * Hook to handle the product details form
+ * @param productId If provided, the form will update the product with the given id
+ * @returns Form methods and state
+ */
+export const useProductDetailsForm = (productId?: string) => {
   const { createAsset } = useCreateAsset();
   const { createProduct } = useCreateProduct();
   const { createVariant } = useCreateVariant();
+  const { updateProduct } = useUpdateProduct();
 
   const methods = useForm<ProductDetailsFormInput>({
     resolver: zodResolver(schema)
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    const assets = input.assets ? await createAsset(input.assets) : undefined;
+    try {
+      const assets = input.assets ? await createAsset(input.assets) : undefined;
 
-    const productId = await createProduct({
-      name: input.name,
-      slug: input.slug,
-      description: input.description,
-      onlineOnly: input.onlineOnly,
-      published: input.published,
-      assetsIds: assets?.map(asset => asset.id) ?? []
-    });
+      const productInput = {
+        name: input.name,
+        slug: input.slug,
+        description: input.description,
+        onlineOnly: input.onlineOnly,
+        published: input.published,
+        assetsIds: [...input.prevAssets, ...(assets?.map(asset => asset.id) ?? [])]
+      };
 
-    await createVariant(productId, {
-      price: input.price,
-      sku: input.sku,
-      stock: input.quantity,
-      published: input.published
-    });
+      const variantInput = {
+        price: input.price,
+        sku: input.sku,
+        stock: input.quantity,
+        published: input.published
+      };
 
-    notification.success(`Product ${input.name} created with id ${productId}`);
+      if (productId) {
+        await updateProduct(productId, productInput);
+        notification.success('Product updated');
+      } else {
+        const createdProductId = await createProduct(productInput);
+
+        await createVariant(createdProductId, variantInput);
+        notification.success(`Product ${input.name} created with id ${productId}`);
+      }
+    } catch (error) {
+      notification.error('An error occurred');
+    }
   };
 
   return {
@@ -50,6 +68,7 @@ const schema = z.object({
   slug: z.string().min(3, FormMessages.maxChars(3)),
   description: z.string().optional(),
   assets: z.any(),
+  prevAssets: z.array(z.string()).optional(),
   price: z.preprocess(value => Number(value ?? 0), z.number().min(0).optional()),
   quantity: z.preprocess(value => Number(value ?? 0), z.number().min(0).optional()),
   sku: z.string().min(3, FormMessages.minChars(3)),
@@ -62,6 +81,7 @@ export type ProductDetailsFormInput = {
   slug: string;
   description: string;
   assets: File[];
+  prevAssets: string[];
   price: number;
   sku: string;
   quantity: number;

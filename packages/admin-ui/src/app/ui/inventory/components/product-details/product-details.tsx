@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { getParsedSlug } from '@vendyx/common';
@@ -12,10 +12,16 @@ import { VariantDetails } from './forms/variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
-  const { register, control, formState, watch } = useFormContext<ProductDetailsFormInput>();
+  const { register, control, formState, watch, setValue } =
+    useFormContext<ProductDetailsFormInput>();
   const { errors } = formState;
 
-  const parsedSlug = getParsedSlug(watch('name') ?? '');
+  const parsedSlug = getParsedSlug(watch('name') ?? product?.name ?? '');
+  console.log(parsedSlug);
+
+  useEffect(() => {
+    setValue('slug', parsedSlug);
+  }, [parsedSlug]);
 
   return (
     <>

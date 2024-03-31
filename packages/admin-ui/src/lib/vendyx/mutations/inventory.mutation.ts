@@ -21,3 +21,11 @@ export const RemoveProductMutation = graphql(`
     removeProduct(id: $productId)
   }
 `);
+
+export const UpdateProductMutation = graphql(`
+  mutation UpdateProduct($productId: ID!, $input: UpdateProductInput!) {
+    updateProduct(id: $productId, input: $input) {
+      id
+    }
+  }
+`);

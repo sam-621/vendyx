@@ -24,6 +24,9 @@ export const AssetDetails: FC<Props> = ({ assets: defaultAssets }) => {
     setValue('assets', assets);
   }, [assets]);
 
+  useEffect(() => {
+    setValue('prevAssets', defaultAssets?.items.map(a => a.id) ?? []);
+  }, []);
   return (
     <Card>
       <CardHeader>

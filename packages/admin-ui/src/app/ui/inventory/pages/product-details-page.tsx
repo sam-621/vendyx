@@ -11,9 +11,9 @@ import { ProductDetails } from '../components/product-details';
 import { useProductDetailsForm } from '../components/product-details/use-product-details-form';
 
 export const ProductDetailsPage = () => {
-  const methods = useProductDetailsForm();
   const { slug } = useParams();
   const { isLoading, product } = useGetProductDetails(slug ?? '');
+  const methods = useProductDetailsForm(product?.id);
 
   if (isLoading) return <h1>Is loading</h1>;
 
@@ -26,7 +26,9 @@ export const ProductDetailsPage = () => {
           actions={
             <>
               <Button variant="secondary">Cancel</Button>
-              <Button type="submit">Save</Button>
+              <Button isLoading={methods.formState.isSubmitting} type="submit">
+                Save
+              </Button>
             </>
           }
           icon={
