@@ -18,14 +18,25 @@ import {
 } from '@vendyx/theme';
 import { Loader2Icon, MoreHorizontalIcon } from 'lucide-react';
 
-import { useRemoveProduct } from '@/core/inventory';
+import { useRemoveProduct, useUpdateProduct } from '@/core/inventory';
+import { notification } from '@/lib/notifications';
 
 import { type TableProduct } from './product-table';
 
 export const InventoryTableActions: FC<Props> = ({ row }) => {
   const { removeProduct, isLoading } = useRemoveProduct();
+  const { updateProduct } = useUpdateProduct();
   const product: TableProduct = row.original;
-  const productState = product.status === 'enabled' ? 'Enabled' : 'Disabled';
+  const productState = product.status === 'enabled' ? 'enabled' : 'disabled';
+
+  const updateProductState = async (published: boolean) => {
+    const notificationId = notification.loading('Updating product state...');
+
+    await updateProduct(product.id, { published });
+
+    notification.dismiss(notificationId);
+    notification.success(`Product ${published ? 'enabled' : 'disabled'}`);
+  };
 
   return (
     <DropdownMenu>
@@ -43,8 +54,18 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
           <DropdownMenuSubTrigger>State</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup value={productState}>
-              <DropdownMenuRadioItem value={'enabled'}>Enabled</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value={'disabled'}>Disabled</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem
+                onClick={async () => await updateProductState(true)}
+                value={'enabled'}
+              >
+                Enabled
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem
+                onClick={async () => await updateProductState(false)}
+                value={'disabled'}
+              >
+                Disabled
+              </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>

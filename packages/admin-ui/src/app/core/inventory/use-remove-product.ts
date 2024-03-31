@@ -9,9 +9,12 @@ export const useRemoveProduct = () => {
   const { mutateAsync, isPending } = useGqlMutation(RemoveProductMutation);
 
   const removeProduct = async (productId: string) => {
-    notification.loading('Removing product...');
+    const notificationId = notification.loading('Removing product...');
+
     await mutateAsync({ productId });
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+
+    notification.dismiss(notificationId);
     notification.success('Product removed successfully');
   };
 

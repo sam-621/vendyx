@@ -63,7 +63,7 @@ export const notification = {
    * }, 5000);
    *
    */
-  dismiss: (id: string) => {
+  dismiss: (id: string | number) => {
     toast.dismiss(id);
   }
 };

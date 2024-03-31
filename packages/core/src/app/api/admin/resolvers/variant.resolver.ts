@@ -39,7 +39,7 @@ export class VariantResolver {
 
   @Mutation('createVariant')
   async createVariant(
-    @Args('id') id: ID,
+    @Args('productId') id: ID,
     @Args('input') input: CreateVariantInput,
   ) {
     const variant = await this.variantService.create(id, input);

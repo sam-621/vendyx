@@ -17,6 +17,7 @@ export const useUpdateProduct = () => {
     } = await mutateAsync({ productId, input });
 
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(id) });
+    await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
     setIsLoading(false);
   };
