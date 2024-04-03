@@ -48,7 +48,6 @@ export class VariantService {
       const defaultVariantAlreadyCreated = await this.variantRepository.findOne(
         { where: { product: { id: productId } } },
       );
-      console.log({ defaultVariantAlreadyCreated, productId });
 
       if (defaultVariantAlreadyCreated) {
         throw new ValidationError(
