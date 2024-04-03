@@ -9,6 +9,7 @@ import {
   ProductEntity,
   VariantEntity,
 } from './entities';
+import { getConfig } from '../config';
 
 const ENTITIES = [
   AdminEntity,
@@ -21,13 +22,19 @@ const ENTITIES = [
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: 'postgres://postgres:postgres@localhost:5432/vendyx',
-      // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
-      entities: ENTITIES,
-      // Indicates if database schema should be auto created on every application launch.
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      useFactory: () => {
+        const { url } = getConfig().db;
+
+        return {
+          type: 'postgres',
+          url: url,
+          // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
+          entities: ENTITIES,
+          // Indicates if database schema should be auto created on every application launch.
+          synchronize: true,
+        };
+      },
     }),
   ],
 })

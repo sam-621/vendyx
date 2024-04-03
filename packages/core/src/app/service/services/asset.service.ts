@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { getConfig } from '@/app/config';
 import { AssetEntity } from '@/app/persistance';
-import { CloudinaryStorageProvider } from '@/lib/storage';
 
 @Injectable()
 export class AssetService {
@@ -14,13 +14,7 @@ export class AssetService {
 
   async create(file: Express.Multer.File) {
     const path = file.path;
-
-    // key for test env, will bne removed on production env
-    const provider = new CloudinaryStorageProvider({
-      cloudName: 'dnvp4s8pe',
-      apiKey: '224627828215865',
-      apiSecret: 'eos_1HKoJaRp7beDXp7s2Jh_2LM',
-    });
+    const provider = getConfig().assets.storageProvider;
 
     const fileId = await provider.upload(path);
 

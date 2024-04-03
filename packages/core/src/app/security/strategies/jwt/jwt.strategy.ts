@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 
 import { Payload } from './jwt.types';
 
+import { getConfig } from '@/app/config';
 import { AdminEntity } from '@/app/persistance';
 import { UnauthorizedError } from '@/lib/errors';
 
@@ -15,10 +16,11 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
     @InjectRepository(AdminEntity)
     private adminRepository: Repository<AdminEntity>,
   ) {
+    const { jwtSecret } = getConfig().auth;
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'secret',
+      secretOrKey: jwtSecret,
     });
   }
 

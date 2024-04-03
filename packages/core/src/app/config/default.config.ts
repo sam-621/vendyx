@@ -9,7 +9,7 @@ import { CloudinaryStorageProvider } from '@/lib/storage';
  */
 export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
   app: {
-    port: 5000,
+    port: 3000,
   },
   auth: {
     jwtExpiresIn: '7d',
@@ -17,6 +17,7 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
   },
   db: {
     url: 'postgres://postgres:postgres@localhost:5432/vendyx',
+    // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
   },
   assets: {
     storageProvider: new CloudinaryStorageProvider({

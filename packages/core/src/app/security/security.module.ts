@@ -4,16 +4,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SecurityService } from './security.service';
 import { AdminJwtStrategy } from './strategies';
+import { getConfig } from '../config';
 import { AdminEntity } from '../persistance';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([AdminEntity]),
     JwtModule.registerAsync({
-      useFactory: async () => ({
-        secret: 'secret',
-        signOptions: { expiresIn: '7d' },
-      }),
+      useFactory: async () => {
+        const { jwtExpiresIn, jwtSecret } = getConfig().auth;
+        return {
+          secret: jwtSecret,
+          signOptions: { expiresIn: jwtExpiresIn },
+        };
+      },
     }),
   ],
   providers: [AdminJwtStrategy, SecurityService],
