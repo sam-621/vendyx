@@ -2,8 +2,13 @@ import { NestFactory } from '@nestjs/core';
 
 import { BusinessExceptionFilter } from './app/api/common';
 import { AppModule } from './app/app.module';
+import { VendyxConfig, getConfig, setConfig } from './app/config';
 
-async function bootstrap() {
+export async function bootstrap(config: VendyxConfig) {
+  setConfig(config);
+
+  const { port } = getConfig().app;
+
   const app = await NestFactory.create(AppModule, {
     // TODO: Check this to do it the right way
     cors: true,
@@ -11,6 +16,5 @@ async function bootstrap() {
 
   app.useGlobalFilters(new BusinessExceptionFilter());
 
-  await app.listen(3000);
+  await app.listen(port);
 }
-bootstrap();

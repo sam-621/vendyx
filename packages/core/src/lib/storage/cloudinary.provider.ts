@@ -2,7 +2,7 @@
 import { Logger } from '@nestjs/common';
 import { v2 } from 'cloudinary';
 
-import { StorageProvider } from './storage.type';
+import { StorageProvider } from '@/app/config';
 
 export class CloudinaryStorageProvider implements StorageProvider {
   name = 'Cloudinary';
