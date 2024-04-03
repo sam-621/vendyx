@@ -1,0 +1,17 @@
+{
+  "name": "@vendyx/server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Rogelio Samuel Moreno Corrales",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@vendyx/core": "*",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2"
+  }
+}
