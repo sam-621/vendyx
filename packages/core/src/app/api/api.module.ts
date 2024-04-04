@@ -17,12 +17,12 @@ const ADMIN_API_SCHEMA_PATH = './admin/**/*.schema.gql';
       include: [AdminApiModule],
       path: '/admin-api',
       typePaths: [COMMON_SCHEMA_PATH, ADMIN_API_SCHEMA_PATH].map((p) =>
-        path.join(process.cwd(), './src/app/api', p),
+        path.join(__dirname, p),
       ),
     }),
     ServeStaticModule.forRoot({
       // TODO: move admin-ui dist folder into core package
-      rootPath: path.join(process.cwd(), '../admin-ui/dist'),
+      rootPath: path.join(__dirname, '../../admin-ui'),
       serveRoot: '/admin',
       exclude: ['/api/(.*)'],
     }),

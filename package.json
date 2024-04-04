@@ -12,7 +12,7 @@
   "scripts": {
     "prepare": "husky install && chmod ug+x .husky/*",
     "build": "lerna run build",
-    "start": "lerna run start --scope @vendyx/core"
+    "start": "lerna run start --scope @vendyx/server"
   },
   "dependencies": {},
   "devDependencies": {

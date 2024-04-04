@@ -23,13 +23,13 @@ export class GraphqlApiModule {
             code: error.extensions?.code,
           };
         },
-        definitions: {
-          path: path.join(
-            process.cwd(),
-            './src/app/api/common/types/gql.types.ts',
-          ),
-          outputAs: 'class',
-        },
+        // definitions: {
+        //   path: path.join(
+        //     process.cwd(),
+        //     './src/app/api/common/types/gql.types.ts',
+        //   ),
+        //   outputAs: 'class',
+        // },
         path: options.path,
         typePaths: options.typePaths,
         include: options.include,
