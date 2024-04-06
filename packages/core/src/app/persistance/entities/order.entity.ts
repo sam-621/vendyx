@@ -54,14 +54,14 @@ export class OrderEntity extends Entity {
   @Column('int', { default: 0 })
   totalQuantity: number;
 
+  @Column('simple-json', { nullable: true, name: 'shipping_address' })
+  shippingAddress: AddressEntity;
+
   @OneToMany(() => OrderLineEntity, (l) => l.order)
   lines: OrderLineEntity[];
 
   @ManyToOne(() => CustomerEntity, (c) => c.orders, { nullable: true })
   customer: CustomerEntity;
-
-  @ManyToOne(() => AddressEntity, (a) => a.orders, { nullable: true })
-  address: AddressEntity;
 
   @OneToOne(() => PaymentEntity, (p) => p.order, { nullable: true })
   payment: PaymentEntity;

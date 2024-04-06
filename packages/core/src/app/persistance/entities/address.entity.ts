@@ -1,8 +1,7 @@
-import { Column, ManyToOne, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, ManyToOne, Entity as TypeOrmEntity } from 'typeorm';
 
 import { CustomerEntity } from './customer.entity';
 import { Entity } from './entity';
-import { OrderEntity } from './order.entity';
 
 @TypeOrmEntity('address')
 export class AddressEntity extends Entity {
@@ -41,9 +40,6 @@ export class AddressEntity extends Entity {
 
   @Column('text', { nullable: true })
   references: string;
-
-  @OneToMany(() => OrderEntity, (o) => o.address)
-  orders: OrderEntity[];
 
   @ManyToOne(() => CustomerEntity, (c) => c.addresses)
   customer: CustomerEntity;
