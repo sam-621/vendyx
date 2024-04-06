@@ -1,0 +1,42 @@
+enum OrderState {
+  MODIFYING
+  PAYMENT_ADDED
+  PAYMENT_AUTHORIZED
+  SHIPPED
+  DELIVERED
+}
+
+type Order implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  code: Int
+  state: OrderState
+  
+  """
+  The price that will be sent to the payment provider. subtotal plus shipping price
+  """
+  total: Int
+
+  """
+  Order lines total less discounts
+  """
+  subtotal: Int
+
+  """
+  The date and time when a payment has been added to the order
+  """
+  placedAt: Date
+  totalQuantity: Int
+
+  lines: [OrderLineList!]
+  customer: Customer
+  address: Address
+  payment: Payment
+  shipment: Shipment
+}
+
+type OrderList implements List {
+  items: [Order]!
+  count: Int!
+}

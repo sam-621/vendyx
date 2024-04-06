@@ -1,0 +1,20 @@
+type Address implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  streetLine1: String!
+  streetLine2: String
+  suburb: String!
+  city: String!
+  province: String!
+  country: String!
+  phoneNumber: String
+  phoneCountryCode: String
+  postalCode: String!
+  references: String
+}
+
+type AddressList implements List {
+  items: [Address]!
+  count: Int!
+}

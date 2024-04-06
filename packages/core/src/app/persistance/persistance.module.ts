@@ -2,11 +2,17 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
+  AddressEntity,
   AdminEntity,
   AssetEntity,
+  CustomerEntity,
   OptionEntity,
   OptionValueEntity,
+  OrderEntity,
+  OrderLineEntity,
+  PaymentEntity,
   ProductEntity,
+  ShipmentEntity,
   VariantEntity,
 } from './entities';
 import { getConfig } from '../config';
@@ -18,6 +24,12 @@ const ENTITIES = [
   ProductEntity,
   VariantEntity,
   AssetEntity,
+  AddressEntity,
+  CustomerEntity,
+  OrderEntity,
+  OrderLineEntity,
+  PaymentEntity,
+  ShipmentEntity,
 ];
 
 @Module({

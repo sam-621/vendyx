@@ -40,7 +40,7 @@ export class AddressEntity extends Entity {
   postalCode: string;
 
   @Column('text', { nullable: true })
-  reference: string;
+  references: string;
 
   @OneToMany(() => OrderEntity, (o) => o.address)
   orders: OrderEntity[];

@@ -12,6 +12,14 @@ export enum AssetType {
     IMAGE = "IMAGE"
 }
 
+export enum OrderState {
+    MODIFYING = "MODIFYING",
+    PAYMENT_ADDED = "PAYMENT_ADDED",
+    PAYMENT_AUTHORIZED = "PAYMENT_AUTHORIZED",
+    SHIPPED = "SHIPPED",
+    DELIVERED = "DELIVERED"
+}
+
 export class AuthenticateInput {
     username: string;
     password: string;
@@ -110,6 +118,27 @@ export abstract class IQuery {
     abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
 }
 
+export class Address implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    streetLine1: string;
+    streetLine2?: Nullable<string>;
+    suburb: string;
+    city: string;
+    province: string;
+    country: string;
+    phoneNumber?: Nullable<string>;
+    phoneCountryCode?: Nullable<string>;
+    postalCode: string;
+    references?: Nullable<string>;
+}
+
+export class AddressList implements List {
+    items: Nullable<Address>[];
+    count: number;
+}
+
 export class Asset implements Node {
     id: string;
     createdAt: Date;
@@ -121,6 +150,25 @@ export class Asset implements Node {
 
 export class AssetList implements List {
     items: Asset[];
+    count: number;
+}
+
+export class Customer implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber?: Nullable<string>;
+    phoneCountryCode?: Nullable<string>;
+    enable: boolean;
+    orders?: Nullable<OrderList[]>;
+    addressed?: Nullable<AddressList[]>;
+}
+
+export class CustomerList implements List {
+    items: Nullable<Customer>[];
     count: number;
 }
 
@@ -144,6 +192,56 @@ export class OptionList implements List {
     count: number;
 }
 
+export class OrderLine implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    unitPrice: number;
+    quantity: number;
+    linePrice: number;
+    productVariant: Variant;
+}
+
+export class OrderLineList implements List {
+    items: Nullable<OrderLine>[];
+    count: number;
+}
+
+export class Order implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    code?: Nullable<number>;
+    state?: Nullable<OrderState>;
+    total?: Nullable<number>;
+    subtotal?: Nullable<number>;
+    placedAt?: Nullable<Date>;
+    totalQuantity?: Nullable<number>;
+    lines?: Nullable<OrderLineList[]>;
+    customer?: Nullable<Customer>;
+    address?: Nullable<Address>;
+    payment?: Nullable<Payment>;
+    shipment?: Nullable<Shipment>;
+}
+
+export class OrderList implements List {
+    items: Nullable<Order>[];
+    count: number;
+}
+
+export class Payment implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    transactionId: string;
+    amount: number;
+}
+
+export class PaymentList implements List {
+    items: Nullable<Payment>[];
+    count: number;
+}
+
 export class Product implements Node {
     id: string;
     createdAt: Date;
@@ -159,6 +257,19 @@ export class Product implements Node {
 
 export class ProductList implements List {
     items: Product[];
+    count: number;
+}
+
+export class Shipment implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    trackingCode?: Nullable<string>;
+    amount?: Nullable<number>;
+}
+
+export class ShipmentList implements List {
+    items: Nullable<Shipment>[];
     count: number;
 }
 

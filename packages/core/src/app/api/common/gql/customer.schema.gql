@@ -1,0 +1,19 @@
+type Customer implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  firstName: String!
+  lastName: String!
+  email: String!
+  phoneNumber: String
+  phoneCountryCode: String
+  enable: Boolean!
+
+  orders: [OrderList!]
+  addressed: [AddressList!]
+}
+
+type CustomerList implements List {
+  items: [Customer]!
+  count: Int!
+}

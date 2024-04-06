@@ -1,0 +1,12 @@
+type Payment implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  transactionId: String!
+  amount: Int!
+}
+
+type PaymentList implements List {
+  items: [Payment]!
+  count: Int!
+}
