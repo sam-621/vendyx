@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 import { Button } from '@vendyx/theme';
 import { PackageIcon, ShoppingCartIcon } from 'lucide-react';
@@ -15,12 +15,16 @@ export const AdminLayout: FC = () => {
         </div>
         <div className="h-full flex flex-col justify-between">
           <div className="flex flex-col gap-1">
-            <Button variant="ghost" className="flex gap-2 justify-start text-base">
-              <PackageIcon size={16} /> Inventory
-            </Button>
-            <Button variant="ghost" className="flex gap-2 justify-start text-base">
-              <ShoppingCartIcon size={16} /> Orders
-            </Button>
+            <Link to="/inventory">
+              <Button variant="ghost" className="flex gap-2 justify-start text-base w-full">
+                <PackageIcon size={16} /> Inventory
+              </Button>
+            </Link>
+            <Link to="/orders">
+              <Button variant="ghost" className="flex gap-2 justify-start text-base w-full">
+                <ShoppingCartIcon size={16} /> Orders
+              </Button>
+            </Link>
           </div>
           <div className="pl-4">
             <UserAvatar />
