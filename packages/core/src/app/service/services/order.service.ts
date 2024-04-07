@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CreateOrderLineInput } from '@/app/api/common';
+import { CreateOrderLineInput, ListInput } from '@/app/api/common';
 import {
   ID,
   OrderEntity,
@@ -23,8 +23,11 @@ export class OrderService {
     private variantRepository: Repository<VariantEntity>,
   ) {}
 
-  async find() {
-    return this.orderRepository.find();
+  async find(input: ListInput) {
+    return this.orderRepository.find({
+      skip: input.skip,
+      take: input.take,
+    });
   }
 
   async findUnique(id: ID, code: string) {
@@ -84,8 +87,6 @@ export class OrderService {
     const orderLineSaved = await this.orderLineRepository.save(orderLine);
 
     order.lines = [...order.lines, orderLineSaved];
-
-    // const orderSaved = await this.orderRepository.save(order);
 
     return this.recalculateOrderStats(order);
   }

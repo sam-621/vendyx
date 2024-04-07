@@ -20,7 +20,7 @@ export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
 
   @Query('order')
-  async product(@Args('id') id: ID, @Args('code') code: string) {
+  async order(@Args('id') id: ID, @Args('code') code: string) {
     const order = await this.orderService.findUnique(id, code);
 
     return order;
