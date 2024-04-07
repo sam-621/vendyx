@@ -45,12 +45,3 @@ type Query {
   order(id: ID, code: String): Order
 }
 
-type Mutation {
-  createOrder(input: CreateOrderInput): Order
-  addCustomerToOrder(orderId: ID!, input: CreateCustomerInput!): Order
-  addShippingAddressToOrder(orderId: ID!, input: CreateAddressInput!): Order
-}
-
-input CreateOrderInput {
-  lines: [CreateOrderLineInput!]
-}

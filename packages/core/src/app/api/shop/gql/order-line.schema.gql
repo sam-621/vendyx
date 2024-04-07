@@ -1,0 +1,14 @@
+type Mutation {
+  addOrderLineToOrder(orderId: ID!, input: CreateOrderLineInput!): Order!
+  updateOrderLine(lineId: ID!, input: UpdateOrderLineInput!): Order!
+  removeOrderLine(lineId: ID!): Boolean!
+}
+
+input CreateOrderLineInput {
+  productVariantId: ID!
+  quantity: Int!
+}
+
+input UpdateOrderLineInput {
+  quantity: Int!
+}
