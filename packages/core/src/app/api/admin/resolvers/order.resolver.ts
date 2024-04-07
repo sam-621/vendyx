@@ -12,14 +12,20 @@ export class OrderResolver {
   async orders(@Args('input') input: ListInput) {
     const order = await this.orderService.find(input);
 
-    return order;
+    return new ListResponse(order, order.length);
   }
 
   @ResolveField('lines')
   async lines(@Parent() order: OrderEntity) {
     const lines = await this.orderService.findLines(order.id);
-    console.log(lines);
 
     return new ListResponse(lines, lines.length);
+  }
+
+  @ResolveField('customer')
+  async customer(@Parent() order: OrderEntity) {
+    const customer = await this.orderService.findCustomer(order.id);
+
+    return customer;
   }
 }

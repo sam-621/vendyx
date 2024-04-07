@@ -61,4 +61,11 @@ export class OrderResolver {
 
     return new ListResponse(lines, lines.length);
   }
+
+  @ResolveField('customer')
+  async customer(@Parent() order: OrderEntity) {
+    const customer = await this.orderService.findCustomer(order.id);
+
+    return customer;
+  }
 }

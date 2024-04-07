@@ -24,9 +24,9 @@ export class OrderService {
   ) {}
 
   async find(input: ListInput) {
-    return this.orderRepository.find({
-      skip: input.skip,
-      take: input.take,
+    return await this.orderRepository.find({
+      skip: input?.skip,
+      take: input?.take,
     });
   }
 
@@ -49,6 +49,15 @@ export class OrderService {
     });
 
     return order.lines;
+  }
+
+  async findCustomer(orderId: ID) {
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId },
+      relations: { customer: true },
+    });
+
+    return order.customer;
   }
 
   async create() {
