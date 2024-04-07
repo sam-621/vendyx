@@ -18,3 +18,16 @@ type AddressList implements List {
   items: [Address]!
   count: Int!
 }
+
+input CreateAddressInput {
+  streetLine1: String!
+  streetLine2: String
+  suburb: String!
+  city: String!
+  province: String!
+  country: String!
+  phoneNumber: String
+  phoneCountryCode: String
+  postalCode: String!
+  references: String
+}

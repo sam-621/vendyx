@@ -13,3 +13,18 @@ type OrderLineList implements List {
   items: [OrderLine]!
   count: Int!
 }
+
+input CreateOrderLineInput {
+  productVariantId: ID!
+  quantity: Int!
+}
+
+input UpdateOrderLineInput {
+  quantity: Int!
+}
+
+type Mutation {
+  addOrderLineToOrder(orderId: ID!, input: CreateOrderLineInput!): Order!
+  updateOrderLine(lineId: ID!, input: UpdateOrderLineInput!): Order!
+  removeOrderLine(lineId: ID!): Boolean!
+}

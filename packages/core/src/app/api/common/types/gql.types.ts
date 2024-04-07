@@ -64,9 +64,44 @@ export class UpdateVariantInput {
     optionValuesIds?: Nullable<string[]>;
 }
 
+export class CreateAddressInput {
+    streetLine1: string;
+    streetLine2?: Nullable<string>;
+    suburb: string;
+    city: string;
+    province: string;
+    country: string;
+    phoneNumber?: Nullable<string>;
+    phoneCountryCode?: Nullable<string>;
+    postalCode: string;
+    references?: Nullable<string>;
+}
+
 export class ListInput {
     skip?: Nullable<number>;
     take?: Nullable<number>;
+}
+
+export class CreateCustomerInput {
+    firstName?: Nullable<string>;
+    lastName: string;
+    email: string;
+    phoneNumber?: Nullable<string>;
+    phoneCountryCode?: Nullable<string>;
+    enable: boolean;
+}
+
+export class CreateOrderLineInput {
+    productVariantId: string;
+    quantity: number;
+}
+
+export class UpdateOrderLineInput {
+    quantity: number;
+}
+
+export class CreateOrderInput {
+    lines?: Nullable<CreateOrderLineInput[]>;
 }
 
 export interface Node {
@@ -104,10 +139,24 @@ export abstract class IMutation {
     abstract updateVariant(id: string, input: UpdateVariantInput): Variant | Promise<Variant>;
 
     abstract removeVariant(id: string): boolean | Promise<boolean>;
+
+    abstract addOrderLineToOrder(orderId: string, input: CreateOrderLineInput): Order | Promise<Order>;
+
+    abstract updateOrderLine(lineId: string, input: UpdateOrderLineInput): Order | Promise<Order>;
+
+    abstract removeOrderLine(lineId: string): boolean | Promise<boolean>;
+
+    abstract createOrder(input?: Nullable<CreateOrderInput>): Nullable<Order> | Promise<Nullable<Order>>;
+
+    abstract addCustomerToOrder(orderId: string, input: CreateCustomerInput): Nullable<Order> | Promise<Nullable<Order>>;
+
+    abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): Nullable<Order> | Promise<Nullable<Order>>;
 }
 
 export abstract class IQuery {
     abstract validateToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
 
     abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
 
@@ -116,6 +165,8 @@ export abstract class IQuery {
     abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
 
     abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+
+    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 }
 
 export class Address implements Node {
@@ -157,7 +208,7 @@ export class Customer implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    firstName: string;
+    firstName?: Nullable<string>;
     lastName: string;
     email: string;
     phoneNumber?: Nullable<string>;

@@ -2,7 +2,7 @@ type Customer implements Node {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
-  firstName: String!
+  firstName: String
   lastName: String!
   email: String!
   phoneNumber: String
@@ -16,4 +16,13 @@ type Customer implements Node {
 type CustomerList implements List {
   items: [Customer]!
   count: Int!
+}
+
+input CreateCustomerInput {
+  firstName: String
+  lastName: String!
+  email: String!
+  phoneNumber: String
+  phoneCountryCode: String
+  enable: Boolean!
 }

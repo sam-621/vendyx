@@ -6,7 +6,7 @@ import { OrderEntity } from './order.entity';
 
 @TypeOrmEntity('customer')
 export class CustomerEntity extends Entity {
-  @Column('varchar', { name: 'first_name' })
+  @Column('varchar', { name: 'first_name', nullable: true })
   firstName: string;
 
   @Column('varchar', { name: 'last_name' })
