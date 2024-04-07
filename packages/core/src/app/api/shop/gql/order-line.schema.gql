@@ -1,7 +1,7 @@
 type Mutation {
-  addOrderLineToOrder(orderId: ID!, input: CreateOrderLineInput!): Order!
+  addLineToOrder(orderId: ID!, input: CreateOrderLineInput!): Order!
   updateOrderLine(lineId: ID!, input: UpdateOrderLineInput!): Order!
-  removeOrderLine(lineId: ID!): Boolean!
+  removeOrderLine(lineId: ID!): Order!
 }
 
 input CreateOrderLineInput {

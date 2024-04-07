@@ -5,5 +5,5 @@ type Mutation {
 }
 
 input CreateOrderInput {
-  lines: [CreateOrderLineInput!]
+  line: CreateOrderLineInput
 }

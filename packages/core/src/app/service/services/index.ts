@@ -4,3 +4,4 @@ export * from './product.service';
 export * from './variant.service';
 export * from './asset.service';
 export * from './option-value.service';
+export * from './order.service';

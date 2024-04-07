@@ -101,7 +101,7 @@ export class UpdateOrderLineInput {
 }
 
 export class CreateOrderInput {
-    lines?: Nullable<CreateOrderLineInput[]>;
+    line?: Nullable<CreateOrderLineInput>;
 }
 
 export interface Node {
@@ -140,11 +140,11 @@ export abstract class IMutation {
 
     abstract removeVariant(id: string): boolean | Promise<boolean>;
 
-    abstract addOrderLineToOrder(orderId: string, input: CreateOrderLineInput): Order | Promise<Order>;
+    abstract addLineToOrder(orderId: string, input: CreateOrderLineInput): Order | Promise<Order>;
 
     abstract updateOrderLine(lineId: string, input: UpdateOrderLineInput): Order | Promise<Order>;
 
-    abstract removeOrderLine(lineId: string): boolean | Promise<boolean>;
+    abstract removeOrderLine(lineId: string): Order | Promise<Order>;
 
     abstract createOrder(input?: Nullable<CreateOrderInput>): Nullable<Order> | Promise<Nullable<Order>>;
 
@@ -268,7 +268,7 @@ export class Order implements Node {
     subtotal?: Nullable<number>;
     placedAt?: Nullable<Date>;
     totalQuantity?: Nullable<number>;
-    lines?: Nullable<OrderLineList[]>;
+    lines: OrderLineList;
     customer?: Nullable<Customer>;
     address?: Nullable<Address>;
     payment?: Nullable<Payment>;

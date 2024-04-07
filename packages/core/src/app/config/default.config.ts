@@ -16,8 +16,8 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
     jwtSecret: randomBytes(32).toString('hex'),
   },
   db: {
-    // url: 'postgres://postgres:postgres@localhost:5432/vendyx',
-    url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
+    url: 'postgres://postgres:postgres@localhost:5432/vendyx',
+    // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
   },
   assets: {
     storageProvider: new CloudinaryStorageProvider({

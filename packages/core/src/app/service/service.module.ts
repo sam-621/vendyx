@@ -6,46 +6,26 @@ import {
   AssetService,
   OptionService,
   OptionValueService,
+  OrderService,
   ProductService,
   VariantService,
 } from './services';
-import {
-  AdminEntity,
-  AssetEntity,
-  OptionEntity,
-  OptionValueEntity,
-  ProductEntity,
-  VariantEntity,
-} from '../persistance';
+import { ENTITIES } from '../persistance';
 import { SecurityModule } from '../security';
 
+const SERVICES = [
+  AdminService,
+  ProductService,
+  VariantService,
+  OptionService,
+  OptionValueService,
+  AssetService,
+  OrderService,
+];
+
 @Module({
-  imports: [
-    SecurityModule,
-    TypeOrmModule.forFeature([
-      AdminEntity,
-      ProductEntity,
-      VariantEntity,
-      OptionEntity,
-      OptionValueEntity,
-      AssetEntity,
-    ]),
-  ],
-  providers: [
-    AdminService,
-    ProductService,
-    VariantService,
-    OptionService,
-    OptionValueService,
-    AssetService,
-  ],
-  exports: [
-    AdminService,
-    ProductService,
-    VariantService,
-    OptionService,
-    OptionValueService,
-    AssetService,
-  ],
+  imports: [SecurityModule, TypeOrmModule.forFeature([...ENTITIES])],
+  providers: [...SERVICES],
+  exports: [...SERVICES],
 })
 export class ServiceModule {}

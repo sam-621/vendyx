@@ -21,10 +21,10 @@ export enum OrderState {
   DELIVERED = 'DELIVERED',
 }
 
-@TypeOrmEntity('order')
+@TypeOrmEntity('orders')
 export class OrderEntity extends Entity {
-  @Column('int', { generated: 'increment' })
-  code: number;
+  @Column('varchar')
+  code: string;
 
   @Column({
     type: 'enum',

@@ -17,7 +17,7 @@ import {
 } from './entities';
 import { getConfig } from '../config';
 
-const ENTITIES = [
+export const ENTITIES = [
   AdminEntity,
   OptionEntity,
   OptionValueEntity,
@@ -41,7 +41,6 @@ const ENTITIES = [
         return {
           type: 'postgres',
           url: url,
-          // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
           entities: ENTITIES,
           // Indicates if database schema should be auto created on every application launch.
           synchronize: true,
