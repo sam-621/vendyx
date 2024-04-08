@@ -262,12 +262,12 @@ export class Order implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    code?: Nullable<number>;
-    state?: Nullable<OrderState>;
-    total?: Nullable<number>;
-    subtotal?: Nullable<number>;
+    code: string;
+    state: OrderState;
+    total: number;
+    subtotal: number;
     placedAt?: Nullable<Date>;
-    totalQuantity?: Nullable<number>;
+    totalQuantity: number;
     lines: OrderLineList;
     customer?: Nullable<Customer>;
     address?: Nullable<Address>;
@@ -276,7 +276,7 @@ export class Order implements Node {
 }
 
 export class OrderList implements List {
-    items: Nullable<Order>[];
+    items: Order[];
     count: number;
 }
 

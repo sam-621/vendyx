@@ -4,6 +4,7 @@ import { AdminLayout } from '@/components/layout';
 
 import { CreateProductPage, ProductDetailsPage, ProductsPage } from './ui/inventory';
 import { LoginPage } from './ui/login';
+import { OrderPages } from './ui/orders/pages';
 import { AuthWrapper } from './auth-wrapper';
 
 export const AppRouter = () => {
@@ -16,6 +17,7 @@ export const AppRouter = () => {
             <Route path="/inventory" element={<ProductsPage />} />
             <Route path="/inventory/new" element={<CreateProductPage />} />
             <Route path="/inventory/:slug" element={<ProductDetailsPage />} />
+            <Route path="/orders" element={<OrderPages />} />
           </Route>
         </Route>
       </Routes>

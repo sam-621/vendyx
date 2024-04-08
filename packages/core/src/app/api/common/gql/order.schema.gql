@@ -10,24 +10,24 @@ type Order implements Node {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
-  code: Int
-  state: OrderState
+  code: String!
+  state: OrderState!
   
   """
   The price that will be sent to the payment provider. subtotal plus shipping price
   """
-  total: Int
+  total: Int!
 
   """
   Order lines total less discounts
   """
-  subtotal: Int
+  subtotal: Int!
 
   """
   The date and time when a payment has been added to the order
   """
   placedAt: Date
-  totalQuantity: Int
+  totalQuantity: Int!
 
   lines: OrderLineList!
   customer: Customer
@@ -37,7 +37,7 @@ type Order implements Node {
 }
 
 type OrderList implements List {
-  items: [Order]!
+  items: [Order!]!
   count: Int!
 }
 
