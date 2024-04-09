@@ -5,6 +5,7 @@ import { convertToDollar } from '@vendyx/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
 import { FormInput } from '@/components/forms';
+import { t } from '@/lib/locales';
 import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
@@ -17,7 +18,7 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
-        <CardTitle>Variants</CardTitle>
+        <CardTitle>{t('product-details.pricing.title')}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex gap-4">
@@ -26,14 +27,14 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
             error={errors.price?.message}
             defaultValue={convertToDollar(defaultVariant?.price ?? 0)}
             type="number"
-            label="Price"
+            label={t('product-details.pricing.input.price')}
             placeholder="$ 0.00"
           />
           <FormInput
             {...register('sku')}
             error={errors.sku?.message}
             defaultValue={defaultVariant?.sku}
-            label="SKU"
+            label={t('product-details.pricing.title')}
             placeholder="SKU - 000"
           />
           <FormInput
@@ -41,7 +42,7 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
             error={errors.quantity?.message}
             defaultValue={defaultVariant?.stock}
             type="number"
-            label="Quantity"
+            label={t('product-details.pricing.input.quantity')}
             placeholder="0"
           />
         </div>

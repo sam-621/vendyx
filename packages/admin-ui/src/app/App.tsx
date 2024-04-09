@@ -4,6 +4,8 @@ import { ThemeProvider } from '@vendyx/theme';
 import { Notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
+import './i18n';
+
 import { AppRouter } from './app-router';
 
 import './styles.css';
@@ -15,7 +17,6 @@ export const App = () => {
       <ThemeProvider>
         <Notification />
         <AppRouter />
-        {/* <CreateProductPage /> */}
       </ThemeProvider>
     </QueryClientProvider>
   );

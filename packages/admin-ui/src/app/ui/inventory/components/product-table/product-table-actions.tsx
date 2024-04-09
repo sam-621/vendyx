@@ -19,6 +19,7 @@ import {
 import { Loader2Icon, MoreHorizontalIcon } from 'lucide-react';
 
 import { InventoryKeys, useRemoveProduct, useUpdateProduct } from '@/core/inventory';
+import { t } from '@/lib/locales';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
@@ -55,24 +56,24 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
             notification.success('SKU copied to clipboard');
           }}
         >
-          Copy SKU
+          {t('inventory.action.copy-sku')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>State</DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger>{t('inventory.action.state')}</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup value={productState}>
               <DropdownMenuRadioItem
                 onClick={async () => await updateProductState(true)}
                 value={'enabled'}
               >
-                Enabled
+                {t('general.enabled')}
               </DropdownMenuRadioItem>
               <DropdownMenuRadioItem
                 onClick={async () => await updateProductState(false)}
                 value={'disabled'}
               >
-                Disabled
+                {t('general.disabled')}
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
@@ -81,18 +82,22 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
         <DropdownMenuItem
           disabled={isLoading}
           onClick={async () => {
-            const notificationId = notification.loading('Removing product...');
+            const notificationId = notification.loading(
+              t('inventory.action.remove.pending') + '...'
+            );
 
             await removeProduct(product.id);
             await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
             notification.dismiss(notificationId);
-            notification.success('Product removed successfully');
+            notification.success(t('inventory.action.remove.success'));
           }}
           className="cursor-pointer"
         >
           <span className={`text-destructive font-medium`}>
-            {isLoading ? 'Removing...' : 'Remove'}
+            {isLoading
+              ? `${t('inventory.action.remove.pending')}...`
+              : t('inventory.action.remove')}
           </span>
           {isLoading && <Loader2Icon className="h-4 w-4 ml-2 text-destructive animate-spin" />}
         </DropdownMenuItem>

@@ -4,6 +4,8 @@ import { Link, Outlet } from 'react-router-dom';
 import { Button } from '@vendyx/theme';
 import { PackageIcon, ShoppingCartIcon } from 'lucide-react';
 
+import { t } from '@/lib/locales';
+
 import { Logo, UserAvatar } from '../items';
 
 export const AdminLayout: FC = () => {
@@ -17,12 +19,12 @@ export const AdminLayout: FC = () => {
           <div className="flex flex-col gap-1">
             <Link to="/inventory">
               <Button variant="ghost" className="flex gap-2 justify-start text-base w-full">
-                <PackageIcon size={16} /> Inventory
+                <PackageIcon size={16} /> {t('sidebar.inventory')}
               </Button>
             </Link>
             <Link to="/orders">
               <Button variant="ghost" className="flex gap-2 justify-start text-base w-full">
-                <ShoppingCartIcon size={16} /> Orders
+                <ShoppingCartIcon size={16} /> {t('sidebar.orders')}
               </Button>
             </Link>
           </div>

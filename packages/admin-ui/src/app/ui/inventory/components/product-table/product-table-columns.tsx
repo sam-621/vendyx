@@ -5,6 +5,7 @@ import { getFormattedPrice } from '@vendyx/common';
 import { Badge, Checkbox } from '@vendyx/theme';
 
 import { DataTableColumnHeader } from '@/components/data-table';
+import { t } from '@/lib/locales';
 
 import { type TableProduct } from './product-table';
 import { InventoryTableActions } from './product-table-actions';
@@ -32,7 +33,7 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
   {
     accessorKey: 'sku',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="SKU" />;
+      return <DataTableColumnHeader column={column} title={t('inventory.table.header.sku')} />;
     },
     cell: ({ row }) => {
       return <span className="w-20">{row.original.sku}</span>;
@@ -42,7 +43,7 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Product" />;
+      return <DataTableColumnHeader column={column} title={t('inventory.table.header.product')} />;
     },
     cell: ({ row }) => (
       <Link to={`/inventory/${row.original.slug ?? ''}`} className="flex items-center gap-2 w-full">
@@ -60,7 +61,7 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
   {
     accessorKey: 'price',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Price" />;
+      return <DataTableColumnHeader column={column} title={t('inventory.table.header.price')} />;
     },
     cell: ({ row }) => {
       const amount = parseFloat(row.original.price.toString());
@@ -72,18 +73,18 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
   {
     accessorKey: 'stock',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Stock" />;
+      return <DataTableColumnHeader column={column} title={t('inventory.table.header.stock')} />;
     }
   },
   {
     accessorKey: 'status',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Status" />;
+      return <DataTableColumnHeader column={column} title={t('inventory.table.header.status')} />;
     },
     cell: ({ row }) => {
       return (
         <Badge variant={row.original.status === 'enabled' ? 'default' : 'secondary'}>
-          {row.original.status === 'enabled' ? 'Enabled' : 'Disabled'}
+          {row.original.status === 'enabled' ? t('general.enabled') : t('general.enabled')}
         </Badge>
       );
     },

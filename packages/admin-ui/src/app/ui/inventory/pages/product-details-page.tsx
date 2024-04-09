@@ -6,6 +6,7 @@ import { MoveLeftIcon } from 'lucide-react';
 
 import { PageLayout } from '@/components/layout';
 import { useGetProductDetails } from '@/core/inventory';
+import { t } from '@/lib/locales';
 
 import { ProductDetails } from '../components/product-details';
 import { useProductDetailsForm } from '../components/product-details/use-product-details-form';
@@ -25,15 +26,15 @@ export const ProductDetailsPage = () => {
     <FormProvider {...methods}>
       <form onSubmit={methods.onSubmit}>
         <PageLayout
-          title="New product"
-          subtitle="Create a product, add prices, content and more"
+          title={t('product-details.title')}
+          subtitle={t('product-details.subtitle')}
           actions={
             <>
               <Button type="button" variant="secondary">
-                Cancel
+                {t('product-details.action.cancel')}
               </Button>
               <Button isLoading={methods.formState.isSubmitting} type="submit">
-                Save
+                {t('product-details.action.save')}
               </Button>
             </>
           }

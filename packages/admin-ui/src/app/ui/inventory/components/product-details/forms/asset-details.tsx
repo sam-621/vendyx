@@ -6,6 +6,7 @@ import { PlusIcon } from 'lucide-react';
 
 import { Dropzone } from '@/components/forms';
 import { getFileListIntoArray } from '@/core/common';
+import { t } from '@/lib/locales';
 import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
@@ -30,7 +31,7 @@ export const AssetDetails: FC<Props> = ({ assets: defaultAssets }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Assets</CardTitle>
+        <CardTitle>{t('product-details.assets.title')}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {/* Empty state */}

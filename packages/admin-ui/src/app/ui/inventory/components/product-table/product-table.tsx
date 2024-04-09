@@ -1,7 +1,6 @@
-import { PlusIcon } from 'lucide-react';
-
 import { DataTable } from '@/components/data-table';
 import { useGetProducts } from '@/core/inventory';
+import { t } from '@/lib/locales';
 
 import { ProductTableColumns } from './product-table-columns';
 
@@ -33,12 +32,7 @@ export const ProductTable = () => {
     <DataTable
       data={data}
       columns={ProductTableColumns}
-      search={{ filterKey: 'name', placeholder: 'Search products...' }}
-      action={{
-        text: 'Add product',
-        href: '/inventory/new',
-        icon: <PlusIcon />
-      }}
+      search={{ filterKey: 'name', placeholder: t('inventory.table.search') }}
     />
   );
 };

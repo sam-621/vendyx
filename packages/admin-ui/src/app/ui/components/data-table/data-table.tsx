@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 import {
   type ColumnDef,
@@ -109,15 +109,6 @@ export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData,
 type Props<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  /**
-   * Main action in the table
-   */
-  action?: {
-    href?: string;
-    icon?: ReactNode;
-    text: string;
-    fn?: () => void;
-  };
   /**
    * Search input options
    */

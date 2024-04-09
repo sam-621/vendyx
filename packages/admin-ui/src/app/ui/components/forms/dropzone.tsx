@@ -4,6 +4,7 @@ import { cn } from '@vendyx/theme';
 import { UploadCloudIcon } from 'lucide-react';
 
 import { getFileListIntoArray } from '@/core/common';
+import { t } from '@/lib/locales';
 
 export const Dropzone: FC<Props> = ({ setAssets, className }) => {
   return (
@@ -16,7 +17,7 @@ export const Dropzone: FC<Props> = ({ setAssets, className }) => {
     >
       <div className="flex flex-col items-center justify-center pt-5 pb-6 gap-2">
         <UploadCloudIcon width={24} className="text-muted-foreground" />
-        <p className="text-sm text-muted-foreground">Accepts .jpg and .png</p>
+        <p className="text-sm text-muted-foreground">{t('product-details.assets.placeholder')}</p>
       </div>
       <input
         onChange={e => setAssets(getFileListIntoArray(e.target.files))}

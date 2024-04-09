@@ -5,6 +5,7 @@ import { getParsedSlug } from '@vendyx/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/components/forms';
+import { t } from '@/lib/locales';
 import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { AssetDetails } from './forms/asset-details';
@@ -34,14 +35,14 @@ export const ProductDetails: FC<Props> = ({ product }) => {
               {...register('name')}
               error={errors.name?.message}
               defaultValue={product?.name}
-              label="Name"
+              label={t('product-details.general.input.name')}
               placeholder="Black T-shirt"
             />
             <FormInput
               {...register('slug')}
               value={parsedSlug}
               defaultValue={product?.slug}
-              label="Slug"
+              label={t('product-details.general.input.slug')}
               placeholder="black-t-shirt"
               disabled
             />
@@ -49,7 +50,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
           <FormTextarea
             {...register('description')}
             defaultValue={product?.description ?? ''}
-            label="Description"
+            label={t('product-details.general.input.description')}
           />
         </CardContent>
       </Card>
@@ -69,8 +70,8 @@ export const ProductDetails: FC<Props> = ({ product }) => {
             name="published"
             render={({ field }) => (
               <SwitchContainer
-                title="Display on storefront"
-                description="Decide if the product shows in your storefront or not"
+                title={t('product-details.settings.display.title')}
+                description={t('product-details.settings.display.description')}
                 checked={field.value}
                 onCheckedChange={field.onChange}
               />
@@ -82,8 +83,8 @@ export const ProductDetails: FC<Props> = ({ product }) => {
             name="onlineOnly"
             render={({ field }) => (
               <SwitchContainer
-                title="Online product"
-                description="Check if this is a online product and does not need to be shipped"
+                title={t('product-details.settings.online.title')}
+                description={t('product-details.settings.online.description')}
                 checked={field.value}
                 onCheckedChange={field.onChange}
               />
