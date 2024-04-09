@@ -14,7 +14,7 @@ import { MoreHorizontalIcon } from 'lucide-react';
 
 import { type TableOrder } from './order-table';
 
-export const OrderTableActions: FC<Props> = ({ row }) => {
+export const OrderTableActions: FC<Props> = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
