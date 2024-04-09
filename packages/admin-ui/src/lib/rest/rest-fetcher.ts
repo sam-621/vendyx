@@ -5,7 +5,7 @@ export const restFetcher = async <T>(
   config?: { method: 'POST' | 'GET' | 'DELETE' }
 ): Promise<T | undefined> => {
   try {
-    const response = await fetch(`${VENDYX_BASE_API_URL}upload`, {
+    const response = await fetch(`${VENDYX_BASE_API_URL}/upload`, {
       method: config?.method ?? 'POST',
       body: formData
     });
