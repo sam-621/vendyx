@@ -14,11 +14,11 @@ We know there are so many other options for e-commerce, so why choose us?
 
 ## Roadmap
 
-- [ ] Inventory management 🚧
+- [x] Inventory management
   - Products
   - Variants
   - Assets upload
-- [ ] Order management (order states, shipping and payment methods, cancel)
+- [ ] Order management (order states, shipping and payment methods, cancel) 🚧
   - States (modifying, payment method added, complete, etc.)
   - Payment and shipping methods
   - Cancel
@@ -36,9 +36,9 @@ We know there are so many other options for e-commerce, so why choose us?
 ## Tech stack
 
 - [Typerom](https://typeorm.io/) and [Postresql](https://postgresql.org/) for database management
-- [Typescript](https://www.typescriptlang.org/) for main language
-- [Nestjs](https://nestjs.com/) for backend framework
-- [React](https://react.dev/) for frontend framewok
+- [Typescript](https://www.typescriptlang.org/) as the main language
+- [Nestjs](https://nestjs.com/) as backend framework
+- [React](https://react.dev/) as frontend framework
 - [Lerna](https://lerna.js.org/) for monorepo management
 
 ## Setup
