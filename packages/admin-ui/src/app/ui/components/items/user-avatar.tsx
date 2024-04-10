@@ -24,7 +24,7 @@ export const UserAvatar = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <img src="/Avatar.png" alt="" />
+        <img src={`${import.meta.env.BASE_URL}Avatar.png`} alt="" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>

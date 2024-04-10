@@ -84,7 +84,7 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
     cell: ({ row }) => {
       return (
         <Badge variant={row.original.status === 'enabled' ? 'default' : 'secondary'}>
-          {row.original.status === 'enabled' ? t('general.enabled') : t('general.enabled')}
+          {row.original.status === 'enabled' ? t('general.enabled') : t('general.disabled')}
         </Badge>
       );
     },
