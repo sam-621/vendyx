@@ -6,6 +6,7 @@ import { Checkbox } from '@vendyx/theme';
 import { User } from 'lucide-react';
 
 import { DataTableColumnHeader } from '@/components/data-table';
+import { OrderStatusBadge } from '@/components/items';
 
 import { type TableOrder } from './order-table';
 import { OrderTableActions } from './order-table-actions';
@@ -93,6 +94,9 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
     accessorKey: 'state',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="State" />;
+    },
+    cell: ({ row }) => {
+      return <OrderStatusBadge status={row.original.state} />;
     }
   },
   {
