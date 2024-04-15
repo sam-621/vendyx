@@ -24,7 +24,7 @@ export const OrderTableActions: FC<Props> = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Copy SKU</DropdownMenuItem>
+        <DropdownMenuItem>Copy code</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

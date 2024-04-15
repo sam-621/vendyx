@@ -11,8 +11,10 @@ import {
   OrderEntity,
   OrderLineEntity,
   PaymentEntity,
+  PaymentMethodEntity,
   ProductEntity,
   ShipmentEntity,
+  ShipmentMethodEntity,
   VariantEntity,
 } from './entities';
 import { getConfig } from '../config';
@@ -30,6 +32,8 @@ export const ENTITIES = [
   OrderLineEntity,
   PaymentEntity,
   ShipmentEntity,
+  PaymentMethodEntity,
+  ShipmentMethodEntity,
 ];
 
 @Module({

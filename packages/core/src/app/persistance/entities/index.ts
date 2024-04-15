@@ -11,3 +11,5 @@ export * from './order-line.entity';
 export * from './order.entity';
 export * from './payment.entity';
 export * from './shipment.entity';
+export * from './payment-method.entity';
+export * from './shipment-method.entity';
