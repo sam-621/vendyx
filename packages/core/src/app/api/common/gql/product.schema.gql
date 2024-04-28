@@ -16,3 +16,8 @@ type ProductList implements List {
   items: [Product!]!
   count: Int!
 }
+
+type Query {
+  products(input: ListInput): ProductList!
+  product(id: ID, slug: String): Product
+}

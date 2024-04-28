@@ -1,8 +1,3 @@
-type Query {
-  variants(input: ListInput): VariantList!
-  variant(id: ID!): Variant
-}
-
 type Mutation {
   createVariant(productId: ID! input: CreateVariantInput!): Variant!
   updateVariant(id: ID!, input: UpdateVariantInput!): Variant!

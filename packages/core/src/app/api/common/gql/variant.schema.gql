@@ -14,3 +14,8 @@ type VariantList implements List {
   items: [Variant!]!
   count: Int!
 }
+
+type Query {
+  variants(input: ListInput): VariantList!
+  variant(id: ID!): Variant
+}

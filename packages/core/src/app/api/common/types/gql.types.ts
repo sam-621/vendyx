@@ -158,6 +158,8 @@ export abstract class IQuery {
 
     abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
 
+    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
+
     abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
 
     abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
@@ -165,8 +167,6 @@ export abstract class IQuery {
     abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
 
     abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
-
-    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 }
 
 export class Address implements Node {

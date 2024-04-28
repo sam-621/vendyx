@@ -13,6 +13,8 @@ export class GraphqlApiModule {
         playground: false,
         // TODO: false in production, true in dev
         includeStacktraceInErrorResponses: true,
+        // Always true because the graphql playground must be public
+        introspection: true,
         driver: ApolloDriver,
         plugins: [ApolloServerPluginLandingPageLocalDefault()],
         formatError: (error) => {
@@ -31,7 +33,6 @@ export class GraphqlApiModule {
         path: options.path,
         typePaths: options.typePaths,
         include: options.include,
-        introspection: true,
       }),
     };
   }
