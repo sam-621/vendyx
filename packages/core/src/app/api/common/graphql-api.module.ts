@@ -1,5 +1,3 @@
-import * as path from 'path';
-
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
@@ -33,6 +31,7 @@ export class GraphqlApiModule {
         path: options.path,
         typePaths: options.typePaths,
         include: options.include,
+        introspection: true,
       }),
     };
   }
