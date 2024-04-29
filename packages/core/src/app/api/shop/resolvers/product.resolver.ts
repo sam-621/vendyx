@@ -16,14 +16,21 @@ export class ProductResolver {
 
   @Query('products')
   async products(@Args('input') input: ListInput) {
-    const product = await this.productService.find(input);
+    const product = await this.productService.find({
+      ...input,
+      where: { published: true },
+    });
 
     return new ListResponse(product, product.length);
   }
 
   @Query('product')
   async product(@Args('id') id: ID, @Args('slug') slug: string) {
-    const product = await this.productService.findUnique({ id, slug });
+    const product = await this.productService.findUnique({
+      id,
+      slug,
+      where: { published: true },
+    });
 
     return product;
   }

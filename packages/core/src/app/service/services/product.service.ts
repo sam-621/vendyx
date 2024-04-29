@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getParsedSlug } from '@vendyx/common';
-import { In, Not, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Not, Repository } from 'typeorm';
 
 import {
   CreateProductInput,
@@ -29,17 +29,25 @@ export class ProductService {
     private variantRepository: Repository<VariantEntity>,
   ) {}
 
-  async find(input: ListInput) {
-    return this.productRepository.find({ ...input });
+  async find(input: ListInput & { where?: FindOptionsWhere<ProductEntity> }) {
+    return this.productRepository.find({ ...input, where: input.where });
   }
 
-  async findUnique({ id, slug }: { id: ID; slug: string }) {
+  async findUnique({
+    id,
+    slug,
+    where,
+  }: {
+    id: ID;
+    slug: string;
+    where?: FindOptionsWhere<ProductEntity>;
+  }) {
     if (id) {
-      return this.findById(id);
+      return this.productRepository.findOne({ where: { ...where, id } });
     }
 
     if (slug) {
-      return this.findBySlug(slug);
+      return this.productRepository.findOne({ where: { ...where, slug } });
     }
 
     throw new UserInputError('No ID or SLUG provided');
