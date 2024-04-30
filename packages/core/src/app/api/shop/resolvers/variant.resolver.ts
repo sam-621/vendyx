@@ -29,4 +29,11 @@ export class VariantResolver {
 
     return optionValues;
   }
+
+  @ResolveField('product')
+  async product(@Parent() variant: VariantEntity) {
+    const product = await this.variantService.findProduct(variant.id);
+
+    return product;
+  }
 }

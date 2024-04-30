@@ -43,6 +43,14 @@ export class VariantService {
     return optionValues;
   }
 
+  async findProduct(id: ID) {
+    const optionValues = await this.productRepository.findOne({
+      where: { variants: { id } },
+    });
+
+    return optionValues;
+  }
+
   async create(productId: ID, input: CreateVariantInput) {
     if (!input.optionValuesIds?.length) {
       const defaultVariantAlreadyCreated = await this.variantRepository.findOne(

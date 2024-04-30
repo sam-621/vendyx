@@ -8,6 +8,7 @@ type Variant implements Node {
   published: Boolean!
 
   optionValues: [OptionValue!]
+  product: Product!
 }
 
 type VariantList implements List {
