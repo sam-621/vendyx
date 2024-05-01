@@ -1,8 +1,8 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { ListInput, ListResponse } from '../../common';
 
-import { ID, VariantEntity } from '@/app/persistance';
+import { ID } from '@/app/persistance';
 import { VariantService } from '@/app/service';
 
 @Resolver('Variant')
@@ -21,19 +21,5 @@ export class VariantResolver {
     const variant = await this.variantService.findUnique(id);
 
     return variant;
-  }
-
-  @ResolveField('optionValues')
-  async optionValues(@Parent() variant: VariantEntity) {
-    const optionValues = await this.variantService.findOptionValues(variant.id);
-
-    return optionValues;
-  }
-
-  @ResolveField('product')
-  async product(@Parent() variant: VariantEntity) {
-    const product = await this.variantService.findProduct(variant.id);
-
-    return product;
   }
 }

@@ -4,7 +4,7 @@ import { OrderLineEntity } from '@/app/persistance';
 import { OrderService } from '@/app/service';
 
 @Resolver('OrderLine')
-export class OrderLineResolver {
+export class OrderLineCommonResolver {
   constructor(private readonly orderService: OrderService) {}
 
   @ResolveField('productVariant')

@@ -1,12 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
   AdminJwtAuthGuard,
@@ -15,12 +8,7 @@ import {
   ListResponse,
   UpdateProductInput,
 } from '@/app/api/common';
-import {
-  AssetEntity,
-  ID,
-  ProductEntity,
-  VariantEntity,
-} from '@/app/persistance';
+import { ID } from '@/app/persistance';
 import { ProductService } from '@/app/service';
 
 @UseGuards(AdminJwtAuthGuard)
@@ -64,28 +52,5 @@ export class ProductResolver {
     const result = await this.productService.remove(id);
 
     return result;
-  }
-
-  @ResolveField('variants')
-  async variants(
-    @Parent() product: ProductEntity,
-    @Args('input') listInput: ListInput,
-  ) {
-    const variants = await this.productService.findVariants(
-      product.id,
-      listInput,
-    );
-
-    return new ListResponse<VariantEntity>(variants, variants.length);
-  }
-
-  @ResolveField('assets')
-  async assets(
-    @Parent() product: ProductEntity,
-    @Args('input') listInput: ListInput,
-  ) {
-    const assets = await this.productService.findAssets(product.id, listInput);
-
-    return new ListResponse<AssetEntity>(assets, assets.length);
   }
 }

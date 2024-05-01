@@ -1,12 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
   AdminJwtAuthGuard,
@@ -15,7 +8,7 @@ import {
   ListResponse,
   UpdateVariantInput,
 } from '@/app/api/common';
-import { ID, VariantEntity } from '@/app/persistance';
+import { ID } from '@/app/persistance';
 import { VariantService } from '@/app/service';
 
 @UseGuards(AdminJwtAuthGuard)
@@ -62,19 +55,5 @@ export class VariantResolver {
     const variant = await this.variantService.remove(id);
 
     return variant;
-  }
-
-  @ResolveField('optionValues')
-  async optionValues(@Parent() variant: VariantEntity) {
-    const optionValues = await this.variantService.findOptionValues(variant.id);
-
-    return optionValues;
-  }
-
-  @ResolveField('product')
-  async product(@Parent() variant: VariantEntity) {
-    const product = await this.variantService.findProduct(variant.id);
-
-    return product;
   }
 }

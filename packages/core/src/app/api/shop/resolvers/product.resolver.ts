@@ -1,13 +1,8 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { ListInput, ListResponse } from '../../common';
 
-import {
-  AssetEntity,
-  ID,
-  ProductEntity,
-  VariantEntity,
-} from '@/app/persistance';
+import { ID } from '@/app/persistance';
 import { ProductService } from '@/app/service';
 
 @Resolver('Product')
@@ -33,28 +28,5 @@ export class ProductResolver {
     });
 
     return product;
-  }
-
-  @ResolveField('variants')
-  async variants(
-    @Parent() product: ProductEntity,
-    @Args('input') listInput: ListInput,
-  ) {
-    const variants = await this.productService.findVariants(
-      product.id,
-      listInput,
-    );
-
-    return new ListResponse<VariantEntity>(variants, variants.length);
-  }
-
-  @ResolveField('assets')
-  async assets(
-    @Parent() product: ProductEntity,
-    @Args('input') listInput: ListInput,
-  ) {
-    const assets = await this.productService.findAssets(product.id, listInput);
-
-    return new ListResponse<AssetEntity>(assets, assets.length);
   }
 }
