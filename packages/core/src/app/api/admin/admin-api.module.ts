@@ -8,6 +8,7 @@ import {
   VariantResolver,
 } from './resolvers';
 import {
+  OrderCommonResolver,
   OrderLineCommonResolver,
   ProductCommonResolver,
   VariantCommonResolver,
@@ -17,6 +18,7 @@ import { ServiceModule } from '@/app/service';
 
 const COMMON_RESOLVERS = [
   OrderLineCommonResolver,
+  OrderCommonResolver,
   ProductCommonResolver,
   VariantCommonResolver,
 ];

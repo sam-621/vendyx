@@ -3,7 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CreateOrderLineInput, ListInput } from '@/app/api/common';
+import {
+  CreateOrderLineInput,
+  ListInput,
+  UpdateOrderLineInput,
+} from '@/app/api/common';
 import {
   ID,
   OrderEntity,
@@ -78,6 +82,7 @@ export class OrderService {
     return await this.orderRepository.save(order);
   }
 
+  // TODO: When adding a line, check if the variant is already in the order and update the quantity
   async addLine(orderId: ID, input: CreateOrderLineInput) {
     const order = await this.orderRepository.findOne({
       where: { id: orderId },
@@ -123,6 +128,45 @@ export class OrderService {
 
     const order = orderLine.order;
     order.lines = [...order.lines.filter((line) => line.id !== orderLineId)];
+
+    return this.recalculateOrderStats(order);
+  }
+
+  async updateLine(lineId: ID, input: UpdateOrderLineInput) {
+    const orderLine = await this.orderLineRepository.findOne({
+      where: { id: lineId },
+      relations: { order: { lines: true }, productVariant: true },
+    });
+
+    if (!orderLine) {
+      throw new UserInputError('Order line not found');
+    }
+
+    const newLineQuantity = input.quantity + orderLine.quantity;
+    const variant = orderLine.productVariant;
+
+    if (variant.stock < newLineQuantity) {
+      throw new ValidationError('Not enough stock');
+    }
+
+    const unitPrice = variant.price;
+    const linePrice = unitPrice * input.quantity;
+
+    const updatedOrderLine = this.orderLineRepository.create({
+      ...orderLine,
+      ...input,
+      unitPrice,
+      linePrice,
+      quantity: newLineQuantity,
+    });
+
+    await this.orderLineRepository.save(updatedOrderLine);
+
+    const order = orderLine.order;
+
+    order.lines = order.lines.map((line) =>
+      line.id === lineId ? updatedOrderLine : line,
+    );
 
     return this.recalculateOrderStats(order);
   }

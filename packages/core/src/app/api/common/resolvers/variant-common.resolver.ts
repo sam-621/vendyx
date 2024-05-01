@@ -1,11 +1,8 @@
-import { UseGuards } from '@nestjs/common';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { AdminJwtAuthGuard } from '@/app/api/common';
 import { VariantEntity } from '@/app/persistance';
 import { VariantService } from '@/app/service';
 
-@UseGuards(AdminJwtAuthGuard)
 @Resolver('Variant')
 export class VariantCommonResolver {
   constructor(private readonly variantService: VariantService) {}

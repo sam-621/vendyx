@@ -14,18 +14,4 @@ export class OrderResolver {
 
     return new ListResponse(order, order.length);
   }
-
-  @ResolveField('lines')
-  async lines(@Parent() order: OrderEntity) {
-    const lines = await this.orderService.findLines(order.id);
-
-    return new ListResponse(lines, lines.length);
-  }
-
-  @ResolveField('customer')
-  async customer(@Parent() order: OrderEntity) {
-    const customer = await this.orderService.findCustomer(order.id);
-
-    return customer;
-  }
 }

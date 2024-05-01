@@ -1,6 +1,10 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreateOrderInput, CreateOrderLineInput } from '@/app/api/common';
+import {
+  CreateOrderInput,
+  CreateOrderLineInput,
+  UpdateOrderLineInput,
+} from '@/app/api/common';
 import { ID } from '@/app/persistance';
 import { OrderService } from '@/app/service';
 
@@ -32,6 +36,16 @@ export class OrderResolver {
     @Args('input') input: CreateOrderLineInput,
   ) {
     const order = await this.orderService.addLine(orderId, input);
+
+    return order;
+  }
+
+  @Mutation('updateOrderLine')
+  async updateOrderLine(
+    @Args('orderId') orderId: ID,
+    @Args('input') input: UpdateOrderLineInput,
+  ) {
+    const order = await this.orderService.updateLine(orderId, input);
 
     return order;
   }
