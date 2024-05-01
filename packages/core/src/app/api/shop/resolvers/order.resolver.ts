@@ -42,10 +42,10 @@ export class OrderResolver {
 
   @Mutation('updateOrderLine')
   async updateOrderLine(
-    @Args('orderId') orderId: ID,
+    @Args('lineId') lineId: ID,
     @Args('input') input: UpdateOrderLineInput,
   ) {
-    const order = await this.orderService.updateLine(orderId, input);
+    const order = await this.orderService.updateLine(lineId, input);
 
     return order;
   }

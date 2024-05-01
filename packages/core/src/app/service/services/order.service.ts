@@ -82,16 +82,25 @@ export class OrderService {
     return await this.orderRepository.save(order);
   }
 
-  // TODO: When adding a line, check if the variant is already in the order and update the quantity
   async addLine(orderId: ID, input: CreateOrderLineInput) {
     const order = await this.orderRepository.findOne({
       where: { id: orderId },
-      relations: { lines: true },
+      relations: { lines: { productVariant: true } },
     });
 
     const variant = await this.variantRepository.findOne({
       where: { id: input.productVariantId },
     });
+
+    const orderLineWithVariant = order.lines.find(
+      (line) => line.productVariant.id === variant.id,
+    );
+
+    if (orderLineWithVariant) {
+      return this.updateLine(orderLineWithVariant.id, {
+        quantity: input.quantity + orderLineWithVariant.quantity,
+      });
+    }
 
     if (variant.stock < input.quantity) {
       throw new ValidationError('Not enough stock');
@@ -114,6 +123,45 @@ export class OrderService {
     return this.recalculateOrderStats(order);
   }
 
+  async updateLine(lineId: ID, input: UpdateOrderLineInput) {
+    const orderToUpdate = await this.orderRepository.findOne({
+      where: { lines: { id: lineId } },
+      relations: { lines: { productVariant: true } },
+    });
+
+    if (!orderToUpdate) {
+      throw new UserInputError('Order line not found');
+    }
+
+    const lineToUpdate = orderToUpdate.lines.find((line) => {
+      return line.id === lineId;
+    });
+
+    const variant = lineToUpdate.productVariant;
+
+    if (variant.stock < input.quantity) {
+      throw new ValidationError('Not enough stock');
+    }
+
+    const unitPrice = variant.price;
+    const linePrice = unitPrice * input.quantity;
+
+    const updatedOrderLine = await this.orderLineRepository.save({
+      ...lineToUpdate,
+      unitPrice,
+      linePrice,
+      quantity: input.quantity,
+    });
+
+    const order = orderToUpdate;
+
+    order.lines = order.lines.map((line) => {
+      return line.id === lineId ? updatedOrderLine : line;
+    });
+
+    return this.recalculateOrderStats(order);
+  }
+
   async removeLine(orderLineId: ID) {
     const orderLine = await this.orderLineRepository.findOne({
       where: { id: orderLineId },
@@ -128,45 +176,6 @@ export class OrderService {
 
     const order = orderLine.order;
     order.lines = [...order.lines.filter((line) => line.id !== orderLineId)];
-
-    return this.recalculateOrderStats(order);
-  }
-
-  async updateLine(lineId: ID, input: UpdateOrderLineInput) {
-    const orderLine = await this.orderLineRepository.findOne({
-      where: { id: lineId },
-      relations: { order: { lines: true }, productVariant: true },
-    });
-
-    if (!orderLine) {
-      throw new UserInputError('Order line not found');
-    }
-
-    const newLineQuantity = input.quantity + orderLine.quantity;
-    const variant = orderLine.productVariant;
-
-    if (variant.stock < newLineQuantity) {
-      throw new ValidationError('Not enough stock');
-    }
-
-    const unitPrice = variant.price;
-    const linePrice = unitPrice * input.quantity;
-
-    const updatedOrderLine = this.orderLineRepository.create({
-      ...orderLine,
-      ...input,
-      unitPrice,
-      linePrice,
-      quantity: newLineQuantity,
-    });
-
-    await this.orderLineRepository.save(updatedOrderLine);
-
-    const order = orderLine.order;
-
-    order.lines = order.lines.map((line) =>
-      line.id === lineId ? updatedOrderLine : line,
-    );
 
     return this.recalculateOrderStats(order);
   }
