@@ -15,7 +15,7 @@ type Address implements Node {
 }
 
 type AddressList implements List {
-  items: [Address]!
+  items: [Address!]!
   count: Int!
 }
 

@@ -16,7 +16,7 @@ interface Node {
 A list of items with count, each result that expose a array of items should implement this interface
 """
 interface List {
-  items: [Node]!
+  items: [Node!]!
   count: Int!
 }
 
