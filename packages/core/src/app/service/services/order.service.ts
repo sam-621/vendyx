@@ -51,6 +51,15 @@ export class OrderService {
     return order.lines;
   }
 
+  async findVariantInLine(orderLineId: ID) {
+    const orderLine = await this.orderLineRepository.findOne({
+      where: { id: orderLineId },
+      relations: { productVariant: true },
+    });
+
+    return orderLine.productVariant;
+  }
+
   async findCustomer(orderId: ID) {
     const order = await this.orderRepository.findOne({
       where: { id: orderId },

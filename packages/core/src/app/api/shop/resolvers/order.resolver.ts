@@ -57,7 +57,6 @@ export class OrderResolver {
   @ResolveField('lines')
   async lines(@Parent() order: OrderEntity) {
     const lines = await this.orderService.findLines(order.id);
-    console.log(lines);
 
     return new ListResponse(lines, lines.length);
   }
