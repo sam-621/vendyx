@@ -61,7 +61,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Settings</CardTitle>
+          <CardTitle>{t('product-details.settings.title')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Controller
