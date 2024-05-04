@@ -10,6 +10,6 @@ type OrderLine implements Node {
 }
 
 type OrderLineList implements List {
-  items: [OrderLine]!
+  items: [OrderLine!]!
   count: Int!
 }

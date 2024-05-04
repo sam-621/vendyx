@@ -13,7 +13,7 @@ type Product implements Node {
 }
 
 type ProductList implements List {
-  items: [Product]!
+  items: [Product!]!
   count: Int!
 }
 

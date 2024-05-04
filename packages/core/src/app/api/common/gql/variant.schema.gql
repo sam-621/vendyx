@@ -12,7 +12,7 @@ type Variant implements Node {
 }
 
 type VariantList implements List {
-  items: [Variant]!
+  items: [Variant!]!
   count: Int!
 }
 

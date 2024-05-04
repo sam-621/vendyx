@@ -111,7 +111,7 @@ export interface Node {
 }
 
 export interface List {
-    items: Nullable<Node>[];
+    items: Node[];
     count: number;
 }
 
@@ -186,7 +186,7 @@ export class Address implements Node {
 }
 
 export class AddressList implements List {
-    items: Nullable<Address>[];
+    items: Address[];
     count: number;
 }
 
@@ -219,7 +219,7 @@ export class Customer implements Node {
 }
 
 export class CustomerList implements List {
-    items: Nullable<Customer>[];
+    items: Customer[];
     count: number;
 }
 
@@ -239,7 +239,7 @@ export class Option implements Node {
 }
 
 export class OptionList implements List {
-    items: Nullable<Option>[];
+    items: Option[];
     count: number;
 }
 
@@ -254,7 +254,7 @@ export class OrderLine implements Node {
 }
 
 export class OrderLineList implements List {
-    items: Nullable<OrderLine>[];
+    items: OrderLine[];
     count: number;
 }
 
@@ -276,7 +276,7 @@ export class Order implements Node {
 }
 
 export class OrderList implements List {
-    items: Nullable<Order>[];
+    items: Order[];
     count: number;
 }
 
@@ -289,7 +289,7 @@ export class Payment implements Node {
 }
 
 export class PaymentList implements List {
-    items: Nullable<Payment>[];
+    items: Payment[];
     count: number;
 }
 
@@ -307,7 +307,7 @@ export class Product implements Node {
 }
 
 export class ProductList implements List {
-    items: Nullable<Product>[];
+    items: Product[];
     count: number;
 }
 
@@ -320,7 +320,7 @@ export class Shipment implements Node {
 }
 
 export class ShipmentList implements List {
-    items: Nullable<Shipment>[];
+    items: Shipment[];
     count: number;
 }
 
@@ -337,7 +337,7 @@ export class Variant implements Node {
 }
 
 export class VariantList implements List {
-    items: Nullable<Variant>[];
+    items: Variant[];
     count: number;
 }
 

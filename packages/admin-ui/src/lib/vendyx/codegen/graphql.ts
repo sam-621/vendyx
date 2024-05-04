@@ -37,7 +37,7 @@ export type Address = Node & {
 export type AddressList = List & {
   __typename?: 'AddressList';
   count: Scalars['Int']['output'];
-  items: Array<Maybe<Address>>;
+  items: Array<Address>;
 };
 
 export type Admin = Node & {
@@ -59,10 +59,10 @@ export type Asset = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
-export type AssetList = List & {
+export type AssetList = {
   __typename?: 'AssetList';
   count: Scalars['Int']['output'];
-  items: Array<Asset>;
+  items: Array<Maybe<Asset>>;
 };
 
 export enum AssetType {
@@ -136,13 +136,13 @@ export type Customer = Node & {
 export type CustomerList = List & {
   __typename?: 'CustomerList';
   count: Scalars['Int']['output'];
-  items: Array<Maybe<Customer>>;
+  items: Array<Customer>;
 };
 
 /** A list of items with count, each result that expose a array of items should implement this interface */
 export type List = {
   count: Scalars['Int']['output'];
-  items: Array<Maybe<Node>>;
+  items: Array<Node>;
 };
 
 export type ListInput = {
@@ -272,7 +272,7 @@ export type OrderLine = Node & {
 export type OrderLineList = List & {
   __typename?: 'OrderLineList';
   count: Scalars['Int']['output'];
-  items: Array<Maybe<OrderLine>>;
+  items: Array<OrderLine>;
 };
 
 export type OrderList = List & {
@@ -301,7 +301,7 @@ export type Payment = Node & {
 export type PaymentList = List & {
   __typename?: 'PaymentList';
   count: Scalars['Int']['output'];
-  items: Array<Maybe<Payment>>;
+  items: Array<Payment>;
 };
 
 export type Product = Node & {
@@ -389,7 +389,7 @@ export type Shipment = Node & {
 export type ShipmentList = List & {
   __typename?: 'ShipmentList';
   count: Scalars['Int']['output'];
-  items: Array<Maybe<Shipment>>;
+  items: Array<Shipment>;
 };
 
 export type UpdateProductInput = {
@@ -415,6 +415,7 @@ export type Variant = Node & {
   id: Scalars['ID']['output'];
   optionValues?: Maybe<Array<OptionValue>>;
   price: Scalars['Float']['output'];
+  product: Product;
   published: Scalars['Boolean']['output'];
   sku: Scalars['String']['output'];
   stock: Scalars['Int']['output'];
@@ -477,14 +478,14 @@ export type ValidateTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ValidateTokenQuery = { __typename?: 'Query', validateToken?: boolean | null };
 
-export type ProductDetailsFragmentFragment = { __typename?: 'Product', id: string, createdAt: any, name: string, slug: string, description?: string | null, onlineOnly: boolean, published: boolean, variants: { __typename?: 'VariantList', items: Array<{ __typename?: 'Variant', id: string, sku: string, stock: number, price: number }> }, assets: { __typename?: 'AssetList', items: Array<{ __typename?: 'Asset', id: string, name: string, source: string }> } } & { ' $fragmentName'?: 'ProductDetailsFragmentFragment' };
+export type ProductDetailsFragmentFragment = { __typename?: 'Product', id: string, createdAt: any, name: string, slug: string, description?: string | null, onlineOnly: boolean, published: boolean, variants: { __typename?: 'VariantList', items: Array<{ __typename?: 'Variant', id: string, sku: string, stock: number, price: number }> }, assets: { __typename?: 'AssetList', items: Array<{ __typename?: 'Asset', id: string, name: string, source: string } | null> } } & { ' $fragmentName'?: 'ProductDetailsFragmentFragment' };
 
 export type GetProductsQueryVariables = Exact<{
   input?: InputMaybe<ListInput>;
 }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductList', count: number, items: Array<{ __typename?: 'Product', id: string, createdAt: any, name: string, slug: string, onlineOnly: boolean, published: boolean, variants: { __typename?: 'VariantList', items: Array<{ __typename?: 'Variant', id: string, sku: string, stock: number, price: number }> }, assets: { __typename?: 'AssetList', items: Array<{ __typename?: 'Asset', id: string, source: string }> } }> } };
+export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductList', count: number, items: Array<{ __typename?: 'Product', id: string, createdAt: any, name: string, slug: string, onlineOnly: boolean, published: boolean, variants: { __typename?: 'VariantList', items: Array<{ __typename?: 'Variant', id: string, sku: string, stock: number, price: number }> }, assets: { __typename?: 'AssetList', items: Array<{ __typename?: 'Asset', id: string, source: string } | null> } }> } };
 
 export type GetProductDetailsQueryVariables = Exact<{
   slug: Scalars['String']['input'];

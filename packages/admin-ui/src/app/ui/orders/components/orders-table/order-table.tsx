@@ -5,14 +5,14 @@ import { type OrderState } from '@/lib/vendyx/codegen/graphql';
 import { OrderTableColumns } from './order-table-columns';
 
 export const OrderTable = () => {
-  const { orders, isLoading } = useGetOrders();
+  const { orders = [], isLoading } = useGetOrders();
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   const data: TableOrder[] =
-    orders?.map(o => {
+    orders.map(o => {
       return {
         id: o.id,
         code: o.code,
