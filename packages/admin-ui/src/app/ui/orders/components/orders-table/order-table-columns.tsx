@@ -50,7 +50,7 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
       const customer = row.original.customer;
 
       return (
-        <Link to={`/orders/${row.original.code ?? ''}`} className="flex items-center gap-2 w-full">
+        <Link to={`/orders/${row.original.id ?? ''}`} className="flex items-center gap-2 w-full">
           <User className="h-6 w-6" />
           <span>{customer}</span>
         </Link>

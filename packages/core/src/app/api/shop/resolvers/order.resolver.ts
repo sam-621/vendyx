@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import {
   CreateOrderInput,
@@ -11,13 +11,6 @@ import { OrderService } from '@/app/service';
 @Resolver('Order')
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
-
-  @Query('order')
-  async order(@Args('id') id: ID, @Args('code') code: string) {
-    const order = await this.orderService.findUnique(id, code);
-
-    return order;
-  }
 
   @Mutation('createOrder')
   async createProduct(@Args('input') input: CreateOrderInput) {

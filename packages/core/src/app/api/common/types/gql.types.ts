@@ -199,8 +199,8 @@ export class Asset implements Node {
     type: AssetType;
 }
 
-export class AssetList {
-    items: Nullable<Asset>[];
+export class AssetList implements List {
+    items: Asset[];
     count: number;
 }
 
@@ -215,7 +215,7 @@ export class Customer implements Node {
     phoneCountryCode?: Nullable<string>;
     enable: boolean;
     orders?: Nullable<OrderList[]>;
-    addressed?: Nullable<AddressList[]>;
+    addresses?: Nullable<AddressList[]>;
 }
 
 export class CustomerList implements List {

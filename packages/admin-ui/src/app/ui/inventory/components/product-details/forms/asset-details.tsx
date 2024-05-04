@@ -5,14 +5,14 @@ import { buttonVariants, Card, CardContent, CardHeader, CardTitle } from '@vendy
 import { PlusIcon } from 'lucide-react';
 
 import { Dropzone } from '@/components/forms';
-import { getFileListIntoArray } from '@/core/common';
 import { t } from '@/lib/locales';
+import { getFileListIntoArray } from '@/lib/utils';
 import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 
 export const AssetDetails: FC<Props> = ({ assets: defaultAssets }) => {
-  const defaultPreviews = defaultAssets?.items.map(a => a.source);
+  const defaultPreviews = defaultAssets?.items.map(a => a.source ?? '');
 
   const { setValue } = useFormContext<ProductDetailsFormInput>();
   const [assets, setAssets] = useState<File[]>([]);

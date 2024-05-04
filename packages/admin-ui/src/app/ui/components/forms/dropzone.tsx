@@ -3,8 +3,8 @@ import { type Dispatch, type FC, type SetStateAction } from 'react';
 import { cn } from '@vendyx/theme';
 import { UploadCloudIcon } from 'lucide-react';
 
-import { getFileListIntoArray } from '@/core/common';
 import { t } from '@/lib/locales';
+import { getFileListIntoArray } from '@/lib/utils';
 
 export const Dropzone: FC<Props> = ({ setAssets, className }) => {
   return (

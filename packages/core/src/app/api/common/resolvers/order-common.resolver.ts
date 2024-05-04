@@ -1,13 +1,20 @@
-import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { ListResponse } from '../utils';
 
-import { OrderEntity } from '@/app/persistance';
+import { ID, OrderEntity } from '@/app/persistance';
 import { OrderService } from '@/app/service';
 
 @Resolver('Order')
 export class OrderCommonResolver {
   constructor(private readonly orderService: OrderService) {}
+
+  @Query('order')
+  async order(@Args('id') id: ID, @Args('code') code: string) {
+    const order = await this.orderService.findUnique(id, code);
+
+    return order;
+  }
 
   @ResolveField('lines')
   async lines(@Parent() order: OrderEntity) {

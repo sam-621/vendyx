@@ -11,7 +11,7 @@ type Asset implements Node {
   type: AssetType!
 }
 
-type AssetList {
-  items: [Asset]!
+type AssetList implements List {
+  items: [Asset!]!
   count: Int!
 }

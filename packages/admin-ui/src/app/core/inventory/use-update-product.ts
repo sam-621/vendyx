@@ -1,8 +1,7 @@
 import { useGqlMutation } from '@/lib/gql';
+import { useLoading } from '@/lib/hooks';
 import { type UpdateProductInput } from '@/lib/vendyx/codegen/graphql';
 import { UpdateProductMutation } from '@/lib/vendyx/mutations';
-
-import { useLoading } from '../common';
 
 export const useUpdateProduct = () => {
   const { mutateAsync } = useGqlMutation(UpdateProductMutation);

@@ -2,8 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { useAuthenticate } from '@/core/admin';
-import { FormMessages } from '@/core/common';
-import { useForm } from '@/lib/form';
+import { FormMessages, useForm } from '@/lib/form';
 
 export const useLoginForm = () => {
   const { authenticate } = useAuthenticate();

@@ -10,7 +10,7 @@ type Customer implements Node {
   enable: Boolean!
 
   orders: [OrderList!]
-  addressed: [AddressList!]
+  addresses: [AddressList!]
 }
 
 type CustomerList implements List {

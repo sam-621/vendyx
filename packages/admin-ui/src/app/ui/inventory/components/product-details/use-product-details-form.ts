@@ -3,7 +3,6 @@ import { type MakeAny } from '@vendyx/common';
 import { z } from 'zod';
 
 import { useCreateAsset } from '@/core/assets';
-import { FormMessages } from '@/core/common';
 import {
   useCreateProduct,
   useCreateVariant,
@@ -11,7 +10,7 @@ import {
   useUpdateVariant
 } from '@/core/inventory';
 import { InventoryKeys } from '@/core/inventory/inventory.keys';
-import { useForm } from '@/lib/form';
+import { FormMessages, useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
