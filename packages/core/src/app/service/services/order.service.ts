@@ -31,6 +31,7 @@ export class OrderService {
     return await this.orderRepository.find({
       skip: input?.skip,
       take: input?.take,
+      order: { createdAt: 'DESC' },
     });
   }
 
@@ -50,6 +51,7 @@ export class OrderService {
     const order = await this.orderRepository.findOne({
       where: { id: orderId },
       relations: { lines: true },
+      order: { createdAt: 'DESC' },
     });
 
     return order.lines;

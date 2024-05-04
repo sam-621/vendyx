@@ -30,7 +30,11 @@ export class ProductService {
   ) {}
 
   async find(input: ListInput & { where?: FindOptionsWhere<ProductEntity> }) {
-    return this.productRepository.find({ ...input, where: input?.where });
+    return this.productRepository.find({
+      ...input,
+      where: input?.where,
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async findUnique({
