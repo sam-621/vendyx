@@ -111,7 +111,7 @@ export interface Node {
 }
 
 export interface List {
-    items: Node[];
+    items: Nullable<Node>[];
     count: number;
 }
 
@@ -186,7 +186,7 @@ export class Address implements Node {
 }
 
 export class AddressList implements List {
-    items: Address[];
+    items: Nullable<Address>[];
     count: number;
 }
 
@@ -199,8 +199,8 @@ export class Asset implements Node {
     type: AssetType;
 }
 
-export class AssetList implements List {
-    items: Asset[];
+export class AssetList {
+    items: Nullable<Asset>[];
     count: number;
 }
 
@@ -219,7 +219,7 @@ export class Customer implements Node {
 }
 
 export class CustomerList implements List {
-    items: Customer[];
+    items: Nullable<Customer>[];
     count: number;
 }
 
@@ -239,7 +239,7 @@ export class Option implements Node {
 }
 
 export class OptionList implements List {
-    items: Option[];
+    items: Nullable<Option>[];
     count: number;
 }
 
@@ -254,7 +254,7 @@ export class OrderLine implements Node {
 }
 
 export class OrderLineList implements List {
-    items: OrderLine[];
+    items: Nullable<OrderLine>[];
     count: number;
 }
 
@@ -276,7 +276,7 @@ export class Order implements Node {
 }
 
 export class OrderList implements List {
-    items: Order[];
+    items: Nullable<Order>[];
     count: number;
 }
 
@@ -289,7 +289,7 @@ export class Payment implements Node {
 }
 
 export class PaymentList implements List {
-    items: Payment[];
+    items: Nullable<Payment>[];
     count: number;
 }
 
@@ -307,7 +307,7 @@ export class Product implements Node {
 }
 
 export class ProductList implements List {
-    items: Product[];
+    items: Nullable<Product>[];
     count: number;
 }
 
@@ -320,7 +320,7 @@ export class Shipment implements Node {
 }
 
 export class ShipmentList implements List {
-    items: Shipment[];
+    items: Nullable<Shipment>[];
     count: number;
 }
 
@@ -337,7 +337,7 @@ export class Variant implements Node {
 }
 
 export class VariantList implements List {
-    items: Variant[];
+    items: Nullable<Variant>[];
     count: number;
 }
 

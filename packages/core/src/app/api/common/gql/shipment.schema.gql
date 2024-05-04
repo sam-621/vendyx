@@ -7,6 +7,6 @@ type Shipment implements Node {
 }
 
 type ShipmentList implements List {
-  items: [Shipment!]!
+  items: [Shipment]!
   count: Int!
 }

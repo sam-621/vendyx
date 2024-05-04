@@ -8,6 +8,6 @@ type Option implements Node {
 }
 
 type OptionList implements List {
-  items: [Option!]!
+  items: [Option]!
   count: Int!
 }

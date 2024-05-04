@@ -88,6 +88,10 @@ export class OrderService {
       relations: { lines: { productVariant: true } },
     });
 
+    if (!order) {
+      throw new UserInputError('Order not found');
+    }
+
     const variant = await this.variantRepository.findOne({
       where: { id: input.productVariantId },
     });
@@ -124,18 +128,14 @@ export class OrderService {
   }
 
   async updateLine(lineId: ID, input: UpdateOrderLineInput) {
-    const orderToUpdate = await this.orderRepository.findOne({
-      where: { lines: { id: lineId } },
-      relations: { lines: { productVariant: true } },
+    const lineToUpdate = await this.orderLineRepository.findOne({
+      where: { id: lineId },
+      relations: { productVariant: true, order: true },
     });
 
-    if (!orderToUpdate) {
+    if (!lineToUpdate) {
       throw new UserInputError('Order line not found');
     }
-
-    const lineToUpdate = orderToUpdate.lines.find((line) => {
-      return line.id === lineId;
-    });
 
     const variant = lineToUpdate.productVariant;
 
@@ -146,17 +146,16 @@ export class OrderService {
     const unitPrice = variant.price;
     const linePrice = unitPrice * input.quantity;
 
-    const updatedOrderLine = await this.orderLineRepository.save({
+    await this.orderLineRepository.save({
       ...lineToUpdate,
       unitPrice,
       linePrice,
       quantity: input.quantity,
     });
 
-    const order = orderToUpdate;
-
-    order.lines = order.lines.map((line) => {
-      return line.id === lineId ? updatedOrderLine : line;
+    const order = await this.orderRepository.findOne({
+      where: { id: lineToUpdate.order.id },
+      relations: { lines: true },
     });
 
     return this.recalculateOrderStats(order);

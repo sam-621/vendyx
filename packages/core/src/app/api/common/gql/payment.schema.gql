@@ -7,6 +7,6 @@ type Payment implements Node {
 }
 
 type PaymentList implements List {
-  items: [Payment!]!
+  items: [Payment]!
   count: Int!
 }

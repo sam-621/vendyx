@@ -37,7 +37,7 @@ type Order implements Node {
 }
 
 type OrderList implements List {
-  items: [Order!]!
+  items: [Order]!
   count: Int!
 }
 

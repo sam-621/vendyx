@@ -14,7 +14,7 @@ type Customer implements Node {
 }
 
 type CustomerList implements List {
-  items: [Customer!]!
+  items: [Customer]!
   count: Int!
 }
 
