@@ -48,13 +48,12 @@ export class OrderService {
   }
 
   async findLines(orderId: ID) {
-    const order = await this.orderRepository.findOne({
-      where: { id: orderId },
-      relations: { lines: true },
+    const lines = await this.orderLineRepository.find({
+      where: { order: { id: orderId } },
       order: { createdAt: 'DESC' },
     });
 
-    return order.lines;
+    return lines;
   }
 
   async findVariantInLine(orderLineId: ID) {
