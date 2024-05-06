@@ -140,6 +140,10 @@ export class OrderService {
 
     const variant = lineToUpdate.productVariant;
 
+    if (input.quantity === 0) {
+      return await this.removeLine(lineId);
+    }
+
     if (variant.stock < input.quantity) {
       throw new ValidationError('Not enough stock');
     }
