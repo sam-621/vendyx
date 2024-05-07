@@ -11,12 +11,6 @@ export class AddressEntity extends Entity {
   @Column('varchar', { name: 'street_line_2', nullable: true })
   streetLine2: string;
 
-  /**
-   * Colony or neighborhood
-   */
-  @Column('varchar')
-  suburb: string;
-
   @Column('varchar')
   city: string;
 
@@ -26,7 +20,7 @@ export class AddressEntity extends Entity {
   @Column('varchar')
   province: string;
 
-  @Column('varchar')
+  @Column('char', { length: 2 })
   country: string;
 
   @Column('varchar', { name: 'phone_number', nullable: true })

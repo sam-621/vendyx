@@ -4,10 +4,6 @@ type Address implements Node {
   updatedAt: Date!
   streetLine1: String!
   streetLine2: String
-  """
-  Colony or neighborhood
-  """
-  suburb: String!
   city: String!
   """
   State or region

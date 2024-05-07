@@ -175,7 +175,6 @@ export class Address implements Node {
     updatedAt: Date;
     streetLine1: string;
     streetLine2?: Nullable<string>;
-    suburb: string;
     city: string;
     province: string;
     country: string;
