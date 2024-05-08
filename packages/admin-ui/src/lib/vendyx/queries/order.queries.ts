@@ -42,7 +42,6 @@ export const CommonOrder = graphql(`
       id
       streetLine1
       streetLine2
-      suburb
       postalCode
       city
       province
