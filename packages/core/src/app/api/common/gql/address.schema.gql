@@ -24,7 +24,6 @@ type AddressList implements List {
 input CreateAddressInput {
   streetLine1: String!
   streetLine2: String
-  suburb: String!
   city: String!
   province: String!
   country: String!

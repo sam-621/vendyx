@@ -31,7 +31,7 @@ type Order implements Node {
 
   lines: OrderLineList!
   customer: Customer
-  address: Address
+  shippingAddress: Address
   payment: Payment
   shipment: Shipment
 }

@@ -6,12 +6,14 @@ import { Repository } from 'typeorm';
 import { validateEmail } from '../utils';
 
 import {
+  CreateAddressInput,
   CreateCustomerInput,
   CreateOrderLineInput,
   ListInput,
   UpdateOrderLineInput,
 } from '@/app/api/common';
 import {
+  AddressEntity,
   CustomerEntity,
   ID,
   OrderEntity,
@@ -31,6 +33,8 @@ export class OrderService {
     private variantRepository: Repository<VariantEntity>,
     @InjectRepository(CustomerEntity)
     private customerRepository: Repository<CustomerEntity>,
+    @InjectRepository(AddressEntity)
+    private addressRepository: Repository<AddressEntity>,
   ) {}
 
   async find(input: ListInput) {
@@ -78,6 +82,14 @@ export class OrderService {
     });
 
     return order.customer;
+  }
+
+  async findShippingAddress(orderId: ID) {
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId },
+    });
+
+    return order.shippingAddress;
   }
 
   async create() {
@@ -201,6 +213,27 @@ export class OrderService {
     });
 
     order.customer = customer;
+
+    await this.orderRepository.save(order);
+
+    return this.recalculateOrderStats(order.id);
+  }
+
+  async addShippingAddress(orderId: ID, input: CreateAddressInput) {
+    let address = await this.addressRepository.findOne({
+      where: { postalCode: input.postalCode },
+    });
+
+    if (!address) {
+      address = this.addressRepository.create(input);
+      address = await this.addressRepository.save(address);
+    }
+
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId },
+    });
+
+    order.shippingAddress = address;
 
     await this.orderRepository.save(order);
 

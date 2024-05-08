@@ -29,4 +29,13 @@ export class OrderCommonResolver {
 
     return customer;
   }
+
+  @ResolveField('shippingAddress')
+  async shippingAddress(@Parent() order: OrderEntity) {
+    const shippingAddress = await this.orderService.findShippingAddress(
+      order.id,
+    );
+
+    return shippingAddress;
+  }
 }

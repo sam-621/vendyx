@@ -1,6 +1,7 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import {
+  CreateAddressInput,
   CreateCustomerInput,
   CreateOrderInput,
   CreateOrderLineInput,
@@ -57,6 +58,16 @@ export class OrderResolver {
     @Args('input') input: CreateCustomerInput,
   ) {
     const order = await this.orderService.addCustomer(orderId, input);
+
+    return order;
+  }
+
+  @Mutation('addShippingAddressToOrder')
+  async addShippingAddressToOrder(
+    @Args('orderId') orderId: ID,
+    @Args('input') input: CreateAddressInput,
+  ) {
+    const order = await this.orderService.addShippingAddress(orderId, input);
 
     return order;
   }

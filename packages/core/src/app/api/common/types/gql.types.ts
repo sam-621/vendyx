@@ -67,7 +67,6 @@ export class UpdateVariantInput {
 export class CreateAddressInput {
     streetLine1: string;
     streetLine2?: Nullable<string>;
-    suburb: string;
     city: string;
     province: string;
     country: string;
@@ -269,7 +268,7 @@ export class Order implements Node {
     totalQuantity: number;
     lines: OrderLineList;
     customer?: Nullable<Customer>;
-    address?: Nullable<Address>;
+    shippingAddress?: Nullable<Address>;
     payment?: Nullable<Payment>;
     shipment?: Nullable<Shipment>;
 }
