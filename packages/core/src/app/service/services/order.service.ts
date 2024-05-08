@@ -103,13 +103,13 @@ export class OrderService {
       where: { id: input.productVariantId },
     });
 
-    const orderLineWithVariant = order.lines.find(
+    const variantInOrderLine = order.lines.find(
       (line) => line.productVariant.id === variant.id,
     );
 
-    if (orderLineWithVariant) {
-      return this.updateLine(orderLineWithVariant.id, {
-        quantity: input.quantity + orderLineWithVariant.quantity,
+    if (variantInOrderLine) {
+      return this.updateLine(variantInOrderLine.id, {
+        quantity: input.quantity + variantInOrderLine.quantity,
       });
     }
 
@@ -121,10 +121,11 @@ export class OrderService {
     const linePrice = unitPrice * input.quantity;
 
     const orderLine = this.orderLineRepository.create({
-      ...input,
       productVariant: variant,
+      quantity: input.quantity,
       unitPrice,
       linePrice,
+      order,
     });
 
     await this.orderLineRepository.save(orderLine);
