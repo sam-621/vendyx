@@ -4,11 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import {
+  CreateCustomerInput,
   CreateOrderLineInput,
   ListInput,
   UpdateOrderLineInput,
 } from '@/app/api/common';
 import {
+  CustomerEntity,
   ID,
   OrderEntity,
   OrderLineEntity,
@@ -25,6 +27,8 @@ export class OrderService {
     private orderLineRepository: Repository<OrderLineEntity>,
     @InjectRepository(VariantEntity)
     private variantRepository: Repository<VariantEntity>,
+    @InjectRepository(CustomerEntity)
+    private customerRepository: Repository<CustomerEntity>,
   ) {}
 
   async find(input: ListInput) {
@@ -180,6 +184,27 @@ export class OrderService {
 
     const order = orderLine.order;
     order.lines = [...order.lines.filter((line) => line.id !== orderLineId)];
+
+    return this.recalculateOrderStats(order);
+  }
+
+  async addCustomer(orderId: ID, input: CreateCustomerInput) {
+    let customer = await this.customerRepository.findOne({
+      where: { email: input.email },
+    });
+
+    if (!customer) {
+      customer = this.customerRepository.create(input);
+      customer = await this.customerRepository.save(customer);
+    }
+
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId },
+    });
+
+    order.customer = customer;
+
+    await this.orderRepository.save(order);
 
     return this.recalculateOrderStats(order);
   }
