@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { validateEmail } from '../utils';
+
 import {
   CreateCustomerInput,
   CreateOrderLineInput,
@@ -125,11 +127,9 @@ export class OrderService {
       linePrice,
     });
 
-    const orderLineSaved = await this.orderLineRepository.save(orderLine);
+    await this.orderLineRepository.save(orderLine);
 
-    order.lines = [...order.lines, orderLineSaved];
-
-    return this.recalculateOrderStats(order);
+    return this.recalculateOrderStats(order.id);
   }
 
   async updateLine(lineId: ID, input: UpdateOrderLineInput) {
@@ -162,18 +162,13 @@ export class OrderService {
       quantity: input.quantity,
     });
 
-    const order = await this.orderRepository.findOne({
-      where: { id: lineToUpdate.order.id },
-      relations: { lines: true },
-    });
-
-    return this.recalculateOrderStats(order);
+    return this.recalculateOrderStats(lineToUpdate.order.id);
   }
 
   async removeLine(orderLineId: ID) {
     const orderLine = await this.orderLineRepository.findOne({
       where: { id: orderLineId },
-      relations: { order: { lines: true } },
+      relations: { order: true },
     });
 
     if (!orderLine) {
@@ -182,10 +177,7 @@ export class OrderService {
 
     await this.orderLineRepository.delete(orderLine.id);
 
-    const order = orderLine.order;
-    order.lines = [...order.lines.filter((line) => line.id !== orderLineId)];
-
-    return this.recalculateOrderStats(order);
+    return this.recalculateOrderStats(orderLine.order.id);
   }
 
   async addCustomer(orderId: ID, input: CreateCustomerInput) {
@@ -193,7 +185,12 @@ export class OrderService {
       where: { email: input.email },
     });
 
+    // TODO: Add this block to customer service
     if (!customer) {
+      if (!validateEmail(input.email)) {
+        throw new UserInputError('Invalid email');
+      }
+
       customer = this.customerRepository.create(input);
       customer = await this.customerRepository.save(customer);
     }
@@ -206,13 +203,18 @@ export class OrderService {
 
     await this.orderRepository.save(order);
 
-    return this.recalculateOrderStats(order);
+    return this.recalculateOrderStats(order.id);
   }
 
   /**
    * Apply price and quantity adjustments to the order after an update
    */
-  private async recalculateOrderStats(order: OrderEntity) {
+  private async recalculateOrderStats(orderId: ID) {
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId },
+      relations: { lines: true },
+    });
+
     const total = order.lines.reduce((acc, line) => acc + line.linePrice, 0);
     const subtotal = order.lines.reduce((acc, line) => acc + line.linePrice, 0);
     const totalQuantity = order.lines.reduce(

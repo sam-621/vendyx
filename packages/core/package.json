@@ -38,9 +38,10 @@
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "ts-morph": "^21.0.1",
-    "typeorm": "^0.3.19"
+    "typeorm": "^0.3.19",
+    "zod": "^3.23.7"
   },
-  "//": "We add `@vendyx/admin-ui` as a dev dependency only for lerna knows admin-ui package has to be built before core package", 
+  "//": "We add `@vendyx/admin-ui` as a dev dependency only for lerna knows admin-ui package has to be built before core package",
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
