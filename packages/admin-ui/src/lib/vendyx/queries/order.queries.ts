@@ -38,7 +38,7 @@ export const CommonOrder = graphql(`
       phoneNumber
       phoneCountryCode
     }
-    address {
+    shippingAddress {
       id
       streetLine1
       streetLine2
