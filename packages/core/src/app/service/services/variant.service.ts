@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { convertToCent } from '@vendyx/common';
-import { In, Repository } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 
 import {
   CreateVariantInput,
@@ -18,17 +18,10 @@ import { UserInputError, ValidationError } from '@/lib/errors';
 
 @Injectable()
 export class VariantService {
-  constructor(
-    @InjectRepository(VariantEntity)
-    private variantRepository: Repository<VariantEntity>,
-    @InjectRepository(ProductEntity)
-    private productRepository: Repository<ProductEntity>,
-    @InjectRepository(OptionValueEntity)
-    private optionValueRepository: Repository<OptionValueEntity>,
-  ) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   async find(input: ListInput) {
-    return this.variantRepository.find(input);
+    return this.db.getRepository(VariantEntity).find(input);
   }
 
   async findUnique(id: ID) {
@@ -36,7 +29,7 @@ export class VariantService {
   }
 
   async findOptionValues(id: ID) {
-    const optionValues = await this.optionValueRepository.find({
+    const optionValues = await this.db.getRepository(OptionValueEntity).find({
       where: { variants: { id } },
     });
 
@@ -44,7 +37,7 @@ export class VariantService {
   }
 
   async findProduct(id: ID) {
-    const optionValues = await this.productRepository.findOne({
+    const optionValues = await this.db.getRepository(ProductEntity).findOne({
       where: { variants: { id } },
     });
 
@@ -53,9 +46,9 @@ export class VariantService {
 
   async create(productId: ID, input: CreateVariantInput) {
     if (!input.optionValuesIds?.length) {
-      const defaultVariantAlreadyCreated = await this.variantRepository.findOne(
-        { where: { product: { id: productId } } },
-      );
+      const defaultVariantAlreadyCreated = await this.db
+        .getRepository(VariantEntity)
+        .findOne({ where: { product: { id: productId } } });
 
       if (defaultVariantAlreadyCreated) {
         throw new ValidationError(
@@ -65,21 +58,23 @@ export class VariantService {
     }
 
     const optionValues = input.optionValuesIds?.length
-      ? await this.optionValueRepository.find({
+      ? await this.db.getRepository(OptionValueEntity).find({
           where: { id: In(input.optionValuesIds) },
         })
       : undefined;
 
-    const product = await this.productRepository.findOneBy({ id: productId });
+    const product = await this.db
+      .getRepository(ProductEntity)
+      .findOneBy({ id: productId });
 
-    const variantToSave = this.variantRepository.create({
+    const variantToSave = this.db.getRepository(VariantEntity).create({
       ...input,
       product,
       optionValues,
       price: convertToCent(input.price),
     });
 
-    return this.variantRepository.save(variantToSave);
+    return this.db.getRepository(VariantEntity).save(variantToSave);
   }
 
   async update(id: ID, input: UpdateVariantInput) {
@@ -91,12 +86,12 @@ export class VariantService {
 
     const optionValues =
       input.optionValuesIds?.length !== undefined
-        ? await this.optionValueRepository.find({
+        ? await this.db.getRepository(OptionValueEntity).find({
             where: { id: In(input.optionValuesIds) },
           })
         : undefined;
 
-    return this.variantRepository.save({
+    return this.db.getRepository(VariantEntity).save({
       ...variantToUpdate,
       ...input,
       price: input.price ? convertToCent(input.price) : variantToUpdate.price,
@@ -111,12 +106,12 @@ export class VariantService {
       throw new UserInputError('Variant not found with the given id');
     }
 
-    await this.variantRepository.softDelete({ id });
+    await this.db.getRepository(VariantEntity).softDelete({ id });
 
     return true;
   }
 
   private async findById(id: ID) {
-    return this.variantRepository.findOne({ where: { id } });
+    return this.db.getRepository(VariantEntity).findOne({ where: { id } });
   }
 }

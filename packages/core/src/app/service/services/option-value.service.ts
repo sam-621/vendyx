@@ -1,19 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 import { OptionValueEntity } from '@/app/persistance';
 
 @Injectable()
 export class OptionValueService {
-  constructor(
-    @InjectRepository(OptionValueEntity)
-    private optionValueRepository: Repository<OptionValueEntity>,
-  ) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
+  // TODO: REFACTOR THIS TO A TRANSACTION
   create(values: string[]) {
-    return this.optionValueRepository.save(
-      values.map((value) => this.optionValueRepository.create({ value })),
-    );
+    return this.db
+      .getRepository(OptionValueEntity)
+      .save(
+        values.map((value) =>
+          this.db.getRepository(OptionValueEntity).create({ value }),
+        ),
+      );
   }
 }

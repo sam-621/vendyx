@@ -1,16 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 import { getConfig } from '@/app/config';
 import { AssetEntity } from '@/app/persistance';
 
 @Injectable()
 export class AssetService {
-  constructor(
-    @InjectRepository(AssetEntity)
-    private assetRepository: Repository<AssetEntity>,
-  ) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   async create(file: Express.Multer.File) {
     const path = file.path;
@@ -22,11 +19,11 @@ export class AssetService {
       throw new BadRequestException('File could not be uploaded');
     }
 
-    const assetToSave = this.assetRepository.create({
+    const assetToSave = this.db.getRepository(AssetEntity).create({
       name: file.originalname,
       source: fileId,
     });
 
-    return this.assetRepository.save(assetToSave);
+    return this.db.getRepository(AssetEntity).save(assetToSave);
   }
 }

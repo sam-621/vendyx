@@ -1,7 +1,7 @@
 import { ValidationError } from '@nestjs/apollo';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 import { validateEmail } from '../utils';
 
@@ -24,21 +24,10 @@ import { UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class OrderService {
-  constructor(
-    @InjectRepository(OrderEntity)
-    private orderRepository: Repository<OrderEntity>,
-    @InjectRepository(OrderLineEntity)
-    private orderLineRepository: Repository<OrderLineEntity>,
-    @InjectRepository(VariantEntity)
-    private variantRepository: Repository<VariantEntity>,
-    @InjectRepository(CustomerEntity)
-    private customerRepository: Repository<CustomerEntity>,
-    @InjectRepository(AddressEntity)
-    private addressRepository: Repository<AddressEntity>,
-  ) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   async find(input: ListInput) {
-    return await this.orderRepository.find({
+    return await this.db.getRepository(OrderEntity).find({
       skip: input?.skip,
       take: input?.take,
       order: { createdAt: 'DESC' },
@@ -58,7 +47,7 @@ export class OrderService {
   }
 
   async findLines(orderId: ID) {
-    const lines = await this.orderLineRepository.find({
+    const lines = await this.db.getRepository(OrderLineEntity).find({
       where: { order: { id: orderId } },
       order: { createdAt: 'DESC' },
     });
@@ -67,7 +56,7 @@ export class OrderService {
   }
 
   async findVariantInLine(orderLineId: ID) {
-    const orderLine = await this.orderLineRepository.findOne({
+    const orderLine = await this.db.getRepository(OrderLineEntity).findOne({
       where: { id: orderLineId },
       relations: { productVariant: true },
     });
@@ -76,7 +65,7 @@ export class OrderService {
   }
 
   async findCustomer(orderId: ID) {
-    const order = await this.orderRepository.findOne({
+    const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
       relations: { customer: true },
     });
@@ -85,7 +74,7 @@ export class OrderService {
   }
 
   async findShippingAddress(orderId: ID) {
-    const order = await this.orderRepository.findOne({
+    const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
     });
 
@@ -94,16 +83,16 @@ export class OrderService {
   }
 
   async create() {
-    const ordersCount = await this.orderRepository.count();
-    const order = this.orderRepository.create({
+    const ordersCount = await this.db.getRepository(OrderEntity).count();
+    const order = this.db.getRepository(OrderEntity).create({
       code: String(ordersCount + 1),
     });
 
-    return await this.orderRepository.save(order);
+    return await this.db.getRepository(OrderEntity).save(order);
   }
 
   async addLine(orderId: ID, input: CreateOrderLineInput) {
-    const order = await this.orderRepository.findOne({
+    const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
       relations: { lines: { productVariant: true } },
     });
@@ -112,7 +101,7 @@ export class OrderService {
       throw new UserInputError('Order not found');
     }
 
-    const variant = await this.variantRepository.findOne({
+    const variant = await this.db.getRepository(VariantEntity).findOne({
       where: { id: input.productVariantId },
     });
 
@@ -133,7 +122,7 @@ export class OrderService {
     const unitPrice = variant.price;
     const linePrice = unitPrice * input.quantity;
 
-    const orderLine = this.orderLineRepository.create({
+    const orderLine = this.db.getRepository(OrderLineEntity).create({
       productVariant: variant,
       quantity: input.quantity,
       unitPrice,
@@ -141,13 +130,13 @@ export class OrderService {
       order,
     });
 
-    await this.orderLineRepository.save(orderLine);
+    await this.db.getRepository(OrderLineEntity).save(orderLine);
 
     return this.recalculateOrderStats(order.id);
   }
 
   async updateLine(lineId: ID, input: UpdateOrderLineInput) {
-    const lineToUpdate = await this.orderLineRepository.findOne({
+    const lineToUpdate = await this.db.getRepository(OrderLineEntity).findOne({
       where: { id: lineId },
       relations: { productVariant: true, order: true },
     });
@@ -169,7 +158,7 @@ export class OrderService {
     const unitPrice = variant.price;
     const linePrice = unitPrice * input.quantity;
 
-    await this.orderLineRepository.save({
+    await this.db.getRepository(OrderLineEntity).save({
       ...lineToUpdate,
       unitPrice,
       linePrice,
@@ -180,7 +169,7 @@ export class OrderService {
   }
 
   async removeLine(orderLineId: ID) {
-    const orderLine = await this.orderLineRepository.findOne({
+    const orderLine = await this.db.getRepository(OrderLineEntity).findOne({
       where: { id: orderLineId },
       relations: { order: true },
     });
@@ -189,7 +178,7 @@ export class OrderService {
       throw new UserInputError('Order line not found');
     }
 
-    await this.orderLineRepository.delete(orderLine.id);
+    await this.db.getRepository(OrderLineEntity).delete(orderLine.id);
 
     return this.recalculateOrderStats(orderLine.order.id);
   }
@@ -199,37 +188,39 @@ export class OrderService {
       throw new UserInputError('Invalid email');
     }
 
-    const customer = await this.customerRepository.findOne({
+    const customer = await this.db.getRepository(CustomerEntity).findOne({
       where: { email: input.email },
     });
 
-    let customerUpdated = this.customerRepository.create({
+    let customerUpdated = this.db.getRepository(CustomerEntity).create({
       ...customer,
       ...input,
     });
-    customerUpdated = await this.customerRepository.save(customerUpdated);
+    customerUpdated = await this.db
+      .getRepository(CustomerEntity)
+      .save(customerUpdated);
 
-    const order = await this.orderRepository.findOne({
+    const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
     });
 
     order.customer = customerUpdated;
 
-    await this.orderRepository.save(order);
+    await this.db.getRepository(OrderEntity).save(order);
 
     return this.recalculateOrderStats(order.id);
   }
 
   async addShippingAddress(orderId: ID, input: CreateAddressInput) {
-    const address = this.addressRepository.create(input);
+    const address = this.db.getRepository(AddressEntity).create(input);
 
-    const order = await this.orderRepository.findOne({
+    const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
     });
 
     order.shippingAddress = address;
 
-    await this.orderRepository.save(order);
+    await this.db.getRepository(OrderEntity).save(order);
 
     return this.recalculateOrderStats(order.id);
   }
@@ -238,7 +229,7 @@ export class OrderService {
    * Apply price and quantity adjustments to the order after an update
    */
   private async recalculateOrderStats(orderId: ID) {
-    const order = await this.orderRepository.findOne({
+    const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
       relations: { lines: true },
     });
@@ -250,7 +241,7 @@ export class OrderService {
       0,
     );
 
-    return await this.orderRepository.save({
+    return await this.db.getRepository(OrderEntity).save({
       ...order,
       total,
       subtotal,
@@ -259,10 +250,10 @@ export class OrderService {
   }
 
   private async findById(id: ID) {
-    return this.orderRepository.findOne({ where: { id } });
+    return this.db.getRepository(OrderEntity).findOne({ where: { id } });
   }
 
   private async findByCode(code: string) {
-    return this.orderRepository.findOne({ where: { code } });
+    return this.db.getRepository(OrderEntity).findOne({ where: { code } });
   }
 }

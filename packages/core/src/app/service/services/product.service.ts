@@ -1,9 +1,9 @@
 import { randomUUID } from 'crypto';
 
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { getParsedSlug } from '@vendyx/common';
-import { FindOptionsWhere, In, Not, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, In, Not } from 'typeorm';
 
 import {
   CreateProductInput,
@@ -20,17 +20,10 @@ import { UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    @InjectRepository(ProductEntity)
-    private productRepository: Repository<ProductEntity>,
-    @InjectRepository(AssetEntity)
-    private assetRepository: Repository<AssetEntity>,
-    @InjectRepository(VariantEntity)
-    private variantRepository: Repository<VariantEntity>,
-  ) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   async find(input: ListInput & { where?: FindOptionsWhere<ProductEntity> }) {
-    return this.productRepository.find({
+    return this.db.getRepository(ProductEntity).find({
       ...input,
       where: input?.where,
       order: { createdAt: 'DESC' },
@@ -47,18 +40,22 @@ export class ProductService {
     where?: FindOptionsWhere<ProductEntity>;
   }) {
     if (id) {
-      return this.productRepository.findOne({ where: { ...where, id } });
+      return this.db
+        .getRepository(ProductEntity)
+        .findOne({ where: { ...where, id } });
     }
 
     if (slug) {
-      return this.productRepository.findOne({ where: { ...where, slug } });
+      return this.db
+        .getRepository(ProductEntity)
+        .findOne({ where: { ...where, slug } });
     }
 
     throw new UserInputError('No ID or SLUG provided');
   }
 
   async findVariants(id: ID, listInput?: ListInput) {
-    const variants = await this.variantRepository.find({
+    const variants = await this.db.getRepository(VariantEntity).find({
       where: { product: { id } },
       ...listInput,
     });
@@ -67,7 +64,7 @@ export class ProductService {
   }
 
   async findAssets(id: ID, listInput?: ListInput) {
-    const assets = await this.assetRepository.find({
+    const assets = await this.db.getRepository(AssetEntity).find({
       where: { products: { id: id } },
       ...listInput,
     });
@@ -90,16 +87,16 @@ export class ProductService {
     }
 
     const assets = input.assetsIds?.length
-      ? await this.assetRepository.find({
+      ? await this.db.getRepository(AssetEntity).find({
           where: { id: In(input.assetsIds) },
         })
       : undefined;
 
-    const productToSave = this.productRepository.create({
+    const productToSave = this.db.getRepository(ProductEntity).create({
       ...data,
       assets,
     });
-    return this.productRepository.save(productToSave);
+    return this.db.getRepository(ProductEntity).save(productToSave);
   }
 
   async update(id: ID, input: UpdateProductInput) {
@@ -110,7 +107,7 @@ export class ProductService {
     }
 
     if (input.slug) {
-      const productExists = await this.productRepository.findOne({
+      const productExists = await this.db.getRepository(ProductEntity).findOne({
         where: { slug: getParsedSlug(input.slug), id: Not(id) },
       });
 
@@ -123,12 +120,12 @@ export class ProductService {
 
     const newAssets =
       input.assetsIds?.length !== undefined
-        ? await this.assetRepository.find({
+        ? await this.db.getRepository(AssetEntity).find({
             where: { id: In(input.assetsIds) },
           })
         : undefined;
 
-    return await this.productRepository.save({
+    return await this.db.getRepository(ProductEntity).save({
       ...productToUpdate,
       ...input,
       slug: input.slug ? getParsedSlug(input.slug) : productToUpdate.slug,
@@ -142,7 +139,7 @@ export class ProductService {
    * The assets are independent of the product so they are not removed
    */
   async remove(id: ID) {
-    const productToRemove = await this.productRepository.findOne({
+    const productToRemove = await this.db.getRepository(ProductEntity).findOne({
       where: { id },
     });
 
@@ -150,22 +147,22 @@ export class ProductService {
       throw new UserInputError('No product found with the given id');
     }
 
-    await this.productRepository.save({
+    await this.db.getRepository(ProductEntity).save({
       ...productToRemove,
       // avoid slug duplication for new records
       slug: randomUUID(),
     });
-    await this.productRepository.softDelete({ id });
-    await this.variantRepository.softDelete({ product: { id } });
+    await this.db.getRepository(ProductEntity).softDelete({ id });
+    await this.db.getRepository(VariantEntity).softDelete({ product: { id } });
 
     return true;
   }
 
   private async findById(id: ID) {
-    return this.productRepository.findOne({ where: { id } });
+    return this.db.getRepository(ProductEntity).findOne({ where: { id } });
   }
 
   private async findBySlug(slug: ID) {
-    return this.productRepository.findOne({ where: { slug } });
+    return this.db.getRepository(ProductEntity).findOne({ where: { slug } });
   }
 }
