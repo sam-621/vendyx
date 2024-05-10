@@ -119,6 +119,12 @@ export class OrderService {
       throw new UserInputError('Order not found');
     }
 
+    if (order.state !== OrderState.MODIFYING) {
+      throw new UserInputError(
+        `Unable to add line to order in state ${order.state}`,
+      );
+    }
+
     const variant = await this.db.getRepository(VariantEntity).findOne({
       where: { id: input.productVariantId },
     });
@@ -163,6 +169,12 @@ export class OrderService {
       throw new UserInputError('Order line not found');
     }
 
+    if (lineToUpdate.order.state !== OrderState.MODIFYING) {
+      throw new UserInputError(
+        `Unable to update line in order in state ${lineToUpdate.order.state}`,
+      );
+    }
+
     const variant = lineToUpdate.productVariant;
 
     if (input.quantity === 0) {
@@ -196,6 +208,12 @@ export class OrderService {
       throw new UserInputError('Order line not found');
     }
 
+    if (orderLine.order.state !== OrderState.MODIFYING) {
+      throw new UserInputError(
+        `Unable to remove line from order in state ${orderLine.order.state}`,
+      );
+    }
+
     await this.db.getRepository(OrderLineEntity).delete(orderLine.id);
 
     return this.recalculateOrderStats(orderLine.order.id);
@@ -206,6 +224,20 @@ export class OrderService {
       throw new UserInputError('Invalid email');
     }
 
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+    });
+
+    if (!order) {
+      throw new UserInputError('Order not found');
+    }
+
+    if (order.state !== OrderState.MODIFYING) {
+      throw new UserInputError(
+        `Unable to add customer to order in state ${order.state}`,
+      );
+    }
+
     const customer = await this.db.getRepository(CustomerEntity).findOne({
       where: { email: input.email },
     });
@@ -214,13 +246,10 @@ export class OrderService {
       ...customer,
       ...input,
     });
+
     customerUpdated = await this.db
       .getRepository(CustomerEntity)
       .save(customerUpdated);
-
-    const order = await this.db.getRepository(OrderEntity).findOne({
-      where: { id: orderId },
-    });
 
     order.customer = customerUpdated;
 
@@ -230,11 +259,21 @@ export class OrderService {
   }
 
   async addShippingAddress(orderId: ID, input: CreateAddressInput) {
-    const address = this.db.getRepository(AddressEntity).create(input);
-
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
     });
+
+    if (!order) {
+      throw new UserInputError('Order not found');
+    }
+
+    if (order.state !== OrderState.MODIFYING) {
+      throw new UserInputError(
+        `Unable to add shipping address to order in state ${order.state}`,
+      );
+    }
+
+    const address = this.db.getRepository(AddressEntity).create(input);
 
     order.shippingAddress = address;
 
@@ -254,7 +293,7 @@ export class OrderService {
     }
 
     if (!this.validateOrderTransitionState(order, OrderState.PAYMENT_ADDED)) {
-      throw new OrderError(
+      throw new UserInputError(
         `Unable to add payment to order in state ${order.state}`,
       );
     }
