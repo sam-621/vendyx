@@ -45,18 +45,25 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title={t('inventory.table.header.product')} />;
     },
-    cell: ({ row }) => (
-      <Link to={`/inventory/${row.original.slug ?? ''}`} className="flex items-center gap-2 w-full">
-        {row.original.image && (
-          <img
-            src={row.original.image}
-            alt={row.getValue('name')}
-            className="h-12 w-12 object-cover rounded-md"
-          />
-        )}
-        <span>{row.original.name}</span>
-      </Link>
-    )
+    cell: ({ row }) => {
+      console.log(row.original.image);
+
+      return (
+        <Link
+          to={`/inventory/${row.original.slug ?? ''}`}
+          className="flex items-center gap-2 w-full"
+        >
+          {row.original.image && (
+            <img
+              src={row.original.image}
+              alt={row.getValue('name')}
+              className="h-12 w-12 object-cover rounded-md"
+            />
+          )}
+          <span>{row.original.name}</span>
+        </Link>
+      );
+    }
   },
   {
     accessorKey: 'price',

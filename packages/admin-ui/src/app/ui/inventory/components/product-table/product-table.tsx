@@ -1,5 +1,6 @@
 import { DataTable } from '@/components/data-table';
 import { useGetProducts } from '@/core/inventory';
+import { DEFAULT_PRODUCT_IMAGE } from '@/lib/constants';
 import { t } from '@/lib/locales';
 
 import { ProductTableColumns } from './product-table-columns';
@@ -21,7 +22,7 @@ export const ProductTable = () => {
         name: p.name,
         slug: p.slug,
         status: p.published ? 'enabled' : 'disabled',
-        image: image?.source,
+        image: image?.source ?? DEFAULT_PRODUCT_IMAGE,
         price: variant?.price ?? 0,
         sku: variant?.sku,
         stock: variant?.stock

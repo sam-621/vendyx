@@ -89,7 +89,8 @@ export class OrderService {
       where: { id: orderId },
     });
 
-    return order.shippingAddress;
+    // The shipping address could be a json or a Address entity, so we need to normalize it
+    return { id: '', createdAt: '', updatedAt: '', ...order.shippingAddress };
   }
 
   async create() {
@@ -194,25 +195,25 @@ export class OrderService {
   }
 
   async addCustomer(orderId: ID, input: CreateCustomerInput) {
-    let customer = await this.customerRepository.findOne({
+    if (!validateEmail(input.email)) {
+      throw new UserInputError('Invalid email');
+    }
+
+    const customer = await this.customerRepository.findOne({
       where: { email: input.email },
     });
 
-    // TODO: Add this block to customer service
-    if (!customer) {
-      if (!validateEmail(input.email)) {
-        throw new UserInputError('Invalid email');
-      }
-
-      customer = this.customerRepository.create(input);
-      customer = await this.customerRepository.save(customer);
-    }
+    let customerUpdated = this.customerRepository.create({
+      ...customer,
+      ...input,
+    });
+    customerUpdated = await this.customerRepository.save(customerUpdated);
 
     const order = await this.orderRepository.findOne({
       where: { id: orderId },
     });
 
-    order.customer = customer;
+    order.customer = customerUpdated;
 
     await this.orderRepository.save(order);
 
@@ -220,14 +221,7 @@ export class OrderService {
   }
 
   async addShippingAddress(orderId: ID, input: CreateAddressInput) {
-    let address = await this.addressRepository.findOne({
-      where: { postalCode: input.postalCode },
-    });
-
-    if (!address) {
-      address = this.addressRepository.create(input);
-      address = await this.addressRepository.save(address);
-    }
+    const address = this.addressRepository.create(input);
 
     const order = await this.orderRepository.findOne({
       where: { id: orderId },
