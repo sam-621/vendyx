@@ -104,7 +104,7 @@ export class CreateOrderInput {
 }
 
 export class AddPaymentInput {
-    method: string;
+    methodId: string;
 }
 
 export interface Node {

@@ -1,6 +1,3 @@
 input AddPaymentInput {
-  """
-  The payment method code
-  """
-  method: String!
+  methodId: String!
 }

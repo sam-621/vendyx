@@ -8,20 +8,14 @@ export class PaymentMethodEntity extends Entity {
   @Column('varchar')
   name: string;
 
-  /**
-   * Code is not arbitrary, it should be unique and should be used to identify the payment method.
-   */
-  @Column('varchar', { unique: true })
-  code: string;
+  @Column('text')
+  description: string;
 
   /**
    * Integration code is the code that is used to identify the payment integration.
    */
   @Column('varchar', { unique: true, name: 'integration_code' })
   integrationCode: string;
-
-  @Column('text')
-  description: string;
 
   @Column('boolean')
   enabled: boolean;

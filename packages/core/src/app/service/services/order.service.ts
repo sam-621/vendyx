@@ -301,11 +301,8 @@ export class OrderService {
     const paymentMethod = await this.db
       .getRepository(PaymentMethodEntity)
       .findOne({
-        where: { code: input.method },
+        where: { id: input.methodId },
       });
-    console.log({
-      paymentMethod,
-    });
 
     if (!paymentMethod) {
       throw new UserInputError('Payment method not found');
