@@ -8,7 +8,7 @@ export class PaymentMethodEntity extends Entity {
   @Column('varchar')
   name: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   description: string;
 
   /**

@@ -8,14 +8,8 @@ export class ShipmentMethodEntity extends Entity {
   @Column('varchar')
   name: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   description: string;
-
-  @Column('int')
-  price: number;
-
-  @Column('varchar')
-  carrier: string;
 
   @Column('boolean')
   enabled: boolean;

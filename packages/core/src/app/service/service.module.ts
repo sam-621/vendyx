@@ -7,6 +7,7 @@ import {
   OptionService,
   OptionValueService,
   OrderService,
+  PaymentMethodService,
   ProductService,
   VariantService,
 } from './services';
@@ -21,6 +22,7 @@ const SERVICES = [
   OptionValueService,
   AssetService,
   OrderService,
+  PaymentMethodService,
 ];
 
 @Module({

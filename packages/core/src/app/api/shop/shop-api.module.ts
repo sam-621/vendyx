@@ -1,6 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { OrderResolver, ProductResolver, VariantResolver } from './resolvers';
+import {
+  OrderResolver,
+  PaymentMethodResolver,
+  ProductResolver,
+  VariantResolver,
+} from './resolvers';
 import {
   OrderCommonResolver,
   OrderLineCommonResolver,
@@ -15,6 +20,7 @@ const COMMON_RESOLVERS = [
   OrderCommonResolver,
   ProductCommonResolver,
   VariantCommonResolver,
+  PaymentMethodResolver,
 ];
 
 @Module({
