@@ -7,6 +7,7 @@ import {
   PaypalIntegration,
   StripeIntegration,
 } from '@/lib/payments';
+import { CountryPriceCalculator, FedexPriceCalculator } from '@/lib/shipping';
 import { CloudinaryStorageProvider } from '@/lib/storage';
 
 /**
@@ -36,6 +37,12 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
       new PaypalIntegration(),
       new StripeIntegration(),
       new MercadoPagoIntegration(),
+    ],
+  },
+  shipping: {
+    priceCalculators: [
+      new CountryPriceCalculator(),
+      new FedexPriceCalculator(),
     ],
   },
 };

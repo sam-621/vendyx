@@ -172,6 +172,8 @@ export abstract class IQuery {
     abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
 
     abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+
+    abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 }
 
 export class Address implements Node {
@@ -282,6 +284,15 @@ export class Order implements Node {
 export class OrderList implements List {
     items: Order[];
     count: number;
+}
+
+export class PaymentMethod implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    description?: Nullable<string>;
+    enabled: boolean;
 }
 
 export class Payment implements Node {

@@ -11,6 +11,9 @@ export class ShipmentMethodEntity extends Entity {
   @Column('text', { nullable: true })
   description: string;
 
+  @Column('varchar', { name: 'price_calculator_code' })
+  priceCalculatorCode: string;
+
   @Column('boolean')
   enabled: boolean;
 

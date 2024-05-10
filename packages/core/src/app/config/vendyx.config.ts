@@ -1,4 +1,5 @@
 import { PaymentIntegration } from './payments/payment-integration.config';
+import { ShippingPriceCalculatorConfig } from './shipping/shipping-price-calculator.config';
 import { StorageProvider } from './storage/storage-provider.config';
 
 export interface VendyxConfig {
@@ -17,5 +18,8 @@ export interface VendyxConfig {
   };
   payments: {
     integrations: PaymentIntegration[];
+  };
+  shipping: {
+    priceCalculators: ShippingPriceCalculatorConfig[];
   };
 }
