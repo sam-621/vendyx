@@ -1,0 +1,8 @@
+type ShippingMethod implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  description: String
+  enabled: Boolean!
+}

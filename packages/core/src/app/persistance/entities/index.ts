@@ -12,4 +12,4 @@ export * from './order.entity';
 export * from './payment.entity';
 export * from './shipment.entity';
 export * from './payment-method.entity';
-export * from './shipment-method.entity';
+export * from './shipping-method.entity';

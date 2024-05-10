@@ -14,7 +14,7 @@ import {
   PaymentMethodEntity,
   ProductEntity,
   ShipmentEntity,
-  ShipmentMethodEntity,
+  ShippingMethodEntity,
   VariantEntity,
 } from './entities';
 import { getConfig } from '../config';
@@ -33,7 +33,7 @@ export const ENTITIES = [
   PaymentEntity,
   ShipmentEntity,
   PaymentMethodEntity,
-  ShipmentMethodEntity,
+  ShippingMethodEntity,
 ];
 
 @Module({

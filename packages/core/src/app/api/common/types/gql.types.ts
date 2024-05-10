@@ -107,6 +107,10 @@ export class AddPaymentInput {
     methodId: string;
 }
 
+export class AddShipmentToOrderInput {
+    shippingMethodId: string;
+}
+
 export interface Node {
     id: string;
     createdAt: Date;
@@ -156,6 +160,8 @@ export abstract class IMutation {
     abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract addPaymentToOrder(orderId: string, input: AddPaymentInput): Nullable<Order> | Promise<Nullable<Order>>;
+
+    abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): Nullable<Order> | Promise<Nullable<Order>>;
 }
 
 export abstract class IQuery {
@@ -174,6 +180,8 @@ export abstract class IQuery {
     abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
 
     abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
+
+    abstract availableShippingMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 }
 
 export class Address implements Node {
@@ -337,6 +345,15 @@ export class Shipment implements Node {
 export class ShipmentList implements List {
     items: Shipment[];
     count: number;
+}
+
+export class ShippingMethod implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    description?: Nullable<string>;
+    enabled: boolean;
 }
 
 export class Variant implements Node {

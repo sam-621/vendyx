@@ -3,8 +3,8 @@ import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 import { Entity } from './entity';
 import { ShipmentEntity } from './shipment.entity';
 
-@TypeOrmEntity('shipment_method')
-export class ShipmentMethodEntity extends Entity {
+@TypeOrmEntity('shipping_method')
+export class ShippingMethodEntity extends Entity {
   @Column('varchar')
   name: string;
 
