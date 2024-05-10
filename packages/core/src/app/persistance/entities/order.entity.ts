@@ -1,5 +1,6 @@
 import {
   Column,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -63,7 +64,8 @@ export class OrderEntity extends Entity {
   @ManyToOne(() => CustomerEntity, (c) => c.orders, { nullable: true })
   customer: CustomerEntity;
 
-  @OneToOne(() => PaymentEntity, (p) => p.order, { nullable: true })
+  @JoinColumn()
+  @OneToOne(() => PaymentEntity, { nullable: true })
   payment: PaymentEntity;
 
   @OneToOne(() => ShipmentEntity, (s) => s.order, { nullable: true })

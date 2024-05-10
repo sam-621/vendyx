@@ -29,13 +29,13 @@ export interface PaymentIntegration {
    * This method is called when the addPaymentToOrder mutation is called.
    * This method is responsible for creating payment for the given order.
    *
-   * If the status returned is {@link PaymentStatus.CREATED}, that means that the payment is created successfully and should be authorized by administrator,
+   * If the status returned is `created`, that means that the payment is created successfully and should be authorized by administrator,
    * this simulates when is a bank transfer, you create the payment but the money is not yet in your account.
    *
-   * If the status returned is {@link PaymentStatus.AUTHORIZED}, that means that the payment is authorized and the money is in your account
+   * If the status returned is `authorized`, that means that the payment is authorized and the money is in your account
    * and the order marked as paid
    *
-   * If the status returned is {@link PaymentStatus.DECLINED}, that means that the payment has been declined and the order state keeps the same.
+   * If the status returned is `declined`, that means that the payment has been declined and the order state keeps the same.
    */
   createPayment(order: OrderEntity): Promise<CreatePaymentResult>;
 
@@ -54,12 +54,16 @@ export interface PaymentIntegration {
 export type CreatePaymentResult =
   | {
       amount: number;
-      status: PaymentStatus.CREATED;
+      status: 'created';
     }
   | {
       transactionId: string;
       amount: number;
-      status: PaymentStatus.AUTHORIZED;
+      status: 'authorized';
+    }
+  | {
+      status: 'declined';
+      error: string;
     };
 
 export type AuthorizePaymentResult =

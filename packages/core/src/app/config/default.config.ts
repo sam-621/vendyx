@@ -2,6 +2,11 @@ import { randomBytes } from 'crypto';
 
 import { VendyxConfig } from './vendyx.config';
 
+import {
+  MercadoPagoIntegration,
+  PaypalIntegration,
+  StripeIntegration,
+} from '@/lib/payments';
 import { CloudinaryStorageProvider } from '@/lib/storage';
 
 /**
@@ -25,5 +30,12 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
       apiKey: '224627828215865',
       apiSecret: 'eos_1HKoJaRp7beDXp7s2Jh_2LM',
     }),
+  },
+  payments: {
+    integrations: [
+      new PaypalIntegration(),
+      new StripeIntegration(),
+      new MercadoPagoIntegration(),
+    ],
   },
 };

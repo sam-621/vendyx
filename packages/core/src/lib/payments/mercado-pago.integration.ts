@@ -2,7 +2,6 @@ import {
   AuthorizePaymentResult,
   CreatePaymentResult,
   PaymentIntegration,
-  PaymentStatus,
 } from '@/app/config';
 import { OrderEntity } from '@/app/persistance';
 
@@ -12,7 +11,7 @@ export class MercadoPagoIntegration implements PaymentIntegration {
 
   async createPayment(order: OrderEntity): Promise<CreatePaymentResult> {
     return {
-      status: PaymentStatus.AUTHORIZED,
+      status: 'authorized',
       amount: order.total,
       transactionId: 'mercado-pago-transaction-id',
     };

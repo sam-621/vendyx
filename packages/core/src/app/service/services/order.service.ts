@@ -3,24 +3,29 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { validateEmail } from '../utils';
+import { ValidTransitions, validateEmail } from '../utils';
 
 import {
+  AddPaymentInput,
   CreateAddressInput,
   CreateCustomerInput,
   CreateOrderLineInput,
   ListInput,
   UpdateOrderLineInput,
 } from '@/app/api/common';
+import { getConfig } from '@/app/config';
 import {
   AddressEntity,
   CustomerEntity,
   ID,
   OrderEntity,
   OrderLineEntity,
+  OrderState,
+  PaymentEntity,
+  PaymentMethodEntity,
   VariantEntity,
 } from '@/app/persistance';
-import { UserInputError } from '@/lib/errors';
+import { OrderError, UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class OrderService {
@@ -78,8 +83,21 @@ export class OrderService {
       where: { id: orderId },
     });
 
+    if (!order.shippingAddress) {
+      return null;
+    }
+
     // The shipping address could be a json or a Address entity, so we need to normalize it
     return { id: '', createdAt: '', updatedAt: '', ...order.shippingAddress };
+  }
+
+  async findPayment(orderId: ID) {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+      relations: { payment: true },
+    });
+
+    return order.payment;
   }
 
   async create() {
@@ -223,6 +241,95 @@ export class OrderService {
     await this.db.getRepository(OrderEntity).save(order);
 
     return this.recalculateOrderStats(order.id);
+  }
+
+  async addPayment(orderId: ID, input: AddPaymentInput) {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+      relations: { customer: true, lines: true },
+    });
+
+    if (!order) {
+      throw new UserInputError('Order not found');
+    }
+
+    if (!this.validateOrderTransitionState(order, OrderState.PAYMENT_ADDED)) {
+      throw new OrderError(
+        `Unable to add payment to order in state ${order.state}`,
+      );
+    }
+
+    const paymentMethod = await this.db
+      .getRepository(PaymentMethodEntity)
+      .findOne({
+        where: { code: input.method },
+      });
+    console.log({
+      paymentMethod,
+    });
+
+    if (!paymentMethod) {
+      throw new UserInputError('Payment method not found');
+    }
+
+    const paymentIntegration = getConfig().payments.integrations.find(
+      (p) => p.code === paymentMethod.integrationCode,
+    );
+    console.log({
+      paymentIntegration,
+      int: getConfig().payments.integrations,
+    });
+
+    const paymentIntegrationResult = await paymentIntegration.createPayment(
+      order,
+    );
+
+    if (paymentIntegrationResult.status === 'declined') {
+      throw new OrderError('Payment declined', {
+        error: paymentIntegrationResult.error,
+      });
+    }
+
+    if (paymentIntegrationResult.status === 'created') {
+      const payment = await this.db.getRepository(PaymentEntity).save({
+        amount: order.total,
+        method: paymentMethod,
+      });
+
+      await this.db.getRepository(OrderEntity).save({
+        ...order,
+        payment,
+        state: OrderState.PAYMENT_ADDED,
+      });
+    }
+
+    if (paymentIntegrationResult.status === 'authorized') {
+      const payment = await this.db.getRepository(PaymentEntity).save({
+        amount: paymentIntegrationResult.amount,
+        method: paymentMethod,
+        transactionId: paymentIntegrationResult.transactionId,
+      });
+
+      await this.db.getRepository(OrderEntity).save({
+        ...order,
+        payment,
+        state: OrderState.PAYMENT_AUTHORIZED,
+      });
+    }
+
+    return this.recalculateOrderStats(order.id);
+  }
+
+  /**
+   * Validate if the order can transition to the new state
+   */
+  private validateOrderTransitionState(order: OrderEntity, state: OrderState) {
+    const prevState = order.state;
+    const nextState = state;
+
+    return ValidTransitions.some(
+      (t) => t[0] === prevState && t[1] === nextState,
+    );
   }
 
   /**

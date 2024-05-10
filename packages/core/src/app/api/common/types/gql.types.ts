@@ -103,6 +103,10 @@ export class CreateOrderInput {
     line?: Nullable<CreateOrderLineInput>;
 }
 
+export class AddPaymentInput {
+    method: string;
+}
+
 export interface Node {
     id: string;
     createdAt: Date;
@@ -150,6 +154,8 @@ export abstract class IMutation {
     abstract addCustomerToOrder(orderId: string, input: CreateCustomerInput): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): Nullable<Order> | Promise<Nullable<Order>>;
+
+    abstract addPaymentToOrder(orderId: string, input: AddPaymentInput): Nullable<Order> | Promise<Nullable<Order>>;
 }
 
 export abstract class IQuery {

@@ -26,13 +26,14 @@ export enum ErrorCode {
    * This error should be thrown when a user input that comes from the client is invalid.
    */
   USER_INPUT = 'USER_INPUT',
+
   /**
-   * Validation error.
+   * Payment error.
    *
    * @description
-   * This error should be thrown when logic validation error occurs.
+   * This error should be thrown when a payment error occurs.
    */
-  VALIDATION = 'VALIDATION',
+  PAYMENT = 'PAYMENT',
 }
 
 export type ErrorMetadata = Record<string, unknown>;

@@ -14,7 +14,7 @@ import {
   ProductEntity,
   VariantEntity,
 } from '@/app/persistance';
-import { UserInputError, ValidationError } from '@/lib/errors';
+import { UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class VariantService {
@@ -51,7 +51,7 @@ export class VariantService {
         .findOne({ where: { product: { id: productId } } });
 
       if (defaultVariantAlreadyCreated) {
-        throw new ValidationError(
+        throw new UserInputError(
           'Default variant already created, add options instead',
         );
       }

@@ -45,10 +45,10 @@ export class UserInputError extends BusinessError {
 
 /**
  * @description
- * This error is thrown when a validation error occurs.
+ * This error is thrown when a payment error occurs.
  */
-export class ValidationError extends BusinessError {
+export class OrderError extends BusinessError {
   constructor(message: string, metadata?: ErrorMetadata) {
-    super(ErrorCode.VALIDATION, message, metadata);
+    super(ErrorCode.PAYMENT, message, metadata);
   }
 }

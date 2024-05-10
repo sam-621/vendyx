@@ -3,7 +3,7 @@ import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 import { Entity } from './entity';
 import { ShipmentEntity } from './shipment.entity';
 
-@TypeOrmEntity('shipment-method')
+@TypeOrmEntity('shipment_method')
 export class ShipmentMethodEntity extends Entity {
   @Column('varchar')
   name: string;

@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 
 import { AdminEntity } from '@/app/persistance';
 import { SecurityService } from '@/app/security';
-import { ValidationError } from '@/lib/errors';
+import { UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class AdminService {
@@ -19,7 +19,7 @@ export class AdminService {
       .findOne({ where: { username } });
 
     if (!admin) {
-      throw new ValidationError('Invalid username or password');
+      throw new UserInputError('Invalid username or password');
     }
 
     const passwordsMatch = await this.securityService.compare(
@@ -28,7 +28,7 @@ export class AdminService {
     );
 
     if (!passwordsMatch) {
-      throw new ValidationError('Invalid username or password');
+      throw new UserInputError('Invalid username or password');
     }
 
     const { accessToken } = await this.securityService.generateToken(admin);
