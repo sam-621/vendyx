@@ -6,3 +6,4 @@ export * from './asset.service';
 export * from './option-value.service';
 export * from './order.service';
 export * from './payment-method.service';
+export * from './payment.service';

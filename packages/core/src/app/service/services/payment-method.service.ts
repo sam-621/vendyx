@@ -8,7 +8,7 @@ import { PaymentMethodEntity } from '@/app/persistance';
 export class PaymentMethodService {
   constructor(@InjectDataSource() private db: DataSource) {}
 
-  find() {
-    return this.db.getRepository(PaymentMethodEntity).find();
+  async find() {
+    return await this.db.getRepository(PaymentMethodEntity).find();
   }
 }

@@ -13,7 +13,7 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-6 text-sm">
-        {customer && (
+        {customer ? (
           <div className="flex flex-col gap-2">
             <p className="font-medium text-distinct">
               {customer?.firstName} {customer?.lastName}
@@ -23,6 +23,8 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
               <p>{`+ ${customer?.phoneCountryCode} ${customer?.phoneNumber}`}</p>
             )}
           </div>
+        ) : (
+          <p>Invitado</p>
         )}
         {address && (
           <div className="flex flex-col gap-2">

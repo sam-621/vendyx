@@ -311,10 +311,6 @@ export class OrderService {
     const paymentIntegration = getConfig().payments.integrations.find(
       (p) => p.code === paymentMethod.integrationCode,
     );
-    console.log({
-      paymentIntegration,
-      int: getConfig().payments.integrations,
-    });
 
     const paymentIntegrationResult = await paymentIntegration.createPayment(
       order,

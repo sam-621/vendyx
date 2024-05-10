@@ -49,6 +49,11 @@ export const CommonOrder = graphql(`
       phoneCountryCode
       phoneNumber
     }
+    payment {
+      id
+      amount
+      transactionId
+    }
   }
 `);
 

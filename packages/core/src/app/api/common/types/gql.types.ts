@@ -309,6 +309,7 @@ export class Payment implements Node {
     updatedAt: Date;
     transactionId: string;
     amount: number;
+    method: PaymentMethod;
 }
 
 export class PaymentList implements List {
