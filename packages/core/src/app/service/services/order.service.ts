@@ -329,7 +329,7 @@ export class OrderService {
       shipment,
     });
 
-    return order;
+    return this.recalculateOrderStats(order.id);
   }
 
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
@@ -422,11 +422,11 @@ export class OrderService {
   private async recalculateOrderStats(orderId: ID) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { lines: true },
+      relations: { lines: true, shipment: true },
     });
 
-    const total = order.lines.reduce((acc, line) => acc + line.linePrice, 0);
     const subtotal = order.lines.reduce((acc, line) => acc + line.linePrice, 0);
+    const total = subtotal + (order.shipment?.amount ?? 0);
     const totalQuantity = order.lines.reduce(
       (acc, line) => acc + line.quantity,
       0,

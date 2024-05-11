@@ -19,6 +19,7 @@ export class OrderResolver {
   @Mutation('createOrder')
   async createOrder(@Args('input') input: CreateOrderInput) {
     const newOrder = await this.orderService.create();
+
     const orderWithLine = await this.orderService.addLine(
       newOrder.id,
       input.line,
