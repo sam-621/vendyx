@@ -2,8 +2,11 @@ type Shipment implements Node {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
-  trackingCode: String
-  amount: Int
+  trackingCode: String!
+  amount: Int!
+
+  order: Order!
+  method: ShippingMethod!
 }
 
 type ShipmentList implements List {

@@ -103,7 +103,7 @@ export class CreateOrderInput {
     line?: Nullable<CreateOrderLineInput>;
 }
 
-export class AddPaymentInput {
+export class AddPaymentToOrderInput {
     methodId: string;
 }
 
@@ -159,7 +159,7 @@ export abstract class IMutation {
 
     abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): Nullable<Order> | Promise<Nullable<Order>>;
 
-    abstract addPaymentToOrder(orderId: string, input: AddPaymentInput): Nullable<Order> | Promise<Nullable<Order>>;
+    abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): Nullable<Order> | Promise<Nullable<Order>>;
 }
@@ -181,7 +181,7 @@ export abstract class IQuery {
 
     abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 
-    abstract availableShippingMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
+    abstract availableShippingMethods(): ShippingMethod[] | Promise<ShippingMethod[]>;
 }
 
 export class Address implements Node {
@@ -339,8 +339,10 @@ export class Shipment implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    trackingCode?: Nullable<string>;
-    amount?: Nullable<number>;
+    trackingCode: string;
+    amount: number;
+    order: Order;
+    method: ShippingMethod;
 }
 
 export class ShipmentList implements List {

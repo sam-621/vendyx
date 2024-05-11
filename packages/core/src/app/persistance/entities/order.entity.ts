@@ -68,6 +68,7 @@ export class OrderEntity extends Entity {
   @OneToOne(() => PaymentEntity, { nullable: true })
   payment: PaymentEntity;
 
-  @OneToOne(() => ShipmentEntity, (s) => s.order, { nullable: true })
+  @JoinColumn()
+  @OneToOne(() => ShipmentEntity, { nullable: true })
   shipment: ShipmentEntity;
 }

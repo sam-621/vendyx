@@ -45,4 +45,11 @@ export class OrderCommonResolver {
 
     return payment;
   }
+
+  @ResolveField('shipment')
+  async shipment(@Parent() order: OrderEntity) {
+    const payment = await this.orderService.findShipment(order.id);
+
+    return payment;
+  }
 }

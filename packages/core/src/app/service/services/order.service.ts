@@ -6,7 +6,8 @@ import { DataSource } from 'typeorm';
 import { ValidTransitions, validateEmail } from '../utils';
 
 import {
-  AddPaymentInput,
+  AddPaymentToOrderInput,
+  AddShipmentToOrderInput,
   CreateAddressInput,
   CreateCustomerInput,
   CreateOrderLineInput,
@@ -23,6 +24,8 @@ import {
   OrderState,
   PaymentEntity,
   PaymentMethodEntity,
+  ShipmentEntity,
+  ShippingMethodEntity,
   VariantEntity,
 } from '@/app/persistance';
 import { OrderError, UserInputError } from '@/lib/errors';
@@ -98,6 +101,15 @@ export class OrderService {
     });
 
     return order.payment;
+  }
+
+  async findShipment(orderId: ID) {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+      relations: { shipment: true },
+    });
+
+    return order.shipment;
   }
 
   async create() {
@@ -282,7 +294,7 @@ export class OrderService {
     return this.recalculateOrderStats(order.id);
   }
 
-  async addPayment(orderId: ID, input: AddPaymentInput) {
+  async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
       relations: { customer: true, lines: true },
@@ -351,7 +363,52 @@ export class OrderService {
       });
     }
 
-    return this.recalculateOrderStats(order.id);
+    return order;
+  }
+
+  async addShipment(orderId: ID, input: AddShipmentToOrderInput) {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+      relations: { lines: true, customer: true, shippingAddress: true },
+    });
+
+    if (!order) {
+      throw new UserInputError('Order not found');
+    }
+
+    if (!this.validateOrderTransitionState(order, OrderState.SHIPPED)) {
+      throw new UserInputError(
+        `Unable to add shipment to order in state ${order.state}`,
+      );
+    }
+
+    const shippingMethod = await this.db
+      .getRepository(ShippingMethodEntity)
+      .findOne({ where: { id: input.shippingMethodId } });
+
+    if (!shippingMethod) {
+      throw new UserInputError('Shipping method not found');
+    }
+
+    // TODO: Do I have to validate if calculator exists?
+    const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
+      (p) => p.code === shippingMethod.priceCalculatorCode,
+    );
+
+    const shippingPrice = await shippingPriceCalculator.calculatePrice(order);
+
+    const shipment = await this.db.getRepository(ShipmentEntity).save({
+      amount: shippingPrice,
+      method: shippingMethod,
+    });
+
+    await this.db.getRepository(OrderEntity).save({
+      ...order,
+      shipment,
+      state: OrderState.SHIPPED,
+    });
+
+    return order;
   }
 
   /**

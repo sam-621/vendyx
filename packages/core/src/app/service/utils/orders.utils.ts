@@ -17,4 +17,8 @@ export const ValidTransitions = [
    * The order has been shipped
    */
   [OrderState.PAYMENT_AUTHORIZED, OrderState.SHIPPED],
+  /**
+   * The order has been delivered
+   */
+  [OrderState.SHIPPED, OrderState.DELIVERED],
 ];

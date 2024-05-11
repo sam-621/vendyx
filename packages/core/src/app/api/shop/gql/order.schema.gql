@@ -2,7 +2,7 @@ type Mutation {
   createOrder(input: CreateOrderInput): Order
   addCustomerToOrder(orderId: ID!, input: CreateCustomerInput!): Order
   addShippingAddressToOrder(orderId: ID!, input: CreateAddressInput!): Order
-  addPaymentToOrder(orderId: ID!, input: AddPaymentInput!): Order
+  addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): Order
   addShipmentToOrder(orderId: ID!, input: AddShipmentToOrderInput!): Order
 }
 
