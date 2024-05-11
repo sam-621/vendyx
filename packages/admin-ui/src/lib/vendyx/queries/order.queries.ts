@@ -53,6 +53,12 @@ export const CommonOrder = graphql(`
       id
       amount
       transactionId
+      method {
+        id
+        name
+        description
+        enabled
+      }
     }
   }
 `);

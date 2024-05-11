@@ -20,7 +20,7 @@ export const OrderTable = () => {
         placedAt: o.placedAt,
         total: o.total,
         items: o.totalQuantity,
-        shipment: 'Express',
+        shipment: 'NA',
         state: o.state
       };
     }) ?? [];

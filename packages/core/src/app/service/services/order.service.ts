@@ -332,6 +332,7 @@ export class OrderService {
         ...order,
         payment,
         state: OrderState.PAYMENT_ADDED,
+        placedAt: new Date(),
       });
     }
 
@@ -346,6 +347,7 @@ export class OrderService {
         ...order,
         payment,
         state: OrderState.PAYMENT_AUTHORIZED,
+        placedAt: new Date(),
       });
     }
 

@@ -45,7 +45,7 @@ export const OrderDetailsPage = () => {
         </div>
         <div className="col-span-1 flex flex-col gap-6">
           <OrderCustomerCard address={order.shippingAddress} customer={order.customer} />
-          <OrderPaymentCard />
+          <OrderPaymentCard payment={order.payment} />
           <OrderShipmentCard />
         </div>
       </div>
