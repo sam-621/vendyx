@@ -1,4 +1,12 @@
-import { CloudinaryStorageProvider, bootstrap } from '@vendyx/core';
+import {
+  CloudinaryStorageProvider,
+  CountryPriceCalculator,
+  FedexPriceCalculator,
+  MercadoPagoIntegration,
+  PaypalIntegration,
+  StripeIntegration,
+  bootstrap
+} from '@vendyx/core';
 import { config } from 'dotenv';
 
 config();
@@ -20,5 +28,11 @@ bootstrap({
       apiKey: process.env.CLOUDINARY_API_KEY ?? '',
       apiSecret: process.env.CLOUDINARY_API_SECRET ?? ''
     })
+  },
+  shipping: {
+    priceCalculators: [new CountryPriceCalculator(), new FedexPriceCalculator()]
+  },
+  payments: {
+    integrations: [new PaypalIntegration(), new StripeIntegration(), new MercadoPagoIntegration()]
   }
 });

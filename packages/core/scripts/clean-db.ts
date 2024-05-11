@@ -20,8 +20,8 @@ const cleanDb = async () => {
 const cleanOrders = async () => {
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: 'postgres://postgres:postgres@localhost:5432/vendyx',
-    // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
+    // url: 'postgres://postgres:postgres@localhost:5432/vendyx',
+    url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
     synchronize: false,
   }).initialize();
 

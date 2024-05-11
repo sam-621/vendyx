@@ -3,5 +3,7 @@
 */
 
 export * from './main';
-export * from './lib/storage';
 export * from './app/service/services';
+export * from './lib/storage';
+export * from './lib/shipping';
+export * from './lib/payments';
