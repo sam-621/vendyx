@@ -29,6 +29,7 @@ const cleanOrders = async () => {
   await dataSource.query('DELETE FROM "orders";');
   await dataSource.query('DELETE FROM "customer";');
   await dataSource.query('DELETE FROM "payment";');
+  await dataSource.query('DELETE FROM "shipment";');
 };
 
 // cleanDb();

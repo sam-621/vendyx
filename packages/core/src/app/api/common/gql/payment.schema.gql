@@ -2,7 +2,7 @@ type Payment implements Node {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
-  transactionId: String!
+  transactionId: String
   amount: Int!
   method: PaymentMethod!
 }

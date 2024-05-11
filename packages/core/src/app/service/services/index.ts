@@ -7,3 +7,5 @@ export * from './option-value.service';
 export * from './order.service';
 export * from './payment-method.service';
 export * from './payment.service';
+export * from './shipping-method.service';
+export * from './shipment.service';

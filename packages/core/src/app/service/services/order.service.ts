@@ -369,7 +369,7 @@ export class OrderService {
   async addShipment(orderId: ID, input: AddShipmentToOrderInput) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { lines: true, customer: true, shippingAddress: true },
+      relations: { lines: true, customer: true },
     });
 
     if (!order) {

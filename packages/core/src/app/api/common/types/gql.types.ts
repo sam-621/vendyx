@@ -307,7 +307,7 @@ export class Payment implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    transactionId: string;
+    transactionId?: Nullable<string>;
     amount: number;
     method: PaymentMethod;
 }
@@ -339,7 +339,7 @@ export class Shipment implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    trackingCode: string;
+    trackingCode?: Nullable<string>;
     amount: number;
     order: Order;
     method: ShippingMethod;
