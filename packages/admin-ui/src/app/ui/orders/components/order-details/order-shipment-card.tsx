@@ -1,6 +1,15 @@
+import { type FC } from 'react';
+
+import { getFormattedPrice } from '@vendyx/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
-export const OrderShipmentCard = () => {
+import { type CommonOrderFragment } from '@/lib/vendyx/codegen/graphql';
+
+export const OrderShipmentCard: FC<Props> = ({ shipment }) => {
+  if (!shipment) return null;
+
+  const { method } = shipment;
+
   return (
     <Card>
       <CardHeader>
@@ -10,13 +19,17 @@ export const OrderShipmentCard = () => {
       <CardContent className="flex flex-col gap-6 text-sm">
         <div className="flex flex-col gap-2">
           <p>
-            Método: <span className="font-medium text-distinct">Express</span>
+            Método: <span className="font-medium text-distinct">{method.name}</span>
           </p>
           <p>
-            Monto: <span>$ 678.90</span>
+            Monto: <span>{getFormattedPrice(shipment.amount)}</span>
           </p>
         </div>
       </CardContent>
     </Card>
   );
+};
+
+type Props = {
+  shipment: CommonOrderFragment['shipment'];
 };

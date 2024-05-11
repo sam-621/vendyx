@@ -46,8 +46,6 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
       return <DataTableColumnHeader column={column} title={t('inventory.table.header.product')} />;
     },
     cell: ({ row }) => {
-      console.log(row.original.image);
-
       return (
         <Link
           to={`/inventory/${row.original.slug ?? ''}`}

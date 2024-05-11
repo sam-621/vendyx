@@ -5,6 +5,6 @@ export class FedexPriceCalculator implements ShippingPriceCalculatorConfig {
   code = 'fedex-calculator';
 
   calculatePrice(): Promise<number> {
-    return Promise.resolve(100);
+    return Promise.resolve(10000);
   }
 }

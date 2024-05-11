@@ -17,9 +17,7 @@ export class PaypalIntegration implements PaymentIntegration {
     };
   }
 
-  async authorizePayment(order: OrderEntity): Promise<AuthorizePaymentResult> {
-    console.log({ order });
-
+  async authorizePayment(): Promise<AuthorizePaymentResult> {
     return {
       success: true,
     };

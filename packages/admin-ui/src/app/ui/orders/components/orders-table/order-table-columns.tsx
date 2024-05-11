@@ -9,7 +9,6 @@ import { DataTableColumnHeader } from '@/components/data-table';
 import { OrderStatusBadge } from '@/components/items';
 
 import { type TableOrder } from './order-table';
-import { OrderTableActions } from './order-table-actions';
 
 export const OrderTableColumns: ColumnDef<TableOrder>[] = [
   {
@@ -58,15 +57,6 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
     }
   },
   {
-    accessorKey: 'placedAt',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="PLaced at" />;
-    },
-    cell: ({ row }) => {
-      return <div className="font-medium">{row.original.placedAt}</div>;
-    }
-  },
-  {
     accessorKey: 'total',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Total" />;
@@ -84,13 +74,6 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
     }
   },
   {
-    accessorKey: 'shipment',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Shipment" />;
-    },
-    enableSorting: false
-  },
-  {
     accessorKey: 'state',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="State" />;
@@ -100,8 +83,19 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
     }
   },
   {
-    id: 'actions',
-    header: () => <div></div>,
-    cell: ({ row }) => <OrderTableActions row={row} />
+    accessorKey: 'shipment',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Shipment" />;
+    },
+    enableSorting: false
+  },
+  {
+    accessorKey: 'placedAt',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="PLaced at" />;
+    },
+    cell: ({ row }) => {
+      return <div className="font-medium">{row.original.placedAt}</div>;
+    }
   }
 ];

@@ -1,10 +1,10 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 
-import { Button } from '@vendyx/theme';
 import { MoveLeftIcon } from 'lucide-react';
 
 import { PageLayout } from '@/components/layout';
 import { useGetOrderDetails } from '@/core/orders';
+import { getFormattedDate } from '@/lib/utils';
 
 import {
   OrderCustomerCard,
@@ -12,6 +12,8 @@ import {
   OrderPaymentCard,
   OrderShipmentCard
 } from '../components/order-details';
+import { OrderActions } from '../components/order-more-actions/order-more-actions';
+import { TransitionOrderStateButton } from '../components/transition-state-button/transition-state-button';
 
 export const OrderDetailsPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -30,9 +32,13 @@ export const OrderDetailsPage = () => {
   return (
     <PageLayout
       title={`# ${order.code}`}
-      // subtitle={"Aug 21 at 9:32 am"}
-      subtitle={order.createdAt}
-      actions={<Button type="button">Marcar como enviado</Button>}
+      subtitle={getFormattedDate(new Date(order.createdAt as string))}
+      actions={
+        <div className="flex gap-4 items-center">
+          <TransitionOrderStateButton orderState={order.state} />
+          <OrderActions />
+        </div>
+      }
       icon={
         <Link to={'/orders'}>
           <MoveLeftIcon />
@@ -46,7 +52,7 @@ export const OrderDetailsPage = () => {
         <div className="col-span-1 flex flex-col gap-6">
           <OrderCustomerCard address={order.shippingAddress} customer={order.customer} />
           <OrderPaymentCard payment={order.payment} />
-          <OrderShipmentCard />
+          <OrderShipmentCard shipment={order.shipment} />
         </div>
       </div>
     </PageLayout>

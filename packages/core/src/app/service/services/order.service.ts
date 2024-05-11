@@ -294,6 +294,44 @@ export class OrderService {
     return this.recalculateOrderStats(order.id);
   }
 
+  async addShipment(orderId: ID, input: AddShipmentToOrderInput) {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+      relations: { lines: true, customer: true },
+    });
+
+    if (!order) {
+      throw new UserInputError('Order not found');
+    }
+
+    const shippingMethod = await this.db
+      .getRepository(ShippingMethodEntity)
+      .findOne({ where: { id: input.shippingMethodId } });
+
+    if (!shippingMethod) {
+      throw new UserInputError('Shipping method not found');
+    }
+
+    // TODO: Do I have to validate if calculator exists?
+    const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
+      (p) => p.code === shippingMethod.priceCalculatorCode,
+    );
+
+    const shippingPrice = await shippingPriceCalculator.calculatePrice(order);
+
+    const shipment = await this.db.getRepository(ShipmentEntity).save({
+      amount: shippingPrice,
+      method: shippingMethod,
+    });
+
+    await this.db.getRepository(OrderEntity).save({
+      ...order,
+      shipment,
+    });
+
+    return order;
+  }
+
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
@@ -362,51 +400,6 @@ export class OrderService {
         placedAt: new Date(),
       });
     }
-
-    return order;
-  }
-
-  async addShipment(orderId: ID, input: AddShipmentToOrderInput) {
-    const order = await this.db.getRepository(OrderEntity).findOne({
-      where: { id: orderId },
-      relations: { lines: true, customer: true },
-    });
-
-    if (!order) {
-      throw new UserInputError('Order not found');
-    }
-
-    if (!this.validateOrderTransitionState(order, OrderState.SHIPPED)) {
-      throw new UserInputError(
-        `Unable to add shipment to order in state ${order.state}`,
-      );
-    }
-
-    const shippingMethod = await this.db
-      .getRepository(ShippingMethodEntity)
-      .findOne({ where: { id: input.shippingMethodId } });
-
-    if (!shippingMethod) {
-      throw new UserInputError('Shipping method not found');
-    }
-
-    // TODO: Do I have to validate if calculator exists?
-    const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
-      (p) => p.code === shippingMethod.priceCalculatorCode,
-    );
-
-    const shippingPrice = await shippingPriceCalculator.calculatePrice(order);
-
-    const shipment = await this.db.getRepository(ShipmentEntity).save({
-      amount: shippingPrice,
-      method: shippingMethod,
-    });
-
-    await this.db.getRepository(OrderEntity).save({
-      ...order,
-      shipment,
-      state: OrderState.SHIPPED,
-    });
 
     return order;
   }

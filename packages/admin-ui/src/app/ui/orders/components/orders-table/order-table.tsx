@@ -16,11 +16,11 @@ export const OrderTable = () => {
       return {
         id: o.id,
         code: o.code,
-        customer: o.customer?.firstName ?? o.customer?.lastName ?? 'Guest',
+        customer: o.customer?.firstName ?? o.customer?.lastName ?? 'Invitado',
         placedAt: o.placedAt,
         total: o.total,
         items: o.totalQuantity,
-        shipment: 'NA',
+        shipment: o.shipment?.method.name ?? '',
         state: o.state
       };
     }) ?? [];

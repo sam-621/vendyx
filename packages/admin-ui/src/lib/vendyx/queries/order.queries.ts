@@ -8,6 +8,7 @@ export const CommonOrder = graphql(`
     subtotal
     total
     totalQuantity
+    state
     lines {
       items {
         id
@@ -60,6 +61,15 @@ export const CommonOrder = graphql(`
         enabled
       }
     }
+    shipment {
+      id
+      amount
+      trackingCode
+      method {
+        id
+        name
+      }
+    }
   }
 `);
 
@@ -78,6 +88,15 @@ export const GetOrdersQuery = graphql(`
           id
           firstName
           lastName
+        }
+        shipment {
+          id
+          amount
+          trackingCode
+          method {
+            id
+            name
+          }
         }
       }
     }

@@ -5,6 +5,6 @@ export class CountryPriceCalculator implements ShippingPriceCalculatorConfig {
   code = 'country-shipping-calculator';
 
   calculatePrice(): Promise<number> {
-    return Promise.resolve(50);
+    return Promise.resolve(5000);
   }
 }

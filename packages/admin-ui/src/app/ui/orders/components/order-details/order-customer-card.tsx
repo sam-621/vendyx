@@ -2,9 +2,9 @@ import { type FC } from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle, Label } from '@vendyx/theme';
 
+import { getFormattedPhoneNumber } from '@/lib/utils';
 import { type CommonOrderFragment } from '@/lib/vendyx/codegen/graphql';
 
-// TODO: Format phone number to +52 667 1624 203
 export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
   return (
     <Card>
@@ -18,9 +18,9 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
             <p className="font-medium text-distinct">
               {customer?.firstName} {customer?.lastName}
             </p>
-            <p>{customer?.email}</p>
-            {customer?.phoneNumber && (
-              <p>{`+ ${customer?.phoneCountryCode} ${customer?.phoneNumber}`}</p>
+            <p>{customer.email}</p>
+            {customer.phoneNumber && (
+              <p>{`+ ${customer.phoneCountryCode} ${getFormattedPhoneNumber(customer.phoneNumber)}`}</p>
             )}
           </div>
         ) : (
@@ -29,15 +29,17 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
         {address && (
           <div className="flex flex-col gap-2">
             <Label className="text-base">Dirección</Label>
-            <p>{address?.streetLine1}</p>
-            {address?.streetLine2 && <p>{address.streetLine2}</p>}
+            <p>{address.streetLine1}</p>
+            {address.streetLine2 && <p>{address.streetLine2}</p>}
             <p>
-              {address?.postalCode} {address?.city}, {address?.province}
+              {address.postalCode} {address?.city}, {address.province}
             </p>
-            <p>{address?.country}</p>
-            <p>
-              +{address?.phoneCountryCode} {address?.phoneNumber}
-            </p>
+            <p>{address.country}</p>
+            {address.phoneCountryCode && address.phoneNumber && (
+              <p>
+                +{address.phoneCountryCode} {getFormattedPhoneNumber(address.phoneNumber)}
+              </p>
+            )}
           </div>
         )}
       </CardContent>
