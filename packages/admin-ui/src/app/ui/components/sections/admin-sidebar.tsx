@@ -10,8 +10,8 @@ import { UserAvatar } from '../items';
 export const AdminSidebar = () => {
   const { pathname } = useLocation();
 
-  const isInOrders = pathname === '/orders';
-  const isInInventory = pathname === '/inventory';
+  const isInOrders = pathname.includes('/orders');
+  const isInInventory = pathname.includes('/inventory');
 
   return (
     <div className="h-full flex flex-col justify-between">

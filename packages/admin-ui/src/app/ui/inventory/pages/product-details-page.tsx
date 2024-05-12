@@ -1,5 +1,5 @@
 import { FormProvider } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 
 import { Button } from '@vendyx/theme';
 import { MoveLeftIcon } from 'lucide-react';
@@ -7,6 +7,7 @@ import { MoveLeftIcon } from 'lucide-react';
 import { PageLayout } from '@/components/layout';
 import { useGetProductDetails } from '@/core/inventory';
 import { t } from '@/lib/locales';
+import { getFormattedDate } from '@/lib/utils';
 
 import { ProductDetails } from '../components/product-details';
 import { useProductDetailsForm } from '../components/product-details/use-product-details-form';
@@ -22,12 +23,16 @@ export const ProductDetailsPage = () => {
 
   if (isLoading) return <h1>Is loading</h1>;
 
+  if (!product) {
+    return <Navigate to="/inventory" />;
+  }
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.onSubmit}>
         <PageLayout
-          title={t('product-details.title')}
-          subtitle={t('product-details.subtitle')}
+          title={product.name}
+          subtitle={`Añadido en ${getFormattedDate(new Date(product.createdAt as string))}`}
           actions={
             <>
               <Button type="button" variant="secondary">

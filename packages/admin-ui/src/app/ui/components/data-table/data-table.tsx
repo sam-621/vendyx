@@ -22,7 +22,7 @@ import {
   TableRow
 } from '@vendyx/theme';
 
-import { DataTablePagination } from './data-table-pagination';
+// import { DataTablePagination } from './data-table-pagination';
 import { DataTableViewOptions } from './data-table-view-options';
 
 export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData, TValue>) => {
@@ -101,7 +101,7 @@ export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData,
         </Table>
       </div>
       {/* footer */}
-      <DataTablePagination table={table} />
+      {/* <DataTablePagination table={table} /> */}
     </div>
   );
 };
