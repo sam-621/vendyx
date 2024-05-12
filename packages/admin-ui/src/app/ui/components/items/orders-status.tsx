@@ -6,13 +6,13 @@ import { OrderState } from '@/lib/vendyx/codegen/graphql';
 
 export const OrderStatusBadge: FC<Props> = ({ status }) => {
   if (status === OrderState.Modifying) {
-    return <Badge variant="outline">Modifying</Badge>;
+    return <Badge variant="outline">Agregando</Badge>;
   }
 
   if (status === OrderState.PaymentAdded || status === OrderState.PaymentAuthorized) {
     return (
       <Badge variant="outline" className="bg-distinct/15 border-distinct text-distinct">
-        Payment
+        Pagada
       </Badge>
     );
   }
@@ -20,7 +20,7 @@ export const OrderStatusBadge: FC<Props> = ({ status }) => {
   if (status === OrderState.Shipped) {
     return (
       <Badge variant="outline" className="bg-warning/15 border-distinct">
-        Sent
+        Enviada
       </Badge>
     );
   }
@@ -28,7 +28,7 @@ export const OrderStatusBadge: FC<Props> = ({ status }) => {
   if (status === OrderState.Delivered) {
     return (
       <Badge variant="outline" className="bg-primary/10 border-primary text-primary">
-        Delivered
+        Completada
       </Badge>
     );
   }

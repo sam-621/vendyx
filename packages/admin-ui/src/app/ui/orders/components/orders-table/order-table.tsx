@@ -29,7 +29,7 @@ export const OrderTable = () => {
     <DataTable
       data={data}
       columns={OrderTableColumns}
-      search={{ filterKey: 'code', placeholder: 'Search orders...' }}
+      search={{ filterKey: 'code', placeholder: 'Buscar ordenes...' }}
     />
   );
 };

@@ -18,9 +18,10 @@ export const LoginForm = () => {
       />
       <FormInput
         {...register('password')}
-        label={t('login.form.input.username')}
+        label={t('login.form.input.password')}
         placeholder="******"
         error={errors.password?.message}
+        type="password"
       />
       <Button isLoading={isSubmitting}>{t('login.form.button.login')}</Button>
     </form>

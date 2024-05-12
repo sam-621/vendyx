@@ -20,6 +20,7 @@ import { type CommonOrderFragment } from '@/lib/vendyx/codegen/graphql';
 
 export const OrderItemsTable: FC<Props> = ({ order }) => {
   const lines = order.lines.items;
+  const { shipment } = order;
 
   return (
     <Card>
@@ -67,13 +68,13 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
                 <TableCell>{getFormattedPrice(order.subtotal)}</TableCell>
               </TableRow>
 
-              {/* <TableRow className="border-transparent">
+              <TableRow className="border-transparent">
                 <TableCell>Envío</TableCell>
-                <TableCell>Express</TableCell>
+                <TableCell>{shipment?.method.name ?? ''}</TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
-                <TableCell>$ 50.00</TableCell>
-              </TableRow> */}
+                <TableCell>{getFormattedPrice(shipment?.amount ?? 0)}</TableCell>
+              </TableRow>
 
               <TableRow className="border-transparent">
                 <TableCell className="font-semibold">Total</TableCell>

@@ -9,6 +9,6 @@ export class ApiError extends Error {
 
 export class UnexpectedError extends Error {
   constructor() {
-    super('An unexpected error occurred. Please reload and try again later.');
+    super('Un error inesperado ocurrió. Porfavor recargue la página y vuelva a intentar..');
   }
 }
