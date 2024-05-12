@@ -335,7 +335,7 @@ export class OrderService {
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { customer: true, lines: true },
+      relations: { customer: true, lines: { productVariant: true } },
     });
 
     if (!order) {
@@ -400,6 +400,13 @@ export class OrderService {
         placedAt: new Date(),
       });
     }
+
+    await this.db.getRepository(VariantEntity).save(
+      order.lines.map((l) => ({
+        ...l.productVariant,
+        stock: l.productVariant.stock - l.quantity,
+      })),
+    );
 
     return order;
   }
