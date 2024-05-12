@@ -14,7 +14,7 @@ We know there are so many other options for e-commerce platform, so why choose u
 
 ## Roadmap
 > [!NOTE]
-> Vendyx is in a development phase, if something is checked doesn't mean that we are not going to add more features to that sections, only means that the MVP for that section is finished
+> Vendyx is in development. Check marks indicate completed MVP sections; more features will be added.
 
 - [x] Inventory management
   - Products
