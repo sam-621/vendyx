@@ -4,7 +4,7 @@ A functional and scalable minimal e-commerce admin that can be adjusted to any u
 
 ## Why choose Vendyx?
 
-We know there are so many other options for e-commerce, so why choose us?
+We know there are so many other options for e-commerce platform, so why choose us?
 
 🎨 **Admin ui focused on simplicity:** Vendyx offers a unique and simple administration interface, inspired by the elegance and functionality of Shopify.
 
@@ -13,21 +13,23 @@ We know there are so many other options for e-commerce, so why choose us?
 📦 **Your product:** Self host, fork, built on top of it, vendyx is a open source solution for your next e-commerce platform
 
 ## Roadmap
+> [!NOTE]
+> Vendyx is in a development phase, if something is checked doesn't mean that we are not going to add more features to that sections, only means that the MVP for that section is finished
 
 - [x] Inventory management
   - Products
-  - Variants
   - Assets upload
-- [ ] Order management (order states, shipping and payment methods, cancel) 🚧
+- [x] Order management (order states, shipping and payment methods, cancel)
   - States (modifying, payment method added, complete, etc.)
   - Payment and shipping methods
   - Cancel
-- [ ] Shop API
+- [x] Shop API 
   - products
   - orders (cart)
-- [ ] Extensible by code
+- [ ] Extensible by code 🚧
   - asset storage provider
-  - api options (port, url)
+  - api options
+  - strategies
   - payment methods
   - shipping methods
   - plugins
