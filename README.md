@@ -14,7 +14,7 @@ We know there are so many other options for e-commerce platform, so why choose u
 
 ## Roadmap
 > [!NOTE]
-> Vendyx is in development. Check marks indicate completed MVP sections; more features will be added.
+> **Vendyx is in development. Check marks indicate completed MVP sections; more features will be added.**
 
 - [x] Inventory management
   - Products
