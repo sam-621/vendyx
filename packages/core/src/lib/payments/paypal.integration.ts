@@ -13,7 +13,7 @@ export class PaypalIntegration implements PaymentIntegration {
     return {
       status: 'authorized',
       amount: order.total,
-      transactionId: 'paypal-transaction-id',
+      transactionId: generateTransactionId(16),
     };
   }
 
@@ -22,4 +22,20 @@ export class PaypalIntegration implements PaymentIntegration {
       success: true,
     };
   }
+}
+
+/**
+ * simulate transactionID.
+ */
+function generateTransactionId(length: number) {
+  const charset =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let transactionId = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    transactionId += charset[randomIndex];
+  }
+
+  return transactionId;
 }
