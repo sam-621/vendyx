@@ -17,15 +17,9 @@ We know there are so many other options for e-commerce platform, so why choose u
 > **Vendyx is in development. Check marks indicate completed MVP sections; more features will be added.**
 
 - [x] Inventory management
-  - Products
-  - Assets upload
-- [x] Order management (order states, shipping and payment methods, cancel)
-  - States (modifying, payment method added, complete, etc.)
-  - Payment and shipping methods
-  - Cancel
-- [x] Shop API 
-  - products
-  - orders (cart)
+- [x] Order management
+- [x] Shop API
+- [ ] Roles
 - [ ] Extensible by code 🚧
   - asset storage provider
   - api options
