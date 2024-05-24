@@ -23,8 +23,9 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@/lib/*": ["src/lib/*"],
-      "@/components/*": ["src/app/ui/components/*"],
+      "@/components/*": ["src/app/components/*"],
       "@/core/*": ["src/app/core/*"]
     }
   },

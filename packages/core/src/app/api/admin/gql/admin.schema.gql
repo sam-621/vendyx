@@ -12,9 +12,23 @@ input AuthenticateInput {
 }
 
 type Mutation {
-  authenticate(input: AuthenticateInput!): String
+  authenticate(input: AuthenticateInput!): AuthenticateResult!
 }
 
 type Query {
   validateToken: Boolean
+}
+
+type AuthenticateResult {
+  authToken: String
+  apiErrors: [AdminErrorResult!]!
+}
+
+type AdminErrorResult {
+  code: AdminErrorCode!
+  message: String!
+}
+
+enum AdminErrorCode {
+  INVALID_CREDENTIALS
 }

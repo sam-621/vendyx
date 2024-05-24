@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { AdminLayout } from '@/components/layout';
+import { AdminLayout } from '@/app/components';
 
-import { CreateProductPage, ProductDetailsPage, ProductsPage } from './ui/inventory';
-import { LoginPage } from './ui/login';
-import { OrderDetailsPage, OrderPages } from './ui/orders/pages';
 import { AuthWrapper } from './auth-wrapper';
+import { CreateProductPage, ProductDetailsPage, ProductsPage } from './inventory';
+import { LoginPage } from './login';
+import { OrderDetailsPage, OrderPages } from './orders';
 
 export const AppRouter = () => {
   return (

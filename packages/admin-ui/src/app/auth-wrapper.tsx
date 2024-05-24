@@ -1,7 +1,7 @@
 import { type FC, type PropsWithChildren } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { useValidateToken } from './core/admin';
+import { useValidateToken } from './login';
 
 export const AuthWrapper: FC<Props> = ({ children }) => {
   const { pathname } = useLocation();

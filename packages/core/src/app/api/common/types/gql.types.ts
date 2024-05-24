@@ -8,6 +8,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum AdminErrorCode {
+    INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
+}
+
 export enum AssetType {
     IMAGE = "IMAGE"
 }
@@ -131,7 +135,7 @@ export class Admin implements Node {
 }
 
 export abstract class IMutation {
-    abstract authenticate(input: AuthenticateInput): Nullable<string> | Promise<Nullable<string>>;
+    abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
     abstract createOption(input: CreateOptionInput): Option | Promise<Option>;
 
@@ -182,6 +186,16 @@ export abstract class IQuery {
     abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 
     abstract availableShippingMethods(): ShippingMethod[] | Promise<ShippingMethod[]>;
+}
+
+export class AuthenticateResult {
+    authToken?: Nullable<string>;
+    apiErrors: AdminErrorResult[];
+}
+
+export class AdminErrorResult {
+    code: AdminErrorCode;
+    message: string;
 }
 
 export class Address implements Node {
