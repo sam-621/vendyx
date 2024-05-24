@@ -12,7 +12,7 @@ export abstract class BusinessError implements ErrorResult {
   constructor(
     readonly code: ErrorCode,
     readonly message: string,
-    readonly metadata?: ErrorMetadata,
+    readonly metadata?: ErrorMetadata
   ) {}
 }
 
@@ -68,6 +68,6 @@ export class AdminError {
   constructor(
     readonly code: AdminErrorCode,
     readonly message: string,
-    readonly metadata?: Record<string, any>,
+    readonly metadata?: Record<string, any>
   ) {}
 }

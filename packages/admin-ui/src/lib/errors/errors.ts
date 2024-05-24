@@ -1,4 +1,4 @@
-export class ApiError extends Error {
+export class GraphqlError extends Error {
   constructor(
     message: string,
     readonly code: string

@@ -2,7 +2,7 @@ import { type TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { GraphQLClient, type Variables } from 'graphql-request';
 
 import { cookies, CookiesKeys } from '../cookies';
-import { ApiError, UnexpectedError } from '../errors';
+import { GraphqlError, UnexpectedError } from '../errors';
 import { VENDYX_BASE_API_URL } from '../vendyx/constants';
 
 // TODO: Replace with the actual graphql endpoint
@@ -28,7 +28,7 @@ export const gqlFetcher = async <R, V>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.response?.errors?.length) {
-      throw new ApiError(
+      throw new GraphqlError(
         String(error.response.errors[0]?.message),
         String(error.response.errors[0].extensions?.code)
       );

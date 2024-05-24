@@ -1,7 +1,7 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 
-import { type ApiError } from '../errors';
+import { type GraphqlError } from '../errors';
 import { gqlFetcher } from './gql-fetcher';
 
 /**
@@ -9,7 +9,7 @@ import { gqlFetcher } from './gql-fetcher';
  */
 export const useGqlQuery = <R, V>(
   options: UseGqlQueryOptions<R, V>
-): UseQueryResult<R, ApiError> => {
+): UseQueryResult<R, GraphqlError> => {
   return useQuery({
     queryKey: options.key ?? [],
     queryFn: async () => await gqlFetcher(options.document, options.variables)

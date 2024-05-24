@@ -1,7 +1,7 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
-import { type ApiError } from '../errors';
+import { type GraphqlError } from '../errors';
 import { gqlFetcher } from './gql-fetcher';
 
 /**
@@ -9,7 +9,7 @@ import { gqlFetcher } from './gql-fetcher';
  */
 export const useGqlMutation = <R, V>(
   document: TypedDocumentNode<R, V>
-): UseMutationResult<R, ApiError, V> => {
+): UseMutationResult<R, GraphqlError, V> => {
   return useMutation({
     mutationFn: async (variables: V) => await gqlFetcher(document, variables)
   });
