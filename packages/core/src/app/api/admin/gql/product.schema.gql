@@ -1,10 +1,11 @@
 
 type Mutation {
-  createProduct(input: CreateProductInput!): Product!
-  updateProduct(id: ID!, input: UpdateProductInput!): Product!
-  removeProduct(id: ID!): Boolean!
+  createProduct(input: CreateProductInput!): CreateProductResult!
+  updateProduct(id: ID!, input: UpdateProductInput!): UpdateProductResult!
+  removeProduct(id: ID!): RemoveProductResult!
 }
 
+" Inputs "
 input CreateProductInput {
   name: String!
   slug: String!
@@ -23,4 +24,37 @@ input UpdateProductInput {
   onlineOnly: Boolean
 
   assetsIds: [ID!]
+}
+
+" Results "
+type CreateProductResult implements ProductResult {
+  product: Product
+  apiErrors: [ProductErrorResult!]!
+}
+
+type UpdateProductResult implements ProductResult {
+  product: Product
+  apiErrors: [ProductErrorResult!]!
+}
+
+type RemoveProductResult {
+  success: Boolean
+  apiErrors: [ProductErrorResult!]!
+}
+
+type ProductErrorResult {
+  code: ProductErrorCode!
+  message: String!
+}
+
+" Utils "
+enum ProductErrorCode {
+  PRODUCT_NOT_FOUND
+  NO_ID_OR_SLUG_PROVIDED
+  DUPLICATED_SLUG
+}
+
+interface ProductResult {
+  product: Product
+  apiErrors: [ProductErrorResult!]!
 }

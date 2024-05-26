@@ -1,6 +1,6 @@
 import { ErrorCode, ErrorMetadata, ErrorResult } from './errors.type';
 
-import { AdminErrorCode } from '@/app/api/common';
+import { AdminErrorCode, ProductErrorCode } from '@/app/api/common';
 
 /**
  * @deprecated
@@ -14,17 +14,6 @@ export abstract class BusinessError implements ErrorResult {
     readonly message: string,
     readonly metadata?: ErrorMetadata
   ) {}
-}
-
-/**
- * @deprecated
- * @description
- * This error is thrown when an unexpected error occurs.
- */
-export class InternalServerError extends BusinessError {
-  constructor(message: string, metadata?: ErrorMetadata) {
-    super(ErrorCode.INTERNAL_SERVER_ERROR, message, metadata);
-  }
 }
 
 /**
@@ -60,14 +49,20 @@ export class OrderError extends BusinessError {
   }
 }
 
+export abstract class GraphqlError implements ErrorResult {
+  constructor(
+    readonly code: ErrorCode,
+    readonly message: string,
+    readonly metadata?: ErrorMetadata
+  ) {}
+}
+
 /**
  * @description
- * This error is thrown when an admin error occurs.
+ * This error is thrown when an unexpected error occurs.
  */
-export class AdminError {
-  constructor(
-    readonly code: AdminErrorCode,
-    readonly message: string,
-    readonly metadata?: Record<string, any>
-  ) {}
+export class InternalServerError extends GraphqlError {
+  constructor(metadata?: ErrorMetadata) {
+    super(ErrorCode.INTERNAL_SERVER_ERROR, 'Un error inesperado ha ocurrido', metadata);
+  }
 }

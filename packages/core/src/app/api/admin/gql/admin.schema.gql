@@ -19,6 +19,7 @@ type Query {
   validateToken: Boolean
 }
 
+" Results "
 type AuthenticateResult {
   authToken: String
   apiErrors: [AdminErrorResult!]!
@@ -29,6 +30,7 @@ type AdminErrorResult {
   message: String!
 }
 
+" Utils "
 enum AdminErrorCode {
   INVALID_CREDENTIALS
 }

@@ -12,6 +12,12 @@ export enum AdminErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
 }
 
+export enum ProductErrorCode {
+    PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
+    NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
+    DUPLICATED_SLUG = "DUPLICATED_SLUG"
+}
+
 export enum AssetType {
     IMAGE = "IMAGE"
 }
@@ -115,6 +121,11 @@ export class AddShipmentToOrderInput {
     shippingMethodId: string;
 }
 
+export interface ProductResult {
+    product?: Nullable<Product>;
+    apiErrors: ProductErrorResult[];
+}
+
 export interface Node {
     id: string;
     createdAt: Date;
@@ -139,11 +150,11 @@ export abstract class IMutation {
 
     abstract createOption(input: CreateOptionInput): Option | Promise<Option>;
 
-    abstract createProduct(input: CreateProductInput): Product | Promise<Product>;
+    abstract createProduct(input: CreateProductInput): CreateProductResult | Promise<CreateProductResult>;
 
-    abstract updateProduct(id: string, input: UpdateProductInput): Product | Promise<Product>;
+    abstract updateProduct(id: string, input: UpdateProductInput): UpdateProductResult | Promise<UpdateProductResult>;
 
-    abstract removeProduct(id: string): boolean | Promise<boolean>;
+    abstract removeProduct(id: string): RemoveProductResult | Promise<RemoveProductResult>;
 
     abstract createVariant(productId: string, input: CreateVariantInput): Variant | Promise<Variant>;
 
@@ -195,6 +206,26 @@ export class AuthenticateResult {
 
 export class AdminErrorResult {
     code: AdminErrorCode;
+    message: string;
+}
+
+export class CreateProductResult implements ProductResult {
+    product?: Nullable<Product>;
+    apiErrors: ProductErrorResult[];
+}
+
+export class UpdateProductResult implements ProductResult {
+    product?: Nullable<Product>;
+    apiErrors: ProductErrorResult[];
+}
+
+export class RemoveProductResult {
+    success?: Nullable<boolean>;
+    apiErrors: ProductErrorResult[];
+}
+
+export class ProductErrorResult {
+    code: ProductErrorCode;
     message: string;
 }
 

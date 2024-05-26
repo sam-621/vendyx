@@ -1,12 +1,6 @@
-import { randomBytes } from 'crypto';
-
 import { VendyxConfig } from './vendyx.config';
 
-import {
-  MercadoPagoIntegration,
-  PaypalIntegration,
-  StripeIntegration,
-} from '@/lib/payments';
+import { MercadoPagoIntegration, PaypalIntegration, StripeIntegration } from '@/lib/payments';
 import { CountryPriceCalculator, FedexPriceCalculator } from '@/lib/shipping';
 import { CloudinaryStorageProvider } from '@/lib/storage';
 
@@ -15,34 +9,27 @@ import { CloudinaryStorageProvider } from '@/lib/storage';
  */
 export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
   app: {
-    port: 3000,
+    port: 3000
   },
   auth: {
     jwtExpiresIn: '7d',
-    jwtSecret: randomBytes(32).toString('hex'),
+    jwtSecret: "randomBytes(32).toString('hex')"
   },
   db: {
-    url: 'postgres://postgres:postgres@localhost:5432/vendyx',
+    url: 'postgres://postgres:postgres@localhost:5432/vendyx'
     // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
   },
   assets: {
     storageProvider: new CloudinaryStorageProvider({
       cloudName: 'dnvp4s8pe',
       apiKey: '224627828215865',
-      apiSecret: 'eos_1HKoJaRp7beDXp7s2Jh_2LM',
-    }),
+      apiSecret: 'eos_1HKoJaRp7beDXp7s2Jh_2LM'
+    })
   },
   payments: {
-    integrations: [
-      new PaypalIntegration(),
-      new StripeIntegration(),
-      new MercadoPagoIntegration(),
-    ],
+    integrations: [new PaypalIntegration(), new StripeIntegration(), new MercadoPagoIntegration()]
   },
   shipping: {
-    priceCalculators: [
-      new CountryPriceCalculator(),
-      new FedexPriceCalculator(),
-    ],
-  },
+    priceCalculators: [new CountryPriceCalculator(), new FedexPriceCalculator()]
+  }
 };

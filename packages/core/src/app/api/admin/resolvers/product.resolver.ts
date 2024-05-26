@@ -6,10 +6,10 @@ import {
   CreateProductInput,
   ListInput,
   ListResponse,
-  UpdateProductInput,
+  UpdateProductInput
 } from '@/app/api/common';
 import { ID } from '@/app/persistance';
-import { ProductService } from '@/app/service';
+import { ProductService, isErrorResult } from '@/app/service';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Product')
@@ -32,25 +32,22 @@ export class ProductResolver {
 
   @Mutation('createProduct')
   async createProduct(@Args('input') input: CreateProductInput) {
-    const product = await this.productService.create(input);
+    const result = await this.productService.create(input);
 
-    return product;
+    return isErrorResult(result) ? { apiErrors: [result] } : { product: result, apiErrors: [] };
   }
 
   @Mutation('updateProduct')
-  async updateProduct(
-    @Args('id') id: ID,
-    @Args('input') input: UpdateProductInput,
-  ) {
-    const product = await this.productService.update(id, input);
+  async updateProduct(@Args('id') id: ID, @Args('input') input: UpdateProductInput) {
+    const result = await this.productService.update(id, input);
 
-    return product;
+    return isErrorResult(result) ? { apiErrors: [result] } : { product: result, apiErrors: [] };
   }
 
   @Mutation('removeProduct')
   async removeProduct(@Args('id') id: ID) {
     const result = await this.productService.remove(id);
 
-    return result;
+    return isErrorResult(result) ? { apiErrors: [result] } : { success: result, apiErrors: [] };
   }
 }

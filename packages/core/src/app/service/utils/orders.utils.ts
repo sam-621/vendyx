@@ -20,5 +20,5 @@ export const ValidTransitions = [
   /**
    * The order has been delivered
    */
-  [OrderState.SHIPPED, OrderState.DELIVERED],
+  [OrderState.SHIPPED, OrderState.DELIVERED]
 ];
