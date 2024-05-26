@@ -13,16 +13,16 @@ export const OrderShipmentCard: FC<Props> = ({ shipment }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Envío</CardTitle>
+        <CardTitle>Shipment</CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-6 text-sm">
         <div className="flex flex-col gap-2">
           <p>
-            Método: <span className="font-medium text-distinct">{method.name}</span>
+            Method: <span className="font-medium text-distinct">{method.name}</span>
           </p>
           <p>
-            Monto: <span>{getFormattedPrice(shipment.amount)}</span>
+            Amount: <span>{getFormattedPrice(shipment.amount)}</span>
           </p>
         </div>
       </CardContent>

@@ -19,13 +19,13 @@ export const OrderPaymentCard: FC<Props> = ({ payment }) => {
       <CardContent className="flex flex-col gap-6 text-sm">
         <div className="flex flex-col gap-2">
           <p>
-            Método: <span className="font-medium text-distinct">{method.name}</span>
+            Method: <span className="font-medium text-distinct">{method.name}</span>
           </p>
           <p>
-            ID de transacción: <span>{payment.transactionId}</span>
+            Transaction ID: <span>{payment.transactionId}</span>
           </p>
           <p>
-            Monto: <span>{getFormattedPrice(payment.amount)}</span>
+            Amount: <span>{getFormattedPrice(payment.amount)}</span>
           </p>
         </div>
       </CardContent>

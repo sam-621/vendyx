@@ -19,7 +19,7 @@ export const OrderActions = () => {
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem>
           <AlertCircleIcon className="mr-2 h-4 w-4 transition-all text-red-500" />
-          <span className="text-red-500">Cancelar pedido</span>
+          <span className="text-red-500">Cancel order</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

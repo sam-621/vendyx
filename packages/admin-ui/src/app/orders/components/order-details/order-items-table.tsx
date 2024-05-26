@@ -25,19 +25,19 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Productos</CardTitle>
+        <CardTitle>Products</CardTitle>
       </CardHeader>
 
       <CardContent>
         <Table>
           <Table>
-            <TableCaption>Desgloce de la orden.</TableCaption>
+            <TableCaption>Order breakdown.</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>SKU</TableHead>
-                <TableHead>Producto</TableHead>
-                <TableHead>Precio unitario</TableHead>
-                <TableHead>Cantidad</TableHead>
+                <TableHead>Product</TableHead>
+                <TableHead>Unit price</TableHead>
+                <TableHead>Quantity</TableHead>
                 <TableHead>Total</TableHead>
               </TableRow>
             </TableHeader>
@@ -62,14 +62,14 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
 
               <TableRow className="border-transparent">
                 <TableCell>Subtotal</TableCell>
-                <TableCell>{order.totalQuantity} productos</TableCell>
+                <TableCell>{order.totalQuantity} Products</TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell>{getFormattedPrice(order.subtotal)}</TableCell>
               </TableRow>
 
               <TableRow className="border-transparent">
-                <TableCell>Envío</TableCell>
+                <TableCell>Shipment</TableCell>
                 <TableCell>{shipment?.method.name ?? ''}</TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>

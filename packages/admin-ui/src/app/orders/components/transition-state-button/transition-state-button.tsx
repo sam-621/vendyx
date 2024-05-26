@@ -8,26 +8,26 @@ export const TransitionOrderStateButton: FC<Props> = ({ orderState }) => {
   if (orderState === OrderState.Modifying) {
     return (
       <Button disabled type="button">
-        Completar pedido
+        Complete order
       </Button>
     );
   }
 
   if (orderState === OrderState.PaymentAdded) {
-    return <Button type="button">Autorizar pago</Button>;
+    return <Button type="button">Authorize payment</Button>;
   }
 
   if (orderState === OrderState.PaymentAuthorized) {
-    return <Button type="button">Marcar como enviado</Button>;
+    return <Button type="button">Mark as sent</Button>;
   }
 
   if (orderState === OrderState.Shipped) {
-    return <Button type="button">Completar pedido</Button>;
+    return <Button type="button">Complete order</Button>;
   }
 
   return (
     <Button disabled type="button">
-      Completar pedido
+      Complete order
     </Button>
   );
 };

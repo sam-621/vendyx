@@ -9,7 +9,7 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cliente</CardTitle>
+        <CardTitle>Customer</CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-6 text-sm">
@@ -24,11 +24,11 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
             )}
           </div>
         ) : (
-          <p>Invitado</p>
+          <p>Guest</p>
         )}
         {address && (
           <div className="flex flex-col gap-2">
-            <Label className="text-base">Dirección</Label>
+            <Label className="text-base">Address</Label>
             <p>{address.streetLine1}</p>
             {address.streetLine2 && <p>{address.streetLine2}</p>}
             <p>

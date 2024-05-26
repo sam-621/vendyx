@@ -4,7 +4,7 @@ import { OrderTable } from '../components/orders-table';
 
 export const OrderPages = () => {
   return (
-    <PageLayout title="Ordenes" subtitle="Administra tus ordenes">
+    <PageLayout title="Orders" subtitle="Manage your orders">
       <OrderTable />
     </PageLayout>
   );

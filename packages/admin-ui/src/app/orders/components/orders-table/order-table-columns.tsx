@@ -33,7 +33,7 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
   {
     accessorKey: 'code',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Código" />;
+      return <DataTableColumnHeader column={column} title="Code" />;
     },
     cell: ({ row }) => {
       return <span className="w-20">{row.original.code}</span>;
@@ -43,7 +43,7 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
   {
     accessorKey: 'customer',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Cliente" />;
+      return <DataTableColumnHeader column={column} title="Client" />;
     },
     cell: ({ row }) => {
       const customer = row.original.customer;
@@ -70,13 +70,13 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
   {
     accessorKey: 'items',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Productos" />;
+      return <DataTableColumnHeader column={column} title="Products" />;
     }
   },
   {
     accessorKey: 'state',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Estado" />;
+      return <DataTableColumnHeader column={column} title="State" />;
     },
     cell: ({ row }) => {
       return <OrderStatusBadge status={row.original.state} />;
@@ -85,14 +85,14 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
   {
     accessorKey: 'shipment',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Envío" />;
+      return <DataTableColumnHeader column={column} title="Shipment" />;
     },
     enableSorting: false
   },
   {
     accessorKey: 'placedAt',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Realizada en" />;
+      return <DataTableColumnHeader column={column} title="Placed at" />;
     },
     cell: ({ row }) => {
       return <div className="font-medium">{row.original.placedAt}</div>;
