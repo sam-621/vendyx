@@ -1,8 +1,16 @@
+import { Logger } from '@nestjs/common';
+
 /**
  * This type is returned when an error has occurred in the service layer.
  */
 export class ErrorResult<T> {
-  constructor(readonly code: T, readonly message: string) {}
+  constructor(readonly code: T, readonly message: string, metadata?: any) {
+    Logger.error({
+      code,
+      message,
+      metadata
+    });
+  }
 }
 
 /**

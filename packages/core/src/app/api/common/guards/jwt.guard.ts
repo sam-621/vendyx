@@ -16,7 +16,7 @@ export class AdminJwtAuthGuard extends AuthGuard('admin-jwt') {
     if (err || !user) {
       throw new UnauthorizedError('Invalid token', {
         err,
-        info: info?.message,
+        info: info?.message
       });
     }
 

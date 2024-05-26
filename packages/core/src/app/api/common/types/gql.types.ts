@@ -30,6 +30,17 @@ export enum OrderState {
     DELIVERED = "DELIVERED"
 }
 
+export enum OrderErrorCode {
+    ORDER_NOT_FOUND = "ORDER_NOT_FOUND",
+    LINE_NOT_FOUND = "LINE_NOT_FOUND",
+    ORDER_TRANSITION_ERROR = "ORDER_TRANSITION_ERROR",
+    NOT_ENOUGH_STOCK = "NOT_ENOUGH_STOCK",
+    CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
+    SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND",
+    PAYMENT_METHOD_NOT_FOUND = "PAYMENT_METHOD_NOT_FOUND",
+    PAYMENT_DECLINED = "PAYMENT_DECLINED"
+}
+
 export class AuthenticateInput {
     username: string;
     password: string;
@@ -100,6 +111,10 @@ export class CreateCustomerInput {
     enable: boolean;
 }
 
+export class CreateOrderInput {
+    line?: Nullable<CreateOrderLineInput>;
+}
+
 export class CreateOrderLineInput {
     productVariantId: string;
     quantity: number;
@@ -107,10 +122,6 @@ export class CreateOrderLineInput {
 
 export class UpdateOrderLineInput {
     quantity: number;
-}
-
-export class CreateOrderInput {
-    line?: Nullable<CreateOrderLineInput>;
 }
 
 export class AddPaymentToOrderInput {
@@ -162,21 +173,21 @@ export abstract class IMutation {
 
     abstract removeVariant(id: string): boolean | Promise<boolean>;
 
-    abstract addLineToOrder(orderId: string, input: CreateOrderLineInput): Order | Promise<Order>;
+    abstract createOrder(input?: Nullable<CreateOrderInput>): OrderResult | Promise<OrderResult>;
 
-    abstract updateOrderLine(lineId: string, input: UpdateOrderLineInput): Order | Promise<Order>;
+    abstract addLineToOrder(orderId: string, input: CreateOrderLineInput): OrderResult | Promise<OrderResult>;
 
-    abstract removeOrderLine(lineId: string): Order | Promise<Order>;
+    abstract updateOrderLine(lineId: string, input: UpdateOrderLineInput): OrderResult | Promise<OrderResult>;
 
-    abstract createOrder(input?: Nullable<CreateOrderInput>): Nullable<Order> | Promise<Nullable<Order>>;
+    abstract removeOrderLine(lineId: string): OrderResult | Promise<OrderResult>;
 
-    abstract addCustomerToOrder(orderId: string, input: CreateCustomerInput): Nullable<Order> | Promise<Nullable<Order>>;
+    abstract addCustomerToOrder(orderId: string, input: CreateCustomerInput): OrderResult | Promise<OrderResult>;
 
-    abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): Nullable<Order> | Promise<Nullable<Order>>;
+    abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): OrderResult | Promise<OrderResult>;
 
-    abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): Nullable<Order> | Promise<Nullable<Order>>;
+    abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
 
-    abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): Nullable<Order> | Promise<Nullable<Order>>;
+    abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): OrderResult | Promise<OrderResult>;
 }
 
 export abstract class IQuery {
@@ -419,6 +430,16 @@ export class Variant implements Node {
 export class VariantList implements List {
     items: Variant[];
     count: number;
+}
+
+export class OrderResult {
+    order?: Nullable<Order>;
+    apiErrors: OrderErrorResult[];
+}
+
+export class OrderErrorResult {
+    code: OrderErrorCode;
+    message: string;
 }
 
 type Nullable<T> = T | null;

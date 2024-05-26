@@ -13,7 +13,7 @@ export class ProductResolver {
   async products(@Args('input') input: ListInput) {
     const product = await this.productService.find({
       ...input,
-      where: { published: true },
+      where: { published: true }
     });
 
     return new ListResponse(product, product.length);
@@ -24,7 +24,7 @@ export class ProductResolver {
     const product = await this.productService.findUnique({
       id,
       slug,
-      where: { published: true },
+      where: { published: true }
     });
 
     return product;

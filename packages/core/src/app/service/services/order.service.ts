@@ -1,9 +1,8 @@
-import { ValidationError } from '@nestjs/apollo';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { ValidTransitions, validateEmail } from '../utils';
+import { ErrorResult, ValidTransitions, validateEmail } from '../utils';
 
 import {
   AddPaymentToOrderInput,
@@ -12,7 +11,8 @@ import {
   CreateCustomerInput,
   CreateOrderLineInput,
   ListInput,
-  UpdateOrderLineInput,
+  OrderErrorCode,
+  UpdateOrderLineInput
 } from '@/app/api/common';
 import { getConfig } from '@/app/config';
 import {
@@ -26,9 +26,8 @@ import {
   PaymentMethodEntity,
   ShipmentEntity,
   ShippingMethodEntity,
-  VariantEntity,
+  VariantEntity
 } from '@/app/persistance';
-import { OrderError, UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class OrderService {
@@ -38,7 +37,7 @@ export class OrderService {
     return await this.db.getRepository(OrderEntity).find({
       skip: input?.skip,
       take: input?.take,
-      order: { createdAt: 'DESC' },
+      order: { createdAt: 'DESC' }
     });
   }
 
@@ -51,13 +50,13 @@ export class OrderService {
       return this.findByCode(code);
     }
 
-    throw new UserInputError('No ID or CODE provided');
+    return null;
   }
 
   async findLines(orderId: ID) {
     const lines = await this.db.getRepository(OrderLineEntity).find({
       where: { order: { id: orderId } },
-      order: { createdAt: 'DESC' },
+      order: { createdAt: 'DESC' }
     });
 
     return lines;
@@ -66,7 +65,7 @@ export class OrderService {
   async findVariantInLine(orderLineId: ID) {
     const orderLine = await this.db.getRepository(OrderLineEntity).findOne({
       where: { id: orderLineId },
-      relations: { productVariant: true },
+      relations: { productVariant: true }
     });
 
     return orderLine.productVariant;
@@ -75,7 +74,7 @@ export class OrderService {
   async findCustomer(orderId: ID) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { customer: true },
+      relations: { customer: true }
     });
 
     return order.customer;
@@ -83,7 +82,7 @@ export class OrderService {
 
   async findShippingAddress(orderId: ID) {
     const order = await this.db.getRepository(OrderEntity).findOne({
-      where: { id: orderId },
+      where: { id: orderId }
     });
 
     if (!order.shippingAddress) {
@@ -97,7 +96,7 @@ export class OrderService {
   async findPayment(orderId: ID) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { payment: true },
+      relations: { payment: true }
     });
 
     return order.payment;
@@ -106,53 +105,65 @@ export class OrderService {
   async findShipment(orderId: ID) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { shipment: true },
+      relations: { shipment: true }
     });
 
     return order.shipment;
   }
 
+  /**
+   * Creates an empty order
+   * @returns Error Result or created order
+   */
   async create() {
     const ordersCount = await this.db.getRepository(OrderEntity).count();
     const order = this.db.getRepository(OrderEntity).create({
-      code: String(ordersCount + 1),
+      code: String(ordersCount + 1)
     });
 
     return await this.db.getRepository(OrderEntity).save(order);
   }
 
-  async addLine(orderId: ID, input: CreateOrderLineInput) {
+  /**
+   * Adds line to order
+   * @param orderId Order id to add line
+   * @param input Order line input
+   * @returns Error Result or Order entity
+   */
+  async addLine(
+    orderId: ID,
+    input: CreateOrderLineInput
+  ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { lines: { productVariant: true } },
+      relations: { lines: { productVariant: true } }
     });
 
     if (!order) {
-      throw new UserInputError('Order not found');
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found with the given id');
     }
 
     if (order.state !== OrderState.MODIFYING) {
-      throw new UserInputError(
-        `Unable to add line to order in state ${order.state}`,
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to add line to order in state ${order.state}`
       );
     }
 
     const variant = await this.db.getRepository(VariantEntity).findOne({
-      where: { id: input.productVariantId },
+      where: { id: input.productVariantId }
     });
 
-    const variantInOrderLine = order.lines.find(
-      (line) => line.productVariant.id === variant.id,
-    );
+    const variantInOrderLine = order.lines.find(line => line.productVariant.id === variant.id);
 
     if (variantInOrderLine) {
       return this.updateLine(variantInOrderLine.id, {
-        quantity: input.quantity + variantInOrderLine.quantity,
+        quantity: input.quantity + variantInOrderLine.quantity
       });
     }
 
     if (variant.stock < input.quantity) {
-      throw new ValidationError('Not enough stock');
+      return new ErrorResult(OrderErrorCode.NOT_ENOUGH_STOCK, 'Not enough stock');
     }
 
     const unitPrice = variant.price;
@@ -163,7 +174,7 @@ export class OrderService {
       quantity: input.quantity,
       unitPrice,
       linePrice,
-      order,
+      order
     });
 
     await this.db.getRepository(OrderLineEntity).save(orderLine);
@@ -171,19 +182,29 @@ export class OrderService {
     return this.recalculateOrderStats(order.id);
   }
 
-  async updateLine(lineId: ID, input: UpdateOrderLineInput) {
+  /**
+   * Updates line
+   * @param lineId Line id to update
+   * @param input Line input to update
+   * @returns Error Result or Order entity
+   */
+  async updateLine(
+    lineId: ID,
+    input: UpdateOrderLineInput
+  ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     const lineToUpdate = await this.db.getRepository(OrderLineEntity).findOne({
       where: { id: lineId },
-      relations: { productVariant: true, order: true },
+      relations: { productVariant: true, order: true }
     });
 
     if (!lineToUpdate) {
-      throw new UserInputError('Order line not found');
+      return new ErrorResult(OrderErrorCode.LINE_NOT_FOUND, 'line not found');
     }
 
     if (lineToUpdate.order.state !== OrderState.MODIFYING) {
-      throw new UserInputError(
-        `Unable to update line in order in state ${lineToUpdate.order.state}`,
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to update line to order in state ${lineToUpdate.order.state}`
       );
     }
 
@@ -194,7 +215,7 @@ export class OrderService {
     }
 
     if (variant.stock < input.quantity) {
-      throw new ValidationError('Not enough stock');
+      return new ErrorResult(OrderErrorCode.NOT_ENOUGH_STOCK, 'Not enough stock');
     }
 
     const unitPrice = variant.price;
@@ -204,25 +225,31 @@ export class OrderService {
       ...lineToUpdate,
       unitPrice,
       linePrice,
-      quantity: input.quantity,
+      quantity: input.quantity
     });
 
     return this.recalculateOrderStats(lineToUpdate.order.id);
   }
 
-  async removeLine(orderLineId: ID) {
+  /**
+   *
+   * @param orderLineId line id to remove
+   * @returns Error Result or Order entity
+   */
+  async removeLine(orderLineId: ID): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     const orderLine = await this.db.getRepository(OrderLineEntity).findOne({
       where: { id: orderLineId },
-      relations: { order: true },
+      relations: { order: true }
     });
 
     if (!orderLine) {
-      throw new UserInputError('Order line not found');
+      return new ErrorResult(OrderErrorCode.LINE_NOT_FOUND, 'Line not found');
     }
 
     if (orderLine.order.state !== OrderState.MODIFYING) {
-      throw new UserInputError(
-        `Unable to remove line from order in state ${orderLine.order.state}`,
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to remove line to order in state ${orderLine.order.state}`
       );
     }
 
@@ -231,37 +258,45 @@ export class OrderService {
     return this.recalculateOrderStats(orderLine.order.id);
   }
 
-  async addCustomer(orderId: ID, input: CreateCustomerInput) {
+  /**
+   * Add customer to order if exists, if not, create it and add it
+   * @param orderId Order id to add customer
+   * @param input Customer input
+   * @returns Error Result or order entity
+   */
+  async addCustomer(
+    orderId: ID,
+    input: CreateCustomerInput
+  ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     if (!validateEmail(input.email)) {
-      throw new UserInputError('Invalid email');
+      return new ErrorResult(OrderErrorCode.CUSTOMER_INVALID_EMAIL, 'Invalid email');
     }
 
     const order = await this.db.getRepository(OrderEntity).findOne({
-      where: { id: orderId },
+      where: { id: orderId }
     });
 
     if (!order) {
-      throw new UserInputError('Order not found');
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
     if (order.state !== OrderState.MODIFYING) {
-      throw new UserInputError(
-        `Unable to add customer to order in state ${order.state}`,
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to add customer to order in state ${order.state}`
       );
     }
 
     const customer = await this.db.getRepository(CustomerEntity).findOne({
-      where: { email: input.email },
+      where: { email: input.email }
     });
 
     let customerUpdated = this.db.getRepository(CustomerEntity).create({
       ...customer,
-      ...input,
+      ...input
     });
 
-    customerUpdated = await this.db
-      .getRepository(CustomerEntity)
-      .save(customerUpdated);
+    customerUpdated = await this.db.getRepository(CustomerEntity).save(customerUpdated);
 
     order.customer = customerUpdated;
 
@@ -270,18 +305,28 @@ export class OrderService {
     return this.recalculateOrderStats(order.id);
   }
 
-  async addShippingAddress(orderId: ID, input: CreateAddressInput) {
+  /**
+   * Add shipping address to order
+   * @param orderId Order id to add shipping address
+   * @param input Shipping address input
+   * @returns Error Result or order entity
+   */
+  async addShippingAddress(
+    orderId: ID,
+    input: CreateAddressInput
+  ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     const order = await this.db.getRepository(OrderEntity).findOne({
-      where: { id: orderId },
+      where: { id: orderId }
     });
 
     if (!order) {
-      throw new UserInputError('Order not found');
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
     if (order.state !== OrderState.MODIFYING) {
-      throw new UserInputError(
-        `Unable to add shipping address to order in state ${order.state}`,
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to add shipping address to order in state ${order.state}`
       );
     }
 
@@ -294,14 +339,30 @@ export class OrderService {
     return this.recalculateOrderStats(order.id);
   }
 
-  async addShipment(orderId: ID, input: AddShipmentToOrderInput) {
+  /**
+   * Add shipment to order using the shipment method specified
+   * @param orderId order id to add shipment
+   * @param input Shipmen input
+   * @returns Error Result or order entity
+   */
+  async addShipment(
+    orderId: ID,
+    input: AddShipmentToOrderInput
+  ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { lines: true, customer: true },
+      relations: { lines: true, customer: true }
     });
 
     if (!order) {
-      throw new UserInputError('Order not found');
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
+    }
+
+    if (order.state !== OrderState.MODIFYING) {
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to add shipment to order in state ${order.state}`
+      );
     }
 
     const shippingMethod = await this.db
@@ -309,80 +370,85 @@ export class OrderService {
       .findOne({ where: { id: input.shippingMethodId } });
 
     if (!shippingMethod) {
-      throw new UserInputError('Shipping method not found');
+      return new ErrorResult(OrderErrorCode.SHIPPING_METHOD_NOT_FOUND, `Shipping method not found`);
     }
 
     // TODO: Do I have to validate if calculator exists?
     const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
-      (p) => p.code === shippingMethod.priceCalculatorCode,
+      p => p.code === shippingMethod.priceCalculatorCode
     );
 
     const shippingPrice = await shippingPriceCalculator.calculatePrice(order);
 
     const shipment = await this.db.getRepository(ShipmentEntity).save({
       amount: shippingPrice,
-      method: shippingMethod,
+      method: shippingMethod
     });
 
     await this.db.getRepository(OrderEntity).save({
       ...order,
-      shipment,
+      shipment
     });
 
     return this.recalculateOrderStats(order.id);
   }
 
-  async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
+  /**
+   * Add payment to order using the payment method specified
+   * @param orderId Order id to add payment
+   * @param input Payment Input
+   * @returns Error Result or order entity
+   */
+  async addPayment(
+    orderId: ID,
+    input: AddPaymentToOrderInput
+  ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { customer: true, lines: { productVariant: true } },
+      relations: { customer: true, lines: { productVariant: true } }
     });
 
     if (!order) {
-      throw new UserInputError('Order not found');
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
     if (!this.validateOrderTransitionState(order, OrderState.PAYMENT_ADDED)) {
-      throw new UserInputError(
-        `Unable to add payment to order in state ${order.state}`,
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to add payment to order in state ${order.state}`
       );
     }
 
-    const paymentMethod = await this.db
-      .getRepository(PaymentMethodEntity)
-      .findOne({
-        where: { id: input.methodId },
-      });
+    const paymentMethod = await this.db.getRepository(PaymentMethodEntity).findOne({
+      where: { id: input.methodId }
+    });
 
     if (!paymentMethod) {
-      throw new UserInputError('Payment method not found');
+      return new ErrorResult(OrderErrorCode.PAYMENT_METHOD_NOT_FOUND, 'Payment method not found');
     }
 
     const paymentIntegration = getConfig().payments.integrations.find(
-      (p) => p.code === paymentMethod.integrationCode,
+      p => p.code === paymentMethod.integrationCode
     );
 
-    const paymentIntegrationResult = await paymentIntegration.createPayment(
-      order,
-    );
+    const paymentIntegrationResult = await paymentIntegration.createPayment(order);
 
+    // TODO: do something with paymentIntegrationResult.error
     if (paymentIntegrationResult.status === 'declined') {
-      throw new OrderError('Payment declined', {
-        error: paymentIntegrationResult.error,
-      });
+      return new ErrorResult(OrderErrorCode.PAYMENT_DECLINED, 'Payment declined');
     }
 
     if (paymentIntegrationResult.status === 'created') {
       const payment = await this.db.getRepository(PaymentEntity).save({
         amount: order.total,
-        method: paymentMethod,
+        method: paymentMethod
       });
 
       await this.db.getRepository(OrderEntity).save({
         ...order,
         payment,
         state: OrderState.PAYMENT_ADDED,
-        placedAt: new Date(),
+        placedAt: new Date()
       });
     }
 
@@ -390,25 +456,25 @@ export class OrderService {
       const payment = await this.db.getRepository(PaymentEntity).save({
         amount: paymentIntegrationResult.amount,
         method: paymentMethod,
-        transactionId: paymentIntegrationResult.transactionId,
+        transactionId: paymentIntegrationResult.transactionId
       });
 
       await this.db.getRepository(OrderEntity).save({
         ...order,
         payment,
         state: OrderState.PAYMENT_AUTHORIZED,
-        placedAt: new Date(),
+        placedAt: new Date()
       });
     }
 
     await this.db.getRepository(VariantEntity).save(
-      order.lines.map((l) => ({
+      order.lines.map(l => ({
         ...l.productVariant,
-        stock: l.productVariant.stock - l.quantity,
-      })),
+        stock: l.productVariant.stock - l.quantity
+      }))
     );
 
-    return order;
+    return this.recalculateOrderStats(order.id);
   }
 
   /**
@@ -418,9 +484,7 @@ export class OrderService {
     const prevState = order.state;
     const nextState = state;
 
-    return ValidTransitions.some(
-      (t) => t[0] === prevState && t[1] === nextState,
-    );
+    return ValidTransitions.some(t => t[0] === prevState && t[1] === nextState);
   }
 
   /**
@@ -429,21 +493,18 @@ export class OrderService {
   private async recalculateOrderStats(orderId: ID) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
-      relations: { lines: true, shipment: true },
+      relations: { lines: true, shipment: true }
     });
 
     const subtotal = order.lines.reduce((acc, line) => acc + line.linePrice, 0);
     const total = subtotal + (order.shipment?.amount ?? 0);
-    const totalQuantity = order.lines.reduce(
-      (acc, line) => acc + line.quantity,
-      0,
-    );
+    const totalQuantity = order.lines.reduce((acc, line) => acc + line.quantity, 0);
 
     return await this.db.getRepository(OrderEntity).save({
       ...order,
       total,
       subtotal,
-      totalQuantity,
+      totalQuantity
     });
   }
 

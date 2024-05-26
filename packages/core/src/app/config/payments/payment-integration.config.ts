@@ -78,5 +78,5 @@ export type AuthorizePaymentResult =
 export enum PaymentStatus {
   CREATED,
   AUTHORIZED,
-  DECLINED,
+  DECLINED
 }

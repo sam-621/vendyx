@@ -14,13 +14,13 @@ import { UnauthorizedError } from '@/lib/errors';
 export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
   constructor(
     @InjectRepository(AdminEntity)
-    private adminRepository: Repository<AdminEntity>,
+    private adminRepository: Repository<AdminEntity>
   ) {
     const { jwtSecret } = getConfig().auth;
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtSecret,
+      secretOrKey: jwtSecret
     });
   }
 

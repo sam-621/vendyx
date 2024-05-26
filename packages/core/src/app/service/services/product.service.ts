@@ -14,7 +14,6 @@ import {
   UpdateProductInput
 } from '@/app/api/common';
 import { AssetEntity, ID, ProductEntity, VariantEntity } from '@/app/persistance';
-import { UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class ProductService {
@@ -45,7 +44,7 @@ export class ProductService {
       return this.db.getRepository(ProductEntity).findOne({ where: { ...where, slug } });
     }
 
-    throw new UserInputError('No ID or SLUG provided');
+    return null;
   }
 
   async findVariants(id: ID, listInput?: ListInput) {
