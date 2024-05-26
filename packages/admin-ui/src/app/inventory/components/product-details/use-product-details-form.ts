@@ -32,44 +32,44 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    try {
-      const isUpdating = update?.productId && update?.variantId;
-      const assets = input.assets ? await createAsset(input.assets) : undefined;
+    const isUpdating = update?.productId && update?.variantId;
+    const assets = input.assets ? await createAsset(input.assets) : undefined;
 
-      const productInput = {
-        name: input.name,
-        slug: input.slug,
-        description: input.description,
-        onlineOnly: input.onlineOnly,
-        published: input.published,
-        assetsIds: [...input.prevAssets, ...(assets?.map(asset => asset.id) ?? [])]
-      };
+    const productInput = {
+      name: input.name,
+      slug: input.slug,
+      description: input.description,
+      onlineOnly: input.onlineOnly,
+      published: input.published,
+      assetsIds: [...input.prevAssets, ...(assets?.map(asset => asset.id) ?? [])]
+    };
 
-      const variantInput = {
-        price: input.price,
-        sku: input.sku,
-        stock: input.quantity,
-        published: input.published
-      };
+    const variantInput = {
+      price: input.price,
+      sku: input.sku,
+      stock: input.quantity,
+      published: input.published
+    };
 
-      if (isUpdating) {
-        const { productId, variantId } = update;
+    if (isUpdating) {
+      const { productId, variantId } = update;
 
-        await updateProduct(productId, productInput);
-        await updateVariant(variantId, variantInput);
-        await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+      await updateProduct(productId, productInput);
+      await updateVariant(variantId, variantInput);
+      await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
-        notification.success('Product updated');
-      } else {
-        const createdProductId = await createProduct(productInput);
+      notification.success('Product updated');
+    } else {
+      const createdProductId = await createProduct(productInput);
 
-        await createVariant(createdProductId, variantInput);
-        await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+      // If not product id is present, it means that an error occurred
+      // The error is already handled by the useCreateProduct hook so we only stop the execution here
+      if (!createdProductId) return;
 
-        notification.success(`Product ${input.name} created with id ${createdProductId}`);
-      }
-    } catch (error) {
-      notification.error('An error occurred');
+      await createVariant(createdProductId, variantInput);
+      await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+
+      notification.success(`Product ${input.name} created with id ${createdProductId}`);
     }
   };
 

@@ -1,7 +1,6 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { ListInput, ListResponse } from '@/app/api/common';
-import { OrderEntity } from '@/app/persistance';
 import { OrderService } from '@/app/service';
 
 @Resolver('Order')
