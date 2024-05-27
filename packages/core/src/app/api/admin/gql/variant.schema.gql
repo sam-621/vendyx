@@ -15,7 +15,7 @@ input CreateVariantInput {
 
 input UpdateVariantInput {
   sku: String
-  price: Int
+  price: Float
   stock: Int
   published: Boolean
   

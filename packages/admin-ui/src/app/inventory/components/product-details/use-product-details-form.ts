@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type MakeAny } from '@vendyx/common';
+import { getFormattedPrice, type MakeAny } from '@vendyx/common';
 import { z } from 'zod';
 
 import { useCreateAsset } from '@/app/assets';
 import { FormMessages, useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
+import { parseFormattedPrice } from '@/lib/utils';
 
 import {
   InventoryKeys,
@@ -32,6 +33,10 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
+    console.log({
+      input
+    });
+
     const isUpdating = update?.productId && update?.variantId;
     const assets = input.assets ? await createAsset(input.assets) : undefined;
 
@@ -71,6 +76,12 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
 
       notification.success(`Product ${input.name} created with id ${createdProductId}`);
     }
+
+    // set formatted price to price input
+    methods.setValue(
+      'price',
+      getFormattedPrice(input.price * 100).replace('$', '') as unknown as number
+    );
   };
 
   return {
@@ -85,7 +96,10 @@ const schema = z.object({
   description: z.string().optional(),
   assets: z.any(),
   prevAssets: z.array(z.string()).optional(),
-  price: z.preprocess(value => Number(value ?? 0), z.number().min(0).optional()),
+  price: z.preprocess(
+    value => Number(parseFormattedPrice(value as string) ?? 0),
+    z.number().min(0).optional()
+  ),
   quantity: z.preprocess(value => Number(value ?? 0), z.number().min(0).optional()),
   sku: z.string().min(3, FormMessages.minChars(3)),
   published: z.boolean(),

@@ -3,17 +3,8 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { convertToCent } from '@vendyx/common';
 import { DataSource, In } from 'typeorm';
 
-import {
-  CreateVariantInput,
-  ListInput,
-  UpdateVariantInput,
-} from '@/app/api/common';
-import {
-  ID,
-  OptionValueEntity,
-  ProductEntity,
-  VariantEntity,
-} from '@/app/persistance';
+import { CreateVariantInput, ListInput, UpdateVariantInput } from '@/app/api/common';
+import { ID, OptionValueEntity, ProductEntity, VariantEntity } from '@/app/persistance';
 import { UserInputError } from '@/lib/errors';
 
 @Injectable()
@@ -30,7 +21,7 @@ export class VariantService {
 
   async findOptionValues(id: ID) {
     const optionValues = await this.db.getRepository(OptionValueEntity).find({
-      where: { variants: { id } },
+      where: { variants: { id } }
     });
 
     return optionValues;
@@ -38,7 +29,7 @@ export class VariantService {
 
   async findProduct(id: ID) {
     const optionValues = await this.db.getRepository(ProductEntity).findOne({
-      where: { variants: { id } },
+      where: { variants: { id } }
     });
 
     return optionValues;
@@ -51,27 +42,23 @@ export class VariantService {
         .findOne({ where: { product: { id: productId } } });
 
       if (defaultVariantAlreadyCreated) {
-        throw new UserInputError(
-          'Default variant already created, add options instead',
-        );
+        throw new UserInputError('Default variant already created, add options instead');
       }
     }
 
     const optionValues = input.optionValuesIds?.length
       ? await this.db.getRepository(OptionValueEntity).find({
-          where: { id: In(input.optionValuesIds) },
+          where: { id: In(input.optionValuesIds) }
         })
       : undefined;
 
-    const product = await this.db
-      .getRepository(ProductEntity)
-      .findOneBy({ id: productId });
+    const product = await this.db.getRepository(ProductEntity).findOneBy({ id: productId });
 
     const variantToSave = this.db.getRepository(VariantEntity).create({
       ...input,
       product,
       optionValues,
-      price: convertToCent(input.price),
+      price: input.price === 0 ? 0 : convertToCent(input.price)
     });
 
     return this.db.getRepository(VariantEntity).save(variantToSave);
@@ -87,15 +74,23 @@ export class VariantService {
     const optionValues =
       input.optionValuesIds?.length !== undefined
         ? await this.db.getRepository(OptionValueEntity).find({
-            where: { id: In(input.optionValuesIds) },
+            where: { id: In(input.optionValuesIds) }
           })
         : undefined;
+
+    // save price as 0 if input price is 0, otherwise convert to cents, if input price is undefined, keep the same price
+    const priceToUpdate =
+      input.price !== undefined
+        ? input.price === 0
+          ? 0
+          : convertToCent(input.price)
+        : variantToUpdate.price;
 
     return this.db.getRepository(VariantEntity).save({
       ...variantToUpdate,
       ...input,
-      price: input.price ? convertToCent(input.price) : variantToUpdate.price,
-      optionValues: optionValues,
+      price: priceToUpdate,
+      optionValues: optionValues
     });
   }
 
