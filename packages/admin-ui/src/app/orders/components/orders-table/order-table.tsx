@@ -1,4 +1,5 @@
 import { DataTable } from '@/app/components/data-table';
+import { DataTableSkeleton } from '@/app/components/skeletons';
 import { useGetOrders } from '@/app/orders/hooks';
 import { type OrderState } from '@/lib/vendyx/codegen/graphql';
 
@@ -8,7 +9,7 @@ export const OrderTable = () => {
   const { orders = [], isLoading } = useGetOrders();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <DataTableSkeleton />;
   }
 
   const data: TableOrder[] =

@@ -5,6 +5,7 @@ import { Button } from '@vendyx/theme';
 import { MoveLeftIcon } from 'lucide-react';
 
 import { PageLayout } from '@/app/components';
+import { LogoLoader } from '@/app/components/loaders';
 import { t } from '@/lib/locales';
 import { getFormattedDate } from '@/lib/utils';
 
@@ -21,7 +22,7 @@ export const ProductDetailsPage = () => {
     variantId: defaultVariant?.id ?? ''
   });
 
-  if (isLoading) return <h1>Is loading</h1>;
+  if (isLoading) return <LogoLoader />;
 
   if (!product) {
     return <Navigate to="/inventory" />;

@@ -1,4 +1,5 @@
 import { DataTable } from '@/app/components/data-table';
+import { DataTableSkeleton } from '@/app/components/skeletons';
 import { DEFAULT_PRODUCT_IMAGE } from '@/lib/constants';
 import { t } from '@/lib/locales';
 
@@ -9,7 +10,7 @@ export const ProductTable = () => {
   const { products, isLoading } = useGetProducts();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <DataTableSkeleton />;
   }
 
   const data: TableProduct[] =
