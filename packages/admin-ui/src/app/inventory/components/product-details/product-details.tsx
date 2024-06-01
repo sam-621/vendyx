@@ -8,8 +8,8 @@ import { FormInput, FormTextarea, SwitchContainer } from '@/app/components/forms
 import { t } from '@/lib/locales';
 import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
 
-import { AssetDetails } from './forms/asset-details';
-import { VariantDetails } from './forms/variant-details';
+import { AssetDetails } from './asset-details/asset-details';
+import { VariantDetails } from './variant-details/variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
