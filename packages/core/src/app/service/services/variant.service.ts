@@ -3,9 +3,15 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { convertToCent } from '@vendyx/common';
 import { DataSource, In } from 'typeorm';
 
-import { CreateVariantInput, ListInput, UpdateVariantInput } from '@/app/api/common';
+import { ErrorResult } from '../utils';
+
+import {
+  CreateVariantInput,
+  ListInput,
+  UpdateVariantInput,
+  VariantErrorCode
+} from '@/app/api/common';
 import { ID, OptionValueEntity, ProductEntity, VariantEntity } from '@/app/persistance';
-import { UserInputError } from '@/lib/errors';
 
 @Injectable()
 export class VariantService {
@@ -35,14 +41,20 @@ export class VariantService {
     return optionValues;
   }
 
-  async create(productId: ID, input: CreateVariantInput) {
+  async create(
+    productId: ID,
+    input: CreateVariantInput
+  ): Promise<ErrorResult<VariantErrorCode> | VariantEntity> {
     if (!input.optionValuesIds?.length) {
       const defaultVariantAlreadyCreated = await this.db
         .getRepository(VariantEntity)
         .findOne({ where: { product: { id: productId } } });
 
       if (defaultVariantAlreadyCreated) {
-        throw new UserInputError('Default variant already created, add options instead');
+        return new ErrorResult(
+          VariantErrorCode.DEFAULT_VARIANT_ALREADY_EXISTS,
+          'Default variant already created, add options instead'
+        );
       }
     }
 
@@ -64,11 +76,14 @@ export class VariantService {
     return this.db.getRepository(VariantEntity).save(variantToSave);
   }
 
-  async update(id: ID, input: UpdateVariantInput) {
+  async update(
+    id: ID,
+    input: UpdateVariantInput
+  ): Promise<ErrorResult<VariantErrorCode> | VariantEntity> {
     const variantToUpdate = await this.findById(id);
 
     if (!variantToUpdate) {
-      throw new UserInputError('Variant not found');
+      return new ErrorResult(VariantErrorCode.VARIANT_NOT_FOUND, 'Variant not found');
     }
 
     const optionValues =
@@ -94,11 +109,11 @@ export class VariantService {
     });
   }
 
-  async remove(id: ID) {
+  async remove(id: ID): Promise<ErrorResult<VariantErrorCode> | boolean> {
     const variantToRemove = await this.findById(id);
 
     if (!variantToRemove) {
-      throw new UserInputError('Variant not found with the given id');
+      return new ErrorResult(VariantErrorCode.VARIANT_NOT_FOUND, 'Variant not found');
     }
 
     await this.db.getRepository(VariantEntity).softDelete({ id });

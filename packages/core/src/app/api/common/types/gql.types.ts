@@ -18,6 +18,11 @@ export enum ProductErrorCode {
     DUPLICATED_SLUG = "DUPLICATED_SLUG"
 }
 
+export enum VariantErrorCode {
+    DEFAULT_VARIANT_ALREADY_EXISTS = "DEFAULT_VARIANT_ALREADY_EXISTS",
+    VARIANT_NOT_FOUND = "VARIANT_NOT_FOUND"
+}
+
 export enum AssetType {
     IMAGE = "IMAGE"
 }
@@ -137,6 +142,11 @@ export interface ProductResult {
     apiErrors: ProductErrorResult[];
 }
 
+export interface VariantResult {
+    variant?: Nullable<Variant>;
+    apiErrors: VariantErrorResult[];
+}
+
 export interface Node {
     id: string;
     createdAt: Date;
@@ -167,11 +177,11 @@ export abstract class IMutation {
 
     abstract removeProduct(id: string): RemoveProductResult | Promise<RemoveProductResult>;
 
-    abstract createVariant(productId: string, input: CreateVariantInput): Variant | Promise<Variant>;
+    abstract createVariant(productId: string, input: CreateVariantInput): CreateVariantResult | Promise<CreateVariantResult>;
 
-    abstract updateVariant(id: string, input: UpdateVariantInput): Variant | Promise<Variant>;
+    abstract updateVariant(id: string, input: UpdateVariantInput): UpdateVariantResult | Promise<UpdateVariantResult>;
 
-    abstract removeVariant(id: string): boolean | Promise<boolean>;
+    abstract removeVariant(id: string): RemoveVariantResult | Promise<RemoveVariantResult>;
 
     abstract createOrder(input?: Nullable<CreateOrderInput>): OrderResult | Promise<OrderResult>;
 
@@ -237,6 +247,26 @@ export class RemoveProductResult {
 
 export class ProductErrorResult {
     code: ProductErrorCode;
+    message: string;
+}
+
+export class CreateVariantResult implements VariantResult {
+    variant?: Nullable<Variant>;
+    apiErrors: VariantErrorResult[];
+}
+
+export class UpdateVariantResult implements VariantResult {
+    variant?: Nullable<Variant>;
+    apiErrors: VariantErrorResult[];
+}
+
+export class RemoveVariantResult {
+    success?: Nullable<boolean>;
+    apiErrors: VariantErrorResult[];
+}
+
+export class VariantErrorResult {
+    code: VariantErrorCode;
     message: string;
 }
 

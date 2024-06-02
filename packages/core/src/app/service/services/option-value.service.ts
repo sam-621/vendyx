@@ -12,10 +12,6 @@ export class OptionValueService {
   create(values: string[]) {
     return this.db
       .getRepository(OptionValueEntity)
-      .save(
-        values.map((value) =>
-          this.db.getRepository(OptionValueEntity).create({ value }),
-        ),
-      );
+      .save(values.map(value => this.db.getRepository(OptionValueEntity).create({ value })));
   }
 }

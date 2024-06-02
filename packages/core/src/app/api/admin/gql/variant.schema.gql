@@ -1,7 +1,7 @@
 type Mutation {
-  createVariant(productId: ID! input: CreateVariantInput!): Variant!
-  updateVariant(id: ID!, input: UpdateVariantInput!): Variant!
-  removeVariant(id: ID!): Boolean!
+  createVariant(productId: ID! input: CreateVariantInput!): CreateVariantResult!
+  updateVariant(id: ID!, input: UpdateVariantInput!): UpdateVariantResult!
+  removeVariant(id: ID!): RemoveVariantResult!
 }
 
 input CreateVariantInput {
@@ -20,4 +20,36 @@ input UpdateVariantInput {
   published: Boolean
   
   optionValuesIds: [ID!]
+}
+
+type CreateVariantResult implements VariantResult {
+  variant: Variant
+  apiErrors: [VariantErrorResult!]!
+}
+
+type UpdateVariantResult implements VariantResult {
+  variant: Variant
+  apiErrors: [VariantErrorResult!]!
+}
+
+type RemoveVariantResult {
+  success: Boolean
+  apiErrors: [VariantErrorResult!]!
+}
+
+type VariantErrorResult {
+  code: VariantErrorCode!
+  message: String!
+}
+
+
+" Utils "
+enum VariantErrorCode {
+  DEFAULT_VARIANT_ALREADY_EXISTS
+  VARIANT_NOT_FOUND
+}
+
+interface VariantResult {
+  variant: Variant
+  apiErrors: [VariantErrorResult!]!
 }

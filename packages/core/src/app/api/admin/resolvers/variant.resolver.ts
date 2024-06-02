@@ -6,10 +6,10 @@ import {
   CreateVariantInput,
   ListInput,
   ListResponse,
-  UpdateVariantInput,
+  UpdateVariantInput
 } from '@/app/api/common';
 import { ID } from '@/app/persistance';
-import { VariantService } from '@/app/service';
+import { VariantService, isErrorResult } from '@/app/service';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Variant')
@@ -31,29 +31,23 @@ export class VariantResolver {
   }
 
   @Mutation('createVariant')
-  async createVariant(
-    @Args('productId') id: ID,
-    @Args('input') input: CreateVariantInput,
-  ) {
-    const variant = await this.variantService.create(id, input);
+  async createVariant(@Args('productId') id: ID, @Args('input') input: CreateVariantInput) {
+    const result = await this.variantService.create(id, input);
 
-    return variant;
+    return isErrorResult(result) ? { apiErrors: [result] } : { variant: result, apiErrors: [] };
   }
 
   @Mutation('updateVariant')
-  async updateVariant(
-    @Args('id') id: ID,
-    @Args('input') input: UpdateVariantInput,
-  ) {
-    const variant = await this.variantService.update(id, input);
+  async updateVariant(@Args('id') id: ID, @Args('input') input: UpdateVariantInput) {
+    const result = await this.variantService.update(id, input);
 
-    return variant;
+    return isErrorResult(result) ? { apiErrors: [result] } : { variant: result, apiErrors: [] };
   }
 
   @Mutation('removeVariant')
   async removeVariant(@Args('id') id: ID) {
-    const variant = await this.variantService.remove(id);
+    const result = await this.variantService.remove(id);
 
-    return variant;
+    return isErrorResult(result) ? { apiErrors: [result] } : { success: result, apiErrors: [] };
   }
 }

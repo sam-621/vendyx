@@ -10,7 +10,7 @@ import { OptionEntity } from '@/app/persistance';
 export class OptionService {
   constructor(
     private optionValueService: OptionValueService,
-    @InjectDataSource() private db: DataSource,
+    @InjectDataSource() private db: DataSource
   ) {}
 
   async create(name: string, values: string[]) {
@@ -18,7 +18,7 @@ export class OptionService {
 
     const optionToSave = this.db.getRepository(OptionEntity).create({
       name,
-      values: optionValues,
+      values: optionValues
     });
 
     return await this.db.getRepository(OptionEntity).save(optionToSave);
