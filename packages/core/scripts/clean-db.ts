@@ -4,17 +4,17 @@ import { DataSource } from 'typeorm';
 const DbUrl = {
   remote:
     'postgresql://postgres:ySvpkFnpjPqrRLkbvfFJhfvtioBiVfks@monorail.proxy.rlwy.net:56098/railway',
-  local: 'postgres://postgres:postgres@localhost:5432/vendyx',
+  local: 'postgres://postgres:postgres@localhost:5432/vendyx'
 };
 
-const prepareForExpo = async () => {
-  console.log('Preparing for Expo 🚀');
+const cleanDb = async () => {
+  console.log('Cleaning database 🚀');
   console.log();
 
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: DbUrl.remote,
-    synchronize: false,
+    url: DbUrl.local,
+    synchronize: false
   }).initialize();
 
   console.log('Cleaning the database 🧹');
@@ -27,6 +27,13 @@ const prepareForExpo = async () => {
   await dataSource.query('DELETE FROM "shipment";');
   await dataSource.query('DELETE FROM "shipping_method";');
   await dataSource.query('DELETE FROM "payment_method";');
+  await dataSource.query('DELETE FROM "option_value_on_variant";');
+  await dataSource.query('DELETE FROM "option_value";');
+  await dataSource.query('DELETE FROM "option";');
+  await dataSource.query('DELETE FROM "variant";');
+  await dataSource.query('DELETE FROM "asset_on_product";');
+  await dataSource.query('DELETE FROM "asset";');
+  await dataSource.query('DELETE FROM "product";');
   console.log('Database cleaned ✨');
   console.log();
 
@@ -34,7 +41,7 @@ const prepareForExpo = async () => {
   const username = 'admin';
   const password = bcrypt.hashSync('admin', 10);
   await dataSource.query(
-    `INSERT INTO administrator (username, password) VALUES ('${username}', '${password}');`,
+    `INSERT INTO administrator (username, password) VALUES ('${username}', '${password}');`
   );
   console.log('Admin user generated ✨');
   console.log("Username: 'admin'");
@@ -55,8 +62,8 @@ const prepareForExpo = async () => {
   console.log("Payment methods: 'Stripe', 'PayPal'");
   console.log();
 
-  console.log('Preparation for Expo is completed 🎉');
+  console.log('Database is cleaned 🎉');
   await dataSource.destroy();
 };
 
-prepareForExpo();
+cleanDb();

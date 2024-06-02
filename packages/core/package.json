@@ -14,7 +14,6 @@
     "start": "node dist/main",
     "script:generate": "ts-node ./scripts/generate-gql-types.ts",
     "script:post-build": "gulp -f ./scripts/post-build.ts postBuild",
-    "script:expo": "ts-node ./scripts/expo.ts",
     "db:seed": "ts-node ./scripts/seed.ts",
     "db:clean": "ts-node ./scripts/clean-db.ts"
   },

@@ -4,7 +4,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  Entity as TypeOrmEntity,
+  Entity as TypeOrmEntity
 } from 'typeorm';
 
 import { Entity } from './entity';
@@ -14,7 +14,7 @@ import { ProductEntity } from './product.entity';
 
 @TypeOrmEntity('variant')
 export class VariantEntity extends Entity {
-  @Column('varchar', { unique: true })
+  @Column('varchar')
   sku: string;
 
   @Column('int')
@@ -29,13 +29,13 @@ export class VariantEntity extends Entity {
   @Column('boolean', { default: true })
   published: boolean;
 
-  @ManyToOne(() => ProductEntity, (p) => p.variants)
+  @ManyToOne(() => ProductEntity, p => p.variants)
   product: ProductEntity;
 
-  @ManyToMany(() => OptionValueEntity, (ov) => ov.variants)
+  @ManyToMany(() => OptionValueEntity, ov => ov.variants)
   @JoinTable({ name: 'option_value_on_variant' })
   optionValues: OptionValueEntity[];
 
-  @OneToMany(() => OrderLineEntity, (l) => l.productVariant)
+  @OneToMany(() => OrderLineEntity, l => l.productVariant)
   orderLines: OrderLineEntity[];
 }

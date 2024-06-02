@@ -65,6 +65,22 @@ export class ProductService {
     return assets;
   }
 
+  async findOptions(id: ID) {
+    const product = await this.db.getRepository(ProductEntity).find({
+      where: { id },
+      relations: { variants: { optionValues: { option: true } } }
+    });
+    console.log(product);
+
+    return product
+      .map(p => p.variants)
+      .flat()
+      .map(v => v.optionValues)
+      .flat()
+      .map(ov => ov.option)
+      .filter((item, index, self) => index === self.findIndex(t => t.id === item.id));
+  }
+
   /**
    * Creates a new product entity
    * @param input Data to create a new product

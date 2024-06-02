@@ -47,6 +47,8 @@ type VariantErrorResult {
 enum VariantErrorCode {
   DEFAULT_VARIANT_ALREADY_EXISTS
   VARIANT_NOT_FOUND
+  PRODUCT_NOT_FOUND
+  
 }
 
 interface VariantResult {

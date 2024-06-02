@@ -1,10 +1,4 @@
-import {
-  Column,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  Entity as TypeOrmEntity,
-} from 'typeorm';
+import { Column, JoinTable, ManyToMany, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
 import { AssetEntity } from './asset.entity';
 import { Entity } from './entity';
@@ -33,10 +27,10 @@ export class ProductEntity extends Entity {
   @Column('boolean', { default: false })
   onlineOnly: boolean;
 
-  @OneToMany(() => VariantEntity, (v) => v.product)
+  @OneToMany(() => VariantEntity, v => v.product)
   variants: VariantEntity[];
 
-  @ManyToMany(() => AssetEntity, (a) => a.products)
+  @ManyToMany(() => AssetEntity, a => a.products)
   @JoinTable({ name: 'asset_on_product' })
   assets: AssetEntity[];
 }

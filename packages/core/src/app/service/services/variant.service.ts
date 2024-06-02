@@ -58,13 +58,19 @@ export class VariantService {
       }
     }
 
+    const product = await this.db
+      .getRepository(ProductEntity)
+      .findOneBy({ id: productId, deletedAt: null });
+
+    if (!product) {
+      return new ErrorResult(VariantErrorCode.PRODUCT_NOT_FOUND, 'Product not found');
+    }
+
     const optionValues = input.optionValuesIds?.length
       ? await this.db.getRepository(OptionValueEntity).find({
           where: { id: In(input.optionValuesIds) }
         })
       : undefined;
-
-    const product = await this.db.getRepository(ProductEntity).findOneBy({ id: productId });
 
     const variantToSave = this.db.getRepository(VariantEntity).create({
       ...input,

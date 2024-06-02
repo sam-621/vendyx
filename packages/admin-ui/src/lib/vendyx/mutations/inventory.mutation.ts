@@ -17,7 +17,13 @@ export const CreateProductMutation = graphql(`
 export const CreateVariantMutation = graphql(`
   mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {
     createVariant(productId: $createVariantProductId, input: $createVariantInput) {
-      id
+      apiErrors {
+        message
+        code
+      }
+      variant {
+        id
+      }
     }
   }
 `);
@@ -51,7 +57,13 @@ export const UpdateProductMutation = graphql(`
 export const UpdateVariantMutation = graphql(`
   mutation UpdateVariant($updateVariantId: ID!, $updateVariantInput: UpdateVariantInput!) {
     updateVariant(id: $updateVariantId, input: $updateVariantInput) {
-      id
+      apiErrors {
+        message
+        code
+      }
+      variant {
+        id
+      }
     }
   }
 `);

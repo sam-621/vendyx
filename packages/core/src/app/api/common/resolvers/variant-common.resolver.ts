@@ -7,6 +7,7 @@ import { VariantService } from '@/app/service';
 export class VariantCommonResolver {
   constructor(private readonly variantService: VariantService) {}
 
+  @ResolveField('optionValues')
   async optionValues(@Parent() variant: VariantEntity) {
     const optionValues = await this.variantService.findOptionValues(variant.id);
 

@@ -3,4 +3,6 @@ type OptionValue implements Node {
   createdAt: Date!
   updatedAt: Date!
   value: String!
+
+  option: Option!
 }

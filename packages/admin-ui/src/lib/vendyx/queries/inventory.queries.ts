@@ -1,7 +1,7 @@
 import { graphql } from '../codegen';
 
 export const ProductDetailsFragment = graphql(`
-  fragment ProductDetailsFragment on Product {
+  fragment CommonProduct on Product {
     id
     createdAt
     name
@@ -9,12 +9,17 @@ export const ProductDetailsFragment = graphql(`
     description
     onlineOnly
     published
-    variants(input: { take: 1 }) {
+    variants {
       items {
         id
+        price
         sku
         stock
-        price
+        published
+        optionValues {
+          id
+          value
+        }
       }
     }
     assets {
@@ -22,6 +27,7 @@ export const ProductDetailsFragment = graphql(`
         id
         name
         source
+        type
       }
     }
   }

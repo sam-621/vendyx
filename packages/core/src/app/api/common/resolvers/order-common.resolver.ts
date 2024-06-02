@@ -32,9 +32,7 @@ export class OrderCommonResolver {
 
   @ResolveField('shippingAddress')
   async shippingAddress(@Parent() order: OrderEntity) {
-    const shippingAddress = await this.orderService.findShippingAddress(
-      order.id,
-    );
+    const shippingAddress = await this.orderService.findShippingAddress(order.id);
 
     return shippingAddress;
   }
