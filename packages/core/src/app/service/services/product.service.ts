@@ -70,7 +70,6 @@ export class ProductService {
       where: { id },
       relations: { variants: { optionValues: { option: true } } }
     });
-    console.log(product);
 
     return product
       .map(p => p.variants)

@@ -10,9 +10,6 @@ export class OptionValueCommonResolver {
   @ResolveField('option')
   async options(@Parent() optionValue: OptionValueEntity) {
     const option = await this.optionValueService.findOption(optionValue.id);
-    console.log({
-      option
-    });
 
     return option;
   }

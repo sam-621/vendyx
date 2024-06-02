@@ -33,10 +33,6 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    console.log({
-      input
-    });
-
     const isUpdating = update?.productId && update?.variantId;
     const assets = input.assets ? await createAsset(input.assets) : undefined;
 

@@ -25,9 +25,6 @@ export class ProductCommonResolver {
   @ResolveField('options')
   async options(@Parent() product: ProductEntity) {
     const options = await this.productService.findOptions(product.id);
-    console.log({
-      options
-    });
 
     return options;
   }
