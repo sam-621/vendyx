@@ -14,10 +14,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input) {\n      authToken\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.AuthenticateDocument,
+    "\n  mutation CreateOption($createOptionInput: CreateOptionInput!) {\n    createOption(input: $createOptionInput) {\n      id\n      name\n      values {\n        id\n        value\n      }\n    }\n  }\n": types.CreateOptionDocument,
     "\n  mutation CreateProduct($createProductInput: CreateProductInput!) {\n    createProduct(input: $createProductInput) {\n      apiErrors {\n        message\n        code\n      }\n      product {\n        id\n      }\n    }\n  }\n": types.CreateProductDocument,
-    "\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n": types.CreateVariantDocument,
     "\n  mutation RemoveProduct($productId: ID!) {\n    removeProduct(id: $productId) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveProductDocument,
     "\n  mutation UpdateProduct($productId: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $productId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      product {\n        id\n      }\n    }\n  }\n": types.UpdateProductDocument,
+    "\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n": types.CreateVariantDocument,
     "\n  mutation UpdateVariant($updateVariantId: ID!, $updateVariantInput: UpdateVariantInput!) {\n    updateVariant(id: $updateVariantId, input: $updateVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n": types.UpdateVariantDocument,
     "\n  query ValidateToken {\n    validateToken\n  }\n": types.ValidateTokenDocument,
     "\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    onlineOnly\n    published\n    options {\n      id\n      name\n    }\n    variants {\n      items {\n        id\n        price\n        sku\n        stock\n        published\n        optionValues {\n          id\n          value\n        }\n      }\n    }\n    assets {\n      items {\n        id\n        name\n        source\n      }\n    }\n  }\n": types.CommonProductFragmentDoc,
@@ -49,11 +50,11 @@ export function graphql(source: "\n  mutation Authenticate($input: AuthenticateI
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateProduct($createProductInput: CreateProductInput!) {\n    createProduct(input: $createProductInput) {\n      apiErrors {\n        message\n        code\n      }\n      product {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateProduct($createProductInput: CreateProductInput!) {\n    createProduct(input: $createProductInput) {\n      apiErrors {\n        message\n        code\n      }\n      product {\n        id\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateOption($createOptionInput: CreateOptionInput!) {\n    createOption(input: $createOptionInput) {\n      id\n      name\n      values {\n        id\n        value\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateOption($createOptionInput: CreateOptionInput!) {\n    createOption(input: $createOptionInput) {\n      id\n      name\n      values {\n        id\n        value\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateProduct($createProductInput: CreateProductInput!) {\n    createProduct(input: $createProductInput) {\n      apiErrors {\n        message\n        code\n      }\n      product {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateProduct($createProductInput: CreateProductInput!) {\n    createProduct(input: $createProductInput) {\n      apiErrors {\n        message\n        code\n      }\n      product {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -62,6 +63,10 @@ export function graphql(source: "\n  mutation RemoveProduct($productId: ID!) {\n
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation UpdateProduct($productId: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $productId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      product {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateProduct($productId: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $productId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      product {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -2,18 +2,27 @@ import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { getFormattedPrice } from '@vendyx/common';
-import { Button, Card, CardContent, CardHeader, CardTitle, Separator } from '@vendyx/theme';
-import { PlusIcon } from 'lucide-react';
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Label,
+  Separator
+} from '@vendyx/theme';
+import { MoreHorizontalIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components/forms';
 import { t } from '@/lib/locales';
-import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 import { OptionDetails } from './option-details';
 import { useManageVariants } from './use-manage-variants';
 
-export const VariantDetails: FC<Props> = ({ variants }) => {
+export const VariantDetails: FC<Props> = ({ variants, options: defaultOptions }) => {
   const { options, addOption, removeOption, updateOption, updateValues } = useManageVariants();
   const { register, formState } = useFormContext<ProductDetailsFormInput>();
   const { errors } = formState;
@@ -31,6 +40,48 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
         )}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
+        {/* Filled */}
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col gap-4">
+            <Label>Size</Label>
+            <div className="flex gap-2">
+              <Badge variant="secondary">S</Badge>
+              <Badge variant="secondary">M</Badge>
+            </div>
+          </div>
+          <Button size="icon" variant="ghost">
+            <MoreHorizontalIcon size={16} />
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <span>S</span>
+            </div>
+            <div className="flex gap-2 items-end">
+              <FormInput label="Price" placeholder="$ 0.00" />
+              <FormInput label="SKU" placeholder="SKU - 000" />
+              <FormInput label="Quantity" placeholder="0" />
+              <Button variant="ghost" size="icon" className="p-2">
+                <Trash2Icon size={16} />
+              </Button>
+            </div>
+          </div>
+          <div className="flex justify-between items-center">
+            <div>
+              <span>M</span>
+            </div>
+            <div className="flex gap-2 items-end">
+              <FormInput label="Price" placeholder="$ 0.00" />
+              <FormInput label="SKU" placeholder="SKU - 000" />
+              <FormInput label="Quantity" placeholder="0" />
+              <Button variant="ghost" size="icon" className="p-2">
+                <Trash2Icon size={16} />
+              </Button>
+            </div>
+          </div>
+        </div>
         {/* Option form start */}
         {Boolean(options.length) && (
           <div className="flex flex-col gap-4">
@@ -93,5 +144,6 @@ export const VariantDetails: FC<Props> = ({ variants }) => {
 };
 
 type Props = {
-  variants?: ProductDetailsFragmentFragment['variants'];
+  options?: CommonProductFragment['options'];
+  variants?: CommonProductFragment['variants'];
 };

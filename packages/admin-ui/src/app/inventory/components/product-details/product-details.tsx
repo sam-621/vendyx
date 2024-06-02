@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/app/components/forms';
 import { t } from '@/lib/locales';
-import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { AssetDetails } from './asset-details/asset-details';
 import { VariantDetails } from './variant-details/variant-details';
@@ -57,7 +57,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
 
       <AssetDetails assets={product?.assets} />
 
-      <VariantDetails variants={product?.variants} />
+      <VariantDetails variants={product?.variants} options={product?.options} />
 
       <Card>
         <CardHeader>
@@ -97,5 +97,5 @@ export const ProductDetails: FC<Props> = ({ product }) => {
 };
 
 type Props = {
-  product?: ProductDetailsFragmentFragment | null;
+  product?: CommonProductFragment | null;
 };

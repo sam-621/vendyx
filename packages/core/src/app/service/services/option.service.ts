@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 
 import { OptionValueService } from './option-value.service';
 
-import { OptionEntity } from '@/app/persistance';
+import { ID, OptionEntity } from '@/app/persistance';
 
 @Injectable()
 export class OptionService {
@@ -12,6 +12,14 @@ export class OptionService {
     private optionValueService: OptionValueService,
     @InjectDataSource() private db: DataSource
   ) {}
+
+  async findValues(id: ID) {
+    const option = await this.db
+      .getRepository(OptionEntity)
+      .findOne({ where: { id }, relations: { values: true } });
+
+    return option.values;
+  }
 
   async create(name: string, values: string[]) {
     const optionValues = await this.optionValueService.create(values);
