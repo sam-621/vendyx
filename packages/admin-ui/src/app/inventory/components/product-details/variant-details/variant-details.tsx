@@ -1,4 +1,3 @@
-import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { getFormattedPrice } from '@vendyx/common';
@@ -15,27 +14,33 @@ import {
 import { MoreHorizontalIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components/forms';
+import { useProductDetailsContext } from '@/app/inventory/context';
 import { t } from '@/lib/locales';
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 import { OptionDetails } from './option-details';
 import { useManageOptionsSates } from './use-manage-variants';
 
-// Show variants and options saved
-// TODO: Save options, update variants and remove variants from ui
-export const VariantDetails: FC<Props> = ({ variants, options: defaultOptions }) => {
+export const VariantDetails = () => {
+  const { product } = useProductDetailsContext();
   const { options, addOption, removeOption, updateOption, updateValues } = useManageOptionsSates();
   const { register, formState } = useFormContext<ProductDetailsFormInput>();
   const { errors } = formState;
+
+  const variants = product?.variants;
+  const defaultOptions = product?.options;
+
   const defaultVariant = variants?.items[0];
+
+  const isProductAlreadyCreated = Boolean(product);
   const hasOptions = Boolean(defaultOptions?.length);
+  const isAddingOptions = Boolean(options.length);
 
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle>{t('product-details.pricing.title')}</CardTitle>
-        {!options.length && !defaultOptions?.length && (
+        {!isAddingOptions && !hasOptions && isProductAlreadyCreated && (
           <Button className="text-distinct" variant="link" type="button" onClick={addOption}>
             <PlusIcon size={16} />
             Add options
@@ -94,7 +99,7 @@ export const VariantDetails: FC<Props> = ({ variants, options: defaultOptions })
           </div>
         </div> */}
         {/* Option form start */}
-        {Boolean(options.length) && (
+        {isAddingOptions && isProductAlreadyCreated && (
           <div className="flex flex-col gap-4">
             {options.map((op, i) => (
               <>
@@ -113,7 +118,7 @@ export const VariantDetails: FC<Props> = ({ variants, options: defaultOptions })
         )}
         {/* Option form ends */}
 
-        {(options.length || defaultOptions?.length) && (
+        {Boolean(isAddingOptions || hasOptions) && (
           <div>
             <Separator />
             <Button
@@ -129,26 +134,27 @@ export const VariantDetails: FC<Props> = ({ variants, options: defaultOptions })
         )}
 
         {/* Variants generated */}
-        {variants?.items.map(variant => (
-          <div key={variant.id} className="flex justify-between items-center">
-            <div className="flex gap-1">
-              {variant.optionValues?.map((optionValue, i) => (
-                <>
-                  <span key={optionValue.id}>{optionValue.value}</span>
-                  {variant.optionValues?.length !== i + 1 && <span>/</span>}
-                </>
-              ))}
+        {hasOptions &&
+          variants?.items.map(variant => (
+            <div key={variant.id} className="flex justify-between items-center">
+              <div className="flex gap-1">
+                {variant.optionValues?.map((optionValue, i) => (
+                  <>
+                    <span key={optionValue.id}>{optionValue.value}</span>
+                    {variant.optionValues?.length !== i + 1 && <span>/</span>}
+                  </>
+                ))}
+              </div>
+              <div className="flex gap-2 items-end">
+                <FormInput label="Price" placeholder="$ 0.00" />
+                <FormInput label="SKU" placeholder="SKU - 000" />
+                <FormInput label="Quantity" placeholder="0" />
+                <Button variant="ghost" size="icon" className="p-2">
+                  <Trash2Icon size={16} />
+                </Button>
+              </div>
             </div>
-            <div className="flex gap-2 items-end">
-              <FormInput label="Price" placeholder="$ 0.00" />
-              <FormInput label="SKU" placeholder="SKU - 000" />
-              <FormInput label="Quantity" placeholder="0" />
-              <Button variant="ghost" size="icon" className="p-2">
-                <Trash2Icon size={16} />
-              </Button>
-            </div>
-          </div>
-        ))}
+          ))}
 
         {/* Form when no options added */}
         {!hasOptions && (
@@ -181,9 +187,4 @@ export const VariantDetails: FC<Props> = ({ variants, options: defaultOptions })
       </CardContent>
     </Card>
   );
-};
-
-type Props = {
-  options?: CommonProductFragment['options'];
-  variants?: CommonProductFragment['variants'];
 };

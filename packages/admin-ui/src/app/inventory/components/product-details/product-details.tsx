@@ -8,6 +8,7 @@ import { FormInput, FormTextarea, SwitchContainer } from '@/app/components/forms
 import { t } from '@/lib/locales';
 import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
 
+import { ProductDetailsProvider } from '../../context/product-details-context';
 import { AssetDetails } from './asset-details/asset-details';
 import { VariantDetails } from './variant-details/variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
@@ -24,7 +25,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
   }, [parsedSlug]);
 
   return (
-    <>
+    <ProductDetailsProvider value={{ product }}>
       <Card>
         <CardHeader>
           <CardTitle>General</CardTitle>
@@ -57,7 +58,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
 
       <AssetDetails assets={product?.assets} />
 
-      <VariantDetails variants={product?.variants} options={product?.options} />
+      <VariantDetails />
 
       <Card>
         <CardHeader>
@@ -92,7 +93,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
           />
         </CardContent>
       </Card>
-    </>
+    </ProductDetailsProvider>
   );
 };
 

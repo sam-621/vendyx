@@ -1,6 +1,6 @@
 import { useGqlQuery } from '@/lib/gql';
 import { useFragment } from '@/lib/vendyx/codegen';
-import { GetProductDetailsQuery, CommonProductFragment } from '@/lib/vendyx/queries';
+import { CommonProductFragment, GetProductDetailsQuery } from '@/lib/vendyx/queries';
 
 import { InventoryKeys } from './inventory.keys';
 

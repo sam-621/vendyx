@@ -6,10 +6,18 @@ import { Trash2Icon } from 'lucide-react';
 import { FormInput } from '@/app/components';
 
 import { type OptionState, OptionValueState } from './use-manage-variants';
+import { useOptionDetailsForm } from './use-option-details';
 
 export const OptionDetails: FC<Props> = ({ option, removeOption, updateOption, updateValues }) => {
+  const { createVariantsCombinations } = useOptionDetailsForm();
+
+  const onSubmit = async () => {
+    await createVariantsCombinations(option);
+    removeOption();
+  };
+
   return (
-    <div className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4">
       <div className="flex items-end gap-4">
         <FormInput
           label="Option"
@@ -50,9 +58,11 @@ export const OptionDetails: FC<Props> = ({ option, removeOption, updateOption, u
         ))}
       </div>
       <div>
-        <Button variant="outline">Done</Button>
+        <Button type="button" onClick={onSubmit} variant="outline">
+          Done
+        </Button>
       </div>
-    </div>
+    </form>
   );
 };
 
