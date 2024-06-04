@@ -45,19 +45,6 @@ export class VariantService {
     productId: ID,
     input: CreateVariantInput
   ): Promise<ErrorResult<VariantErrorCode> | VariantEntity> {
-    if (!input.optionValuesIds?.length) {
-      const defaultVariantAlreadyCreated = await this.db
-        .getRepository(VariantEntity)
-        .findOne({ where: { product: { id: productId } } });
-
-      if (defaultVariantAlreadyCreated) {
-        return new ErrorResult(
-          VariantErrorCode.DEFAULT_VARIANT_ALREADY_EXISTS,
-          'Default variant already created, add options instead'
-        );
-      }
-    }
-
     const product = await this.db
       .getRepository(ProductEntity)
       .findOneBy({ id: productId, deletedAt: null });

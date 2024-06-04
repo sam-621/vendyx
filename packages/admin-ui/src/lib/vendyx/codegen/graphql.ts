@@ -355,7 +355,7 @@ export type Product = Node & {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   onlineOnly: Scalars['Boolean']['output'];
-  options?: Maybe<Array<Option>>;
+  options: Array<Option>;
   published: Scalars['Boolean']['output'];
   slug: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
@@ -522,7 +522,6 @@ export type Variant = Node & {
 
 /**  Utils  */
 export enum VariantErrorCode {
-  DefaultVariantAlreadyExists = 'DEFAULT_VARIANT_ALREADY_EXISTS',
   ProductNotFound = 'PRODUCT_NOT_FOUND',
   VariantNotFound = 'VARIANT_NOT_FOUND'
 }
@@ -618,7 +617,7 @@ export type GetOrderDetailsQuery = { __typename?: 'Query', order?: (
     & { ' $fragmentRefs'?: { 'CommonOrderFragment': CommonOrderFragment } }
   ) | null };
 
-export type CommonProductFragment = { __typename?: 'Product', id: string, createdAt: any, name: string, slug: string, description?: string | null, onlineOnly: boolean, published: boolean, options?: Array<{ __typename?: 'Option', id: string, name: string, values?: Array<{ __typename?: 'OptionValue', id: string, value: string }> | null }> | null, variants: { __typename?: 'VariantList', items: Array<{ __typename?: 'Variant', id: string, price: number, sku: string, stock: number, published: boolean, optionValues?: Array<{ __typename?: 'OptionValue', id: string, value: string }> | null }> }, assets: { __typename?: 'AssetList', items: Array<{ __typename?: 'Asset', id: string, name: string, source: string }> } } & { ' $fragmentName'?: 'CommonProductFragment' };
+export type CommonProductFragment = { __typename?: 'Product', id: string, createdAt: any, name: string, slug: string, description?: string | null, onlineOnly: boolean, published: boolean, options: Array<{ __typename?: 'Option', id: string, name: string, values?: Array<{ __typename?: 'OptionValue', id: string, value: string }> | null }>, variants: { __typename?: 'VariantList', items: Array<{ __typename?: 'Variant', id: string, price: number, sku: string, stock: number, published: boolean, optionValues?: Array<{ __typename?: 'OptionValue', id: string, value: string }> | null }> }, assets: { __typename?: 'AssetList', items: Array<{ __typename?: 'Asset', id: string, name: string, source: string }> } } & { ' $fragmentName'?: 'CommonProductFragment' };
 
 export type GetProductsQueryVariables = Exact<{
   input?: InputMaybe<ListInput>;

@@ -19,7 +19,6 @@ export enum ProductErrorCode {
 }
 
 export enum VariantErrorCode {
-    DEFAULT_VARIANT_ALREADY_EXISTS = "DEFAULT_VARIANT_ALREADY_EXISTS",
     VARIANT_NOT_FOUND = "VARIANT_NOT_FOUND",
     PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND"
 }
@@ -416,7 +415,7 @@ export class Product implements Node {
     onlineOnly: boolean;
     variants?: VariantList;
     assets?: AssetList;
-    options?: Nullable<Option[]>;
+    options: Option[];
 }
 
 export class ProductList implements List {

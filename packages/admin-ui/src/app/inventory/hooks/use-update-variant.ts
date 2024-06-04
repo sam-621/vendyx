@@ -6,7 +6,11 @@ export const useUpdateVariant = () => {
   const { mutateAsync, isPending } = useGqlMutation(UpdateVariantMutation);
 
   const updateVariant = async (variantId: string, input: UpdateVariantInput) => {
-    await mutateAsync({ updateVariantId: variantId, updateVariantInput: input });
+    const {
+      updateVariant: { variant }
+    } = await mutateAsync({ updateVariantId: variantId, updateVariantInput: input });
+
+    return variant?.id;
   };
 
   return {

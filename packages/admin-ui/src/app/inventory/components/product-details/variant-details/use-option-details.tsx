@@ -1,19 +1,25 @@
 import { useState } from 'react';
 
 import { useProductDetailsContext } from '@/app/inventory/context';
-import { InventoryKeys, useCreateOption, useCreateVariant } from '@/app/inventory/hooks';
+import {
+  InventoryKeys,
+  useCreateOption,
+  useCreateVariant,
+  useUpdateVariant
+} from '@/app/inventory/hooks';
+import { getNewVariantsByNewOption } from '@/app/inventory/utils';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 import { type OptionState } from './use-manage-variants';
 
-// TODO: Hacer q las variantes se puedan crear l;as que sean sin opciones para ya luego actualizarlas con las opciuones generadas
 /**
  * Manage the option details form
  */
 export const useOptionDetailsForm = () => {
   const { product } = useProductDetailsContext();
   const { createVariant } = useCreateVariant();
+  const { updateVariant } = useUpdateVariant();
   const { createOption } = useCreateOption();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,21 +49,48 @@ export const useOptionDetailsForm = () => {
       values: optionValues.map(v => v.value)
     });
 
-    const variantsAlreadyCreated = product.variants?.items;
+    const variantsToUpdate = product.variants.items.filter(v => v.optionValues?.length);
+    const newVariants = variantsToUpdate.length
+      ? getNewVariantsByNewOption(variantsToUpdate, optionCreated)
+      : [];
 
-    const variantPromises =
-      optionCreated.values?.map(
-        async value =>
-          await createVariant(product?.id, {
-            price: 0,
-            published: true,
-            sku: '',
-            stock: 0,
-            optionValuesIds: [value.id]
-          })
-      ) ?? [];
+    if (newVariants.length) {
+      await Promise.all(
+        newVariants.map(async variant => {
+          const { variantId, values } = variant;
 
-    await Promise.all(variantPromises);
+          // If the variantId is not present, it means that we need to create a new variant
+          if (!variantId) {
+            return await createVariant(product.id, {
+              price: 0,
+              published: true,
+              sku: '',
+              stock: 0,
+              optionValuesIds: values
+            });
+          }
+
+          return await updateVariant(variantId, {
+            optionValuesIds: values
+          });
+        })
+      );
+    } else {
+      // If not this means that the product has no variants yet, so we only need to create them
+      await Promise.all(
+        optionCreated.values?.map(
+          async value =>
+            await createVariant(product.id, {
+              price: 0,
+              published: true,
+              sku: '',
+              stock: 0,
+              optionValuesIds: [value.id]
+            })
+        ) ?? []
+      );
+    }
+
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product.slug) });
 
     setIsLoading(false);
