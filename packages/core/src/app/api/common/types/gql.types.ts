@@ -329,6 +329,7 @@ export class OptionValue implements Node {
     createdAt: Date;
     updatedAt: Date;
     value: string;
+    option: Option;
 }
 
 export class Option implements Node {
@@ -415,6 +416,7 @@ export class Product implements Node {
     onlineOnly: boolean;
     variants?: VariantList;
     assets?: AssetList;
+    options?: Nullable<Option[]>;
 }
 
 export class ProductList implements List {

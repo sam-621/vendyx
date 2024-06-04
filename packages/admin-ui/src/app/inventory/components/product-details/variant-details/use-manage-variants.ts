@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 /**
- * Hook to manage the variants options states
+ * Hook to manage the option form states
  */
-export const useManageVariants = () => {
+export const useManageOptionsSates = () => {
   const [options, setOptions] = useState<OptionState[]>([]);
 
   const removeOption = (id: string) => {

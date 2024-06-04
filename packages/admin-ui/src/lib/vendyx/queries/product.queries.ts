@@ -12,6 +12,10 @@ export const CommonProductFragment = graphql(`
     options {
       id
       name
+      values {
+        id
+        value
+      }
     }
     variants {
       items {

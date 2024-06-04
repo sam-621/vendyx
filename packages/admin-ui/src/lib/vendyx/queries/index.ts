@@ -1,3 +1,3 @@
 export * from './admin.queries';
-export * from './inventory.queries';
 export * from './order.queries';
+export * from './product.queries';
