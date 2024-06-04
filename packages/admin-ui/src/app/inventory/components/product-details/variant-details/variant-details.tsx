@@ -15,7 +15,10 @@ import { MoreHorizontalIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components/forms';
 import { useProductDetailsContext } from '@/app/inventory/context';
+import { InventoryKeys, useRemoveVariant } from '@/app/inventory/hooks';
 import { t } from '@/lib/locales';
+import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 import { OptionDetails } from './option-details';
@@ -26,6 +29,7 @@ export const VariantDetails = () => {
   const { options, addOption, removeOption, updateOption, updateValues } = useManageOptionsSates();
   const { register, formState } = useFormContext<ProductDetailsFormInput>();
   const { errors } = formState;
+  const { removeVariant } = useRemoveVariant();
 
   const variants = product?.variants;
   const defaultOptions = product?.options;
@@ -149,7 +153,21 @@ export const VariantDetails = () => {
                 <FormInput label="Price" placeholder="$ 0.00" />
                 <FormInput label="SKU" placeholder="SKU - 000" />
                 <FormInput label="Quantity" placeholder="0" />
-                <Button variant="ghost" size="icon" className="p-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="p-2"
+                  onClick={async () => {
+                    const optionValues = variant.optionValues?.map(({ value }) => value);
+
+                    await removeVariant(variant.id);
+                    await queryClient.invalidateQueries({
+                      queryKey: InventoryKeys.single(product?.slug ?? '')
+                    });
+
+                    notification.success(`Variante ${optionValues?.join(' / ')} eliminada`);
+                  }}
+                >
                   <Trash2Icon size={16} />
                 </Button>
               </div>

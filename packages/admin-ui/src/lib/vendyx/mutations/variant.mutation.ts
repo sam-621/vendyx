@@ -14,6 +14,18 @@ export const CreateVariantMutation = graphql(`
   }
 `);
 
+export const RemoveVariantMutation = graphql(`
+  mutation RemoveVariant($removeVariantId: ID!) {
+    removeVariant(id: $removeVariantId) {
+      apiErrors {
+        code
+        message
+      }
+      success
+    }
+  }
+`);
+
 export const UpdateVariantMutation = graphql(`
   mutation UpdateVariant($updateVariantId: ID!, $updateVariantInput: UpdateVariantInput!) {
     updateVariant(id: $updateVariantId, input: $updateVariantInput) {
