@@ -13,8 +13,7 @@ export enum AdminErrorCode {
 }
 
 export enum OptionErrorCode {
-    DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES",
-    DUPLICATED_OPTION_NAME = "DUPLICATED_OPTION_NAME"
+    DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES"
 }
 
 export enum ProductErrorCode {

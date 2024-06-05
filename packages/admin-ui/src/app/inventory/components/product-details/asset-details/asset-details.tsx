@@ -7,7 +7,7 @@ import { PlusIcon } from 'lucide-react';
 import { Dropzone } from '@/app/components/forms';
 import { t } from '@/lib/locales';
 import { getFileListIntoArray } from '@/lib/utils';
-import { type ProductDetailsFragmentFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 
@@ -79,5 +79,5 @@ export const AssetDetails: FC<Props> = ({ assets: defaultAssets }) => {
 };
 
 type Props = {
-  assets?: ProductDetailsFragmentFragment['assets'];
+  assets?: CommonProductFragment['assets'];
 };

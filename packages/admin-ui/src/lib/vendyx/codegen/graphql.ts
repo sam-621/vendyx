@@ -256,6 +256,7 @@ export type Option = Node & {
 
 /**  Utils  */
 export enum OptionErrorCode {
+  DuplicatedOptionName = 'DUPLICATED_OPTION_NAME',
   DuplicatedOptionValues = 'DUPLICATED_OPTION_VALUES'
 }
 
