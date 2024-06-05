@@ -1,9 +1,25 @@
 
 type Mutation {
-  createOption(input: CreateOptionInput!): Option!
+  createOption(input: CreateOptionInput!): OptionResult!
 }
 
 input CreateOptionInput {
   name: String!
   values: [String!]
+}
+
+" Results "
+type OptionResult {
+  option: Option
+  apiErrors: [OptionErrorResult!]!
+}
+
+type OptionErrorResult {
+  code: OptionErrorCode!
+  message: String!
+}
+
+" Utils "
+enum OptionErrorCode {
+  DUPLICATED_OPTION_VALUES
 }

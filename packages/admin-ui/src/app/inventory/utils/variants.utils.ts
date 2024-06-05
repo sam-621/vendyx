@@ -6,8 +6,10 @@ import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
  */
 export const getNewVariantsByNewOption = (
   existingVariants: CommonProductFragment['variants']['items'],
-  newOption: CommonProductFragment['options'][0]
+  newOption: CommonProductFragment['options'][0] | undefined | null
 ) => {
+  if (!newOption) return [];
+
   const variantsWithOptions = existingVariants.filter(v => v.optionValues?.length);
   const newVariants: { variantId: string | undefined; values: string[] }[] = [];
 

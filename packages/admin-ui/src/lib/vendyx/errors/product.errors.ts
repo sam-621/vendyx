@@ -21,7 +21,7 @@ export const getProductErrorMessages = (error?: ProductErrorResult) => {
   return CommonErrorMessages.GenericError;
 };
 
-export const ProductErrorMessages = {
+const ProductErrorMessages = {
   ProductNotFound: 'No product found',
   NoIdOrSlugProvided: 'No id or slug provided',
   DuplicatedSlug: 'Slug already exists'

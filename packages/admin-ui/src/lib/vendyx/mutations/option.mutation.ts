@@ -3,11 +3,17 @@ import { graphql } from '../codegen';
 export const CreateOptionMutation = graphql(`
   mutation CreateOption($createOptionInput: CreateOptionInput!) {
     createOption(input: $createOptionInput) {
-      id
-      name
-      values {
+      apiErrors {
+        code
+        message
+      }
+      option {
         id
-        value
+        name
+        values {
+          id
+          value
+        }
       }
     }
   }

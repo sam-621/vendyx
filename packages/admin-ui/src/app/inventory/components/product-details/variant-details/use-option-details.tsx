@@ -23,7 +23,7 @@ export const useOptionDetailsForm = () => {
   const { createOption } = useCreateOption();
   const [isLoading, setIsLoading] = useState(false);
 
-  const createVariantsCombinations = async (option: OptionState) => {
+  const createVariantsCombinations = async (option: OptionState, closeOptionForm: () => void) => {
     if (!product) {
       notification.error('You should create a product first');
       return;
@@ -41,13 +41,24 @@ export const useOptionDetailsForm = () => {
       return;
     }
 
+    if (optionValues.length !== new Set(optionValues.map(v => v.value)).size) {
+      notification.error('You can not have duplicated option values');
+      return;
+    }
+
     setIsLoading(true);
     const notificationId = notification.loading('Creating variants...');
 
-    const optionCreated = await createOption({
+    const { option: optionCreated, error } = await createOption({
       name: option.name,
       values: optionValues.map(v => v.value)
     });
+
+    if (error) {
+      notification.error(error);
+      notification.dismiss(notificationId);
+      return;
+    }
 
     const variantsToUpdate = product.variants.items.filter(v => v.optionValues?.length);
     const newVariants = variantsToUpdate.length
@@ -78,7 +89,7 @@ export const useOptionDetailsForm = () => {
     } else {
       // If not this means that the product has no variants yet, so we only need to create them
       await Promise.all(
-        optionCreated.values?.map(
+        optionCreated?.values?.map(
           async value =>
             await createVariant(product.id, {
               price: 0,
@@ -97,6 +108,7 @@ export const useOptionDetailsForm = () => {
 
     notification.dismiss(notificationId);
     notification.success('Variants created successfully');
+    closeOptionForm();
   };
 
   return {

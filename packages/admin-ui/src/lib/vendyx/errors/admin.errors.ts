@@ -13,6 +13,6 @@ export const getAdminErrorMessages = (error?: AdminErrorResult) => {
   return CommonErrorMessages.GenericError;
 };
 
-export const AdminErrorMessages = {
+const AdminErrorMessages = {
   InvalidCredentials: 'Invalid credentials'
 };

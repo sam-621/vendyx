@@ -2,7 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import { AdminJwtAuthGuard, CreateOptionInput } from '@/app/api/common';
-import { OptionService } from '@/app/service';
+import { OptionService, isErrorResult } from '@/app/service';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Option')
@@ -11,8 +11,8 @@ export class OptionResolver {
 
   @Mutation('createOption')
   async createOption(@Args('input') input: CreateOptionInput) {
-    const option = await this.service.create(input.name, input.values);
+    const result = await this.service.create(input.name, input.values);
 
-    return option;
+    return isErrorResult(result) ? { apiErrors: [result] } : { option: result, apiErrors: [] };
   }
 }

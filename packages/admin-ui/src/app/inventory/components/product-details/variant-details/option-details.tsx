@@ -11,11 +11,6 @@ import { useOptionDetailsForm } from './use-option-details';
 export const OptionDetails: FC<Props> = ({ option, removeOption, updateOption, updateValues }) => {
   const { createVariantsCombinations } = useOptionDetailsForm();
 
-  const onSubmit = async () => {
-    await createVariantsCombinations(option);
-    removeOption();
-  };
-
   return (
     <form className="flex flex-col gap-4">
       <div className="flex items-end gap-4">
@@ -58,7 +53,11 @@ export const OptionDetails: FC<Props> = ({ option, removeOption, updateOption, u
         ))}
       </div>
       <div>
-        <Button type="button" onClick={onSubmit} variant="outline">
+        <Button
+          type="button"
+          onClick={async () => await createVariantsCombinations(option, removeOption)}
+          variant="outline"
+        >
           Done
         </Button>
       </div>

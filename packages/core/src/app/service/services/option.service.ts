@@ -3,7 +3,9 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 import { OptionValueService } from './option-value.service';
+import { ErrorResult } from '../utils';
 
+import { OptionErrorCode } from '@/app/api/common';
 import { ID, OptionEntity } from '@/app/persistance';
 
 @Injectable()
@@ -21,7 +23,16 @@ export class OptionService {
     return option.values;
   }
 
-  async create(name: string, values: string[]) {
+  async create(
+    name: string,
+    values: string[]
+  ): Promise<OptionEntity | ErrorResult<OptionErrorCode>> {
+    const hasDuplicatedValues = values.length !== new Set(values).size;
+
+    if (hasDuplicatedValues) {
+      return new ErrorResult(OptionErrorCode.DUPLICATED_OPTION_VALUES, 'Duplicated option values');
+    }
+
     const optionValues = await this.optionValueService.create(values);
 
     const optionToSave = this.db.getRepository(OptionEntity).create({

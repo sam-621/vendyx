@@ -12,6 +12,11 @@ export enum AdminErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
 }
 
+export enum OptionErrorCode {
+    DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES",
+    DUPLICATED_OPTION_NAME = "DUPLICATED_OPTION_NAME"
+}
+
 export enum ProductErrorCode {
     PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
     NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
@@ -169,7 +174,7 @@ export class Admin implements Node {
 export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
-    abstract createOption(input: CreateOptionInput): Option | Promise<Option>;
+    abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
 
     abstract createProduct(input: CreateProductInput): CreateProductResult | Promise<CreateProductResult>;
 
@@ -227,6 +232,16 @@ export class AuthenticateResult {
 
 export class AdminErrorResult {
     code: AdminErrorCode;
+    message: string;
+}
+
+export class OptionResult {
+    option?: Nullable<Option>;
+    apiErrors: OptionErrorResult[];
+}
+
+export class OptionErrorResult {
+    code: OptionErrorCode;
     message: string;
 }
 
