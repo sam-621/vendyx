@@ -13,7 +13,8 @@ export enum AdminErrorCode {
 }
 
 export enum OptionErrorCode {
-    DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES"
+    DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES",
+    OPTION_NOT_FOUND = "OPTION_NOT_FOUND"
 }
 
 export enum ProductErrorCode {
@@ -58,6 +59,11 @@ export class AuthenticateInput {
 export class CreateOptionInput {
     name: string;
     values?: Nullable<string[]>;
+}
+
+export class UpdateOptionInput {
+    name?: Nullable<string>;
+    values?: Nullable<Nullable<string>[]>;
 }
 
 export class CreateProductInput {
@@ -174,6 +180,8 @@ export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
+
+    abstract updateOption(id: string, input: UpdateOptionInput): OptionResult | Promise<OptionResult>;
 
     abstract createProduct(input: CreateProductInput): CreateProductResult | Promise<CreateProductResult>;
 

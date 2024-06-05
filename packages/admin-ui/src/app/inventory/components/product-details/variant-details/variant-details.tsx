@@ -74,34 +74,6 @@ export const VariantDetails = () => {
           </>
         ))}
 
-        {/* <div className="flex flex-col gap-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <span>S</span>
-            </div>
-            <div className="flex gap-2 items-end">
-              <FormInput label="Price" placeholder="$ 0.00" />
-              <FormInput label="SKU" placeholder="SKU - 000" />
-              <FormInput label="Quantity" placeholder="0" />
-              <Button variant="ghost" size="icon" className="p-2">
-                <Trash2Icon size={16} />
-              </Button>
-            </div>
-          </div>
-          <div className="flex justify-between items-center">
-            <div>
-              <span>M</span>
-            </div>
-            <div className="flex gap-2 items-end">
-              <FormInput label="Price" placeholder="$ 0.00" />
-              <FormInput label="SKU" placeholder="SKU - 000" />
-              <FormInput label="Quantity" placeholder="0" />
-              <Button variant="ghost" size="icon" className="p-2">
-                <Trash2Icon size={16} />
-              </Button>
-            </div>
-          </div>
-        </div> */}
         {/* Option form start */}
         {isAddingOptions && isProductAlreadyCreated && (
           <div className="flex flex-col gap-4">

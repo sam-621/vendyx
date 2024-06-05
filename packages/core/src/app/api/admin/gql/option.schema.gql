@@ -1,11 +1,17 @@
 
 type Mutation {
   createOption(input: CreateOptionInput!): OptionResult!
+  updateOption(id: ID!, input: UpdateOptionInput!): OptionResult!
 }
 
 input CreateOptionInput {
   name: String!
   values: [String!]
+}
+
+input UpdateOptionInput {
+  name: String
+  values: [ID]
 }
 
 " Results "
@@ -22,4 +28,5 @@ type OptionErrorResult {
 " Utils "
 enum OptionErrorCode {
   DUPLICATED_OPTION_VALUES
+  OPTION_NOT_FOUND
 }
