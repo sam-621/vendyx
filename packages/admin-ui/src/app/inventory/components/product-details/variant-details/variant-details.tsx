@@ -21,6 +21,7 @@ import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
+import { OptionActions } from './option-actions';
 import { OptionDetails } from './option-details';
 import { useManageOptionsSates } from './use-manage-variants';
 
@@ -66,9 +67,7 @@ export const VariantDetails = () => {
                   ))}
                 </div>
               </div>
-              <Button size="icon" variant="ghost">
-                <MoreHorizontalIcon size={16} />
-              </Button>
+              <OptionActions />
             </div>
             {defaultOptions.length !== i + 1 && <Separator />}
           </>
