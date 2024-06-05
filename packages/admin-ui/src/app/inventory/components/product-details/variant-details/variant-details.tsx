@@ -157,6 +157,7 @@ export const VariantDetails = () => {
                   variant="ghost"
                   size="icon"
                   className="p-2"
+                  type="button"
                   onClick={async () => {
                     const optionValues = variant.optionValues?.map(({ value }) => value);
 
@@ -165,7 +166,7 @@ export const VariantDetails = () => {
                       queryKey: InventoryKeys.single(product?.slug ?? '')
                     });
 
-                    notification.success(`Variante ${optionValues?.join(' / ')} eliminada`);
+                    notification.success(`Variant ${optionValues?.join(' / ')} removed`);
                   }}
                 >
                   <Trash2Icon size={16} />

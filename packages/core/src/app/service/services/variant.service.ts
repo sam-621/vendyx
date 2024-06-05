@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { convertToCent } from '@vendyx/common';
-import { DataSource, In } from 'typeorm';
+import { DataSource, In, IsNull, Not } from 'typeorm';
 
 import { ErrorResult } from '../utils';
 
@@ -11,7 +11,13 @@ import {
   UpdateVariantInput,
   VariantErrorCode
 } from '@/app/api/common';
-import { ID, OptionValueEntity, ProductEntity, VariantEntity } from '@/app/persistance';
+import {
+  ID,
+  OptionValueEntity,
+  OrderLineEntity,
+  ProductEntity,
+  VariantEntity
+} from '@/app/persistance';
 
 @Injectable()
 export class VariantService {
@@ -102,19 +108,79 @@ export class VariantService {
     });
   }
 
+  /**
+   * Remove a variant entity
+   *
+   * @description
+   * 1. Apply a soft or hard delete to unused option values
+   * 2. Soft delete the variant if it is in any order
+   * 3. Hard delete the variant if it is not in any order
+   */
   async remove(id: ID): Promise<ErrorResult<VariantErrorCode> | boolean> {
-    const variantToRemove = await this.findById(id);
+    const variantToRemove = await this.db
+      .getRepository(VariantEntity)
+      .findOne({ where: { id }, relations: { product: true, optionValues: true } });
 
     if (!variantToRemove) {
       return new ErrorResult(VariantErrorCode.VARIANT_NOT_FOUND, 'Variant not found');
     }
 
-    await this.db.getRepository(VariantEntity).softDelete({ id });
+    const isVariantInAnyOrder = await this.db
+      .getRepository(OrderLineEntity)
+      .findOne({ where: { productVariant: { id } } });
+
+    await this.removeUnusedOptionValues(variantToRemove, isVariantInAnyOrder ? 'soft' : 'hard');
+
+    if (isVariantInAnyOrder) {
+      await this.db.getRepository(VariantEntity).softDelete({ id });
+    } else {
+      await this.db.getRepository(VariantEntity).remove(variantToRemove);
+    }
 
     return true;
   }
 
   private async findById(id: ID) {
     return this.db.getRepository(VariantEntity).findOne({ where: { id } });
+  }
+
+  /**
+   * Remove option values that are not used in any active variant, this is needed to avoid orphaned data.
+   * We generate the variants depending on the option values, so if we remove a variant,
+   * we need to check if the option values are used in other variants, if not, we can remove them.
+   */
+  private async removeUnusedOptionValues(variantToRemove: VariantEntity, type: 'soft' | 'hard') {
+    const product = variantToRemove.product;
+    const availableVariants = await this.db.getRepository(VariantEntity).find({
+      where: { product: { id: product.id }, id: Not(variantToRemove.id) },
+      relations: { optionValues: true }
+    });
+
+    const optionValuesInUse = availableVariants
+      .map(variant => variant.optionValues)
+      .flat()
+      .map(v => v.id);
+
+    const totalOptionValuesInProduct = (
+      await this.db.getRepository(OptionValueEntity).find({
+        where: { variants: { product: { id: product.id } } }
+      })
+    ).map(v => v.id);
+
+    const optionValuesToDelete = totalOptionValuesInProduct.filter(
+      optionValue => !optionValuesInUse.includes(optionValue)
+    );
+
+    if (!optionValuesToDelete.length) return;
+
+    if (type === 'soft') {
+      await this.db.getRepository(OptionValueEntity).softDelete({ id: In(optionValuesToDelete) });
+    } else {
+      await this.db
+        .getRepository(OptionValueEntity)
+        .remove(
+          optionValuesToDelete.map(id => this.db.getRepository(OptionValueEntity).create({ id }))
+        );
+    }
   }
 }

@@ -21,7 +21,7 @@ export class AssetService {
 
     const assetToSave = this.db.getRepository(AssetEntity).create({
       name: file.originalname,
-      source: fileId,
+      source: fileId
     });
 
     return this.db.getRepository(AssetEntity).save(assetToSave);
