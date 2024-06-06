@@ -5,7 +5,7 @@ import { Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components';
 
-import { type OptionState, OptionValueState } from './use-manage-variants';
+import { type OptionState, OptionValueState } from '../use-manage-variants';
 import { useOptionDetailsForm } from './use-option-details';
 
 export const OptionDetails: FC<Props> = ({ option, removeOption, updateOption, updateValues }) => {

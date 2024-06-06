@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 import {
   Button,
   DropdownMenu,
@@ -9,7 +7,7 @@ import {
 } from '@vendyx/theme';
 import { MoreHorizontalIcon } from 'lucide-react';
 
-export const OptionActions: FC<Props> = () => {
+export const OptionActions = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,5 +25,3 @@ export const OptionActions: FC<Props> = () => {
     </DropdownMenu>
   );
 };
-
-type Props = {};

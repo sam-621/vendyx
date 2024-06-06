@@ -11,7 +11,7 @@ import {
   Label,
   Separator
 } from '@vendyx/theme';
-import { MoreHorizontalIcon, PlusIcon, Trash2Icon } from 'lucide-react';
+import { PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components/forms';
 import { useProductDetailsContext } from '@/app/inventory/context';
@@ -21,8 +21,8 @@ import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
-import { OptionActions } from './option-actions';
-import { OptionDetails } from './option-details';
+import { OptionActions } from './option-details/option-actions';
+import { OptionDetails } from './option-details/option-details';
 import { useManageOptionsSates } from './use-manage-variants';
 
 export const VariantDetails = () => {
