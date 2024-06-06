@@ -11,19 +11,19 @@ import { getNewVariantsByNewOption } from '@/app/inventory/utils';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
-import { type OptionState } from '../use-manage-variants';
+import { type OptionState } from '../../use-manage-variants';
 
 /**
  * Manage the option details form
  */
-export const useOptionDetailsForm = () => {
+export const useNewOptionForm = () => {
   const { product } = useProductDetailsContext();
   const { createVariant } = useCreateVariant();
   const { updateVariant } = useUpdateVariant();
   const { createOption } = useCreateOption();
   const [isLoading, setIsLoading] = useState(false);
 
-  const createVariantsCombinations = async (option: OptionState, closeOptionForm: () => void) => {
+  const onSubmit = async (option: OptionState, closeOptionForm: () => void) => {
     if (!product) {
       notification.error('You should create a product first');
       return;
@@ -113,6 +113,6 @@ export const useOptionDetailsForm = () => {
 
   return {
     isLoading,
-    createVariantsCombinations
+    onSubmit
   };
 };

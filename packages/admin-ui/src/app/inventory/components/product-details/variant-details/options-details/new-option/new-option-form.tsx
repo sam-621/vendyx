@@ -1,15 +1,15 @@
 import { type FC } from 'react';
 
-import { Button, Input, Label } from '@vendyx/theme';
-import { Trash2Icon } from 'lucide-react';
+import { Button, Input, Label, Separator } from '@vendyx/theme';
+import { PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components';
 
-import { type OptionState, OptionValueState } from '../use-manage-variants';
-import { useOptionDetailsForm } from './use-option-details';
+import { type OptionState, OptionValueState, useManageOptionsStates } from './use-manage-options';
+import { useNewOptionForm } from './use-new-option-form';
 
-export const OptionDetails: FC<Props> = ({ option, removeOption, updateOption, updateValues }) => {
-  const { createVariantsCombinations } = useOptionDetailsForm();
+const NewOption: FC<Props> = ({ option, removeOption, updateOption, updateValues }) => {
+  const { onSubmit, isLoading } = useNewOptionForm();
 
   return (
     <form className="flex flex-col gap-4">
@@ -55,13 +55,51 @@ export const OptionDetails: FC<Props> = ({ option, removeOption, updateOption, u
       <div>
         <Button
           type="button"
-          onClick={async () => await createVariantsCombinations(option, removeOption)}
+          disabled={isLoading}
+          onClick={async () => await onSubmit(option, removeOption)}
           variant="outline"
         >
           Done
         </Button>
       </div>
     </form>
+  );
+};
+
+export const NewOptionForm = () => {
+  const { addOption, removeOption, updateOption, options, updateValues } = useManageOptionsStates();
+
+  return (
+    <>
+      <div className="flex flex-col gap-4">
+        {options.map((op, i) => (
+          <>
+            <NewOption
+              key={op.id}
+              option={op}
+              removeOption={() => removeOption(op.id)}
+              updateOption={(name: string) => updateOption(op.id, name)}
+              updateValues={updateValues}
+            />
+            {/* Only add separator when are more than one options and is not the last one */}
+            {options.length > 1 && i !== options.length - 1 && <Separator />}
+          </>
+        ))}
+      </div>
+
+      <div>
+        <Separator />
+        <Button
+          type="button"
+          variant="link"
+          className="text-distinct hover:no-underline"
+          onClick={addOption}
+        >
+          <PlusIcon size={16} /> Add option
+        </Button>
+        <Separator />
+      </div>
+    </>
   );
 };
 

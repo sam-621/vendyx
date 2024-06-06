@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
 /**
- * Hook to manage the option form states
+ * Manage the option form states
  */
-export const useManageOptionsSates = () => {
-  const [options, setOptions] = useState<OptionState[]>([]);
+export const useManageOptionsStates = () => {
+  // Always start with one option, so the user can start adding options
+  const [options, setOptions] = useState<OptionState[]>([new OptionState()]);
 
   const removeOption = (id: string) => {
     setOptions(options.filter(option => option.id !== id));
