@@ -1,8 +1,8 @@
 import { useGqlMutation } from '@/lib/gql';
 import { notification } from '@/lib/notifications';
-import { type CreateProductInput } from '@/lib/vendyx/codegen/graphql';
-import { getProductErrorMessages } from '@/lib/vendyx/errors';
-import { CreateProductMutation } from '@/lib/vendyx/mutations';
+import { type CreateProductInput } from '@/lib/ebloc/codegen/graphql';
+import { getProductErrorMessages } from '@/lib/ebloc/errors';
+import { CreateProductMutation } from '@/lib/ebloc/mutations';
 
 export const useCreateProduct = () => {
   const { mutateAsync, isPending } = useGqlMutation(CreateProductMutation);

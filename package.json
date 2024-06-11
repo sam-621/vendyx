@@ -1,18 +1,18 @@
 {
-  "name": "vendyx",
+  "name": "ebloc",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
   "description": "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.",
-  "repository": "git@github.com:sam-621/vendyx.dev.git",
+  "repository": "https://github.com/sam-621/ebloc",
   "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
   "license": "MIT",
   "scripts": {
     "prepare": "husky install && chmod ug+x .husky/*",
     "build": "lerna run build",
-    "start": "lerna run start --scope @vendyx/server"
+    "start": "lerna run start --scope @ebloc/server"
   },
   "dependencies": {},
   "devDependencies": {

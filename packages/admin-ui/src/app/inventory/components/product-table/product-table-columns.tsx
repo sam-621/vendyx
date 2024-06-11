@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
 import { type ColumnDef } from '@tanstack/react-table';
-import { getFormattedPrice } from '@vendyx/common';
-import { Badge, Checkbox } from '@vendyx/theme';
+import { getFormattedPrice } from '@ebloc/common';
+import { Badge, Checkbox } from '@ebloc/theme';
 
 import { DataTableColumnHeader } from '@/app/components/data-table';
 import { t } from '@/lib/locales';

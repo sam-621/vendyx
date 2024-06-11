@@ -1,7 +1,7 @@
 import { DataTable } from '@/app/components/data-table';
 import { DataTableSkeleton } from '@/app/components/skeletons';
 import { useGetOrders } from '@/app/orders/hooks';
-import { type OrderState } from '@/lib/vendyx/codegen/graphql';
+import { type OrderState } from '@/lib/ebloc/codegen/graphql';
 
 import { OrderTableColumns } from './order-table-columns';
 

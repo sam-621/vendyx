@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getFormattedPrice, type MakeAny } from '@vendyx/common';
+import { getFormattedPrice, type MakeAny } from '@ebloc/common';
 import { z } from 'zod';
 
 import { useCreateAsset } from '@/app/assets';

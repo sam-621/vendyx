@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Button } from '@vendyx/theme';
+import { Button } from '@ebloc/theme';
 import { Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components';
@@ -8,7 +8,7 @@ import { useProductDetailsContext } from '@/app/inventory/context';
 import { InventoryKeys, useRemoveVariant } from '@/app/inventory/hooks';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 export const VariantItem: FC<Props> = ({ variant }) => {
   const { product } = useProductDetailsContext();

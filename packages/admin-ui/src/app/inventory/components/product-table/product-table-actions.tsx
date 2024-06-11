@@ -13,7 +13,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
-} from '@vendyx/theme';
+} from '@ebloc/theme';
 import { Loader2Icon, MoreHorizontalIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';

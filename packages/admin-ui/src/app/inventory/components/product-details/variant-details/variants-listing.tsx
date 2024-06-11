@@ -1,11 +1,11 @@
 import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { getFormattedPrice } from '@vendyx/common';
+import { getFormattedPrice } from '@ebloc/common';
 
 import { FormInput } from '@/app/components';
 import { t } from '@/lib/locales';
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 import { VariantItem } from './variant-item';

@@ -1,7 +1,7 @@
 import { useGqlMutation } from '@/lib/gql';
-import { type CreateOptionInput } from '@/lib/vendyx/codegen/graphql';
-import { getOptionErrorMessages } from '@/lib/vendyx/errors/option.errors';
-import { CreateOptionMutation } from '@/lib/vendyx/mutations';
+import { type CreateOptionInput } from '@/lib/ebloc/codegen/graphql';
+import { getOptionErrorMessages } from '@/lib/ebloc/errors/option.errors';
+import { CreateOptionMutation } from '@/lib/ebloc/mutations';
 
 export const useCreateOption = () => {
   const { mutateAsync, isPending } = useGqlMutation(CreateOptionMutation);

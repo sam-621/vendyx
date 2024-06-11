@@ -12,7 +12,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   useTheme
-} from '@vendyx/theme';
+} from '@ebloc/theme';
 import { LaptopIcon, LogOutIcon, MoonIcon, SunIcon, SunMoonIcon } from 'lucide-react';
 
 import { useLogout } from '@/app/login';

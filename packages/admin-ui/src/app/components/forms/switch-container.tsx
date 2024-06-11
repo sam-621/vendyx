@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Switch } from '@vendyx/theme';
+import { Switch } from '@ebloc/theme';
 
 export const SwitchContainer: FC<Props> = ({ title, description, checked, onCheckedChange }) => {
   return (

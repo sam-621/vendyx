@@ -1,9 +1,9 @@
 import { type FC } from 'react';
 
-import { Card, CardContent, CardHeader, CardTitle, Label } from '@vendyx/theme';
+import { Card, CardContent, CardHeader, CardTitle, Label } from '@ebloc/theme';
 
 import { getFormattedPhoneNumber } from '@/lib/utils';
-import { type CommonOrderFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonOrderFragment } from '@/lib/ebloc/codegen/graphql';
 
 export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
   return (

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
+import { Button, Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
 import { useProductDetailsContext } from '@/app/inventory/context';

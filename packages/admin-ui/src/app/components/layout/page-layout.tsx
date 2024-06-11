@@ -1,6 +1,6 @@
 import { type FC, type PropsWithChildren, type ReactElement } from 'react';
 
-import { cn } from '@vendyx/theme';
+import { cn } from '@ebloc/theme';
 
 export const PageLayout: FC<Props> = ({ title, subtitle, icon, actions, className, children }) => {
   return (

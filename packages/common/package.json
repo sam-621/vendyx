@@ -1,5 +1,5 @@
 {
-  "name": "@vendyx/common",
+  "name": "@ebloc/common",
   "type": "commonjs",
   "version": "1.0.0",
   "main": "dist/index.js",

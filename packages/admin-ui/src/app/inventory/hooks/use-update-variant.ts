@@ -1,6 +1,6 @@
 import { useGqlMutation } from '@/lib/gql';
-import { type UpdateVariantInput } from '@/lib/vendyx/codegen/graphql';
-import { UpdateVariantMutation } from '@/lib/vendyx/mutations';
+import { type UpdateVariantInput } from '@/lib/ebloc/codegen/graphql';
+import { UpdateVariantMutation } from '@/lib/ebloc/mutations';
 
 export const useUpdateVariant = () => {
   const { mutateAsync, isPending } = useGqlMutation(UpdateVariantMutation);

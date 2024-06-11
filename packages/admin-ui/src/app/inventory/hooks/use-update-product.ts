@@ -1,9 +1,9 @@
 import { useGqlMutation } from '@/lib/gql';
 import { useLoading } from '@/lib/hooks';
 import { notification } from '@/lib/notifications';
-import { type UpdateProductInput } from '@/lib/vendyx/codegen/graphql';
-import { getProductErrorMessages } from '@/lib/vendyx/errors';
-import { UpdateProductMutation } from '@/lib/vendyx/mutations';
+import { type UpdateProductInput } from '@/lib/ebloc/codegen/graphql';
+import { getProductErrorMessages } from '@/lib/ebloc/errors';
+import { UpdateProductMutation } from '@/lib/ebloc/mutations';
 
 export const useUpdateProduct = () => {
   const { mutateAsync } = useGqlMutation(UpdateProductMutation);

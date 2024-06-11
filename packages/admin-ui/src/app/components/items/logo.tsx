@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { cn, useTheme } from '@vendyx/theme';
+import { cn, useTheme } from '@ebloc/theme';
 
 export const Logo: FC<Props> = ({ className }) => {
   const { theme } = useTheme();

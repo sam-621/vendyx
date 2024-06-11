@@ -1,8 +1,8 @@
-import { Config } from 'tailwindcss'
-import { VendyxTailwindPreset } from './src/tailwind-preset'
+import { Config } from 'tailwindcss';
+import { EblocTailwindPreset } from './src/tailwind-preset';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  presets: [VendyxTailwindPreset],
-  content: ['./src/**/*.{ts,tsx}'],
-} satisfies Config
+  presets: [EblocTailwindPreset],
+  content: ['./src/**/*.{ts,tsx}']
+} satisfies Config;

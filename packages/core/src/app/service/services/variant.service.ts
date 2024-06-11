@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { convertToCent } from '@vendyx/common';
+import { convertToCent } from '@ebloc/common';
 import { DataSource, In, Not } from 'typeorm';
 
 import { ErrorResult } from '../utils';

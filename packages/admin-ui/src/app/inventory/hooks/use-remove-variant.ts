@@ -1,6 +1,6 @@
 import { useGqlMutation } from '@/lib/gql';
 import { useLoading } from '@/lib/hooks';
-import { RemoveVariantMutation } from '@/lib/vendyx/mutations';
+import { RemoveVariantMutation } from '@/lib/ebloc/mutations';
 
 export const useRemoveVariant = () => {
   const { mutateAsync } = useGqlMutation(RemoveVariantMutation);

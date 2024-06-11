@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { NewOptionForm } from './new-option/new-option-form';
 import { OptionsListing } from './options-listing/options-listing';

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
 import { type ColumnDef } from '@tanstack/react-table';
-import { getFormattedPrice } from '@vendyx/common';
-import { Checkbox } from '@vendyx/theme';
+import { getFormattedPrice } from '@ebloc/common';
+import { Checkbox } from '@ebloc/theme';
 import { User } from 'lucide-react';
 
 import { DataTableColumnHeader } from '@/app/components/data-table';

@@ -11,7 +11,7 @@ import { getNewVariantsByNewOption } from '@/app/inventory/utils';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
-import { type OptionState } from '../../use-manage-variants';
+import { type OptionState } from './use-manage-options';
 
 /**
  * Manage the option details form

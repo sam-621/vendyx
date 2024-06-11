@@ -1,7 +1,7 @@
 import { FormProvider } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 
-import { Button } from '@vendyx/theme';
+import { Button } from '@ebloc/theme';
 import { MoveLeftIcon } from 'lucide-react';
 
 import { PageLayout } from '@/app/components';

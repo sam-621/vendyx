@@ -1,7 +1,7 @@
 import { useGqlMutation } from '@/lib/gql';
 import { notification } from '@/lib/notifications';
-import { getProductErrorMessages } from '@/lib/vendyx/errors';
-import { RemoveProductMutation } from '@/lib/vendyx/mutations';
+import { getProductErrorMessages } from '@/lib/ebloc/errors';
+import { RemoveProductMutation } from '@/lib/ebloc/mutations';
 
 export const useRemoveProduct = () => {
   const { mutateAsync, isPending } = useGqlMutation(RemoveProductMutation);

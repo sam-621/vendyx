@@ -1,5 +1,5 @@
 {
-  "name": "@vendyx/core",
+  "name": "@ebloc/core",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -28,7 +28,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/typeorm": "^10.0.1",
-    "@vendyx/common": "*",
+    "@ebloc/common": "*",
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.3",
     "graphql": "^16.8.1",
@@ -42,7 +42,7 @@
     "typeorm": "^0.3.19",
     "zod": "^3.23.7"
   },
-  "//": "We add `@vendyx/admin-ui` as a dev dependency only for lerna knows admin-ui package has to be built before core package",
+  "//": "We add `@ebloc/admin-ui` as a dev dependency only for lerna knows admin-ui package has to be built before core package",
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
@@ -57,7 +57,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "@vendyx/admin-ui": "*",
+    "@ebloc/admin-ui": "*",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^3.6.1",

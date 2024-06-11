@@ -1,5 +1,5 @@
 {
-  "name": "@vendyx/admin-ui",
+  "name": "@ebloc/admin-ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,8 +15,8 @@
     "@hookform/resolvers": "^3.3.4",
     "@tanstack/react-query": "^5.17.19",
     "@tanstack/react-table": "^8.11.8",
-    "@vendyx/common": "*",
-    "@vendyx/theme": "*",
+    "@ebloc/common": "*",
+    "@ebloc/theme": "*",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "i18next": "^23.10.1",

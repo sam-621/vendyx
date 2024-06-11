@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 
-import { Button } from '@vendyx/theme';
+import { Button } from '@ebloc/theme';
 import { PackageIcon, ShoppingCartIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';

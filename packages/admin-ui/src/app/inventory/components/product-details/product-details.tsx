@@ -1,12 +1,12 @@
 import { type FC, useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { getParsedSlug } from '@vendyx/common';
-import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
+import { getParsedSlug } from '@ebloc/common';
+import { Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/app/components/forms';
 import { t } from '@/lib/locales';
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { ProductDetailsProvider } from '../../context/product-details-context';
 import { AssetDetails } from './asset-details/asset-details';

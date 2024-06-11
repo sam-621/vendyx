@@ -2,11 +2,11 @@ import { type TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { GraphQLClient, type Variables } from 'graphql-request';
 
 import { cookies, CookiesKeys } from '../cookies';
+import { EBLOC_BASE_API_URL } from '../ebloc/constants';
 import { GraphqlError, UnexpectedError } from '../errors';
-import { VENDYX_BASE_API_URL } from '../vendyx/constants';
 
 // TODO: Replace with the actual graphql endpoint
-const gqlClient = new GraphQLClient(`${VENDYX_BASE_API_URL}/admin-api`);
+const gqlClient = new GraphQLClient(`${EBLOC_BASE_API_URL}/admin-api`);
 
 /**
  * A wrapper around graphql-request's `request` that make graphql typed request and manage errors

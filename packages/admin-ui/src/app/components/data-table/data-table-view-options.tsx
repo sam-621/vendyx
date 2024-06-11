@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@vendyx/theme';
+} from '@ebloc/theme';
 import { SlidersHorizontalIcon } from 'lucide-react';
 
 export const DataTableViewOptions = <TData,>({ table }: Props<TData>) => {

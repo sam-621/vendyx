@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Label, Textarea, type TextareaProps } from '@vendyx/theme';
+import { Label, Textarea, type TextareaProps } from '@ebloc/theme';
 
 export const FormTextarea = forwardRef<HTMLTextAreaElement, Props>(function FormTextarea(
   { label, placeholder, ...textareaProps },

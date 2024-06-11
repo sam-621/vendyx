@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 type Context = {
   product: CommonProductFragment | null | undefined;

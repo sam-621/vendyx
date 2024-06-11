@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { Button } from '@vendyx/theme';
+import { Button } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
 import { PageLayout } from '@/app/components';

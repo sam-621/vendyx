@@ -4,7 +4,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@vendyx/theme';
+} from '@ebloc/theme';
 import { MoreHorizontalIcon } from 'lucide-react';
 
 export const OptionActions = () => {

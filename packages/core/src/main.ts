@@ -3,7 +3,7 @@ import { dest, series, src } from 'gulp';
 
 import { BusinessExceptionFilter } from './app/api/common';
 import { AppModule } from './app/app.module';
-import { VendyxConfig, getConfig, setConfig } from './app/config';
+import { EblocConfig, getConfig, setConfig } from './app/config';
 
 /**
  * Copy gql schema files to dist folder
@@ -13,18 +13,16 @@ function copySchemaToDistFolder() {
   src('./src/**/*.schema.gql').pipe(dest('./dist'));
 }
 
-export async function bootstrap(config: VendyxConfig) {
+export async function bootstrap(config: EblocConfig) {
   setConfig(config);
 
   const { port } = getConfig().app;
 
-  series(copySchemaToDistFolder)(() =>
-    console.log('Schema copied to dist folder'),
-  );
+  series(copySchemaToDistFolder)(() => console.log('Schema copied to dist folder'));
 
   const app = await NestFactory.create(AppModule, {
     // TODO: Check this to do it the right way
-    cors: true,
+    cors: true
   });
 
   app.useGlobalFilters(new BusinessExceptionFilter());

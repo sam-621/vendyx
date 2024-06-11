@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Input, type InputProps, Label } from '@vendyx/theme';
+import { Input, type InputProps, Label } from '@ebloc/theme';
 
 // TODO: add a input css class
 export const FormInput = forwardRef<HTMLInputElement, Props>(function FormInput(

@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { getFormattedPrice } from '@vendyx/common';
+import { getFormattedPrice } from '@ebloc/common';
 import {
   Card,
   CardContent,
@@ -13,10 +13,10 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@vendyx/theme';
+} from '@ebloc/theme';
 
 import { DEFAULT_PRODUCT_IMAGE } from '@/lib/constants';
-import { type CommonOrderFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonOrderFragment } from '@/lib/ebloc/codegen/graphql';
 
 export const OrderItemsTable: FC<Props> = ({ order }) => {
   const lines = order.lines.items;

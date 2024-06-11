@@ -1,4 +1,4 @@
-import { Button } from '@vendyx/theme';
+import { Button } from '@ebloc/theme';
 
 import { FormInput } from '@/app/components/forms';
 import { t } from '@/lib/locales';

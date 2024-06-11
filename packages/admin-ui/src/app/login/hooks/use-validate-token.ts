@@ -1,5 +1,5 @@
 import { useGqlQuery } from '@/lib/gql';
-import { ValidateTokenQuery } from '@/lib/vendyx/queries';
+import { ValidateTokenQuery } from '@/lib/ebloc/queries';
 
 import { AdminKeys } from './admin-keys';
 

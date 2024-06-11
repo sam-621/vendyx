@@ -1,5 +1,5 @@
-# @vendyx/server
-Vendyx server package simulates how vendyx can be used by other developers creating an instance of vendyx and run it.
+# @ebloc/server
+Ebloc server package simulates how ebloc can be used by other developers creating an instance of ebloc and run it.
 
 ## Setup
 Install all dependencies

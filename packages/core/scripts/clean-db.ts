@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 const DbUrl = {
   remote:
     'postgresql://postgres:ySvpkFnpjPqrRLkbvfFJhfvtioBiVfks@monorail.proxy.rlwy.net:56098/railway',
-  local: 'postgres://postgres:postgres@localhost:5432/vendyx'
+  local: 'postgres://postgres:postgres@localhost:5432/ebloc'
 };
 
 const cleanDb = async () => {

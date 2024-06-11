@@ -1,7 +1,7 @@
 import { Config } from 'tailwindcss';
 import * as twAnimate from 'tailwindcss-animate';
 
-export const VendyxTailwindPreset: Partial<Config> = {
+export const EblocTailwindPreset: Partial<Config> = {
   darkMode: ['class'],
   theme: {
     container: {

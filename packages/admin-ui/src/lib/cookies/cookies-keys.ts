@@ -1,3 +1,3 @@
 export const CookiesKeys = {
-  TOKEN: 'Vendyx-token'
+  TOKEN: 'Ebloc-token'
 };

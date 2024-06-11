@@ -1,9 +1,9 @@
 import { type FC } from 'react';
 
-import { getFormattedPrice } from '@vendyx/common';
-import { Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
+import { getFormattedPrice } from '@ebloc/common';
+import { Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 
-import { type CommonOrderFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonOrderFragment } from '@/lib/ebloc/codegen/graphql';
 
 export const OrderShipmentCard: FC<Props> = ({ shipment }) => {
   if (!shipment) return null;

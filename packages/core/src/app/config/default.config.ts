@@ -1,4 +1,4 @@
-import { VendyxConfig } from './vendyx.config';
+import { EblocConfig } from './ebloc.config';
 
 import { MercadoPagoIntegration, PaypalIntegration, StripeIntegration } from '@/lib/payments';
 import { CountryPriceCalculator, FedexPriceCalculator } from '@/lib/shipping';
@@ -7,7 +7,7 @@ import { CloudinaryStorageProvider } from '@/lib/storage';
 /**
  * This config is only for local development purposes
  */
-export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
+export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
   app: {
     port: 3000
   },
@@ -16,7 +16,7 @@ export const DEFAULT_VENDYX_CONFIG: VendyxConfig = {
     jwtSecret: "randomBytes(32).toString('hex')"
   },
   db: {
-    url: 'postgres://postgres:postgres@localhost:5432/vendyx'
+    url: 'postgres://postgres:postgres@localhost:5432/ebloc'
     // url: 'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
   },
   assets: {

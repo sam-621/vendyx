@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
   },
   base: mode === 'production' ? '/admin/' : '/',
   optimizeDeps: {
-    include: ['@vendyx/common']
+    include: ['@ebloc/common']
   },
   build: {
     commonjsOptions: {

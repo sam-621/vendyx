@@ -1,5 +1,5 @@
 import { restFetcher } from '@/lib/rest';
-import { type VendyxAsset } from '@/lib/vendyx/rest';
+import { type EblocAsset } from '@/lib/ebloc/rest';
 
 export const useCreateAsset = () => {
   const createAsset = async (files: File[]) => {
@@ -9,7 +9,7 @@ export const useCreateAsset = () => {
       formData.append(`files`, file);
     });
 
-    const response = await restFetcher<VendyxAsset[]>(formData);
+    const response = await restFetcher<EblocAsset[]>(formData);
 
     return response;
   };

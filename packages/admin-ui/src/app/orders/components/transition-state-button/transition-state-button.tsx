@@ -1,8 +1,8 @@
 import { type FC } from 'react';
 
-import { Button } from '@vendyx/theme';
+import { Button } from '@ebloc/theme';
 
-import { OrderState } from '@/lib/vendyx/codegen/graphql';
+import { OrderState } from '@/lib/ebloc/codegen/graphql';
 
 export const TransitionOrderStateButton: FC<Props> = ({ orderState }) => {
   if (orderState === OrderState.Modifying) {

@@ -1,4 +1,4 @@
-import { Skeleton } from '@vendyx/theme';
+import { Skeleton } from '@ebloc/theme';
 
 export const DataTableSkeleton = () => {
   return (

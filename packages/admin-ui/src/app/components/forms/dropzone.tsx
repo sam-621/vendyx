@@ -1,6 +1,6 @@
 import { type Dispatch, type FC, type SetStateAction } from 'react';
 
-import { cn } from '@vendyx/theme';
+import { cn } from '@ebloc/theme';
 import { UploadCloudIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';

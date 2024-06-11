@@ -1,13 +1,13 @@
 import { type FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { buttonVariants, Card, CardContent, CardHeader, CardTitle } from '@vendyx/theme';
+import { buttonVariants, Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
 import { Dropzone } from '@/app/components/forms';
 import { t } from '@/lib/locales';
 import { getFileListIntoArray } from '@/lib/utils';
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 

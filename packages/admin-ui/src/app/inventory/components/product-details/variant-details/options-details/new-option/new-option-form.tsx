@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Button, Input, Label, Separator } from '@vendyx/theme';
+import { Button, Input, Label, Separator } from '@ebloc/theme';
 import { PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components';

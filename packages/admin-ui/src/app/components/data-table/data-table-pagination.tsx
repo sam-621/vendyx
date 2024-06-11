@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@vendyx/theme';
+} from '@ebloc/theme';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

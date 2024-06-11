@@ -1,5 +1,5 @@
 import { useGqlQuery } from '@/lib/gql';
-import { GetOrdersQuery } from '@/lib/vendyx/queries';
+import { GetOrdersQuery } from '@/lib/ebloc/queries';
 
 import { OrderKeys } from './order.keys';
 

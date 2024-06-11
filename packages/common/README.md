@@ -1,8 +1,8 @@
-# @vendyx/common
-The `@vendyx/common` package serves as a foundational and shared component within the Vendyx software ecosystem, providing essential functionalities and utilities that are commonly used across all packages.
+# @ebloc/common
+The `@ebloc/common` package serves as a foundational and shared component within the Ebloc software ecosystem, providing essential functionalities and utilities that are commonly used across all packages.
 
 ## Setup
-Vendyx common exposes typescript functions and types/interfaces
+Ebloc common exposes typescript functions and types/interfaces
 
 ### Installation
 Run the following command
@@ -12,5 +12,5 @@ yarn
 
 ## Usage
 ```ts
-import { getFormattedPrice } from '@vendyx/common';
+import { getFormattedPrice } from '@ebloc/common';
 ```

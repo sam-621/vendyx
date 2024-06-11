@@ -20,7 +20,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@vendyx/theme';
+} from '@ebloc/theme';
 
 // import { DataTablePagination } from './data-table-pagination';
 import { DataTableViewOptions } from './data-table-view-options';

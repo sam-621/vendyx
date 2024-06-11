@@ -1,4 +1,4 @@
-export type VendyxAsset = {
+export type EblocAsset = {
   name: string;
   source: string;
   id: string;

@@ -4,7 +4,7 @@ import {
   PaypalIntegration,
   StripeIntegration,
   bootstrap
-} from '@vendyx/core';
+} from '@ebloc/core';
 import { config } from 'dotenv';
 
 config();

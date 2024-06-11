@@ -14,6 +14,6 @@
     "tailwindcss",
     "tanstack",
     "typeorm",
-    "vendyx"
+    "ebloc"
   ]
 }

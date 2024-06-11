@@ -1,8 +1,8 @@
 import { type FC } from 'react';
 
-import { Badge, Label, Separator } from '@vendyx/theme';
+import { Badge, Label, Separator } from '@ebloc/theme';
 
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { OptionActions } from './option-actions';
 

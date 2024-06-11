@@ -1,8 +1,8 @@
 import { type FC } from 'react';
 
-import { Badge } from '@vendyx/theme';
+import { Badge } from '@ebloc/theme';
 
-import { OrderState } from '@/lib/vendyx/codegen/graphql';
+import { OrderState } from '@/lib/ebloc/codegen/graphql';
 
 export const OrderStatusBadge: FC<Props> = ({ status }) => {
   if (status === OrderState.Modifying) {

@@ -1,11 +1,11 @@
-import { VENDYX_BASE_API_URL } from '../vendyx/constants';
+import { EBLOC_BASE_API_URL } from '../ebloc/constants';
 
 export const restFetcher = async <T>(
   formData: FormData,
   config?: { method: 'POST' | 'GET' | 'DELETE' }
 ): Promise<T | undefined> => {
   try {
-    const response = await fetch(`${VENDYX_BASE_API_URL}/upload`, {
+    const response = await fetch(`${EBLOC_BASE_API_URL}/upload`, {
       method: config?.method ?? 'POST',
       body: formData
     });

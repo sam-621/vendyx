@@ -12,21 +12,21 @@ export class CloudinaryStorageProvider implements StorageProvider {
     v2.config({
       cloud_name: config.cloudName,
       api_key: config.apiKey,
-      api_secret: config.apiSecret,
+      api_secret: config.apiSecret
     });
   }
 
   async upload(file: string): Promise<string | null> {
     try {
       const fileUploaded = await v2.uploader.upload(file, {
-        folder: 'vendyx',
+        folder: 'ebloc'
       });
 
       return fileUploaded.secure_url;
     } catch (error) {
       Logger.error({
         provider: this.code,
-        error,
+        error
       });
       return null;
     }

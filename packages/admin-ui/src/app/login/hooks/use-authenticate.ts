@@ -3,9 +3,9 @@ import { GraphqlError } from '@/lib/errors';
 import { useGqlMutation } from '@/lib/gql';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
-import { type AuthenticateInput } from '@/lib/vendyx/codegen/graphql';
-import { getAdminErrorMessages } from '@/lib/vendyx/errors';
-import { AuthenticateMutation } from '@/lib/vendyx/mutations';
+import { type AuthenticateInput } from '@/lib/ebloc/codegen/graphql';
+import { getAdminErrorMessages } from '@/lib/ebloc/errors';
+import { AuthenticateMutation } from '@/lib/ebloc/mutations';
 
 import { AdminKeys } from './admin-keys';
 

@@ -1,13 +1,13 @@
-import { VendyxConfig } from './vendyx.config';
+import { EblocConfig } from './ebloc.config';
 
-let config: VendyxConfig;
+let config: EblocConfig;
 
-export const setConfig = (input?: Partial<VendyxConfig>) => {
+export const setConfig = (input?: Partial<EblocConfig>) => {
   if (!input) return;
 
   config = {
     ...config,
-    ...input,
+    ...input
   };
 };
 

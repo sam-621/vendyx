@@ -1,4 +1,4 @@
-import { type CommonProductFragment } from '@/lib/vendyx/codegen/graphql';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 /**
  * Return the new variants that will be created or updated based on the new option. if variant id is present, update the variant, if not, create it.
