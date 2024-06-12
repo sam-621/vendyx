@@ -4,8 +4,10 @@ import { Button, Input, Label, Separator } from '@ebloc/theme';
 import { PlusIcon, Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components';
+import { useOptionDetailsContext } from '@/app/inventory/context';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
-import { type OptionState, OptionValueState, useManageOptionsStates } from './use-manage-options';
+import { type OptionState, OptionValueState } from '../use-manage-options';
 import { useNewOptionForm } from './use-new-option-form';
 
 const NewOption: FC<Props> = ({ option, removeOption, updateOption, updateValues }) => {
@@ -66,8 +68,15 @@ const NewOption: FC<Props> = ({ option, removeOption, updateOption, updateValues
   );
 };
 
-export const NewOptionForm = () => {
-  const { addOption, removeOption, updateOption, options, updateValues } = useManageOptionsStates();
+export const NewOptionForm = ({
+  defaultOptions
+}: {
+  defaultOptions: CommonProductFragment['options'] | undefined | null;
+}) => {
+  const { addOption, removeOption, updateOption, options, updateValues } =
+    useOptionDetailsContext();
+
+  if (!defaultOptions?.length && !options.length) return;
 
   return (
     <>
