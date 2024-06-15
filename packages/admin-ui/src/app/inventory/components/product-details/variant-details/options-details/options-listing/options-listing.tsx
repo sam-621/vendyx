@@ -1,29 +1,17 @@
 import { type FC } from 'react';
 
-import { Badge, Label, Separator } from '@ebloc/theme';
+import { Separator } from '@ebloc/theme';
 
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
-import { OptionActions } from './option-actions';
+import { OptionItem } from './option-item';
 
 export const OptionsListing: FC<Props> = ({ options }) => {
   return (
     <>
       {options?.map((option, i) => (
         <>
-          <div key={option.id} className="flex justify-between items-center">
-            <div className="flex flex-col gap-4">
-              <Label>{option.name}</Label>
-              <div className="flex gap-2">
-                {option.values?.map(value => (
-                  <Badge key={value.id} variant="secondary">
-                    {value.value}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            <OptionActions />
-          </div>
+          <OptionItem option={option} />
           {options?.length !== i + 1 && <Separator />}
         </>
       ))}

@@ -1,3 +1,5 @@
+import { type FC } from 'react';
+
 import {
   Button,
   DropdownMenu,
@@ -7,7 +9,7 @@ import {
 } from '@ebloc/theme';
 import { MoreHorizontalIcon } from 'lucide-react';
 
-export const OptionActions = () => {
+export const OptionActions: FC<Props> = ({ onEdit, onRemove }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,11 +19,16 @@ export const OptionActions = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={onEdit}>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={onRemove}>
           <span className={`text-destructive font-medium`}>Remove</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+type Props = {
+  onEdit: () => void;
+  onRemove: () => void;
 };
