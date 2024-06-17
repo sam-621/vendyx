@@ -2,6 +2,10 @@
 type Mutation {
   createOption(input: CreateOptionInput!): OptionResult!
   updateOption(id: ID!, input: UpdateOptionInput!): OptionResult!
+  removeOption(id: ID!): RemoveOptionResult!
+  addOptionValues(optionId: ID!, values: [String!]!): OptionResult!
+  updateOptionValue(input: UpdateOptionValueInput!): OptionResult!
+  removeOptionValues(ids: [ID!]!): OptionResult!
 }
 
 input CreateOptionInput {
@@ -11,12 +15,21 @@ input CreateOptionInput {
 
 input UpdateOptionInput {
   name: String
-  values: [ID]
+}
+
+input UpdateOptionValueInput {
+  id: ID!,
+  value: String!
 }
 
 " Results "
 type OptionResult {
   option: Option
+  apiErrors: [OptionErrorResult!]!
+}
+
+type RemoveOptionResult {
+  success: Boolean!
   apiErrors: [OptionErrorResult!]!
 }
 
@@ -29,4 +42,5 @@ type OptionErrorResult {
 enum OptionErrorCode {
   DUPLICATED_OPTION_VALUES
   OPTION_NOT_FOUND
+  OPTION_VALUE_NOT_FOUND
 }

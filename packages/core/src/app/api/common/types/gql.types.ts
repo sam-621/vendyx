@@ -14,7 +14,8 @@ export enum AdminErrorCode {
 
 export enum OptionErrorCode {
     DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES",
-    OPTION_NOT_FOUND = "OPTION_NOT_FOUND"
+    OPTION_NOT_FOUND = "OPTION_NOT_FOUND",
+    OPTION_VALUE_NOT_FOUND = "OPTION_VALUE_NOT_FOUND"
 }
 
 export enum ProductErrorCode {
@@ -63,7 +64,11 @@ export class CreateOptionInput {
 
 export class UpdateOptionInput {
     name?: Nullable<string>;
-    values?: Nullable<Nullable<string>[]>;
+}
+
+export class UpdateOptionValueInput {
+    id: string;
+    value: string;
 }
 
 export class CreateProductInput {
@@ -183,6 +188,14 @@ export abstract class IMutation {
 
     abstract updateOption(id: string, input: UpdateOptionInput): OptionResult | Promise<OptionResult>;
 
+    abstract removeOption(id: string): RemoveOptionResult | Promise<RemoveOptionResult>;
+
+    abstract addOptionValues(optionId: string, values: string[]): OptionResult | Promise<OptionResult>;
+
+    abstract updateOptionValue(input: UpdateOptionValueInput): OptionResult | Promise<OptionResult>;
+
+    abstract removeOptionValues(ids: string[]): OptionResult | Promise<OptionResult>;
+
     abstract createProduct(input: CreateProductInput): CreateProductResult | Promise<CreateProductResult>;
 
     abstract updateProduct(id: string, input: UpdateProductInput): UpdateProductResult | Promise<UpdateProductResult>;
@@ -244,6 +257,11 @@ export class AdminErrorResult {
 
 export class OptionResult {
     option?: Nullable<Option>;
+    apiErrors: OptionErrorResult[];
+}
+
+export class RemoveOptionResult {
+    success: boolean;
     apiErrors: OptionErrorResult[];
 }
 

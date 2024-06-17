@@ -5,8 +5,8 @@ import { DataSource, In } from 'typeorm';
 import { OptionValueService } from './option-value.service';
 import { ErrorResult } from '../utils';
 
-import { OptionErrorCode, UpdateOptionInput } from '@/app/api/common';
-import { ID, OptionEntity, VariantEntity } from '@/app/persistance';
+import { OptionErrorCode, UpdateOptionInput, UpdateOptionValueInput } from '@/app/api/common';
+import { ID, OptionEntity, OptionValueEntity, VariantEntity } from '@/app/persistance';
 
 @Injectable()
 export class OptionService {
@@ -23,6 +23,9 @@ export class OptionService {
     return option.values;
   }
 
+  /**
+   * Create a new option
+   */
   async create(
     name: string,
     values: string[]
@@ -44,60 +47,115 @@ export class OptionService {
   }
 
   /**
-   * Update an option and its option values
-   *
-   * @description
-   * 1. If no new values are provided, update only the option name
-   * 2. If new values are provides, check if some values were deleted
-   * 3. If some values were deleted, remove the option values from the variants that have that option values
-   * 4. Add new option values to the option
+   * Update an option with the given id
    */
   async update(
     id: ID,
     input: UpdateOptionInput
   ): Promise<OptionEntity | ErrorResult<OptionErrorCode>> {
-    const { name, values: newValues = [] } = input;
-    const hasDuplicatedValues = newValues.length !== new Set(newValues).size;
+    const { name } = input;
 
-    if (hasDuplicatedValues) {
-      return new ErrorResult(OptionErrorCode.DUPLICATED_OPTION_VALUES, 'Duplicated option values');
+    const optionToUpdate = await this.db
+      .getRepository(OptionEntity)
+      .findOne({ where: { id }, relations: { values: true } });
+
+    if (!optionToUpdate) {
+      return new ErrorResult(OptionErrorCode.OPTION_NOT_FOUND, 'Option not found');
     }
 
-    const optionToUpdate = await this.db.getRepository(OptionEntity).findOne({ where: { id } });
+    return await this.db.getRepository(OptionEntity).save({ ...optionToUpdate, name });
+  }
 
-    if (!newValues.length) {
-      await this.db.getRepository(OptionEntity).save({ ...optionToUpdate, name });
+  /**
+   * Remove an option with the given id
+   */
+  async remove(id: ID) {
+    const optionToRemove = await this.db
+      .getRepository(OptionEntity)
+      .findOne({ where: { id }, relations: { values: true } });
+
+    const optionValuesToRemove = optionToRemove.values;
+
+    if (optionValuesToRemove.length) {
+      await this.removeOptionValuesFromVariants(optionValuesToRemove.map(ov => ov.id));
     }
 
-    const optionValuesDeleted = optionToUpdate.values.filter(v => !newValues.includes(v.value));
+    await this.db.getRepository(OptionValueEntity).remove(optionValuesToRemove);
+    await this.db.getRepository(OptionEntity).remove(optionToRemove);
 
-    // remove option values from variants that have that option values
-    if (optionValuesDeleted.length) {
-      const variantsToRemoveOptionValues = await this.db.getRepository(VariantEntity).find({
-        where: { optionValues: { id: In(optionValuesDeleted.map(v => v.id)) } },
-        relations: { optionValues: true }
-      });
+    return true;
+  }
 
-      await this.db.getRepository(VariantEntity).save(
-        variantsToRemoveOptionValues.map(v => ({
-          ...v,
-          optionValues: v.optionValues.filter(ov => !optionValuesDeleted.includes(ov))
-        }))
-      );
+  /**
+   * Add option values to an option with the given id
+   */
+  async addOptionValues(
+    optionId: ID,
+    values: string[]
+  ): Promise<OptionEntity | ErrorResult<OptionErrorCode>> {
+    const option = await this.db
+      .getRepository(OptionEntity)
+      .findOne({ where: { id: optionId }, relations: { values: true } });
+
+    if (!option) {
+      return new ErrorResult(OptionErrorCode.OPTION_NOT_FOUND, 'Option not found');
     }
 
-    await this.db.getRepository(OptionEntity).save({
-      ...optionToUpdate,
-      values: newValues.map(v => ({ id: v }))
+    const optionValues = await this.optionValueService.create(values);
+
+    option.values.push(...optionValues);
+
+    return await this.db.getRepository(OptionEntity).save(option);
+  }
+
+  /**
+   * Update an option value with the given id
+   */
+  async updateOptionValue(
+    input: UpdateOptionValueInput
+  ): Promise<OptionValueEntity | ErrorResult<OptionErrorCode>> {
+    const optionValueToUpdate = await this.db
+      .getRepository(OptionValueEntity)
+      .findOne({ where: { id: input.id } });
+
+    if (!optionValueToUpdate) {
+      return new ErrorResult(OptionErrorCode.OPTION_VALUE_NOT_FOUND, 'Option value not found');
+    }
+
+    return await this.db
+      .getRepository(OptionValueEntity)
+      .save({ ...optionValueToUpdate, value: input.value });
+  }
+
+  /**
+   * Remove option values with the given ids
+   *
+   * 1. Remove option values from variants
+   * 2. Remove option values from db
+   */
+  async removeOptionValues(ids: ID[]) {
+    const optionValuesToRemove = await this.db
+      .getRepository(OptionValueEntity)
+      .find({ where: { id: In(ids) } });
+
+    await this.removeOptionValuesFromVariants(ids);
+
+    await this.db.getRepository(OptionValueEntity).remove(optionValuesToRemove);
+
+    return true;
+  }
+
+  private async removeOptionValuesFromVariants(optionValuesToRemove: ID[]) {
+    const variantsToRemoveOptionValues = await this.db.getRepository(VariantEntity).find({
+      where: { optionValues: { id: In(optionValuesToRemove) } },
+      relations: { optionValues: true }
     });
 
-    // get option values deleted
-    // get variants with that option values
-    // update variants removing that option values
-    // delete option values
-    // add new option values to option
-    // frontend
-    // are new options?
-    // recalculate what variants should be updated and or created with new values
+    await this.db.getRepository(VariantEntity).save(
+      variantsToRemoveOptionValues.map(v => ({
+        ...v,
+        optionValues: v.optionValues.filter(ov => !optionValuesToRemove.includes(ov.id))
+      }))
+    );
   }
 }

@@ -23,4 +23,11 @@ export class OptionResolver {
 
     return isErrorResult(result) ? { apiErrors: [result] } : { option: result, apiErrors: [] };
   }
+
+  @Mutation('removeOption')
+  async removeOption(@Args('id') id: ID) {
+    const result = await this.service.remove(id);
+
+    return { success: result };
+  }
 }

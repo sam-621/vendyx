@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
 
+import { getParsedSlug } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { getParsedSlug } from '@ebloc/common';
 import { DataSource, FindOptionsWhere, In, Not } from 'typeorm';
 
 import { ErrorResult } from '../utils';
