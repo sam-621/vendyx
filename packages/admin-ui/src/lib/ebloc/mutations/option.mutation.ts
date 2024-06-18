@@ -37,3 +37,16 @@ export const UpdateOptionMutation = graphql(`
     }
   }
 `);
+
+export const AddOptionValuesMutation = graphql(`
+  mutation AddOptionValues($optionId: ID!, $values: [String!]!) {
+    addOptionValues(optionId: $optionId, values: $values) {
+      option {
+        values {
+          id
+          value
+        }
+      }
+    }
+  }
+`);

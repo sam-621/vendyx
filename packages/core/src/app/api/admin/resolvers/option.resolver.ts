@@ -30,4 +30,11 @@ export class OptionResolver {
 
     return { success: result };
   }
+
+  @Mutation('addOptionValues')
+  async addOptionValues(@Args('optionId') optionId: ID, @Args('values') values: ID[]) {
+    const result = await this.service.addOptionValues(optionId, values);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { option: result, apiErrors: [] };
+  }
 }

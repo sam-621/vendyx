@@ -13,7 +13,8 @@ export const useGetProductDetails = (slug: string) => {
   const product = useFragment(CommonProductFragment, data?.product);
 
   return {
-    product,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    product: product!,
     isLoading
   };
 };

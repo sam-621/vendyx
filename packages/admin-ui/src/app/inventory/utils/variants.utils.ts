@@ -32,7 +32,41 @@ export const getNewVariantsByNewOption = (
   return newVariants;
 };
 
-export const getVariantsWithDuplicatedOptionValues = (
+/**
+ * Get new variants that will be created by new option values.
+ * The difference between `getNewVariantsByNewOption` is that this function does not update any variant, only creates new ones.
+ * This is why when you just add a new option value to a existing option, it only has to create new variants, not update any.
+ */
+export const getNewVariantsByNewOptionValues = (
+  existingVariants: CommonProductFragment['variants']['items'],
+  values: CommonProductFragment['options'][0]['values']
+) => {
+  if (!values?.length) return [];
+
+  if (!existingVariants.length) {
+    return values?.map(v => ({ variantId: undefined, values: [v.id] })) ?? [];
+  }
+
+  const variantsWithOptions = existingVariants.filter(v => v.optionValues?.length);
+  const newVariants: { variantId: string | undefined; values: string[] }[] = [];
+
+  for (const variant of variantsWithOptions) {
+    for (const value of values ?? []) {
+      newVariants.push({
+        variantId: undefined,
+        values: [...(variant.optionValues?.map(v => v.id) ?? []), value.id]
+      });
+    }
+  }
+
+  return newVariants;
+};
+
+/**
+ * Get variants with duplicated option values. This is useful to delete variants that have the same option values.
+ * [a, a, a, b, b, b, c, c, c] => [a, a, b, b, c, c]
+ */
+export const getVariantsWithDuplicatedValues = (
   variants: CommonProductFragment['variants']['items']
 ) => {
   const set = new Set<string>();
@@ -40,7 +74,7 @@ export const getVariantsWithDuplicatedOptionValues = (
   return variants.filter(v => {
     const optionValues =
       v.optionValues
-        ?.map(v => v.id)
+        ?.map(v => v.value)
         .sort()
         .join() ?? '';
 
@@ -53,6 +87,34 @@ export const getVariantsWithDuplicatedOptionValues = (
   });
 };
 
+/**
+ * Remove variants with duplicated option values. This is useful to discard variants that have the same option values.
+ * [a, a, a, b, b, b, c, c, c] => [a, b, c]
+ */
+export const removeVariantsWithDuplicatedOptionValues = (
+  variants: CommonProductFragment['variants']['items']
+) => {
+  const set = new Set<string>();
+
+  return variants.filter(v => {
+    const optionValues =
+      v.optionValues
+        ?.map(v => v.value)
+        .sort()
+        .join() ?? '';
+
+    if (set.has(optionValues)) {
+      return false;
+    }
+
+    set.add(optionValues);
+    return true;
+  });
+};
+
+/**
+ * Get variants without the given option
+ */
 export const getVariantsWithoutOption = (
   option: CommonProductFragment['options'][0],
   variants: CommonProductFragment['variants']['items']
