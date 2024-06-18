@@ -6,13 +6,14 @@ import {
   useCreateVariant,
   useGetProductDetails,
   useRemoveOption,
+  useRemoveOptionValues,
   useRemoveVariant,
   useUpdateOption
 } from '@/app/inventory/hooks';
 import {
   getNewVariantsByNewOptionValues,
   getVariantsWithDuplicatedValues,
-  getVariantsWithoutOption,
+  getVariantsWithoutOptionValues,
   removeVariantsWithDuplicatedOptionValues
 } from '@/app/inventory/utils';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
@@ -32,6 +33,7 @@ export const useUpdateOptionForm = (
   const { addOptionValues } = useAddOptionValues();
   const { createVariant } = useCreateVariant();
   const { updateOption } = useUpdateOption();
+  const { removeOptionValues } = useRemoveOptionValues();
 
   const state = useManageOptionsStates([
     {
@@ -56,7 +58,10 @@ export const useUpdateOptionForm = (
    *    So in this case we remove the duplicated variants
    */
   const onRemove = async () => {
-    const variantsWithoutOption = getVariantsWithoutOption(option, product?.variants?.items ?? []);
+    const variantsWithoutOption = getVariantsWithoutOptionValues(
+      option.values,
+      product?.variants?.items ?? []
+    );
     const duplicatedVariants = getVariantsWithDuplicatedValues(variantsWithoutOption);
 
     await removeOption(option.id);
@@ -78,18 +83,46 @@ export const useUpdateOptionForm = (
     const newOption = state.options[0];
 
     const newOptionValues = newOption.values.filter(v => v.value);
-    const oldOptionValues = option.values?.map(v => v.id) ?? [];
+    const oldOptionValues = option.values ?? [];
 
-    const valuesToCreate = newOptionValues.filter(v => !oldOptionValues.includes(v.id));
+    const valuesToCreate =
+      newOptionValues.filter(v => !oldOptionValues.map(v => v.id).includes(v.id)) ?? [];
+    const valuesToRemove =
+      oldOptionValues?.filter(v => !newOptionValues.map(v => v.id).includes(v.id)) ?? [];
+
+    if (valuesToRemove.length) {
+      const variantsWithoutOption = getVariantsWithoutOptionValues(
+        valuesToRemove,
+        product?.variants?.items ?? []
+      );
+
+      let maxNumberOfOptionValue = 0;
+      variantsWithoutOption.forEach(v => {
+        if (Number(v.optionValues?.length) > maxNumberOfOptionValue) {
+          maxNumberOfOptionValue = v.optionValues?.length ?? 0;
+        }
+      });
+
+      const variantsWithLessOptionValues = variantsWithoutOption.filter(
+        v => Number(v.optionValues?.length) < maxNumberOfOptionValue
+      );
+
+      await removeOptionValues(valuesToRemove.map(v => v.id));
+      await Promise.all(variantsWithLessOptionValues.map(async v => await removeVariant(v.id)));
+    }
 
     if (valuesToCreate.length) {
       const { values } = await addOptionValues(
         option.id,
         valuesToCreate.map(v => v.value)
       );
-      const valuesCreated = values?.filter(v => !oldOptionValues.includes(v.id)) ?? [];
+      const valuesCreated =
+        values?.filter(v => !oldOptionValues.map(v => v.id).includes(v.id)) ?? [];
       const variantsWithOptionValues = product?.variants?.items.filter(v => v.optionValues?.length);
-      const variantsFromOtherOptions = getVariantsWithoutOption(option, variantsWithOptionValues);
+      const variantsFromOtherOptions = getVariantsWithoutOptionValues(
+        option.values,
+        variantsWithOptionValues
+      );
 
       const newVariants = getNewVariantsByNewOptionValues(
         removeVariantsWithDuplicatedOptionValues(variantsFromOtherOptions) ?? [],

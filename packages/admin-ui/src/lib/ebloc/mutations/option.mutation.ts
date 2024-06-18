@@ -42,6 +42,23 @@ export const AddOptionValuesMutation = graphql(`
   mutation AddOptionValues($optionId: ID!, $values: [String!]!) {
     addOptionValues(optionId: $optionId, values: $values) {
       option {
+        id
+        name
+        values {
+          id
+          value
+        }
+      }
+    }
+  }
+`);
+
+export const RemoveOptionValuesMutation = graphql(`
+  mutation RemoveOptionValues($ids: [ID!]!) {
+    removeOptionValues(ids: $ids) {
+      option {
+        id
+        name
         values {
           id
           value

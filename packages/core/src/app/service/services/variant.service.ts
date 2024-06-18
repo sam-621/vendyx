@@ -1,6 +1,6 @@
+import { convertToCent } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { convertToCent } from '@ebloc/common';
 import { DataSource, In, Not } from 'typeorm';
 
 import { ErrorResult } from '../utils';
@@ -129,7 +129,7 @@ export class VariantService {
       .getRepository(OrderLineEntity)
       .findOne({ where: { productVariant: { id } } });
 
-    await this.removeUnusedOptionValues(variantToRemove, isVariantInAnyOrder ? 'soft' : 'hard');
+    // await this.removeUnusedOptionValues(variantToRemove, isVariantInAnyOrder ? 'soft' : 'hard');
 
     if (isVariantInAnyOrder) {
       await this.db.getRepository(VariantEntity).softDelete({ id });

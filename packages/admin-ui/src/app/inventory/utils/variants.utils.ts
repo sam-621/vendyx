@@ -65,6 +65,9 @@ export const getNewVariantsByNewOptionValues = (
 /**
  * Get variants with duplicated option values. This is useful to delete variants that have the same option values.
  * [a, a, a, b, b, b, c, c, c] => [a, a, b, b, c, c]
+ *
+ * @param variants Variants to check
+ * @param all If true, return all variants with duplicated values, if false, return only the duplicated variants
  */
 export const getVariantsWithDuplicatedValues = (
   variants: CommonProductFragment['variants']['items']
@@ -115,11 +118,11 @@ export const removeVariantsWithDuplicatedOptionValues = (
 /**
  * Get variants without the given option
  */
-export const getVariantsWithoutOption = (
-  option: CommonProductFragment['options'][0],
+export const getVariantsWithoutOptionValues = (
+  values: CommonProductFragment['options'][0]['values'],
   variants: CommonProductFragment['variants']['items']
 ) => {
-  const valuesRemoved = option.values?.map(v => v.id) ?? [];
+  const valuesRemoved = values?.map(v => v.id) ?? [];
 
   return variants.map(v => ({
     ...v,

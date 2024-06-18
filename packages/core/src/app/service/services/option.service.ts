@@ -132,13 +132,12 @@ export class OptionService {
   async removeOptionValues(ids: ID[]) {
     const optionValuesToRemove = await this.db
       .getRepository(OptionValueEntity)
-      .find({ where: { id: In(ids) } });
-
-    await this.removeOptionValuesFromVariants(ids);
+      .find({ where: { id: In(ids) }, relations: { option: true } });
+    const option = optionValuesToRemove[0].option;
 
     await this.db.getRepository(OptionValueEntity).remove(optionValuesToRemove);
 
-    return true;
+    return await this.db.getRepository(OptionEntity).findOne({ where: { id: option.id } });
   }
 
   private async removeOptionValuesFromVariants(optionValuesToRemove: ID[]) {
