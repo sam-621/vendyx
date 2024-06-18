@@ -1,6 +1,6 @@
-import { useGqlQuery } from '@/lib/gql';
 import { useFragment } from '@/lib/ebloc/codegen';
 import { CommonProductFragment, GetProductDetailsQuery } from '@/lib/ebloc/queries';
+import { useGqlQuery } from '@/lib/gql';
 
 import { InventoryKeys } from './inventory.keys';
 

@@ -18,3 +18,22 @@ export const CreateOptionMutation = graphql(`
     }
   }
 `);
+
+export const RemoveOptionMutation = graphql(`
+  mutation RemoveOption($id: ID!) {
+    removeOption(id: $id) {
+      success
+    }
+  }
+`);
+
+export const UpdateOptionMutation = graphql(`
+  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {
+    updateOption(id: $id, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+    }
+  }
+`);

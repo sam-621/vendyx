@@ -4,16 +4,14 @@ import { useFormContext } from 'react-hook-form';
 import { getFormattedPrice } from '@ebloc/common';
 
 import { FormInput } from '@/app/components';
-import { t } from '@/lib/locales';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
+import { t } from '@/lib/locales';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 import { VariantItem } from './variant-item';
 
 export const VariantsListing: FC<Props> = ({ variants }) => {
-  const hasOptions = variants?.items.some(variant => Boolean(variant.optionValues?.length));
-
-  if (!hasOptions) {
+  if ([0, 1].includes(variants?.items.length ?? 0)) {
     return <DefaultVariant variant={variants?.items[0]} />;
   }
 

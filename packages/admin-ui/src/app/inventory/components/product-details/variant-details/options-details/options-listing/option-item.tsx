@@ -11,7 +11,7 @@ export const OptionItem: FC<Props> = ({ option }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
-    return <UpdateOptionForm option={option} />;
+    return <UpdateOptionForm onFinish={() => setIsEditing(false)} option={option} />;
   }
 
   return (
