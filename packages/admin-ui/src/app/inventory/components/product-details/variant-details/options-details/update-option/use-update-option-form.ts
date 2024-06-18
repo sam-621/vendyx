@@ -91,55 +91,13 @@ export const useUpdateOptionForm = (
       oldOptionValues?.filter(v => !newOptionValues.map(v => v.id).includes(v.id)) ?? [];
 
     if (valuesToRemove.length) {
-      const variantsWithoutOption = getVariantsWithoutOptionValues(
-        valuesToRemove,
-        product?.variants?.items ?? []
-      );
-
-      let maxNumberOfOptionValue = 0;
-      variantsWithoutOption.forEach(v => {
-        if (Number(v.optionValues?.length) > maxNumberOfOptionValue) {
-          maxNumberOfOptionValue = v.optionValues?.length ?? 0;
-        }
-      });
-
-      const variantsWithLessOptionValues = variantsWithoutOption.filter(
-        v => Number(v.optionValues?.length) < maxNumberOfOptionValue
-      );
-
-      await removeOptionValues(valuesToRemove.map(v => v.id));
-      await Promise.all(variantsWithLessOptionValues.map(async v => await removeVariant(v.id)));
+      await onOptionValuesRemove(valuesToRemove);
     }
 
     if (valuesToCreate.length) {
-      const { values } = await addOptionValues(
-        option.id,
-        valuesToCreate.map(v => v.value)
-      );
-      const valuesCreated =
-        values?.filter(v => !oldOptionValues.map(v => v.id).includes(v.id)) ?? [];
-      const variantsWithOptionValues = product?.variants?.items.filter(v => v.optionValues?.length);
-      const variantsFromOtherOptions = getVariantsWithoutOptionValues(
-        option.values,
-        variantsWithOptionValues
-      );
-
-      const newVariants = getNewVariantsByNewOptionValues(
-        removeVariantsWithDuplicatedOptionValues(variantsFromOtherOptions) ?? [],
-        valuesCreated
-      );
-
-      await Promise.all(
-        newVariants.map(async variant => {
-          const { values } = variant;
-          return await createVariant(product.id, {
-            price: 0,
-            published: true,
-            sku: '',
-            stock: 0,
-            optionValuesIds: values
-          });
-        })
+      await onOptionValuesCreate(
+        valuesToCreate.map(v => v.value),
+        oldOptionValues
       );
     }
 
@@ -147,6 +105,60 @@ export const useUpdateOptionForm = (
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
     onFinish();
     notification.success('Option updated');
+  };
+
+  const onOptionValuesRemove = async (values: CommonProductFragment['options'][0]['values']) => {
+    if (!values?.length) return;
+
+    const variantsWithoutOption = getVariantsWithoutOptionValues(
+      values,
+      product?.variants?.items ?? []
+    );
+
+    let maxNumberOfOptionValue = 0;
+    variantsWithoutOption.forEach(v => {
+      if (Number(v.optionValues?.length) > maxNumberOfOptionValue) {
+        maxNumberOfOptionValue = v.optionValues?.length ?? 0;
+      }
+    });
+
+    const variantsWithLessOptionValues = variantsWithoutOption.filter(
+      v => Number(v.optionValues?.length) < maxNumberOfOptionValue
+    );
+
+    await removeOptionValues(values.map(v => v.id));
+    await Promise.all(variantsWithLessOptionValues.map(async v => await removeVariant(v.id)));
+  };
+
+  const onOptionValuesCreate = async (
+    values: string[],
+    options: CommonProductFragment['options'][0]['values']
+  ) => {
+    const { values: valuesCreated } = await addOptionValues(option.id, values);
+    const newValues = valuesCreated?.filter(v => !options?.map(v => v.id).includes(v.id)) ?? [];
+    const variantsWithOptionValues = product?.variants?.items.filter(v => v.optionValues?.length);
+    const variantsFromOtherOptions = getVariantsWithoutOptionValues(
+      option.values,
+      variantsWithOptionValues
+    );
+
+    const newVariants = getNewVariantsByNewOptionValues(
+      removeVariantsWithDuplicatedOptionValues(variantsFromOtherOptions) ?? [],
+      newValues
+    );
+
+    await Promise.all(
+      newVariants.map(async variant => {
+        const { values } = variant;
+        return await createVariant(product.id, {
+          price: 0,
+          published: true,
+          sku: '',
+          stock: 0,
+          optionValuesIds: values
+        });
+      })
+    );
   };
 
   return {
