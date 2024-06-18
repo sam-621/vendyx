@@ -1,9 +1,13 @@
 import { type FC } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { InventoryKeys, useGetProductDetails } from '@/app/inventory/hooks';
+import { InventoryKeys, useGetProductDetails, useRemoveVariant } from '@/app/inventory/hooks';
 import { useRemoveOption } from '@/app/inventory/hooks/use-remove-option';
 import { useUpdateOption } from '@/app/inventory/hooks/use-update-option';
+import {
+  getVariantsWithDuplicatedOptionValues,
+  getVariantsWithoutOption
+} from '@/app/inventory/utils';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
@@ -15,6 +19,7 @@ export const UpdateOptionForm: FC<Props> = ({ option, onFinish }) => {
   const { slug } = useParams();
   const { product } = useGetProductDetails(slug ?? '');
   const { removeOption } = useRemoveOption();
+  const { removeVariant } = useRemoveVariant();
   const { updateOption } = useUpdateOption();
 
   const state = useManageOptionsStates([
@@ -26,7 +31,11 @@ export const UpdateOptionForm: FC<Props> = ({ option, onFinish }) => {
   ]);
 
   const onRemove = async () => {
+    const variantsWithoutOption = getVariantsWithoutOption(option, product?.variants?.items ?? []);
+    const duplicatedVariants = getVariantsWithDuplicatedOptionValues(variantsWithoutOption);
+
     await removeOption(option.id);
+    await Promise.all(duplicatedVariants.map(async v => await removeVariant(v.id)));
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
 
     onFinish();

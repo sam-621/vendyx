@@ -31,3 +31,36 @@ export const getNewVariantsByNewOption = (
 
   return newVariants;
 };
+
+export const getVariantsWithDuplicatedOptionValues = (
+  variants: CommonProductFragment['variants']['items']
+) => {
+  const set = new Set<string>();
+
+  return variants.filter(v => {
+    const optionValues =
+      v.optionValues
+        ?.map(v => v.id)
+        .sort()
+        .join() ?? '';
+
+    if (set.has(optionValues)) {
+      return true;
+    }
+
+    set.add(optionValues);
+    return false;
+  });
+};
+
+export const getVariantsWithoutOption = (
+  option: CommonProductFragment['options'][0],
+  variants: CommonProductFragment['variants']['items']
+) => {
+  const valuesRemoved = option.values?.map(v => v.id) ?? [];
+
+  return variants.map(v => ({
+    ...v,
+    optionValues: v.optionValues?.filter(ov => !valuesRemoved.includes(ov.id))
+  }));
+};

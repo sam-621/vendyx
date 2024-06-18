@@ -76,10 +76,6 @@ export class OptionService {
 
     const optionValuesToRemove = optionToRemove.values;
 
-    if (optionValuesToRemove.length) {
-      await this.removeOptionValuesFromVariants(optionValuesToRemove.map(ov => ov.id));
-    }
-
     await this.db.getRepository(OptionValueEntity).remove(optionValuesToRemove);
     await this.db.getRepository(OptionEntity).remove(optionToRemove);
 
@@ -151,10 +147,21 @@ export class OptionService {
       relations: { optionValues: true }
     });
 
+    console.log({
+      variantsToRemoveOptionValues
+    });
+
     await this.db.getRepository(VariantEntity).save(
       variantsToRemoveOptionValues.map(v => ({
         ...v,
-        optionValues: v.optionValues.filter(ov => !optionValuesToRemove.includes(ov.id))
+        optionValues: v.optionValues.filter(ov => {
+          console.log({
+            ov,
+            optionValuesToRemove
+          });
+
+          return !optionValuesToRemove.includes(ov.id);
+        })
       }))
     );
   }
