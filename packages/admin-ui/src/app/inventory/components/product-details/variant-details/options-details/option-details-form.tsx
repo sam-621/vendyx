@@ -38,29 +38,43 @@ export const OptionDetailsForm: FC<Props> = ({
       <div className="flex flex-col gap-2">
         <Label>Values</Label>
         {option.values.map((v, i) => (
-          <Input
-            key={v.id}
-            defaultValue={v.value}
-            placeholder="S"
-            onChange={e => {
-              const content = e.target.value;
-              const isTheLastOption = i === option.values.length - 1;
+          <div className="flex items-end gap-4" key={v.id}>
+            <Input
+              defaultValue={v.value}
+              placeholder="S"
+              onChange={e => {
+                const content = e.target.value;
+                const isTheLastOption = i === option.values.length - 1;
 
-              const newState: OptionValueState[] = option.values.map(value =>
-                value.id === v.id ? { ...v, value: content } : value
-              );
+                const newState: OptionValueState[] = option.values.map(value =>
+                  value.id === v.id ? { ...v, value: content } : value
+                );
 
-              if (isTheLastOption && content) {
-                newState.push(new OptionValueState());
-              }
+                if (isTheLastOption && content) {
+                  newState.push(new OptionValueState());
+                }
 
-              if (isTheLastOption && !content) {
-                newState.pop();
-              }
+                if (isTheLastOption && !content) {
+                  newState.pop();
+                }
 
-              updateValues(option.id, newState);
-            }}
-          />
+                updateValues(option.id, newState);
+              }}
+            />
+            {v.value && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  const newState = option.values.filter(value => value.id !== v.id);
+                  updateValues(option.id, newState);
+                }}
+              >
+                <Trash2Icon size={16} />
+              </Button>
+            )}
+          </div>
         ))}
       </div>
       <div>
