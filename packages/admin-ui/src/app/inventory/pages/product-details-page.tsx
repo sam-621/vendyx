@@ -32,7 +32,7 @@ export const ProductDetailsPage = () => {
       <form onSubmit={methods.onSubmit}>
         <PageLayout
           title={product.name}
-          subtitle={`Añadido en ${getFormattedDate(new Date(product.createdAt as string))}`}
+          subtitle={`Added at ${getFormattedDate(new Date(product.createdAt as string))}`}
           actions={
             <Button isLoading={methods.formState.isSubmitting} type="submit">
               {t('product-details.action.save')}

@@ -18,12 +18,10 @@ export const OrderDetailsPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { order, isLoading } = useGetOrderDetails(slug ?? '');
 
-  // TODO: LOADING
   if (isLoading) {
     return <LogoLoader />;
   }
 
-  // TODO: NOT FOUND
   if (!order) {
     return <Navigate to="/orders" />;
   }

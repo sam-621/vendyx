@@ -63,6 +63,8 @@ export const useUpdateOptionForm = (
    *    And we remove the option color (red, green), the result should be:
    *    [s, s, m, m] because we removed the option values red and green but the other values are still present
    *    So in this case we remove the duplicated variants
+   * 3. If all variants were removed, create a new variant with default values
+   *    This is needed because orders work with variants, so we need at least 1 variant per product
    */
   const onRemove = async () => {
     const variantsWithoutOption = getVariantsWithoutOptionValues(
@@ -73,6 +75,13 @@ export const useUpdateOptionForm = (
 
     await removeOption(option.id);
     await Promise.all(duplicatedVariants.map(async v => await removeVariant(v.id)));
+
+    const allVariantsWereRemoved = duplicatedVariants.length === product?.variants?.items?.length;
+
+    if (allVariantsWereRemoved) {
+      await createDefaultVariant();
+    }
+
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
 
     onFinish();
@@ -109,11 +118,33 @@ export const useUpdateOptionForm = (
       await onOptionValuesCreate(valuesToCreate.map(v => v.value));
     }
 
+    const allValuesWereRemoved =
+      valuesToRemove.length === oldOptionValues.length && valuesToCreate.length === 0;
+
+    if (allValuesWereRemoved) {
+      await removeOption(option.id);
+    }
+
     const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product.slug });
     const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
 
-    await removeVariantsWithInconsistentOptionValues(productUpdated?.variants.items ?? []);
-    await removeVariantWithNoOptionValues(productUpdated?.variants.items ?? []);
+    const variantsRemoved1 = await removeVariantsWithInconsistentOptionValues(
+      productUpdated?.variants.items ?? []
+    );
+    const variantsRemoved2 = await removeVariantWithNoOptionValues(
+      productUpdated?.variants.items ?? []
+    );
+    const totalVariantsRemoved = new Set([
+      ...variantsRemoved1.map(v => v.id),
+      ...variantsRemoved2.map(v => v.id)
+    ]);
+
+    const allVariantsWereRemoved =
+      totalVariantsRemoved.size === productUpdated?.variants.items?.length;
+
+    if (allVariantsWereRemoved) {
+      await createDefaultVariant();
+    }
 
     await updateOption(option.id, { name: newOption.name });
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
@@ -200,6 +231,7 @@ export const useUpdateOptionForm = (
    * 3. Remove the variants with less option values
    *
    * @param variants variants to check
+   * @returns variants removed
    */
   const removeVariantsWithInconsistentOptionValues = async (
     variants: CommonProductFragment['variants']['items']
@@ -216,6 +248,8 @@ export const useUpdateOptionForm = (
     );
 
     await Promise.all(variantsWithLessOptionValues.map(async v => await removeVariant(v.id)));
+
+    return variantsWithLessOptionValues;
   };
 
   const removeVariantWithNoOptionValues = async (
@@ -223,7 +257,25 @@ export const useUpdateOptionForm = (
   ) => {
     const variantsWithoutOptionValues = variants?.filter(v => !v.optionValues?.length);
     await Promise.all(variantsWithoutOptionValues.map(async v => await removeVariant(v.id)));
+
+    return variantsWithoutOptionValues;
   };
+
+  /**
+   * Create a default variant
+   *
+   * @description
+   * When removing all variants, we need to create a new one with default values.
+   * This is needed because orders work with variants, so we need at least 1 variant per product
+   */
+  const createDefaultVariant = async () => [
+    await createVariant(product.id, {
+      price: 0,
+      published: true,
+      sku: '',
+      stock: 0
+    })
+  ];
 
   return {
     state,
