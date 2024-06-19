@@ -1,8 +1,7 @@
-import { Link, Navigate, useParams } from 'react-router-dom';
-
-import { MoveLeftIcon } from 'lucide-react';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { PageLayout } from '@/app/components';
+import { LogoLoader } from '@/app/components/loaders';
 import { useGetOrderDetails } from '@/app/orders';
 import { getFormattedDate } from '@/lib/utils';
 
@@ -21,7 +20,7 @@ export const OrderDetailsPage = () => {
 
   // TODO: LOADING
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LogoLoader />;
   }
 
   // TODO: NOT FOUND
