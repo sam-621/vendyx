@@ -6,13 +6,24 @@ import { Trash2Icon } from 'lucide-react';
 import { FormInput } from '@/app/components';
 import { useProductDetailsContext } from '@/app/inventory/context';
 import { InventoryKeys, useRemoveVariant } from '@/app/inventory/hooks';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
-import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 export const VariantItem: FC<Props> = ({ variant }) => {
   const { product } = useProductDetailsContext();
   const { removeVariant } = useRemoveVariant();
+
+  const onRemove = async () => {
+    const optionValues = variant.optionValues?.map(({ value }) => value);
+
+    await removeVariant(variant.id);
+    await queryClient.invalidateQueries({
+      queryKey: InventoryKeys.single(product?.slug ?? '')
+    });
+
+    notification.success(`Variant ${optionValues?.join(' / ')} removed`);
+  };
 
   return (
     <div className="flex justify-between items-center">
@@ -28,22 +39,7 @@ export const VariantItem: FC<Props> = ({ variant }) => {
         <FormInput label="Price" placeholder="$ 0.00" />
         <FormInput label="SKU" placeholder="SKU - 000" />
         <FormInput label="Quantity" placeholder="0" />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="p-2"
-          type="button"
-          onClick={async () => {
-            const optionValues = variant.optionValues?.map(({ value }) => value);
-
-            await removeVariant(variant.id);
-            await queryClient.invalidateQueries({
-              queryKey: InventoryKeys.single(product?.slug ?? '')
-            });
-
-            notification.success(`Variant ${optionValues?.join(' / ')} removed`);
-          }}
-        >
+        <Button variant="ghost" size="icon" className="p-2" type="button" onClick={onRemove}>
           <Trash2Icon size={16} />
         </Button>
       </div>
