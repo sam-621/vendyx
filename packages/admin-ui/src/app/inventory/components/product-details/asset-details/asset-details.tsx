@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { buttonVariants, Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
-import { Dropzone } from '@/app/components/forms';
+import { Dropzone } from '@/lib/components/forms';
 import { t } from '@/lib/locales';
 import { getFileListIntoArray } from '@/lib/utils';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';

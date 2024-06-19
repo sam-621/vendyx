@@ -5,8 +5,8 @@ import { getFormattedPrice } from '@ebloc/common';
 import { Checkbox } from '@ebloc/theme';
 import { User } from 'lucide-react';
 
-import { DataTableColumnHeader } from '@/app/components/data-table';
-import { OrderStatusBadge } from '@/app/components/items';
+import { DataTableColumnHeader } from '@/lib/components/data-table';
+import { OrderStatusBadge } from '@/lib/components/items';
 
 import { type TableOrder } from './order-table';
 

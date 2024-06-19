@@ -3,8 +3,8 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { Button } from '@ebloc/theme';
 
-import { PageLayout } from '@/app/components';
-import { LogoLoader } from '@/app/components/loaders';
+import { PageLayout } from '@/lib/components';
+import { LogoLoader } from '@/lib/components/loaders';
 import { t } from '@/lib/locales';
 import { getFormattedDate } from '@/lib/utils';
 

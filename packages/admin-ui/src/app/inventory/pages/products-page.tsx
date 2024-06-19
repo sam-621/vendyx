@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
-import { PageLayout } from '@/app/components';
+import { PageLayout } from '@/lib/components';
 import { t } from '@/lib/locales';
 
 import { ProductTable } from '../components/product-table';

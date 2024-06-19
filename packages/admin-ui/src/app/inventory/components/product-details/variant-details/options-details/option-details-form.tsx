@@ -3,7 +3,7 @@ import { type FC, useState } from 'react';
 import { Button, Input, Label } from '@ebloc/theme';
 import { Trash2Icon } from 'lucide-react';
 
-import { FormInput } from '@/app/components';
+import { FormInput } from '@/lib/components';
 
 import { type OptionState, OptionValueState } from './use-manage-options';
 

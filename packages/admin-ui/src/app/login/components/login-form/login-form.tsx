@@ -1,6 +1,6 @@
 import { Button } from '@ebloc/theme';
 
-import { FormInput } from '@/app/components/forms';
+import { FormInput } from '@/lib/components/forms';
 import { t } from '@/lib/locales';
 
 import { useLoginForm } from './use-login-form';

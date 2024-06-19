@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { AdminLayout } from '@/app/components';
+import { AdminLayout } from '@/lib/components';
 
 import { AuthWrapper } from './auth-wrapper';
 import { CreateProductPage, ProductDetailsPage, ProductsPage } from './inventory';

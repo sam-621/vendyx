@@ -4,7 +4,7 @@ import { type ColumnDef } from '@tanstack/react-table';
 import { getFormattedPrice } from '@ebloc/common';
 import { Badge, Checkbox } from '@ebloc/theme';
 
-import { DataTableColumnHeader } from '@/app/components/data-table';
+import { DataTableColumnHeader } from '@/lib/components/data-table';
 import { t } from '@/lib/locales';
 
 import { type TableProduct } from './product-table';

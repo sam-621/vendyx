@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { Button, Input, Label, Separator } from '@ebloc/theme';
 import { PlusIcon, Trash2Icon } from 'lucide-react';
 
-import { FormInput } from '@/app/components';
+import { FormInput } from '@/lib/components';
 import { useOptionDetailsContext } from '@/app/inventory/context';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 

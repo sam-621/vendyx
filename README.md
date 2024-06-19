@@ -16,18 +16,12 @@ We know there are so many other options for e-commerce platform, so why choose u
 > [!NOTE]
 > **Ebloc is in development. Check marks indicate completed MVP sections; more features will be added.**
 
-- [x] Inventory management
-- [x] Order management
-- [x] Shop API
-- [ ] Roles
-- [ ] Extensible by code 🚧
-  - asset storage provider
-  - api options
-  - strategies
-  - payment methods
-  - shipping methods
-  - plugins
-  - ui-extensions
+- [ ] Inventory management
+- [ ] Collections
+- [ ] Order management
+- [ ] Customers
+- [ ] Extensible by code
+- [ ] Shop API
 
 ## Tech stack
 

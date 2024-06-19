@@ -1,4 +1,4 @@
-import { Logo } from '@/app/components';
+import { Logo } from '@/lib/components';
 import { t } from '@/lib/locales';
 
 import { LoginForm } from '../components/login-form';

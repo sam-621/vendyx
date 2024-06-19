@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from '@ebloc/theme';
 import { Trash2Icon } from 'lucide-react';
 
-import { FormInput } from '@/app/components';
+import { FormInput } from '@/lib/components';
 import {
   InventoryKeys,
   useGetProductDetails,

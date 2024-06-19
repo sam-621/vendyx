@@ -1,5 +1,5 @@
-import { DataTable } from '@/app/components/data-table';
-import { DataTableSkeleton } from '@/app/components/skeletons';
+import { DataTable } from '@/lib/components/data-table';
+import { DataTableSkeleton } from '@/lib/components/skeletons';
 import { useGetOrders } from '@/app/orders/hooks';
 import { type OrderState } from '@/lib/ebloc/codegen/graphql';
 

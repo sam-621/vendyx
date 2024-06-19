@@ -2,7 +2,7 @@ import { FormProvider } from 'react-hook-form';
 
 import { Button } from '@ebloc/theme';
 
-import { PageLayout } from '@/app/components';
+import { PageLayout } from '@/lib/components';
 import { t } from '@/lib/locales';
 
 import { ProductDetails } from '../components/product-details';

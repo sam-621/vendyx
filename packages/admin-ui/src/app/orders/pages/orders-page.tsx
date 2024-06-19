@@ -1,4 +1,4 @@
-import { PageLayout } from '@/app/components';
+import { PageLayout } from '@/lib/components';
 
 import { OrderTable } from '../components/orders-table';
 

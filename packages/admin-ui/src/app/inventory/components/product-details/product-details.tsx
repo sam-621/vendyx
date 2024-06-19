@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { getParsedSlug } from '@ebloc/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 
-import { FormInput, FormTextarea, SwitchContainer } from '@/app/components/forms';
+import { FormInput, FormTextarea, SwitchContainer } from '@/lib/components/forms';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { t } from '@/lib/locales';
 
