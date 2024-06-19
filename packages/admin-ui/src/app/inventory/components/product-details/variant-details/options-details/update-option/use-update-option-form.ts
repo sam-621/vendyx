@@ -112,6 +112,7 @@ export const useUpdateOptionForm = (
     const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product.slug });
     const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
     await removeVariantsWithInconsistentOptionValues(productUpdated?.variants.items ?? []);
+    await removeVariantWithNoOptionValues(productUpdated?.variants.items ?? []);
 
     await updateOption(option.id, { name: newOption.name });
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
@@ -212,6 +213,13 @@ export const useUpdateOptionForm = (
     );
 
     await Promise.all(variantsWithLessOptionValues.map(async v => await removeVariant(v.id)));
+  };
+
+  const removeVariantWithNoOptionValues = async (
+    variants: CommonProductFragment['variants']['items']
+  ) => {
+    const variantsWithoutOptionValues = variants?.filter(v => !v.optionValues?.length);
+    await Promise.all(variantsWithoutOptionValues.map(async v => await removeVariant(v.id)));
   };
 
   return {

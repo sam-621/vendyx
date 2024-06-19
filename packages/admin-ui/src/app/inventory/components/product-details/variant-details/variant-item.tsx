@@ -1,20 +1,28 @@
 import { type FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Button } from '@ebloc/theme';
 import { Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/app/components';
-import { useProductDetailsContext } from '@/app/inventory/context';
-import { InventoryKeys, useRemoveVariant } from '@/app/inventory/hooks';
+import {
+  InventoryKeys,
+  useGetProductDetails,
+  useRemoveOptionValues,
+  useRemoveVariant
+} from '@/app/inventory/hooks';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 export const VariantItem: FC<Props> = ({ variant }) => {
-  const { product } = useProductDetailsContext();
+  const { slug } = useParams();
+  const { product } = useGetProductDetails(slug ?? '');
   const { removeVariant } = useRemoveVariant();
+  const { removeOptionValues } = useRemoveOptionValues();
 
   const onRemove = async () => {
+    await removeUnusedOptionValues();
     const optionValues = variant.optionValues?.map(({ value }) => value);
 
     await removeVariant(variant.id);
@@ -23,6 +31,29 @@ export const VariantItem: FC<Props> = ({ variant }) => {
     });
 
     notification.success(`Variant ${optionValues?.join(' / ')} removed`);
+  };
+
+  const removeUnusedOptionValues = async () => {
+    const variantsWithoutRemoved =
+      product?.variants?.items?.filter(({ id: currentId }) => currentId !== variant.id) ?? [];
+
+    const optionValuesInUse = variantsWithoutRemoved
+      .map(variant => variant.optionValues)
+      .flat()
+      .map(v => v?.id ?? '');
+
+    const optionValuesInProduct = product?.options
+      .map(option => option.values)
+      .flat()
+      .map(v => v?.id ?? '');
+
+    const optionValuesToDelete = optionValuesInProduct?.filter(
+      optionValue => !optionValuesInUse.includes(optionValue)
+    );
+
+    if (optionValuesToDelete?.length) {
+      await removeOptionValues(optionValuesToDelete);
+    }
   };
 
   return (
