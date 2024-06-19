@@ -19,6 +19,7 @@ const documents = {
     "\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.UpdateOptionDocument,
     "\n  mutation AddOptionValues($optionId: ID!, $values: [String!]!) {\n    addOptionValues(optionId: $optionId, values: $values) {\n      option {\n        id\n        name\n        values {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.AddOptionValuesDocument,
     "\n  mutation RemoveOptionValues($ids: [ID!]!) {\n    removeOptionValues(ids: $ids) {\n      option {\n        id\n        name\n        values {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.RemoveOptionValuesDocument,
+    "\n  mutation UpdateOptionValues($input: [UpdateOptionValueInput!]!) {\n    updateOptionValues(input: $input) {\n      option {\n        id\n      }\n    }\n  }\n": types.UpdateOptionValuesDocument,
     "\n  mutation CreateProduct($createProductInput: CreateProductInput!) {\n    createProduct(input: $createProductInput) {\n      apiErrors {\n        message\n        code\n      }\n      product {\n        id\n      }\n    }\n  }\n": types.CreateProductDocument,
     "\n  mutation RemoveProduct($productId: ID!) {\n    removeProduct(id: $productId) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveProductDocument,
     "\n  mutation UpdateProduct($productId: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $productId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      product {\n        id\n      }\n    }\n  }\n": types.UpdateProductDocument,
@@ -72,6 +73,10 @@ export function graphql(source: "\n  mutation AddOptionValues($optionId: ID!, $v
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation RemoveOptionValues($ids: [ID!]!) {\n    removeOptionValues(ids: $ids) {\n      option {\n        id\n        name\n        values {\n          id\n          value\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveOptionValues($ids: [ID!]!) {\n    removeOptionValues(ids: $ids) {\n      option {\n        id\n        name\n        values {\n          id\n          value\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateOptionValues($input: [UpdateOptionValueInput!]!) {\n    updateOptionValues(input: $input) {\n      option {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateOptionValues($input: [UpdateOptionValueInput!]!) {\n    updateOptionValues(input: $input) {\n      option {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

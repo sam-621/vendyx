@@ -4,7 +4,7 @@ type Mutation {
   updateOption(id: ID!, input: UpdateOptionInput!): OptionResult!
   removeOption(id: ID!): RemoveOptionResult!
   addOptionValues(optionId: ID!, values: [String!]!): OptionResult!
-  updateOptionValue(input: UpdateOptionValueInput!): OptionResult!
+  updateOptionValues(input: [UpdateOptionValueInput!]!): OptionResult!
   removeOptionValues(ids: [ID!]!): OptionResult!
 }
 

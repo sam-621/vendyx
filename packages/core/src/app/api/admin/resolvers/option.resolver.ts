@@ -1,7 +1,12 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { AdminJwtAuthGuard, CreateOptionInput, UpdateOptionInput } from '@/app/api/common';
+import {
+  AdminJwtAuthGuard,
+  CreateOptionInput,
+  UpdateOptionInput,
+  UpdateOptionValueInput
+} from '@/app/api/common';
 import { ID } from '@/app/persistance';
 import { OptionService, isErrorResult } from '@/app/service';
 
@@ -41,6 +46,13 @@ export class OptionResolver {
   @Mutation('removeOptionValues')
   async removeOptionValues(@Args('ids') ids: ID[]) {
     const result = await this.service.removeOptionValues(ids);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { option: result, apiErrors: [] };
+  }
+
+  @Mutation('updateOptionValues')
+  async updateOptionValues(@Args('input') input: UpdateOptionValueInput[]) {
+    const result = await this.service.updateOptionValues(input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { option: result, apiErrors: [] };
   }

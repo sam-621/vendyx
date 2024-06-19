@@ -108,20 +108,20 @@ export class OptionService {
   /**
    * Update an option value with the given id
    */
-  async updateOptionValue(
-    input: UpdateOptionValueInput
-  ): Promise<OptionValueEntity | ErrorResult<OptionErrorCode>> {
-    const optionValueToUpdate = await this.db
-      .getRepository(OptionValueEntity)
-      .findOne({ where: { id: input.id } });
+  async updateOptionValues(
+    input: UpdateOptionValueInput[]
+  ): Promise<OptionEntity | ErrorResult<OptionErrorCode>> {
+    const idsToUpdate = input.map(i => i.id);
 
-    if (!optionValueToUpdate) {
-      return new ErrorResult(OptionErrorCode.OPTION_VALUE_NOT_FOUND, 'Option value not found');
-    }
-
-    return await this.db
+    const optionValuesToUpdate = await this.db
       .getRepository(OptionValueEntity)
-      .save({ ...optionValueToUpdate, value: input.value });
+      .find({ where: { id: In(idsToUpdate) }, relations: { option: true } });
+
+    await this.db
+      .getRepository(OptionValueEntity)
+      .save(optionValuesToUpdate.map(v => ({ ...v, value: v.value })));
+
+    return optionValuesToUpdate[0].option;
   }
 
   /**

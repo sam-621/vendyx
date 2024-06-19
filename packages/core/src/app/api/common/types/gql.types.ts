@@ -192,7 +192,7 @@ export abstract class IMutation {
 
     abstract addOptionValues(optionId: string, values: string[]): OptionResult | Promise<OptionResult>;
 
-    abstract updateOptionValue(input: UpdateOptionValueInput): OptionResult | Promise<OptionResult>;
+    abstract updateOptionValues(input: UpdateOptionValueInput[]): OptionResult | Promise<OptionResult>;
 
     abstract removeOptionValues(ids: string[]): OptionResult | Promise<OptionResult>;
 

@@ -10,5 +10,6 @@ export * from './use-remove-option-values';
 export * from './use-remove-product';
 export * from './use-remove-variant';
 export * from './use-update-option';
+export * from './use-update-option-values';
 export * from './use-update-product';
 export * from './use-update-variant';
