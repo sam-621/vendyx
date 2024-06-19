@@ -1,5 +1,5 @@
-import { useGqlQuery } from '@/lib/gql';
 import { GetProductsQuery } from '@/lib/ebloc/queries';
+import { useGqlQuery } from '@/lib/gql';
 
 import { InventoryKeys } from './inventory.keys';
 
