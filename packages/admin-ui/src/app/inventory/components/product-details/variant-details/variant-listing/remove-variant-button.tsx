@@ -1,5 +1,4 @@
 import { type FC } from 'react';
-import { useParams } from 'react-router-dom';
 
 import {
   AlertDialog,
@@ -15,10 +14,10 @@ import {
 } from '@ebloc/theme';
 import { Trash2Icon } from 'lucide-react';
 
+import { useProductDetailsContext } from '@/app/inventory/context';
 import {
   InventoryKeys,
   useCreateVariant,
-  useGetProductDetails,
   useRemoveOptionValues,
   useRemoveVariant
 } from '@/app/inventory/hooks';
@@ -27,8 +26,7 @@ import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 export const RemoveVariantButton: FC<Props> = ({ variant }) => {
-  const { slug } = useParams();
-  const { product } = useGetProductDetails(slug ?? '');
+  const { product } = useProductDetailsContext();
   const { removeVariant } = useRemoveVariant();
   const { createVariant } = useCreateVariant();
   const { removeOptionValues } = useRemoveOptionValues();

@@ -1,10 +1,8 @@
-import { useParams } from 'react-router-dom';
-
+import { useProductDetailsContext } from '@/app/inventory/context';
 import {
   InventoryKeys,
   useAddOptionValues,
   useCreateVariant,
-  useGetProductDetails,
   useRemoveOption,
   useRemoveOptionValues,
   useRemoveVariant,
@@ -33,8 +31,7 @@ export const useUpdateOptionForm = (
   option: CommonProductFragment['options'][0],
   onFinish: () => void
 ) => {
-  const { slug } = useParams();
-  const { product } = useGetProductDetails(slug ?? '');
+  const { product } = useProductDetailsContext();
   const { removeOption } = useRemoveOption();
   const { removeVariant } = useRemoveVariant();
   const { addOptionValues } = useAddOptionValues();
@@ -128,7 +125,7 @@ export const useUpdateOptionForm = (
     }
 
     if (valuesToCreate.length || valuesToRemove.length) {
-      const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product.slug });
+      const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product?.slug ?? '' });
       const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
 
       const variantsRemoved1 = await removeVariantsWithInconsistentOptionValues(
@@ -176,7 +173,7 @@ export const useUpdateOptionForm = (
   const onOptionValuesRemove = async (values: CommonProductFragment['options'][0]['values']) => {
     const variantsWithoutOption = getVariantsWithoutOptionValues(
       values,
-      product.variants.items ?? []
+      product?.variants.items ?? []
     );
 
     values?.length && (await removeOptionValues(values.map(v => v.id)));
@@ -197,7 +194,8 @@ export const useUpdateOptionForm = (
     const newValues =
       valuesCreated?.filter(v => !option.values?.map(v => v.id).includes(v.id)) ?? [];
 
-    const variantsWithOptionValues = product.variants.items.filter(v => v.optionValues?.length);
+    const variantsWithOptionValues =
+      product?.variants.items.filter(v => v.optionValues?.length) ?? [];
 
     const variantsFromOtherOptions = getVariantsWithoutOptionValues(
       option.values,
@@ -212,7 +210,7 @@ export const useUpdateOptionForm = (
     await Promise.all(
       newVariants.map(async variant => {
         const { values } = variant;
-        return await createVariant(product.id, {
+        return await createVariant(product?.id ?? '', {
           price: 0,
           published: true,
           sku: '',
@@ -281,7 +279,7 @@ export const useUpdateOptionForm = (
    * This is needed because orders work with variants, so we need at least 1 variant per product
    */
   const createDefaultVariant = async () => [
-    await createVariant(product.id, {
+    await createVariant(product?.id ?? '', {
       price: 0,
       sku: '',
       stock: 0,

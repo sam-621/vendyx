@@ -25,6 +25,8 @@ export class ProductResolver {
 
   @Query('product')
   async product(@Args('id') id: ID, @Args('slug') slug: string) {
+    console.log('get');
+
     const product = await this.productService.findUnique({ id, slug });
 
     return product;
