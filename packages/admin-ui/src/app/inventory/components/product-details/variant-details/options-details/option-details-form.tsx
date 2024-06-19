@@ -29,7 +29,7 @@ export const OptionDetailsForm: FC<Props> = ({
   };
 
   return (
-    <form className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex items-end gap-4">
         <FormInput
           label="Option"
@@ -101,7 +101,7 @@ export const OptionDetailsForm: FC<Props> = ({
           </Button>
         )}
       </div>
-    </form>
+    </div>
   );
 };
 

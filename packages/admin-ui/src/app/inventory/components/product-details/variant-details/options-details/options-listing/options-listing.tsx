@@ -10,10 +10,10 @@ export const OptionsListing: FC<Props> = ({ options }) => {
   return (
     <>
       {options?.map((option, i) => (
-        <>
+        <div key={option.id} className="flex flex-col gap-4">
           <OptionItem option={option} />
           {options?.length !== i + 1 && <Separator />}
-        </>
+        </div>
       ))}
     </>
   );

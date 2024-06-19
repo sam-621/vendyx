@@ -41,8 +41,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
             />
             <FormInput
               {...register('slug')}
-              value={parsedSlug}
-              defaultValue={product?.slug}
+              value={parsedSlug ?? product?.slug}
               label={t('product-details.general.input.slug')}
               placeholder="black-t-shirt"
               disabled
