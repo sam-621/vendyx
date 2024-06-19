@@ -271,9 +271,9 @@ export const useUpdateOptionForm = (
   const createDefaultVariant = async () => [
     await createVariant(product.id, {
       price: 0,
-      published: true,
       sku: '',
-      stock: 0
+      stock: 0,
+      published: true
     })
   ];
 

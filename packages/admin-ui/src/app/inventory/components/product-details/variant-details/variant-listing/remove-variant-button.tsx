@@ -17,6 +17,7 @@ import { Trash2Icon } from 'lucide-react';
 
 import {
   InventoryKeys,
+  useCreateVariant,
   useGetProductDetails,
   useRemoveOptionValues,
   useRemoveVariant
@@ -29,14 +30,26 @@ export const RemoveVariantButton: FC<Props> = ({ variant }) => {
   const { slug } = useParams();
   const { product } = useGetProductDetails(slug ?? '');
   const { removeVariant } = useRemoveVariant();
+  const { createVariant } = useCreateVariant();
   const { removeOptionValues } = useRemoveOptionValues();
 
   const variantName = variant.optionValues?.map(({ value }) => value).join(' / ');
 
   const onRemove = async () => {
     await removeUnusedOptionValues();
-
     await removeVariant(variant.id);
+
+    const isTheLastVariant = product?.variants?.items?.length === 1;
+
+    if (isTheLastVariant) {
+      await createVariant(product.id, {
+        price: 0,
+        sku: '',
+        stock: 0,
+        published: true
+      });
+    }
+
     await queryClient.invalidateQueries({
       queryKey: InventoryKeys.single(product?.slug ?? '')
     });
