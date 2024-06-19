@@ -8,12 +8,13 @@
     "Cloudinary",
     "clsx",
     "codegen",
+    "ebloc",
+    "fontsource",
     "lucide",
     "pago",
     "sonner",
     "tailwindcss",
     "tanstack",
-    "typeorm",
-    "ebloc"
+    "typeorm"
   ]
 }

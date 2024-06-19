@@ -1,4 +1,5 @@
 import { EblocTailwindPreset } from '@ebloc/theme';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -15,5 +16,10 @@ export default {
      */
     '../theme/**/*.{js,ts,jsx,tsx}'
   ],
+  theme: {
+    fontFamily: {
+      geist: ['Geist Sans', ...fontFamily.sans]
+    }
+  },
   presets: [EblocTailwindPreset]
 };

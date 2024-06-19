@@ -12,11 +12,12 @@
     "codegen:watch": "yarn graphql-codegen --watch"
   },
   "dependencies": {
+    "@ebloc/common": "*",
+    "@ebloc/theme": "*",
+    "@fontsource/geist-sans": "^5.0.3",
     "@hookform/resolvers": "^3.3.4",
     "@tanstack/react-query": "^5.17.19",
     "@tanstack/react-table": "^8.11.8",
-    "@ebloc/common": "*",
-    "@ebloc/theme": "*",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "i18next": "^23.10.1",
