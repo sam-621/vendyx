@@ -1,0 +1,100 @@
+import { type FC } from 'react';
+import { useParams } from 'react-router-dom';
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button
+} from '@ebloc/theme';
+import { Trash2Icon } from 'lucide-react';
+
+import {
+  InventoryKeys,
+  useGetProductDetails,
+  useRemoveOptionValues,
+  useRemoveVariant
+} from '@/app/inventory/hooks';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
+import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
+
+export const RemoveVariantButton: FC<Props> = ({ variant }) => {
+  const { slug } = useParams();
+  const { product } = useGetProductDetails(slug ?? '');
+  const { removeVariant } = useRemoveVariant();
+  const { removeOptionValues } = useRemoveOptionValues();
+
+  const variantName = variant.optionValues?.map(({ value }) => value).join(' / ');
+
+  const onRemove = async () => {
+    await removeUnusedOptionValues();
+
+    await removeVariant(variant.id);
+    await queryClient.invalidateQueries({
+      queryKey: InventoryKeys.single(product?.slug ?? '')
+    });
+
+    notification.success(`Variant ${variantName} removed`);
+  };
+
+  const removeUnusedOptionValues = async () => {
+    const variantsWithoutRemoved =
+      product?.variants?.items?.filter(({ id: currentId }) => currentId !== variant.id) ?? [];
+
+    const optionValuesInUse = variantsWithoutRemoved
+      .map(variant => variant.optionValues)
+      .flat()
+      .map(v => v?.id ?? '');
+
+    const optionValuesInProduct = product?.options
+      .map(option => option.values)
+      .flat()
+      .map(v => v?.id ?? '');
+
+    const optionValuesToDelete = optionValuesInProduct?.filter(
+      optionValue => !optionValuesInUse.includes(optionValue)
+    );
+
+    if (optionValuesToDelete?.length) {
+      await removeOptionValues(optionValuesToDelete);
+    }
+  };
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="ghost" size="icon" className="p-2" type="button">
+          <Trash2Icon size={16} />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="sm:max-w-[425px]">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="font-medium">
+            Remove variant &quot;{variantName}&quot;
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            You will remove variant &quot;{variantName}&quot; from your store. This action cannot be
+            undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
+          <AlertDialogAction type="button" onClick={onRemove}>
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
+type Props = {
+  variant: CommonProductFragment['variants']['items'][0];
+};
