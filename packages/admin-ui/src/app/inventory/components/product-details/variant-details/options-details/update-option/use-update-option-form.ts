@@ -93,10 +93,11 @@ export const useUpdateOptionForm = (
    * @description
    * 1. Remove values (if any) from the option
    * 2. Add new values (if any) to the option
-   * 3. Get the updated product after all mutations
-   * 4. Remove variants with inconsistent option values
-   * 5. Update the option
-   * 6. Invalidate the product query
+   * 3. If all values were removed, remove the option
+   * 4. If values were added or removed, remove variants with inconsistent option values
+   * 5. Update the option values (if any)
+   * 6. Update the option
+   * 7. Invalidate the product query
    */
   const onUpdate = async () => {
     const newOption = state.options[0];
@@ -119,46 +120,35 @@ export const useUpdateOptionForm = (
 
     const allValuesWereRemoved =
       valuesToRemove.length === oldOptionValues.length && valuesToCreate.length === 0;
-
     if (allValuesWereRemoved) {
       await removeOption(option.id);
     }
 
-    if (valuesToCreate.length || valuesToRemove.length) {
-      const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product?.slug ?? '' });
-      const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
-
-      const variantsRemoved1 = await removeVariantsWithInconsistentOptionValues(
-        productUpdated?.variants.items ?? []
-      );
-      const variantsRemoved2 = await removeVariantWithNoOptionValues(
-        productUpdated?.variants.items ?? []
-      );
-      const totalVariantsRemoved = new Set([
-        ...variantsRemoved1.map(v => v.id),
-        ...variantsRemoved2.map(v => v.id)
-      ]);
-
-      const allVariantsWereRemoved =
-        totalVariantsRemoved.size === productUpdated?.variants.items?.length;
-
-      if (allVariantsWereRemoved) {
-        await createDefaultVariant();
-      }
+    const optionValuesWereModified = valuesToCreate.length || valuesToRemove.length;
+    if (optionValuesWereModified) {
+      await removeInconsistentVariants();
     }
 
     const optionValuesToUpdate = newOptionValues.filter(
       v => oldOptionValues.find(o => o.id === v.id)?.value !== v.value
     );
-
     if (optionValuesToUpdate.length) {
       await updateOptionValues(optionValuesToUpdate.map(v => ({ id: v.id, value: v.value })));
     }
 
-    await updateOption(option.id, { name: newOption.name });
-    await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
+    const optionNameWasModified = newOption.name !== option.name;
+    if (optionNameWasModified) {
+      await updateOption(option.id, { name: newOption.name });
+    }
+
+    const anyChangeWasMade =
+      optionValuesWereModified || optionNameWasModified || optionValuesToUpdate.length;
+    if (anyChangeWasMade) {
+      await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
+      notification.success('Option updated');
+    }
+
     onFinish();
-    notification.success('Option updated');
   };
 
   /**
@@ -286,6 +276,38 @@ export const useUpdateOptionForm = (
       published: true
     })
   ];
+
+  /**
+   * Remove any variant with inconsistent data, repeated values or with no values
+   *
+   * @description
+   * 1. Get the updated product
+   * 2. Remove variants with inconsistent option values
+   * 3. Remove variants with no option values
+   * 4. If all variants were removed, create default variant
+   */
+  const removeInconsistentVariants = async () => {
+    const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product?.slug ?? '' });
+    const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
+
+    const variantsRemoved1 = await removeVariantsWithInconsistentOptionValues(
+      productUpdated?.variants.items ?? []
+    );
+    const variantsRemoved2 = await removeVariantWithNoOptionValues(
+      productUpdated?.variants.items ?? []
+    );
+    const totalVariantsRemoved = new Set([
+      ...variantsRemoved1.map(v => v.id),
+      ...variantsRemoved2.map(v => v.id)
+    ]);
+
+    const allVariantsWereRemoved =
+      totalVariantsRemoved.size === productUpdated?.variants.items?.length;
+
+    if (allVariantsWereRemoved) {
+      await createDefaultVariant();
+    }
+  };
 
   return {
     state,

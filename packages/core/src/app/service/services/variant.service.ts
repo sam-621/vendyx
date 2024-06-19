@@ -33,7 +33,8 @@ export class VariantService {
 
   async findOptionValues(id: ID) {
     const optionValues = await this.db.getRepository(OptionValueEntity).find({
-      where: { variants: { id } }
+      where: { variants: { id } },
+      order: { createdAt: 'ASC' }
     });
 
     return optionValues;
