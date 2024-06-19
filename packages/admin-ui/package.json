@@ -22,7 +22,7 @@
     "graphql-request": "^6.1.0",
     "i18next": "^23.10.1",
     "js-cookie": "^3.0.5",
-    "lucide-react": "^0.316.0",
+    "lucide-react": "^0.395.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",

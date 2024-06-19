@@ -128,3 +128,10 @@ export const getVariantsWithoutOptionValues = (
     optionValues: v.optionValues?.filter(ov => !valuesRemoved.includes(ov.id))
   }));
 };
+
+/**
+ * Get the variant name based on the option values
+ */
+export const getVariantName = (variant: CommonProductFragment['variants']['items'][0]) => {
+  return variant.optionValues?.map(v => v.value).join(' / ');
+};

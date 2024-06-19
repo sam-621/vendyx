@@ -7,7 +7,7 @@ import { FormInput } from '@/lib/components';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { t } from '@/lib/locales';
 
-import { type ProductDetailsFormInput } from '../use-product-details-form';
+import { type ProductDetailsFormInput } from '../../use-product-details-form';
 import { VariantItem } from './variant-item';
 
 export const VariantsListing: FC<Props> = ({ variants }) => {

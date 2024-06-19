@@ -101,7 +101,7 @@ const schema = z.object({
     z.number().min(0).optional()
   ),
   quantity: z.preprocess(value => Number(value ?? 0), z.number().min(0).optional()),
-  sku: z.string().min(3, FormMessages.minChars(3)),
+  sku: z.string(),
   published: z.boolean(),
   onlineOnly: z.boolean()
 } satisfies MakeAny<ProductDetailsFormInput>);

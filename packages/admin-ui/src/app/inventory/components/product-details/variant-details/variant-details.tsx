@@ -6,7 +6,7 @@ import { t } from '@/lib/locales';
 
 import { OptionsDetails } from './options-details/options-details';
 import { useManageOptionsStates } from './options-details/use-manage-options';
-import { VariantsListing } from './variants-listing';
+import { VariantsListing } from './variant-listing/variants-listing';
 
 export const VariantDetails = () => {
   const { product } = useProductDetailsContext();
