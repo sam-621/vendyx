@@ -6,7 +6,7 @@ import { OptionValueService } from './option-value.service';
 import { ErrorResult } from '../utils';
 
 import { OptionErrorCode, UpdateOptionInput, UpdateOptionValueInput } from '@/app/api/common';
-import { ID, OptionEntity, OptionValueEntity, VariantEntity } from '@/app/persistance';
+import { ID, OptionEntity, OptionValueEntity } from '@/app/persistance';
 
 @Injectable()
 export class OptionService {
@@ -16,11 +16,12 @@ export class OptionService {
   ) {}
 
   async findValues(id: ID) {
-    const option = await this.db
-      .getRepository(OptionEntity)
-      .findOne({ where: { id }, relations: { values: true } });
+    const optionValues = await this.db.getRepository(OptionValueEntity).find({
+      where: { option: { id } },
+      order: { createdAt: 'ASC' }
+    });
 
-    return option.values;
+    return optionValues;
   }
 
   /**
@@ -138,30 +139,5 @@ export class OptionService {
     await this.db.getRepository(OptionValueEntity).remove(optionValuesToRemove);
 
     return await this.db.getRepository(OptionEntity).findOne({ where: { id: option.id } });
-  }
-
-  private async removeOptionValuesFromVariants(optionValuesToRemove: ID[]) {
-    const variantsToRemoveOptionValues = await this.db.getRepository(VariantEntity).find({
-      where: { optionValues: { id: In(optionValuesToRemove) } },
-      relations: { optionValues: true }
-    });
-
-    console.log({
-      variantsToRemoveOptionValues
-    });
-
-    await this.db.getRepository(VariantEntity).save(
-      variantsToRemoveOptionValues.map(v => ({
-        ...v,
-        optionValues: v.optionValues.filter(ov => {
-          console.log({
-            ov,
-            optionValuesToRemove
-          });
-
-          return !optionValuesToRemove.includes(ov.id);
-        })
-      }))
-    );
   }
 }
