@@ -13,7 +13,12 @@ export const useUpdateVariantForm = (variant: CommonProductFragment['variants'][
   const { updateVariant } = useUpdateVariant();
 
   const form = useForm<FormInput>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    defaultValues: {
+      price: getFormattedPrice(variant.price).replace('$', '') as unknown as number,
+      quantity: variant.stock,
+      sku: variant.sku
+    }
   });
 
   const onSubmit = async (input: FormInput) => {

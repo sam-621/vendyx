@@ -12,10 +12,19 @@ import { RemoveVariantButton } from './remove-variant-button';
 import { useUpdateVariantForm } from './use-update-variant-form';
 
 export const VariantItem: FC<Props> = ({ variant }) => {
-  const { onSubmit, register, formState } = useUpdateVariantForm(variant);
-  const { errors, isSubmitting } = formState;
+  const { onSubmit, register, formState, watch } = useUpdateVariantForm(variant);
 
+  const { errors, isSubmitting } = formState;
   const optionValues = getVariantName(variant);
+
+  const price = watch('price') ?? '';
+  const quantity = watch('quantity');
+  const sku = watch('sku');
+
+  const formHasChanges =
+    String(price) !== getFormattedPrice(variant.price).replace('$', '') ||
+    String(quantity) !== String(variant.stock) ||
+    sku !== variant.sku;
 
   return (
     <div className="flex justify-between items-center">
@@ -25,27 +34,24 @@ export const VariantItem: FC<Props> = ({ variant }) => {
       <div className="flex gap-2 items-end">
         <FormInput
           {...register('price')}
-          defaultValue={getFormattedPrice(variant?.price ?? 0).replace('$', '')}
           label="Price"
           placeholder="$ 0.00"
           error={errors.price?.message}
         />
         <FormInput
           {...register('sku')}
-          defaultValue={variant.sku}
           label="SKU"
           placeholder="SKU - 000"
           error={errors.sku?.message}
         />
         <FormInput
           {...register('quantity')}
-          defaultValue={variant.stock}
           label="Quantity"
           placeholder="0"
           error={errors.quantity?.message}
         />
         <Button
-          disabled={isSubmitting}
+          disabled={isSubmitting || !formHasChanges}
           variant="ghost"
           size="icon"
           className="p-2"
