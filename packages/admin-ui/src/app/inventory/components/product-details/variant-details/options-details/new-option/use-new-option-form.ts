@@ -5,6 +5,7 @@ import {
   InventoryKeys,
   useCreateOption,
   useCreateVariant,
+  useRemoveVariant,
   useUpdateVariant
 } from '@/app/inventory/hooks';
 import { getNewVariantsByNewOption } from '@/app/inventory/utils';
@@ -19,6 +20,7 @@ import { type OptionState } from '../use-manage-options';
 export const useNewOptionForm = () => {
   const { product } = useProductDetailsContext();
   const { createVariant } = useCreateVariant();
+  const { removeVariant } = useRemoveVariant();
   const { updateVariant } = useUpdateVariant();
   const { createOption } = useCreateOption();
   const [isLoading, setIsLoading] = useState(false);
@@ -101,6 +103,9 @@ export const useNewOptionForm = () => {
         ) ?? []
       );
     }
+
+    const variantsWithNoOptionValues = product.variants.items.filter(v => !v.optionValues?.length);
+    await Promise.all(variantsWithNoOptionValues.map(async v => await removeVariant(v.id)));
 
     await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product.slug) });
 

@@ -101,6 +101,11 @@ export const useUpdateOptionForm = (
     const valuesToRemove =
       oldOptionValues?.filter(v => !newOptionValues.map(v => v.id).includes(v.id)) ?? [];
 
+    console.log({
+      valuesToCreate,
+      valuesToRemove
+    });
+
     if (valuesToRemove.length) {
       await onOptionValuesRemove(valuesToRemove);
     }
@@ -111,6 +116,7 @@ export const useUpdateOptionForm = (
 
     const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product.slug });
     const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
+
     await removeVariantsWithInconsistentOptionValues(productUpdated?.variants.items ?? []);
     await removeVariantWithNoOptionValues(productUpdated?.variants.items ?? []);
 
