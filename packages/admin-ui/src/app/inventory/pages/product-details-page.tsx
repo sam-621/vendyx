@@ -34,16 +34,11 @@ export const ProductDetailsPage = () => {
           title={product.name}
           subtitle={`Añadido en ${getFormattedDate(new Date(product.createdAt as string))}`}
           actions={
-            <>
-              <Button type="button" variant="outline">
-                {t('product-details.action.cancel')}
-              </Button>
-              <Button isLoading={methods.formState.isSubmitting} type="submit">
-                {t('product-details.action.save')}
-              </Button>
-            </>
+            <Button isLoading={methods.formState.isSubmitting} type="submit">
+              {t('product-details.action.save')}
+            </Button>
           }
-          back
+          backUrl="/inventory"
           className={{
             main: 'flex flex-col gap-8',
             container: 'w-[775px] mx-auto'

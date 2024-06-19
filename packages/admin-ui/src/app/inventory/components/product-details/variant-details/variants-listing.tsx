@@ -11,9 +11,11 @@ import { type ProductDetailsFormInput } from '../use-product-details-form';
 import { VariantItem } from './variant-item';
 
 export const VariantsListing: FC<Props> = ({ variants }) => {
-  const hasNoOptions = variants?.items.some(variant => variant.optionValues?.length === 0);
+  if (!variants) {
+    return <DefaultVariant variant={null} />;
+  }
 
-  if ([0, 1].includes(variants?.items.length ?? 0) && hasNoOptions) {
+  if (variants?.items.length === 1 && variants?.items[0].optionValues?.length === 0) {
     return <DefaultVariant variant={variants?.items[0]} />;
   }
 
@@ -38,7 +40,7 @@ const DefaultVariant: FC<DefaultVariantProps> = ({ variant }) => {
         {...register('sku')}
         error={errors.sku?.message}
         defaultValue={variant?.sku}
-        label={t('product-details.pricing.title')}
+        label="SKU"
         placeholder="SKU - 000"
       />
       <FormInput

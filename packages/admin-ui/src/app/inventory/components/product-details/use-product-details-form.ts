@@ -1,5 +1,7 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
+
 import { getFormattedPrice, type MakeAny } from '@ebloc/common';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { useCreateAsset } from '@/app/assets';
@@ -22,6 +24,7 @@ import {
  * @returns Form methods and state
  */
 export const useProductDetailsForm = (update?: { productId: string; variantId: string }) => {
+  const navigate = useNavigate();
   const { createAsset } = useCreateAsset();
   const { createProduct } = useCreateProduct();
   const { createVariant } = useCreateVariant();
@@ -70,7 +73,8 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
       await createVariant(createdProductId, variantInput);
       await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
-      notification.success(`Product ${input.name} created with id ${createdProductId}`);
+      notification.success(`Product ${input.name} created`);
+      navigate(`/inventory/${input.slug}`);
     }
 
     // set formatted price to price input

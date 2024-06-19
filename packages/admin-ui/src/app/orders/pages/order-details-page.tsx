@@ -1,8 +1,8 @@
 import { Navigate, useParams } from 'react-router-dom';
 
+import { useGetOrderDetails } from '@/app/orders';
 import { PageLayout } from '@/lib/components';
 import { LogoLoader } from '@/lib/components/loaders';
-import { useGetOrderDetails } from '@/app/orders';
 import { getFormattedDate } from '@/lib/utils';
 
 import {
@@ -38,7 +38,7 @@ export const OrderDetailsPage = () => {
           <OrderActions />
         </div>
       }
-      back
+      backUrl="/orders"
     >
       <div className="grid grid-cols-4 gap-6">
         <div className="col-span-3">
