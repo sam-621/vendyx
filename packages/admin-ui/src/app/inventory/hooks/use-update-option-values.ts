@@ -7,11 +7,11 @@ export const useUpdateOptionValues = () => {
 
   const updateOptionValues = async (input: UpdateOptionValueInput[]) => {
     const {
-      updateOptionValues: { option }
+      updateOptionValues: { success }
     } = await mutateAsync({ input });
 
     return {
-      option
+      success
     };
   };
 
