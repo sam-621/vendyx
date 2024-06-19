@@ -36,7 +36,7 @@ export const ProductDetailsPage = () => {
           subtitle={`Añadido en ${getFormattedDate(new Date(product.createdAt as string))}`}
           actions={
             <>
-              <Button type="button" variant="secondary">
+              <Button type="button" variant="outline">
                 {t('product-details.action.cancel')}
               </Button>
               <Button isLoading={methods.formState.isSubmitting} type="submit">
@@ -44,11 +44,7 @@ export const ProductDetailsPage = () => {
               </Button>
             </>
           }
-          icon={
-            <Link to={'/inventory'}>
-              <MoveLeftIcon />
-            </Link>
-          }
+          back
           className={{
             main: 'flex flex-col gap-8',
             container: 'w-[775px] mx-auto'

@@ -23,10 +23,10 @@ export const UserAvatar = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <img src={`${import.meta.env.BASE_URL}Avatar.png`} alt="" />
+      <DropdownMenuTrigger className="outline-none">
+        <div className="text-foreground-primary-negative flex shrink-0 justify-center items-center bg-gradient-to-r from-orange-400 to-green-500 rounded-full w-6 h-6"></div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuGroup>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>

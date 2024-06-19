@@ -39,11 +39,7 @@ export const OrderDetailsPage = () => {
           <OrderActions />
         </div>
       }
-      icon={
-        <Link to={'/orders'}>
-          <MoveLeftIcon />
-        </Link>
-      }
+      back
     >
       <div className="grid grid-cols-4 gap-6">
         <div className="col-span-3">

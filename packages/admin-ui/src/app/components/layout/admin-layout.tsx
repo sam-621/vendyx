@@ -11,7 +11,7 @@ export const AdminLayout: FC = () => {
   return (
     <div className="grid min-h-screen w-full grid-cols-[320px_1fr]">
       <aside className="flex flex-col border-r gap-4">
-        <div className="flex justify-between h-16 items-center border-b px-4">
+        <div className="flex justify-between h-16 items-center px-4">
           <div className="flex gap-2">
             <Logo />
             <h1 className="text-base font-medium">EBloc</h1>
@@ -25,11 +25,11 @@ export const AdminLayout: FC = () => {
         <AdminSidebar />
       </aside>
       <div className="flex flex-col">
-        <header className="flex justify-between items-center h-16 px-4 border-b">
+        <header className="flex justify-between items-center h-16 px-8 bg-body border-b">
           <Input placeholder="Search..." className="bg-background w-60" />
           <UserAvatar />
         </header>
-        <main className="flex-1 w-full bg-background">
+        <main className="flex-1 w-full bg-body">
           <Outlet />
         </main>
       </div>

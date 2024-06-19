@@ -1,6 +1,16 @@
 import { useState } from 'react';
 
 import {
+  cn,
+  Input,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@ebloc/theme';
+import {
   type ColumnDef,
   type ColumnFiltersState,
   flexRender,
@@ -11,16 +21,6 @@ import {
   type SortingState,
   useReactTable
 } from '@tanstack/react-table';
-import {
-  cn,
-  Input,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@ebloc/theme';
 
 // import { DataTablePagination } from './data-table-pagination';
 import { DataTableViewOptions } from './data-table-view-options';
@@ -57,12 +57,12 @@ export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData,
             onChange={event =>
               table.getColumn(String(search.filterKey))?.setFilterValue(event.target.value)
             }
-            className="max-w-sm h-9"
+            className="max-w-sm h-9 bg-background"
           />
         </div>
         <DataTableViewOptions table={table} />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-background">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (

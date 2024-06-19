@@ -1,8 +1,6 @@
 import { FormProvider } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 
 import { Button } from '@ebloc/theme';
-import { MoveLeftIcon } from 'lucide-react';
 
 import { PageLayout } from '@/app/components';
 import { t } from '@/lib/locales';
@@ -21,7 +19,7 @@ export const CreateProductPage = () => {
           subtitle={t('product-details.subtitle')}
           actions={
             <>
-              <Button type="button" variant="secondary">
+              <Button type="button" variant="outline">
                 {t('product-details.action.cancel')}
               </Button>
               <Button isLoading={methods.formState.isSubmitting} type="submit">
@@ -29,15 +27,11 @@ export const CreateProductPage = () => {
               </Button>
             </>
           }
-          icon={
-            <Link to={'/inventory'}>
-              <MoveLeftIcon />
-            </Link>
-          }
           className={{
             main: 'flex flex-col gap-8',
             container: 'w-[775px] mx-auto'
           }}
+          back
         >
           <ProductDetails />
         </PageLayout>
