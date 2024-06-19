@@ -15,7 +15,8 @@ export const OptionDetailsForm: FC<Props> = ({
   removeOption,
   updateOption,
   updateValues,
-  isUpdating
+  isUpdating,
+  quitEditingMode
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   // This is needed because if some option values are removed, we need to show the alert dialog saying that some variants will be removed
@@ -88,7 +89,10 @@ export const OptionDetailsForm: FC<Props> = ({
           </div>
         ))}
       </div>
-      <div>
+      <div className="flex gap-2">
+        <Button variant="outline" onClick={quitEditingMode}>
+          Cancel
+        </Button>
         {isUpdating && Boolean(optionValuesRemoved.length) ? (
           <UpdateOptionButton onUpdate={onSubmit} optionValuesRemoved={optionValuesRemoved} />
         ) : (
@@ -103,9 +107,10 @@ export const OptionDetailsForm: FC<Props> = ({
 
 type Props = {
   option: OptionState;
-  isUpdating?: boolean;
   removeOption: () => void;
   updateOption: (name: string) => void;
   updateValues: (optionId: string, newOptionValues: OptionValueState[]) => void;
   onSave: () => Promise<void>;
+  isUpdating?: boolean;
+  quitEditingMode?: () => void;
 };
