@@ -10,7 +10,7 @@ import { AdminSidebar } from '../sections';
 export const AdminLayout: FC = () => {
   return (
     <div className="grid min-h-screen w-full grid-cols-[320px_1fr]">
-      <aside className="flex flex-col border-r gap-4">
+      <aside className="flex flex-col border-r gap-4 max-h-screen sticky top-0">
         <div className="flex justify-between h-16 items-center px-4">
           <div className="flex gap-2">
             <Logo />
@@ -25,7 +25,7 @@ export const AdminLayout: FC = () => {
         <AdminSidebar />
       </aside>
       <div className="flex flex-col">
-        <header className="flex justify-between items-center h-16 px-8 bg-body border-b">
+        <header className="flex justify-between items-center h-16 px-8 bg-body border-b sticky top-0 z-10">
           <Input placeholder="Search..." className="bg-background w-60" />
           <UserAvatar />
         </header>
