@@ -1,11 +1,11 @@
 import { type FC, useState } from 'react';
 
-import { Badge, Label } from '@ebloc/theme';
+import { Badge, Button, Label } from '@ebloc/theme';
+import { Edit2Icon } from 'lucide-react';
 
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { UpdateOptionForm } from '../update-option/update-option-form';
-import { OptionActions } from './option-actions';
 
 export const OptionItem: FC<Props> = ({ option }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,7 +26,9 @@ export const OptionItem: FC<Props> = ({ option }) => {
           ))}
         </div>
       </div>
-      <OptionActions onEdit={() => setIsEditing(true)} onRemove={() => {}} />
+      <Button variant="ghost" onClick={() => setIsEditing(true)} size="icon">
+        <Edit2Icon size={16} />
+      </Button>
     </div>
   );
 };

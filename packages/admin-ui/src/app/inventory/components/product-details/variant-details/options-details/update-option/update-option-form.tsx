@@ -12,6 +12,7 @@ export const UpdateOptionForm: FC<Props> = ({ option, onFinish }) => {
 
   return (
     <OptionDetailsForm
+      isUpdating
       onSave={onUpdate}
       option={state.options[0]}
       updateValues={state.updateValues}

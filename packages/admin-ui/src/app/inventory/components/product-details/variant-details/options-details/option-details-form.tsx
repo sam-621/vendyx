@@ -5,6 +5,8 @@ import { Trash2Icon } from 'lucide-react';
 
 import { FormInput } from '@/lib/components';
 
+import { RemoveOptionButton } from './update-option/remove-option-button';
+import { UpdateOptionButton } from './update-option/update-option-button';
 import { type OptionState, OptionValueState } from './use-manage-options';
 
 export const OptionDetailsForm: FC<Props> = ({
@@ -12,9 +14,12 @@ export const OptionDetailsForm: FC<Props> = ({
   option,
   removeOption,
   updateOption,
-  updateValues
+  updateValues,
+  isUpdating
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  // This is needed because if some option values are removed, we need to show the alert dialog saying that some variants will be removed
+  const [optionValuesRemoved, setOptionValuesRemoved] = useState<string[]>([]);
 
   const onSubmit = async () => {
     setIsLoading(true);
@@ -31,9 +36,13 @@ export const OptionDetailsForm: FC<Props> = ({
           defaultValue={option.name}
           onChange={e => updateOption(e.target.value)}
         />
-        <Button type="button" variant="ghost" size="icon" onClick={removeOption}>
-          <Trash2Icon size={16} />
-        </Button>
+        {isUpdating ? (
+          <RemoveOptionButton option={option} onRemove={removeOption} />
+        ) : (
+          <Button type="button" variant="ghost" size="icon" onClick={removeOption}>
+            <Trash2Icon size={16} />
+          </Button>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <Label>Values</Label>
@@ -68,7 +77,9 @@ export const OptionDetailsForm: FC<Props> = ({
                 size="icon"
                 onClick={() => {
                   const newState = option.values.filter(value => value.id !== v.id);
+
                   updateValues(option.id, newState);
+                  setOptionValuesRemoved([...optionValuesRemoved, v.value]);
                 }}
               >
                 <Trash2Icon size={16} />
@@ -78,9 +89,13 @@ export const OptionDetailsForm: FC<Props> = ({
         ))}
       </div>
       <div>
-        <Button type="button" disabled={isLoading} onClick={onSubmit} variant="outline">
-          Done
-        </Button>
+        {isUpdating && Boolean(optionValuesRemoved.length) ? (
+          <UpdateOptionButton onUpdate={onSubmit} optionValuesRemoved={optionValuesRemoved} />
+        ) : (
+          <Button type="button" disabled={isLoading} onClick={onSubmit} variant="outline">
+            Done
+          </Button>
+        )}
       </div>
     </form>
   );
@@ -88,6 +103,7 @@ export const OptionDetailsForm: FC<Props> = ({
 
 type Props = {
   option: OptionState;
+  isUpdating?: boolean;
   removeOption: () => void;
   updateOption: (name: string) => void;
   updateValues: (optionId: string, newOptionValues: OptionValueState[]) => void;
