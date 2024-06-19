@@ -47,10 +47,9 @@ export const getNewVariantsByNewOptionValues = (
     return values?.map(v => ({ variantId: undefined, values: [v.id] })) ?? [];
   }
 
-  const variantsWithOptions = existingVariants.filter(v => v.optionValues?.length);
   const newVariants: { variantId: string | undefined; values: string[] }[] = [];
 
-  for (const variant of variantsWithOptions) {
+  for (const variant of existingVariants) {
     for (const value of values ?? []) {
       newVariants.push({
         variantId: undefined,
