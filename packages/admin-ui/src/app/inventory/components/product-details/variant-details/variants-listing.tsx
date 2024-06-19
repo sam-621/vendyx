@@ -11,7 +11,9 @@ import { type ProductDetailsFormInput } from '../use-product-details-form';
 import { VariantItem } from './variant-item';
 
 export const VariantsListing: FC<Props> = ({ variants }) => {
-  if ([0, 1].includes(variants?.items.length ?? 0)) {
+  const hasNoOptions = variants?.items.some(variant => variant.optionValues?.length === 0);
+
+  if ([0, 1].includes(variants?.items.length ?? 0) && hasNoOptions) {
     return <DefaultVariant variant={variants?.items[0]} />;
   }
 
