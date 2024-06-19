@@ -1,8 +1,7 @@
 import { FormProvider } from 'react-hook-form';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { Button } from '@ebloc/theme';
-import { MoveLeftIcon } from 'lucide-react';
 
 import { PageLayout } from '@/app/components';
 import { LogoLoader } from '@/app/components/loaders';
