@@ -35,6 +35,9 @@ export const UpdateVariantMutation = graphql(`
       }
       variant {
         id
+        price
+        stock
+        sku
       }
     }
   }

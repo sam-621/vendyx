@@ -1,6 +1,6 @@
-import { useGqlMutation } from '@/lib/gql';
 import { type UpdateVariantInput } from '@/lib/ebloc/codegen/graphql';
 import { UpdateVariantMutation } from '@/lib/ebloc/mutations';
+import { useGqlMutation } from '@/lib/gql';
 
 export const useUpdateVariant = () => {
   const { mutateAsync, isPending } = useGqlMutation(UpdateVariantMutation);
@@ -10,7 +10,7 @@ export const useUpdateVariant = () => {
       updateVariant: { variant }
     } = await mutateAsync({ updateVariantId: variantId, updateVariantInput: input });
 
-    return variant?.id;
+    return variant;
   };
 
   return {

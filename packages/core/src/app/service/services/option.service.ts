@@ -18,7 +18,7 @@ export class OptionService {
   async findValues(id: ID) {
     const optionValues = await this.db.getRepository(OptionValueEntity).find({
       where: { option: { id } },
-      order: { createdAt: 'ASC' }
+      order: { value: 'DESC' }
     });
 
     return optionValues;
@@ -110,18 +110,10 @@ export class OptionService {
    */
   async updateOptionValues(
     input: UpdateOptionValueInput[]
-  ): Promise<OptionEntity | ErrorResult<OptionErrorCode>> {
-    const idsToUpdate = input.map(i => i.id);
+  ): Promise<boolean | ErrorResult<OptionErrorCode>> {
+    await this.db.getRepository(OptionValueEntity).save(input.map(v => ({ ...v, value: v.value })));
 
-    const optionValuesToUpdate = await this.db
-      .getRepository(OptionValueEntity)
-      .find({ where: { id: In(idsToUpdate) }, relations: { option: true } });
-
-    await this.db
-      .getRepository(OptionValueEntity)
-      .save(optionValuesToUpdate.map(v => ({ ...v, value: v.value })));
-
-    return optionValuesToUpdate[0].option;
+    return true;
   }
 
   /**

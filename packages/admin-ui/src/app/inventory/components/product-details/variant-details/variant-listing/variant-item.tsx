@@ -1,5 +1,6 @@
 import { type FC } from 'react';
 
+import { getFormattedPrice } from '@ebloc/common';
 import { Button } from '@ebloc/theme';
 import { LoaderCircleIcon, SaveIcon } from 'lucide-react';
 
@@ -24,7 +25,7 @@ export const VariantItem: FC<Props> = ({ variant }) => {
       <div className="flex gap-2 items-end">
         <FormInput
           {...register('price')}
-          defaultValue={variant.price}
+          defaultValue={getFormattedPrice(variant?.price ?? 0).replace('$', '')}
           label="Price"
           placeholder="$ 0.00"
           error={errors.price?.message}

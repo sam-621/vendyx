@@ -78,7 +78,8 @@ export class ProductService {
       .map(v => v.optionValues)
       .flat()
       .map(ov => ov.option)
-      .filter((item, index, self) => index === self.findIndex(t => t.id === item.id));
+      .filter((item, index, self) => index === self.findIndex(t => t.id === item.id))
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   }
 
   /**

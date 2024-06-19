@@ -1,4 +1,4 @@
-import { type MakeAny } from '@ebloc/common';
+import { getFormattedPrice, type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -19,7 +19,19 @@ export const useUpdateVariantForm = (variant: CommonProductFragment['variants'][
   const onSubmit = async (input: FormInput) => {
     const variantName = getVariantName(variant);
 
-    await updateVariant(variant.id, { price: input.price, sku: input.sku, stock: input.quantity });
+    const variantUpdated = await updateVariant(variant.id, {
+      price: input.price,
+      sku: input.sku,
+      stock: input.quantity
+    });
+
+    form.setValue(
+      'price',
+      getFormattedPrice(variantUpdated?.price ?? input.price * 100).replace(
+        '$',
+        ''
+      ) as unknown as number
+    );
 
     notification.success(`Variant ${variantName} updated`);
   };

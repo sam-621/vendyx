@@ -71,9 +71,7 @@ export const RemoveOptionValuesMutation = graphql(`
 export const UpdateOptionValuesMutation = graphql(`
   mutation UpdateOptionValues($input: [UpdateOptionValueInput!]!) {
     updateOptionValues(input: $input) {
-      option {
-        id
-      }
+      success
     }
   }
 `);

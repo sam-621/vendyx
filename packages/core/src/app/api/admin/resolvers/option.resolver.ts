@@ -54,6 +54,6 @@ export class OptionResolver {
   async updateOptionValues(@Args('input') input: UpdateOptionValueInput[]) {
     const result = await this.service.updateOptionValues(input);
 
-    return isErrorResult(result) ? { apiErrors: [result] } : { option: result, apiErrors: [] };
+    return isErrorResult(result) ? { apiErrors: [result] } : { success: result, apiErrors: [] };
   }
 }

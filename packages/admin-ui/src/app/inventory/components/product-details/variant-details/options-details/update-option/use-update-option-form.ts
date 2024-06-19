@@ -8,7 +8,8 @@ import {
   useRemoveOption,
   useRemoveOptionValues,
   useRemoveVariant,
-  useUpdateOption
+  useUpdateOption,
+  useUpdateOptionValues
 } from '@/app/inventory/hooks';
 import {
   getNewVariantsByNewOptionValues,
@@ -39,6 +40,7 @@ export const useUpdateOptionForm = (
   const { addOptionValues } = useAddOptionValues();
   const { createVariant } = useCreateVariant();
   const { updateOption } = useUpdateOption();
+  const { updateOptionValues } = useUpdateOptionValues();
   const { removeOptionValues } = useRemoveOptionValues();
 
   const state = useManageOptionsStates([
@@ -125,25 +127,35 @@ export const useUpdateOptionForm = (
       await removeOption(option.id);
     }
 
-    const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product.slug });
-    const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
+    if (valuesToCreate.length || valuesToRemove.length) {
+      const updatedResult = await gqlFetcher(GetProductDetailsQuery, { slug: product.slug });
+      const productUpdated = useFragment(CommonProductFragmentDoc, updatedResult.product);
 
-    const variantsRemoved1 = await removeVariantsWithInconsistentOptionValues(
-      productUpdated?.variants.items ?? []
+      const variantsRemoved1 = await removeVariantsWithInconsistentOptionValues(
+        productUpdated?.variants.items ?? []
+      );
+      const variantsRemoved2 = await removeVariantWithNoOptionValues(
+        productUpdated?.variants.items ?? []
+      );
+      const totalVariantsRemoved = new Set([
+        ...variantsRemoved1.map(v => v.id),
+        ...variantsRemoved2.map(v => v.id)
+      ]);
+
+      const allVariantsWereRemoved =
+        totalVariantsRemoved.size === productUpdated?.variants.items?.length;
+
+      if (allVariantsWereRemoved) {
+        await createDefaultVariant();
+      }
+    }
+
+    const optionValuesToUpdate = newOptionValues.filter(
+      v => oldOptionValues.find(o => o.id === v.id)?.value !== v.value
     );
-    const variantsRemoved2 = await removeVariantWithNoOptionValues(
-      productUpdated?.variants.items ?? []
-    );
-    const totalVariantsRemoved = new Set([
-      ...variantsRemoved1.map(v => v.id),
-      ...variantsRemoved2.map(v => v.id)
-    ]);
 
-    const allVariantsWereRemoved =
-      totalVariantsRemoved.size === productUpdated?.variants.items?.length;
-
-    if (allVariantsWereRemoved) {
-      await createDefaultVariant();
+    if (optionValuesToUpdate.length) {
+      await updateOptionValues(optionValuesToUpdate.map(v => ({ id: v.id, value: v.value })));
     }
 
     await updateOption(option.id, { name: newOption.name });

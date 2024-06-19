@@ -192,7 +192,7 @@ export abstract class IMutation {
 
     abstract addOptionValues(optionId: string, values: string[]): OptionResult | Promise<OptionResult>;
 
-    abstract updateOptionValues(input: UpdateOptionValueInput[]): OptionResult | Promise<OptionResult>;
+    abstract updateOptionValues(input: UpdateOptionValueInput[]): UpdateOptionValueResult | Promise<UpdateOptionValueResult>;
 
     abstract removeOptionValues(ids: string[]): OptionResult | Promise<OptionResult>;
 
@@ -261,6 +261,11 @@ export class OptionResult {
 }
 
 export class RemoveOptionResult {
+    success: boolean;
+    apiErrors: OptionErrorResult[];
+}
+
+export class UpdateOptionValueResult {
     success: boolean;
     apiErrors: OptionErrorResult[];
 }
