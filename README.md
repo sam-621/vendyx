@@ -31,6 +31,10 @@ We know there are so many other options for e-commerce platform, so why choose u
 - [React](https://react.dev/) as frontend framework
 - [Lerna](https://lerna.js.org/) for monorepo management
 
+## Theme
+- Components: [shadcn](https://ui.shadcn.com/)
+- Icons: [lucide icons](https://lucide.dev/)
+
 ## Setup
 
 1. Clone this repo
