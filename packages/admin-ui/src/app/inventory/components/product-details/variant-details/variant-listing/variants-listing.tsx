@@ -3,14 +3,19 @@ import { useFormContext } from 'react-hook-form';
 
 import { getFormattedPrice } from '@ebloc/common';
 
+import { useProductDetailsContext } from '@/app/inventory/context';
+import { getVariantsGroupedByOption } from '@/app/inventory/utils';
 import { FormInput } from '@/lib/components';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { t } from '@/lib/locales';
 
 import { type ProductDetailsFormInput } from '../../use-product-details-form';
+import { VariantGroup } from './variant-group';
 import { VariantItem } from './variant-item';
 
 export const VariantsListing: FC<Props> = ({ variants }) => {
+  const { product } = useProductDetailsContext();
+
   if (!variants?.items.length) {
     return <DefaultVariant variant={null} />;
   }
@@ -19,7 +24,16 @@ export const VariantsListing: FC<Props> = ({ variants }) => {
     return <DefaultVariant variant={variants?.items[0]} />;
   }
 
-  return <>{variants?.items.map(variant => <VariantItem key={variant.id} variant={variant} />)}</>;
+  if (product?.options.length === 1) {
+    return variants?.items.map(variant => <VariantItem key={variant.id} variant={variant} />);
+  }
+
+  const groupBy = product?.options[0];
+  const variantsGrouped = getVariantsGroupedByOption(groupBy!, variants?.items);
+
+  return Object.entries(variantsGrouped).map(([optionValueId, variants]) => (
+    <VariantGroup key={optionValueId} optionValue={optionValueId} variants={variants} />
+  ));
 };
 
 const DefaultVariant: FC<DefaultVariantProps> = ({ variant }) => {
@@ -48,7 +62,7 @@ const DefaultVariant: FC<DefaultVariantProps> = ({ variant }) => {
         error={errors.quantity?.message}
         defaultValue={variant?.stock}
         type="number"
-        label={t('product-details.pricing.input.quantity')}
+        label="Stock"
         placeholder="0"
       />
     </div>

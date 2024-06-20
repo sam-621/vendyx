@@ -11,11 +11,14 @@ import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { RemoveVariantButton } from './remove-variant-button';
 import { useUpdateVariantForm } from './use-update-variant-form';
 
-export const VariantItem: FC<Props> = ({ variant }) => {
+export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
   const { onSubmit, register, formState, watch } = useUpdateVariantForm(variant);
 
   const { errors, isSubmitting } = formState;
-  const optionValues = getVariantName(variant);
+  // when in group, the first option value is the group name so we skip it
+  const variantName = getVariantName(
+    inGroup ? variant.optionValues?.slice(1, 3) : variant.optionValues
+  );
 
   const price = watch('price') ?? '';
   const quantity = watch('quantity');
@@ -29,7 +32,7 @@ export const VariantItem: FC<Props> = ({ variant }) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex gap-1">
-        <span>{optionValues}</span>
+        <span>{variantName}</span>
       </div>
       <div className="flex gap-2 items-end">
         <FormInput
@@ -46,7 +49,7 @@ export const VariantItem: FC<Props> = ({ variant }) => {
         />
         <FormInput
           {...register('quantity')}
-          label="Quantity"
+          label="Stock"
           placeholder="0"
           error={errors.quantity?.message}
         />
@@ -72,4 +75,5 @@ export const VariantItem: FC<Props> = ({ variant }) => {
 
 type Props = {
   variant: CommonProductFragment['variants']['items'][0];
+  inGroup?: boolean;
 };

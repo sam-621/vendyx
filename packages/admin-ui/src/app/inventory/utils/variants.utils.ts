@@ -1,3 +1,5 @@
+import { type THashMap } from '@ebloc/common';
+
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 /**
@@ -132,6 +134,28 @@ export const getVariantsWithoutOptionValues = (
 /**
  * Get the variant name based on the option values
  */
-export const getVariantName = (variant: CommonProductFragment['variants']['items'][0]) => {
-  return variant.optionValues?.map(v => v.value).join(' / ');
+export const getVariantName = (
+  optionValues: CommonProductFragment['variants']['items'][0]['optionValues']
+) => {
+  return optionValues?.map(v => v.value).join(' / ');
+};
+
+/**
+ * Group variants by the given option
+ */
+export const getVariantsGroupedByOption = (
+  option: CommonProductFragment['options'][0],
+  variants: CommonProductFragment['variants']['items']
+) => {
+  const groups: THashMap<CommonProductFragment['variants']['items']> = {};
+
+  option?.values?.forEach(v => {
+    const variantsWithCurrentValue = variants.filter(variant =>
+      variant.optionValues?.map(v => v.id).includes(v.id)
+    );
+
+    groups[v.value] = variantsWithCurrentValue;
+  });
+
+  return groups;
 };

@@ -1,5 +1,5 @@
-export type THashMap = {
-  [key: string | number]: string | number;
+export type THashMap<V = string | number> = {
+  [key: string | number]: V;
 };
 
 export type StringifyObject<T> = {

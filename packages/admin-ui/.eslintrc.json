@@ -17,6 +17,7 @@
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-confusing-void-expression": ["error", { "ignoreArrowShorthand": true }],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
