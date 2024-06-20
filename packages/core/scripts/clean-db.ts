@@ -4,7 +4,8 @@ import { DataSource } from 'typeorm';
 const DbUrl = {
   remote:
     'postgresql://postgres:ySvpkFnpjPqrRLkbvfFJhfvtioBiVfks@monorail.proxy.rlwy.net:56098/railway',
-  local: 'postgres://postgres:postgres@localhost:5432/ebloc'
+  local: 'postgres://postgres:postgres@localhost:5432/ebloc',
+  dev: 'postgresql://postgres:KEcyblbOCFexrbrsOojSnzyZNUYDZifJ@roundhouse.proxy.rlwy.net:47601/railway'
 };
 
 const cleanDb = async () => {
@@ -13,7 +14,7 @@ const cleanDb = async () => {
 
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: DbUrl.local,
+    url: DbUrl.dev,
     synchronize: false
   }).initialize();
 
