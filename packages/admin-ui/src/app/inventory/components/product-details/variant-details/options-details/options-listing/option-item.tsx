@@ -1,13 +1,12 @@
 import { type FC, useState } from 'react';
 
-import { Badge, Button, Label } from '@ebloc/theme';
-import { Edit2Icon } from 'lucide-react';
+import { Badge, cn, Label } from '@ebloc/theme';
 
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { UpdateOptionForm } from '../update-option/update-option-form';
 
-export const OptionItem: FC<Props> = ({ option }) => {
+export const OptionItem: FC<Props> = ({ option, position }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
@@ -19,7 +18,12 @@ export const OptionItem: FC<Props> = ({ option }) => {
   }
 
   return (
-    <div className="flex justify-between items-center p-4">
+    <div
+      className={cn('flex justify-between items-center p-4 hover:bg-muted/50 cursor-pointer', {
+        'rounded-t-md': position === 1
+      })}
+      onClick={() => setIsEditing(true)}
+    >
       <div className="flex flex-col gap-4">
         <Label>{option.name}</Label>
         <div className="flex gap-2">
@@ -30,13 +34,14 @@ export const OptionItem: FC<Props> = ({ option }) => {
           ))}
         </div>
       </div>
-      <Button variant="ghost" onClick={() => setIsEditing(true)} size="icon">
+      {/* <Button variant="ghost"  size="icon">
         <Edit2Icon size={16} />
-      </Button>
+      </Button> */}
     </div>
   );
 };
 
 type Props = {
   option: CommonProductFragment['options'][0];
+  position: number;
 };

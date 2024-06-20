@@ -11,12 +11,10 @@ import { OptionsListing } from './options-listing/options-listing';
 export const OptionsDetails: FC<Props> = ({ options: defaultOptions }) => {
   const { options } = useOptionDetailsContext();
 
+  if (!defaultOptions?.length && !options.length) return null;
+
   return (
-    <div
-      className={cn('mx-6 flex flex-col rounded-lg', {
-        border: options?.length || defaultOptions?.length
-      })}
-    >
+    <div className={cn('mx-6 flex flex-col rounded-lg border divide-y')}>
       <OptionsListing options={defaultOptions} />
       <NewOptionForm defaultOptions={defaultOptions} />
     </div>

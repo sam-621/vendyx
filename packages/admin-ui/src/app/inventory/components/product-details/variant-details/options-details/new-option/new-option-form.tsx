@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Button, cn, Separator } from '@ebloc/theme';
+import { Button, cn } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
 import { useOptionDetailsContext } from '@/app/inventory/context';
@@ -37,31 +37,28 @@ export const NewOptionForm = ({
   const { addOption, removeOption, updateOption, options, updateValues } =
     useOptionDetailsContext();
 
-  if (!defaultOptions?.length && !options.length) return;
+  if (!defaultOptions?.length && !options.length) return null;
 
   if (defaultOptions?.length === MAX_OPTIONS_ALLOWED) {
     return null;
   }
 
   return (
-    <div className={cn('flex flex-col rounded-b-lg')}>
+    <div className={cn('flex flex-col rounded-b-lg divide-y')}>
       {options.map(op => (
-        <div key={op.id} className="flex flex-col gap-4">
-          <div className="px-4 pt-4">
-            <NewOption
-              key={op.id}
-              option={op}
-              removeOption={() => removeOption(op.id)}
-              updateOption={(name: string) => updateOption(op.id, name)}
-              updateValues={updateValues}
-            />
-          </div>
-          <Separator />
+        <div key={op.id} className="p-4">
+          <NewOption
+            key={op.id}
+            option={op}
+            removeOption={() => removeOption(op.id)}
+            updateOption={(name: string) => updateOption(op.id, name)}
+            updateValues={updateValues}
+          />
         </div>
       ))}
 
       {options.length + (defaultOptions?.length ?? 0) !== MAX_OPTIONS_ALLOWED && (
-        <div className="flex h-14 hover:bg-muted rounded-b-md">
+        <div className="flex h-14 hover:bg-muted/50 rounded-b-md">
           <Button
             type="button"
             variant="link"
