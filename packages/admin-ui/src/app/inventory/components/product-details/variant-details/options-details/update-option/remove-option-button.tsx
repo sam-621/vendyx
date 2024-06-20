@@ -12,7 +12,6 @@ import {
   AlertDialogTrigger,
   Button
 } from '@ebloc/theme';
-import { Trash2Icon } from 'lucide-react';
 
 import { type OptionState } from '../use-manage-options';
 

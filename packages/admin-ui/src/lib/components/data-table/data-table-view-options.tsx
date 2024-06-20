@@ -1,6 +1,5 @@
 'use client';
 
-import type { Table } from '@tanstack/react-table';
 import {
   Button,
   DropdownMenu,
@@ -10,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@ebloc/theme';
+import type { Table } from '@tanstack/react-table';
 import { SlidersHorizontalIcon } from 'lucide-react';
 
 export const DataTableViewOptions = <TData,>({ table }: Props<TData>) => {
