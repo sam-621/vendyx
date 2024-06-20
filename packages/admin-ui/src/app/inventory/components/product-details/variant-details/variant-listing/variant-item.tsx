@@ -40,6 +40,7 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
           label="Price"
           placeholder="$ 0.00"
           error={errors.price?.message}
+          onFocus={e => e.target.select()}
         />
         <FormInput
           {...register('sku')}
@@ -52,6 +53,7 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
           label="Stock"
           placeholder="0"
           error={errors.quantity?.message}
+          onFocus={e => e.target.select()}
         />
         <Button
           disabled={isSubmitting || !formHasChanges}

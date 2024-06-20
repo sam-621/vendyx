@@ -49,6 +49,7 @@ const DefaultVariant: FC<DefaultVariantProps> = ({ variant }) => {
         type="text"
         label={t('product-details.pricing.input.price')}
         placeholder="$ 0.00"
+        onFocus={e => e.target.select()}
       />
       <FormInput
         {...register('sku')}
@@ -64,6 +65,7 @@ const DefaultVariant: FC<DefaultVariantProps> = ({ variant }) => {
         type="number"
         label="Stock"
         placeholder="0"
+        onFocus={e => e.target.select()}
       />
     </div>
   );
