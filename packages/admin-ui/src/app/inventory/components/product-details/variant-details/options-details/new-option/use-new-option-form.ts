@@ -38,6 +38,12 @@ export const useNewOptionForm = () => {
       return;
     }
 
+    const isOptionNameDuplicated = product.options.some(op => op.name === option.name);
+    if (isOptionNameDuplicated) {
+      notification.error(`You already have an option called "${option.name}"`);
+      return;
+    }
+
     if (!optionValues.length) {
       notification.error(`Please add at least one value to the option ${option.name}`);
       return;

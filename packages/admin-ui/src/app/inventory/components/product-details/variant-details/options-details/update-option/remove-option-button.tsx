@@ -20,8 +20,8 @@ export const RemoveOptionButton: FC<Props> = ({ option, onRemove }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="ghost" size="icon">
-          <Trash2Icon size={16} />
+        <Button type="button" variant="destructive" size="sm">
+          Remove
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="sm:max-w-[425px]">

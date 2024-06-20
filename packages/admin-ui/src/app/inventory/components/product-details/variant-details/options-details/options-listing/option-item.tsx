@@ -9,6 +9,8 @@ import { UpdateOptionForm } from '../update-option/update-option-form';
 export const OptionItem: FC<Props> = ({ option, position }) => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const isFirst = position === 1;
+
   if (isEditing) {
     return (
       <div className="p-4">
@@ -20,7 +22,7 @@ export const OptionItem: FC<Props> = ({ option, position }) => {
   return (
     <div
       className={cn('flex justify-between items-center p-4 hover:bg-muted/50 cursor-pointer', {
-        'rounded-t-md': position === 1
+        'rounded-t-md': isFirst
       })}
       onClick={() => setIsEditing(true)}
     >
@@ -34,9 +36,6 @@ export const OptionItem: FC<Props> = ({ option, position }) => {
           ))}
         </div>
       </div>
-      {/* <Button variant="ghost"  size="icon">
-        <Edit2Icon size={16} />
-      </Button> */}
     </div>
   );
 };

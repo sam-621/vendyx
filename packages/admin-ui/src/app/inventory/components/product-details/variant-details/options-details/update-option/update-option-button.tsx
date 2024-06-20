@@ -17,7 +17,7 @@ export const UpdateOptionButton: FC<Props> = ({ optionValuesRemoved, onUpdate })
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="outline">
+        <Button type="button" size="sm">
           Done
         </Button>
       </AlertDialogTrigger>
