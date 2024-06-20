@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import { type ColumnDef } from '@tanstack/react-table';
 import { getFormattedPrice } from '@ebloc/common';
 import { Badge, Checkbox } from '@ebloc/theme';
+import { type ColumnDef } from '@tanstack/react-table';
 
 import { DataTableColumnHeader } from '@/lib/components/data-table';
 import { t } from '@/lib/locales';
@@ -29,16 +29,6 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
     ),
     enableSorting: false,
     enableHiding: false
-  },
-  {
-    accessorKey: 'sku',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title={t('inventory.table.header.sku')} />;
-    },
-    cell: ({ row }) => {
-      return <span className="w-20">{row.original.sku}</span>;
-    },
-    enableSorting: false
   },
   {
     accessorKey: 'name',

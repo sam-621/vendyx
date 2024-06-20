@@ -8,6 +8,8 @@ import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { VariantItem } from './variant-item';
 
 export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
+  const totalStock = variants.reduce((acc, variant) => acc + variant.stock, 0);
+
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
@@ -19,7 +21,13 @@ export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
             </AccordionTrigger>
           </div>
           <div className="flex gap-2 flex-col items-center h-full">
-            <FormInput containerClassName="w-fit" label="Total stock" placeholder="0" disabled />
+            <FormInput
+              containerClassName="w-fit"
+              label="Total stock"
+              placeholder="0"
+              disabled
+              value={totalStock}
+            />
           </div>
         </div>
 

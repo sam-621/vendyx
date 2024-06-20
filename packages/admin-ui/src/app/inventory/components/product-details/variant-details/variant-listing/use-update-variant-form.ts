@@ -1,15 +1,19 @@
+import { useParams } from 'react-router-dom';
+
 import { getFormattedPrice, type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { useUpdateVariant } from '@/app/inventory/hooks';
+import { InventoryKeys, useUpdateVariant } from '@/app/inventory/hooks';
 import { getVariantName } from '@/app/inventory/utils';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
 import { parseFormattedPrice } from '@/lib/utils';
 
 export const useUpdateVariantForm = (variant: CommonProductFragment['variants']['items'][0]) => {
+  const { slug } = useParams();
   const { updateVariant } = useUpdateVariant();
 
   const form = useForm<FormInput>({
@@ -38,6 +42,7 @@ export const useUpdateVariantForm = (variant: CommonProductFragment['variants'][
       ) as unknown as number
     );
 
+    await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(slug ?? '') });
     notification.success(`Variant ${variantName} updated`);
   };
 
