@@ -15,7 +15,8 @@
     "script:generate": "ts-node ./scripts/generate-gql-types.ts",
     "script:post-build": "gulp -f ./scripts/post-build.ts postBuild",
     "db:seed": "ts-node ./scripts/seed.ts",
-    "db:clean": "ts-node ./scripts/clean-db.ts"
+    "db:clean": "ts-node ./scripts/clean-db.ts",
+    "db:populate": "ts-node ./scripts/populate-db.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.10.0",

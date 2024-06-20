@@ -6,9 +6,10 @@ dist
 .DS_Store
 
 # Envs
-.env.local
+.env.localhost
+.env.development
+.env.production
 .env
-.env.prod
 
 # Trash files
 uploads
