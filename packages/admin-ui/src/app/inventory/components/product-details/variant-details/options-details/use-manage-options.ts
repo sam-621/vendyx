@@ -68,3 +68,8 @@ export class OptionValueState {
 const generateId = () => {
   return crypto.randomUUID();
 };
+
+/**
+ * Maximum number of options allowed
+ */
+export const MAX_OPTIONS_ALLOWED = 3;

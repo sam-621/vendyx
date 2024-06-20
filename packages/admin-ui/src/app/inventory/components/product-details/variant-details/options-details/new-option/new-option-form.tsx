@@ -7,7 +7,11 @@ import { useOptionDetailsContext } from '@/app/inventory/context';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { OptionDetailsForm } from '../option-details-form';
-import { type OptionState, type OptionValueState } from '../use-manage-options';
+import {
+  MAX_OPTIONS_ALLOWED,
+  type OptionState,
+  type OptionValueState
+} from '../use-manage-options';
 import { useNewOptionForm } from './use-new-option-form';
 
 const NewOption: FC<Props> = ({ option, removeOption, updateOption, updateValues }) => {
@@ -34,6 +38,10 @@ export const NewOptionForm = ({
     useOptionDetailsContext();
 
   if (!defaultOptions?.length && !options.length) return;
+
+  if (defaultOptions?.length === MAX_OPTIONS_ALLOWED) {
+    return <Separator />;
+  }
 
   return (
     <div className="flex flex-col gap-4">
