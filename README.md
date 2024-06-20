@@ -44,7 +44,7 @@ We know there are so many other options for e-commerce platform, so why choose u
 2. `yarn`
 3. Add env variables in server package
 4. `yarn build`
-5 `yarn start`
+5. `yarn start`
 
 ### Local development
 1. Add your database url in `default.config.ts` in core package
