@@ -16,8 +16,7 @@ export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
     jwtSecret: "randomBytes(32).toString('hex')"
   },
   db: {
-    // url: 'postgres://postgres:postgres@localhost:5432/ebloc'
-    url: 'postgresql://postgres:KEcyblbOCFexrbrsOojSnzyZNUYDZifJ@roundhouse.proxy.rlwy.net:47601/railway' 
+    url: 'postgres://postgres:postgres@localhost:5432/ebloc'
   },
   assets: {
     storageProvider: new CloudinaryStorageProvider({
