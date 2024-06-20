@@ -30,7 +30,7 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
     sku !== variant.sku;
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center px-6">
       <div className="flex gap-1">
         <span>{variantName}</span>
       </div>

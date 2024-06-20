@@ -15,12 +15,12 @@ export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
       <AccordionItem value="item-1">
         <div className="flex w-full justify-between items-center pb-4">
           <div className="flex flex-col gap-2">
-            <p className="w-fit">{optionValue}</p>
+            <p className="w-fit pl-6">{optionValue}</p>
             <AccordionTrigger className="py-0">
-              <p className="w-fit">{variants.length} variants</p>
+              <p className="w-fit pl-6">{variants.length} variants</p>
             </AccordionTrigger>
           </div>
-          <div className="flex gap-2 flex-col items-center h-full">
+          <div className="flex gap-2 flex-col items-center h-full pr-6">
             <FormInput
               containerClassName="w-fit"
               label="Total stock"

@@ -11,11 +11,15 @@ export const OptionItem: FC<Props> = ({ option }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
-    return <UpdateOptionForm quitEditingMode={() => setIsEditing(false)} option={option} />;
+    return (
+      <div className="p-4">
+        <UpdateOptionForm quitEditingMode={() => setIsEditing(false)} option={option} />
+      </div>
+    );
   }
 
   return (
-    <div key={option.id} className="flex justify-between items-center">
+    <div className="flex justify-between items-center p-4">
       <div className="flex flex-col gap-4">
         <Label>{option.name}</Label>
         <div className="flex gap-2">

@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Button, Separator } from '@ebloc/theme';
+import { Button, cn, Separator } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
 import { useOptionDetailsContext } from '@/app/inventory/context';
@@ -40,37 +40,38 @@ export const NewOptionForm = ({
   if (!defaultOptions?.length && !options.length) return;
 
   if (defaultOptions?.length === MAX_OPTIONS_ALLOWED) {
-    return <Separator />;
+    return null;
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      {options.map((op, i) => (
+    <div className={cn('flex flex-col rounded-b-lg')}>
+      {options.map(op => (
         <div key={op.id} className="flex flex-col gap-4">
-          <NewOption
-            key={op.id}
-            option={op}
-            removeOption={() => removeOption(op.id)}
-            updateOption={(name: string) => updateOption(op.id, name)}
-            updateValues={updateValues}
-          />
-          {/* Only add separator when are more than one options and is not the last one */}
-          {options.length > 1 && i !== options.length - 1 && <Separator />}
+          <div className="px-4 pt-4">
+            <NewOption
+              key={op.id}
+              option={op}
+              removeOption={() => removeOption(op.id)}
+              updateOption={(name: string) => updateOption(op.id, name)}
+              updateValues={updateValues}
+            />
+          </div>
+          <Separator />
         </div>
       ))}
 
-      <div>
-        <Separator />
-        <Button
-          type="button"
-          variant="link"
-          className="text-distinct hover:no-underline"
-          onClick={addOption}
-        >
-          <PlusIcon size={16} /> Add option
-        </Button>
-        <Separator />
-      </div>
+      {options.length + (defaultOptions?.length ?? 0) !== MAX_OPTIONS_ALLOWED && (
+        <div className="flex h-14 hover:bg-muted rounded-b-md">
+          <Button
+            type="button"
+            variant="link"
+            className="text-distinct hover:no-underline p-0 h-full w-full"
+            onClick={addOption}
+          >
+            <PlusIcon size={16} /> Add option
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

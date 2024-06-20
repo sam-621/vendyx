@@ -1,4 +1,14 @@
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  cn,
+  Label,
+  Separator
+} from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
 import { OptionDetailsProvider, useProductDetailsContext } from '@/app/inventory/context';
@@ -17,6 +27,7 @@ export const VariantDetails = () => {
 
   const isProductAlreadyCreated = Boolean(product);
   const hasOptions = Boolean(defaultOptions?.length);
+  const totalStock = variants?.items.reduce((acc, variant) => acc + variant.stock, 0);
 
   return (
     <Card>
@@ -34,12 +45,33 @@ export const VariantDetails = () => {
           </Button>
         )}
       </CardHeader>
-      <CardContent className="flex flex-col gap-4">
+      <CardContent
+        className={cn('flex flex-col px-0', {
+          'gap-4': Boolean(product?.options.length) || Boolean(optionStateUtilities.options.length)
+        })}
+      >
         <OptionDetailsProvider value={optionStateUtilities}>
           <OptionsDetails options={defaultOptions} />
         </OptionDetailsProvider>
-        <VariantsListing variants={variants} />
+
+        {(Boolean(product?.options.length) || Boolean(optionStateUtilities.options.length)) && (
+          <div className="flex flex-col gap-4">
+            <Separator />
+            <Label className="pl-6">Variants</Label>
+            <Separator />
+          </div>
+        )}
+        <div className="flex flex-col gap-4">
+          <VariantsListing variants={variants} />
+        </div>
       </CardContent>
+      <CardFooter
+        className={cn('w-full flex justify-center', {
+          'border-t pt-6': [0, 1].includes(product?.options.length ?? 0)
+        })}
+      >
+        <p className="text-muted-foreground">Total inventory: {totalStock}</p>
+      </CardFooter>
     </Card>
   );
 };
