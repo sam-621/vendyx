@@ -34,10 +34,15 @@ export class VariantService {
   async findOptionValues(id: ID) {
     const optionValues = await this.db.getRepository(OptionValueEntity).find({
       where: { variants: { id } },
-      order: { createdAt: 'ASC' }
+      relations: { option: true }
     });
 
-    return optionValues;
+    // order option values by option created at date
+    return optionValues.sort((a, b) => {
+      if (a.option.createdAt > b.option.createdAt) return 1;
+      if (a.option.createdAt < b.option.createdAt) return -1;
+      return 0;
+    });
   }
 
   async findProduct(id: ID) {

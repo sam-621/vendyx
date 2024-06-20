@@ -18,7 +18,7 @@ export class OptionService {
   async findValues(id: ID) {
     const optionValues = await this.db.getRepository(OptionValueEntity).find({
       where: { option: { id } },
-      order: { value: 'DESC' }
+      order: { value: 'ASC' }
     });
 
     return optionValues;
