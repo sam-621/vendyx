@@ -10,9 +10,10 @@
   "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install && chmod ug+x .husky/*",
+    "prepare": "husky install && yarn executable",
     "build": "lerna run build",
-    "start": "lerna run start --scope @ebloc/server"
+    "start": "lerna run start --scope @ebloc/server",
+    "executable": "chmod ug+x .husky/*"
   },
   "dependencies": {},
   "devDependencies": {
