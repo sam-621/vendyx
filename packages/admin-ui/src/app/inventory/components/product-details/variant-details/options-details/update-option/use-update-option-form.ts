@@ -92,12 +92,13 @@ export const useUpdateOptionForm = (
    *
    * @description
    * 1. Remove values (if any) from the option
-   * 2. Add new values (if any) to the option
-   * 3. If all values were removed, remove the option
-   * 4. If values were added or removed, remove variants with inconsistent option values
-   * 5. Update the option values (if any)
-   * 6. Update the option
-   * 7. Invalidate the product query
+   * 2. If all values were removed and no new values were added, remove the option
+   * 3. If not, just remove the values deleted
+   * 4. Add new values (if any) to the option
+   * 5. If values were added or removed, remove variants with inconsistent option values
+   * 6. Update the option values (if any)
+   * 7. Update the option
+   * 8. Invalidate the product query
    */
   const onUpdate = async () => {
     const newOption = state.options[0];
@@ -111,17 +112,18 @@ export const useUpdateOptionForm = (
       oldOptionValues?.filter(v => !newOptionValues.map(v => v.id).includes(v.id)) ?? [];
 
     if (valuesToRemove.length) {
-      await onOptionValuesRemove(valuesToRemove);
+      const allValuesWereRemoved =
+        valuesToRemove.length === oldOptionValues.length && !valuesToCreate.length;
+
+      if (allValuesWereRemoved) {
+        await onRemove();
+      } else {
+        await onOptionValuesRemove(valuesToRemove);
+      }
     }
 
     if (valuesToCreate.length) {
       await onOptionValuesCreate(valuesToCreate.map(v => v.value));
-    }
-
-    const allValuesWereRemoved =
-      valuesToRemove.length === oldOptionValues.length && valuesToCreate.length === 0;
-    if (allValuesWereRemoved) {
-      await removeOption(option.id);
     }
 
     const optionValuesWereModified = valuesToCreate.length || valuesToRemove.length;
