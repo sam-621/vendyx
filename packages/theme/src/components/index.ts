@@ -17,3 +17,4 @@ export * from './select';
 export * from './breadcrumb';
 export * from './alert-dialog';
 export * from './accordion';
+export * from './popover';

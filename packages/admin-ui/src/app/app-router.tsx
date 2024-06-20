@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AdminLayout } from '@/lib/components';
 
 import { AuthWrapper } from './auth-wrapper';
+import { DashboardPage } from './dashboard';
 import { CreateProductPage, ProductDetailsPage, ProductsPage } from './inventory';
 import { LoginPage } from './login';
 import { OrderDetailsPage, OrderPages } from './orders';
@@ -14,6 +15,7 @@ export const AppRouter = () => {
         <Route element={<AuthWrapper />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<AdminLayout />}>
+            <Route path="/" element={<DashboardPage />} />
             <Route path="/inventory" element={<ProductsPage />} />
             <Route path="/inventory/new" element={<CreateProductPage />} />
             <Route path="/inventory/:slug" element={<ProductDetailsPage />} />
