@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  Button,
   cn,
   Input,
   Table,
@@ -25,7 +26,12 @@ import {
 // import { DataTablePagination } from './data-table-pagination';
 import { DataTableViewOptions } from './data-table-view-options';
 
-export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData, TValue>) => {
+export const DataTable = <TData, TValue>({
+  columns,
+  data,
+  search,
+  onRemove
+}: Props<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -47,6 +53,8 @@ export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData,
     }
   });
 
+  const recordsSelected = table.getSelectedRowModel().rows;
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -60,7 +68,18 @@ export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData,
             className="max-w-sm h-9 bg-background"
           />
         </div>
-        <DataTableViewOptions table={table} />
+        <div className="flex gap-2">
+          {Boolean(recordsSelected.length) && onRemove && (
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={() => onRemove(recordsSelected.map(r => r.original))}
+            >
+              Remove
+            </Button>
+          )}
+          <DataTableViewOptions table={table} />
+        </div>
       </div>
       <div className="rounded-md border bg-background">
         <Table>
@@ -79,7 +98,7 @@ export const DataTable = <TData, TValue>({ columns, data, search }: Props<TData,
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="relative">
             {table.getRowModel().rows?.length > 0 ? (
               table.getRowModel().rows.map(row => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
@@ -116,4 +135,5 @@ type Props<TData, TValue> = {
     placeholder?: string;
     filterKey: keyof TData;
   };
+  onRemove?: (rows: TData[]) => void;
 };

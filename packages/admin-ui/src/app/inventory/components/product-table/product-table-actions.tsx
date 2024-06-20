@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 
-import type { Row } from '@tanstack/react-table';
 import {
   Button,
   DropdownMenu,
@@ -14,6 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@ebloc/theme';
+import type { Row } from '@tanstack/react-table';
 import { Loader2Icon, MoreHorizontalIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';
@@ -76,29 +76,6 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          disabled={isLoading}
-          onClick={async () => {
-            const notificationId = notification.loading(
-              t('inventory.action.remove.pending') + '...'
-            );
-
-            await removeProduct(product.id);
-            await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
-
-            notification.dismiss(notificationId);
-            notification.success(t('inventory.action.remove.success'));
-          }}
-          className="cursor-pointer"
-        >
-          <span className={`text-destructive font-medium`}>
-            {isLoading
-              ? `${t('inventory.action.remove.pending')}...`
-              : t('inventory.action.remove')}
-          </span>
-          {isLoading && <Loader2Icon className="h-4 w-4 ml-2 text-destructive animate-spin" />}
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

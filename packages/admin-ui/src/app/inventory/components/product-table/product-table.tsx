@@ -2,12 +2,15 @@ import { DataTable } from '@/lib/components/data-table';
 import { DataTableSkeleton } from '@/lib/components/skeletons';
 import { DEFAULT_PRODUCT_IMAGE } from '@/lib/constants';
 import { t } from '@/lib/locales';
+import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
 
-import { useGetProducts } from '../../hooks';
+import { InventoryKeys, useGetProducts, useRemoveProduct } from '../../hooks';
 import { ProductTableColumns } from './product-table-columns';
 
 export const ProductTable = () => {
   const { products, isLoading } = useGetProducts();
+  const { removeProduct } = useRemoveProduct();
 
   if (isLoading) {
     return <DataTableSkeleton />;
@@ -35,6 +38,15 @@ export const ProductTable = () => {
       data={data}
       columns={ProductTableColumns}
       search={{ filterKey: 'name', placeholder: t('inventory.table.search') }}
+      onRemove={async products => {
+        const id = notification.loading('Removing products...');
+
+        await Promise.all(products.map(async product => await removeProduct(product.id)));
+        await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+
+        notification.dismiss(id);
+        notification.success('Products removed successfully');
+      }}
     />
   );
 };
