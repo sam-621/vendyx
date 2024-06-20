@@ -14,17 +14,16 @@ import {
   DropdownMenuTrigger
 } from '@ebloc/theme';
 import type { Row } from '@tanstack/react-table';
-import { Loader2Icon, MoreHorizontalIcon } from 'lucide-react';
+import { MoreHorizontalIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
-import { InventoryKeys, useRemoveProduct, useUpdateProduct } from '../../hooks';
+import { InventoryKeys, useUpdateProduct } from '../../hooks';
 import { type TableProduct } from './product-table';
 
 export const InventoryTableActions: FC<Props> = ({ row }) => {
-  const { removeProduct, isLoading } = useRemoveProduct();
   const { updateProduct } = useUpdateProduct();
   const product: TableProduct = row.original;
   const productState = product.status === 'enabled' ? 'enabled' : 'disabled';
