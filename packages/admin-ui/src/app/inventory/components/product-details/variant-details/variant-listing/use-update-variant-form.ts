@@ -22,7 +22,7 @@ export const useUpdateVariantForm = (variant: CommonProductFragment['variants'][
   });
 
   const onSubmit = async (input: FormInput) => {
-    const variantName = getVariantName(variant);
+    const variantName = getVariantName(variant.optionValues);
 
     const variantUpdated = await updateVariant(variant.id, {
       price: input.price,
