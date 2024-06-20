@@ -10,7 +10,7 @@ const URLS: THashMap = {
    * Run app pointing to your api dev server.
    * Helpful when you are only working on the app and not the api server.
    */
-  development: 'https://dev-ebloc.up.railway.app',
+  development: 'http://localhost:3000',
   /**
    * Run app pointing to your api production server.
    * This is empty because the app is built to be deployed to the same server as the api.
