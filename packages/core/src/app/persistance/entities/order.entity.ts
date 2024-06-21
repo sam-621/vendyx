@@ -4,7 +4,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  Entity as TypeOrmEntity,
+  Entity as TypeOrmEntity
 } from 'typeorm';
 
 import { AddressEntity } from './address.entity';
@@ -19,7 +19,7 @@ export enum OrderState {
   PAYMENT_ADDED = 'PAYMENT_ADDED',
   PAYMENT_AUTHORIZED = 'PAYMENT_AUTHORIZED',
   SHIPPED = 'SHIPPED',
-  DELIVERED = 'DELIVERED',
+  DELIVERED = 'DELIVERED'
 }
 
 @TypeOrmEntity('orders')
@@ -30,7 +30,7 @@ export class OrderEntity extends Entity {
   @Column({
     type: 'enum',
     enum: OrderState,
-    default: OrderState.MODIFYING,
+    default: OrderState.MODIFYING
   })
   state: OrderState;
 
@@ -58,10 +58,10 @@ export class OrderEntity extends Entity {
   @Column('simple-json', { nullable: true, name: 'shipping_address' })
   shippingAddress: AddressEntity;
 
-  @OneToMany(() => OrderLineEntity, (l) => l.order)
+  @OneToMany(() => OrderLineEntity, l => l.order)
   lines: OrderLineEntity[];
 
-  @ManyToOne(() => CustomerEntity, (c) => c.orders, { nullable: true })
+  @ManyToOne(() => CustomerEntity, c => c.orders, { nullable: true })
   customer: CustomerEntity;
 
   @JoinColumn()

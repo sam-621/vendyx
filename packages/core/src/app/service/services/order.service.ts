@@ -125,10 +125,15 @@ export class OrderService {
   }
 
   /**
-   * Adds line to order
-   * @param orderId Order id to add line
-   * @param input Order line input
-   * @returns Error Result or Order entity
+   * Add line to order
+   *
+   * @description
+   * 1. Check if the order exists
+   * 2. Check if the order is in the MODIFYING state
+   * 3. If variant is in an order line in the order, update the line quantity
+   * 4. If the input quantity is greater than the variant stock, return an NOT ENOUGH STOCK error
+   * 5. Create order line
+   * 6. Recalculate order stats
    */
   async addLine(
     orderId: ID,
@@ -184,9 +189,14 @@ export class OrderService {
 
   /**
    * Updates line
-   * @param lineId Line id to update
-   * @param input Line input to update
-   * @returns Error Result or Order entity
+   *
+   * @description
+   * 1. Check if the line exists
+   * 2. Check if the order is in the MODIFYING state
+   * 3. If the input quantity is 0, remove the line
+   * 4. If the input quantity is greater than the variant stock, return an NOT ENOUGH STOCK error
+   * 5. Update the line
+   * 6. Recalculate order stats
    */
   async updateLine(
     lineId: ID,
@@ -232,9 +242,13 @@ export class OrderService {
   }
 
   /**
+   * Remove line from order
    *
-   * @param orderLineId line id to remove
-   * @returns Error Result or Order entity
+   * @description
+   * 1. Check if the line exists
+   * 2. Check if the order is in the MODIFYING state
+   * 3. Remove the line
+   * 4. Recalculate order stats
    */
   async removeLine(orderLineId: ID): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     const orderLine = await this.db.getRepository(OrderLineEntity).findOne({
@@ -259,10 +273,14 @@ export class OrderService {
   }
 
   /**
-   * Add customer to order if exists, if not, create it and add it
-   * @param orderId Order id to add customer
-   * @param input Customer input
-   * @returns Error Result or order entity
+   * Add customer to order
+   *
+   * @description
+   * 1. Check if the order exists
+   * 2. Check if the order is in the MODIFYING state
+   * 3. Save customer
+   * 4. Update order with customer
+   * 5. Recalculate order stats
    */
   async addCustomer(
     orderId: ID,
@@ -307,9 +325,12 @@ export class OrderService {
 
   /**
    * Add shipping address to order
-   * @param orderId Order id to add shipping address
-   * @param input Shipping address input
-   * @returns Error Result or order entity
+   *
+   * @description
+   * 1. Check if the order exists
+   * 2. Check if the order is in the MODIFYING state
+   * 4. Update order with address in JSON
+   * 5. Recalculate order stats
    */
   async addShippingAddress(
     orderId: ID,
@@ -341,9 +362,15 @@ export class OrderService {
 
   /**
    * Add shipment to order using the shipment method specified
-   * @param orderId order id to add shipment
-   * @param input Shipmen input
-   * @returns Error Result or order entity
+   *
+   * @description
+   * 1. Check if the order exists
+   * 2. Check if the order is in the MODIFYING state
+   * 3. Check if the shipping method exists
+   * 4. Calculate the shipping price
+   * 5. Save shipment
+   * 6. Update order with shipment
+   * 7. Recalculate order stats
    */
   async addShipment(
     orderId: ID,
@@ -395,9 +422,17 @@ export class OrderService {
 
   /**
    * Add payment to order using the payment method specified
-   * @param orderId Order id to add payment
-   * @param input Payment Input
-   * @returns Error Result or order entity
+   *
+   * @description
+   * 1. Check if the order exists
+   * 2. Check if the order can be transitioned to the PAYMENT_ADDED state
+   * 3. Check if the payment method exists
+   * 4. Create payment using the payment method integration
+   * 5. If the payment is declined, return a PAYMENT_DECLINED error
+   * 6. If the payment is created, save the payment and update the order state to PAYMENT_ADDED
+   * 7. If the payment is authorized, save the payment and update the order state to PAYMENT_AUTHORIZED
+   * 8. Update the variant stock
+   * 9. Recalculate order stats
    */
   async addPayment(
     orderId: ID,
