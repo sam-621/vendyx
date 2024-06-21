@@ -27,7 +27,7 @@ export const VariantDetails = () => {
 
   const isProductAlreadyCreated = Boolean(product);
   const hasOptions = Boolean(defaultOptions?.length);
-  const totalStock = variants?.items.reduce((acc, variant) => acc + variant.stock, 0);
+  const totalStock = variants?.items.reduce((acc, variant) => acc + variant.stock, 0) ?? 0;
 
   return (
     <Card>
