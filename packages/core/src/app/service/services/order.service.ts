@@ -387,6 +387,10 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
+    if (!order.shippingAddress) {
+      return new ErrorResult(OrderErrorCode.MISSING_SHIPPING_ADDRESS, 'Missing shipping address');
+    }
+
     if (order.state !== OrderState.MODIFYING) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
@@ -449,7 +453,7 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
-    if (!this.validateOrderTransitionState(order, OrderState.PAYMENT_ADDED)) {
+    if (!(await this.validateOrderTransitionState(order, OrderState.PAYMENT_ADDED))) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
         `Unable to add payment to order in state ${order.state}`
@@ -475,13 +479,15 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.PAYMENT_DECLINED, 'Payment declined');
     }
 
+    let orderToReturn = order;
+
     if (paymentIntegrationResult.status === 'created') {
       const payment = await this.db.getRepository(PaymentEntity).save({
         amount: order.total,
         method: paymentMethod
       });
 
-      await this.db.getRepository(OrderEntity).save({
+      orderToReturn = await this.db.getRepository(OrderEntity).save({
         ...order,
         payment,
         state: OrderState.PAYMENT_ADDED,
@@ -496,7 +502,7 @@ export class OrderService {
         transactionId: paymentIntegrationResult.transactionId
       });
 
-      await this.db.getRepository(OrderEntity).save({
+      orderToReturn = await this.db.getRepository(OrderEntity).save({
         ...order,
         payment,
         state: OrderState.PAYMENT_AUTHORIZED,
@@ -511,7 +517,7 @@ export class OrderService {
       }))
     );
 
-    return this.recalculateOrderStats(order.id);
+    return orderToReturn;
   }
 
   /**
@@ -535,7 +541,7 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
-    if (!this.validateOrderTransitionState(order, OrderState.SHIPPED)) {
+    if (!(await this.validateOrderTransitionState(order, OrderState.SHIPPED))) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
         `Unable to transition order to state ${order.state}`
@@ -572,7 +578,7 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
-    if (!this.validateOrderTransitionState(order, OrderState.DELIVERED)) {
+    if (!(await this.validateOrderTransitionState(order, OrderState.DELIVERED))) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
         `Unable to transition order to state ${OrderState.DELIVERED}`
@@ -588,11 +594,30 @@ export class OrderService {
   /**
    * Validate if the order can transition to the new state
    */
-  private validateOrderTransitionState(order: OrderEntity, state: OrderState) {
+  private async validateOrderTransitionState(order: OrderEntity, state: OrderState) {
     const prevState = order.state;
     const nextState = state;
 
-    return ValidOrderTransitions.some(t => t[0] === prevState && t[1] === nextState);
+    const transitionStateAllowed = ValidOrderTransitions.some(
+      t => t[0] === prevState && t[1] === nextState
+    );
+
+    if (!transitionStateAllowed) {
+      return false;
+    }
+
+    if (nextState === OrderState.PAYMENT_ADDED || nextState === OrderState.PAYMENT_AUTHORIZED) {
+      const orderToVerify = await this.db.getRepository(OrderEntity).findOne({
+        where: { id: order.id },
+        relations: { customer: true, shipment: true }
+      });
+
+      if (!orderToVerify.customer || !orderToVerify.shipment) {
+        return false;
+      }
+    }
+
+    return transitionStateAllowed;
   }
 
   /**

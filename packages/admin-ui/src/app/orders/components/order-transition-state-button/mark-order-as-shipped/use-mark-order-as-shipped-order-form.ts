@@ -18,7 +18,7 @@ export const useMarkOrderAsShippedForm = (id: string) => {
     await markOrderAsShipped(id, input);
     await queryClient.invalidateQueries({ queryKey: OrderKeys.single(id) });
 
-    notification.success('Order has been marked as shipped');
+    notification.success('Order has been marked as sent');
   };
 
   return {

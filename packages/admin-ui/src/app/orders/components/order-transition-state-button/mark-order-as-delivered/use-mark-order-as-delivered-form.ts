@@ -14,7 +14,7 @@ export const useMarkOrderAsDeliveredForm = () => {
     }
 
     await queryClient.invalidateQueries({ queryKey: OrderKeys.single(id) });
-    notification.success('Order has been complete');
+    notification.success('Order has been completed');
   };
 
   return {
