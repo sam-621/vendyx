@@ -8,6 +8,15 @@ import { CreateProductPage, ProductDetailsPage, ProductsPage } from './inventory
 import { LoginPage } from './login';
 import { OrderDetailsPage, OrderPages } from './orders';
 
+// 1 - Only React components
+// Copy the admin-ui dist folder to server
+// in bootstrap, get the paths to app component of each ui-extension and return them in the admin-ui-config endpoint
+// in admin-ui, get the paths from the admin-ui-config endpoint and render the components
+
+// 2 - Every framework (it would work?)
+// Build my extensions
+// in bootstrap, get the paths to dist folders of each ui-extension and return them in the admin-ui-config endpoint
+// in admin-ui, get the paths from the admin-ui-config endpoint and paste the index.html of each extension in a iframe <iframe src="extension-html.html"></iframe>
 export const AppRouter = () => {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>

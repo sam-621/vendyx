@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { AdminApiModule } from './admin';
+import { AdminUiConfigModule } from './admin-ui-config';
 import { GraphqlApiModule } from './common/graphql-api.module';
 import { StorefrontApiModule } from './storefront/storefront-api.module';
 import { UploadModule } from './upload';
@@ -15,6 +16,7 @@ const STOREFRONT_API_SCHEMA_PATH = './storefront/**/*.schema.gql';
 
 @Module({
   imports: [
+    AdminUiConfigModule,
     UploadModule,
     GraphqlApiModule.register({
       include: [AdminApiModule],
