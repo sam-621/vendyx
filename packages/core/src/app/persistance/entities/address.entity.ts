@@ -35,6 +35,6 @@ export class AddressEntity extends Entity {
   @Column('text', { nullable: true })
   references: string;
 
-  @ManyToOne(() => CustomerEntity, (c) => c.addresses)
+  @ManyToOne(() => CustomerEntity, c => c.addresses)
   customer: CustomerEntity;
 }

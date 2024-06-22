@@ -4,7 +4,7 @@ import { Button } from '@ebloc/theme';
 
 import { OrderState } from '@/lib/ebloc/codegen/graphql';
 
-export const TransitionOrderStateButton: FC<Props> = ({ orderState }) => {
+export const OrderTransitionOrderStateButton: FC<Props> = ({ orderState }) => {
   if (orderState === OrderState.Modifying) {
     return (
       <Button disabled type="button">

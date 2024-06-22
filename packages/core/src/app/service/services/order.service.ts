@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, Not } from 'typeorm';
 
 import { ErrorResult, ValidTransitions, validateEmail } from '../utils';
 
@@ -37,7 +37,8 @@ export class OrderService {
     return await this.db.getRepository(OrderEntity).find({
       skip: input?.skip,
       take: input?.take,
-      order: { createdAt: 'DESC' }
+      order: { createdAt: 'DESC' },
+      where: { state: Not(OrderState.MODIFYING) }
     });
   }
 

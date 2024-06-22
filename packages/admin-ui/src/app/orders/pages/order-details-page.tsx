@@ -12,7 +12,7 @@ import {
   OrderShipmentCard
 } from '../components/order-details';
 import { OrderActions } from '../components/order-more-actions/order-more-actions';
-import { TransitionOrderStateButton } from '../components/transition-state-button/transition-state-button';
+import { OrderTransitionOrderStateButton } from '../components/order-transition-state-button/order-transition-state-button';
 
 export const OrderDetailsPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -32,7 +32,7 @@ export const OrderDetailsPage = () => {
       subtitle={getFormattedDate(new Date(order.createdAt as string))}
       actions={
         <div className="flex gap-4 items-center">
-          <TransitionOrderStateButton orderState={order.state} />
+          <OrderTransitionOrderStateButton orderState={order.state} />
           <OrderActions />
         </div>
       }
