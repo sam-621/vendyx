@@ -19,5 +19,5 @@ export const getOrderErrorMessages = (error?: OrderErrorResult) => {
 
 const OptionErrorMessage = {
   NotFound: 'Order not found',
-  OrderTransitionError: 'Cannot transition order to the requested state'
+  OrderTransitionError: 'Can not transition order to the requested state'
 };

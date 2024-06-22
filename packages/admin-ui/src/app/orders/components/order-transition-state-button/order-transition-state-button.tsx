@@ -4,6 +4,7 @@ import { Button } from '@ebloc/theme';
 
 import { type CommonOrderFragment, OrderState } from '@/lib/ebloc/codegen/graphql';
 
+import { MarkOrderAsDeliveredButton } from './mark-order-as-delivered/mark-order-as-delivered-button';
 import { MarkOrderAsShippedOrderButton } from './mark-order-as-shipped/mark-order-as-shipped-button';
 
 export const OrderTransitionOrderStateButton: FC<Props> = ({ order }) => {
@@ -26,9 +27,10 @@ export const OrderTransitionOrderStateButton: FC<Props> = ({ order }) => {
   }
 
   if (orderState === OrderState.Shipped) {
-    return <Button type="button">Complete order</Button>;
+    return <MarkOrderAsDeliveredButton id={order.id} />;
   }
 
+  // Delivered
   return (
     <Button disabled type="button">
       Complete order

@@ -1,6 +1,6 @@
 import { OrderState } from '@/app/persistance';
 
-export const ValidTransitions = [
+export const ValidOrderTransitions = [
   /**
    * The payment has been added but the founds have not been transferred yet
    */

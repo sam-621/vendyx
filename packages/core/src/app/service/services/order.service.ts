@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, Not } from 'typeorm';
 
-import { ErrorResult, ValidTransitions, validateEmail } from '../utils';
+import { ErrorResult, ValidOrderTransitions, validateEmail } from '../utils';
 
 import {
   AddPaymentToOrderInput,
@@ -572,10 +572,10 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
-    if (this.validateOrderTransitionState(order, OrderState.DELIVERED)) {
+    if (!this.validateOrderTransitionState(order, OrderState.DELIVERED)) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
-        `Unable to transition order to state ${order.state}`
+        `Unable to transition order to state ${OrderState.DELIVERED}`
       );
     }
 
@@ -592,7 +592,7 @@ export class OrderService {
     const prevState = order.state;
     const nextState = state;
 
-    return ValidTransitions.some(t => t[0] === prevState && t[1] === nextState);
+    return ValidOrderTransitions.some(t => t[0] === prevState && t[1] === nextState);
   }
 
   /**
