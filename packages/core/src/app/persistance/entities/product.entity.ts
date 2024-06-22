@@ -16,7 +16,7 @@ export class ProductEntity extends Entity {
   description: string;
 
   /**
-   * Determines if the product is exposes to shop API or not
+   * Determines if the product is exposes to storefront API or not
    */
   @Column('boolean', { default: true })
   published: boolean;

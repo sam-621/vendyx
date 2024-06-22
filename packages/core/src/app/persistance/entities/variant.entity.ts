@@ -24,7 +24,7 @@ export class VariantEntity extends Entity {
   stock: number;
 
   /**
-   * Determines if the product is exposes to shop API or not
+   * Determines if the variant is exposes to storefront API or not
    */
   @Column('boolean', { default: true })
   published: boolean;

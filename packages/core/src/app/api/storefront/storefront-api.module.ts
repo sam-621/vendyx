@@ -5,7 +5,7 @@ import {
   PaymentMethodResolver,
   ProductResolver,
   ShippingMethodResolver,
-  VariantResolver,
+  VariantResolver
 } from './resolvers';
 import { COMMON_RESOLVERS } from '../common/common-resolvers';
 
@@ -19,7 +19,7 @@ import { ServiceModule } from '@/app/service';
     ProductResolver,
     VariantResolver,
     PaymentMethodResolver,
-    ShippingMethodResolver,
-  ],
+    ShippingMethodResolver
+  ]
 })
-export class ShopApiModule {}
+export class StorefrontApiModule {}
