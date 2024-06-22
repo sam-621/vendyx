@@ -65,6 +65,7 @@ export const CommonOrder = graphql(`
       id
       amount
       trackingCode
+      carrier
       method {
         id
         name

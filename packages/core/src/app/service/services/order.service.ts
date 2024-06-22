@@ -542,14 +542,16 @@ export class OrderService {
       );
     }
 
+    const shipmentToUpdate = await this.db.getRepository(ShipmentEntity).save({
+      ...order.shipment,
+      trackingCode: input.trackingCode,
+      carrier: input.carrier
+    });
+
     return await this.db.getRepository(OrderEntity).save({
       ...order,
-      shipment: {
-        ...order.shipment,
-        trackingCode: input.trackingCode,
-        carrier: input.carrier
-      },
-      state: OrderState.SHIPPED
+      state: OrderState.SHIPPED,
+      shipment: shipmentToUpdate
     });
   }
 

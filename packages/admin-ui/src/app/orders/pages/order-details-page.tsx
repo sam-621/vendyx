@@ -32,7 +32,7 @@ export const OrderDetailsPage = () => {
       subtitle={getFormattedDate(new Date(order.createdAt as string))}
       actions={
         <div className="flex gap-4 items-center">
-          <OrderTransitionOrderStateButton orderState={order.state} />
+          <OrderTransitionOrderStateButton order={order} />
           <OrderActions />
         </div>
       }

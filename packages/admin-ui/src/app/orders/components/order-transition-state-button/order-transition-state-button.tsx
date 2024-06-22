@@ -2,11 +2,13 @@ import { type FC } from 'react';
 
 import { Button } from '@ebloc/theme';
 
-import { OrderState } from '@/lib/ebloc/codegen/graphql';
+import { type CommonOrderFragment, OrderState } from '@/lib/ebloc/codegen/graphql';
 
-import { OrderMarkAsSentOrderButton } from './mark-as-sent-order/mark-as-sent-order-button';
+import { MarkOrderAsShippedOrderButton } from './mark-order-as-shipped/mark-order-as-shipped-button';
 
-export const OrderTransitionOrderStateButton: FC<Props> = ({ orderState }) => {
+export const OrderTransitionOrderStateButton: FC<Props> = ({ order }) => {
+  const orderState = order.state;
+
   if (orderState === OrderState.Modifying) {
     return (
       <Button disabled type="button">
@@ -20,7 +22,7 @@ export const OrderTransitionOrderStateButton: FC<Props> = ({ orderState }) => {
   }
 
   if (orderState === OrderState.PaymentAuthorized) {
-    return <OrderMarkAsSentOrderButton />;
+    return <MarkOrderAsShippedOrderButton id={order.id} />;
   }
 
   if (orderState === OrderState.Shipped) {
@@ -35,5 +37,5 @@ export const OrderTransitionOrderStateButton: FC<Props> = ({ orderState }) => {
 };
 
 type Props = {
-  orderState: OrderState;
+  order: CommonOrderFragment;
 };

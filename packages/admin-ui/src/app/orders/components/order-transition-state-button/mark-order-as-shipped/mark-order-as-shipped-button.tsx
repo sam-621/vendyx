@@ -1,3 +1,5 @@
+import { type FC } from 'react';
+
 import {
   Button,
   Dialog,
@@ -11,11 +13,11 @@ import {
 
 import { FormInput } from '@/lib/components';
 
-import { useMarkAsSentOrderForm } from './use-mark-as-sent-order-form';
+import { useMarkOrderAsShippedForm } from './use-mark-order-as-shipped-order-form';
 
-export const OrderMarkAsSentOrderButton = () => {
-  const { onSubmit, register, formState } = useMarkAsSentOrderForm();
-  const { errors } = formState;
+export const MarkOrderAsShippedOrderButton: FC<Props> = ({ id }) => {
+  const { onSubmit, register, formState } = useMarkOrderAsShippedForm(id);
+  const { errors, isSubmitting } = formState;
 
   return (
     <Dialog>
@@ -46,10 +48,16 @@ export const OrderMarkAsSentOrderButton = () => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit">Mark as sent</Button>
+            <Button type="submit" isLoading={isSubmitting}>
+              Mark as sent
+            </Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
   );
+};
+
+type Props = {
+  id: string;
 };

@@ -1,17 +1,29 @@
 import { graphql } from '../codegen';
 
-export const markOrderAsShippedMutation = graphql(`
-  mutation MarkOrderAsShipped($id: ID!, $input: MarkOrderAsShippedInput) {
+export const MarkOrderAsShippedMutation = graphql(`
+  mutation MarkOrderAsShipped($id: ID!, $input: MarkOrderAsShippedInput!) {
     markOrderAsShipped(id: $id, input: $input) {
-      ...CommonOrder
+      order {
+        ...CommonOrder
+      }
+      apiErrors {
+        code
+        message
+      }
     }
   }
 `);
 
-export const markOrderAsDeliveredMutation = graphql(`
+export const MarkOrderAsDeliveredMutation = graphql(`
   mutation MarkOrderAsDelivered($id: ID!) {
     markOrderAsDelivered(id: $id) {
-      ...CommonOrder
+      order {
+        ...CommonOrder
+      }
+      apiErrors {
+        code
+        message
+      }
     }
   }
 `);

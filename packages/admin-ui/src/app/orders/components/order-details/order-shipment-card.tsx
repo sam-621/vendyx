@@ -24,6 +24,12 @@ export const OrderShipmentCard: FC<Props> = ({ shipment }) => {
           <p>
             Amount: <span>{getFormattedPrice(shipment.amount)}</span>
           </p>
+          <p>
+            Tracking number: <span>{shipment.trackingCode}</span>
+          </p>
+          <p>
+            Carrier: <span>{shipment.carrier}</span>
+          </p>
         </div>
       </CardContent>
     </Card>

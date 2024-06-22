@@ -492,6 +492,7 @@ export class Shipment implements Node {
     createdAt: Date;
     updatedAt: Date;
     trackingCode?: Nullable<string>;
+    carrier?: Nullable<string>;
     amount: number;
     order: Order;
     method: ShippingMethod;

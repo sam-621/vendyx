@@ -3,6 +3,7 @@ type Shipment implements Node {
   createdAt: Date!
   updatedAt: Date!
   trackingCode: String
+  carrier: String
   amount: Int!
 
   order: Order!

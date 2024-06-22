@@ -23,7 +23,10 @@ export const OrderStatusBadge: FC<Props> = ({ status }) => {
 
   if (status === OrderState.Shipped) {
     return (
-      <Badge variant="outline" className="flex gap-1 bg-warning/15 border-distinct w-fit">
+      <Badge
+        variant="outline"
+        className="flex gap-1 bg-warning/15 border-warning text-warning w-fit"
+      >
         <TruckIcon size={16} /> Sent
       </Badge>
     );
