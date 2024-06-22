@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, Not } from 'typeorm';
 
@@ -16,6 +17,7 @@ import {
   UpdateOrderLineInput
 } from '@/app/api/common';
 import { getConfig } from '@/app/config';
+import { OrderEvent } from '@/app/events';
 import {
   AddressEntity,
   CustomerEntity,
@@ -32,7 +34,7 @@ import {
 
 @Injectable()
 export class OrderService {
-  constructor(@InjectDataSource() private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource, private eventEmitter: EventEmitter2) {}
 
   async find(input: ListInput) {
     return await this.db.getRepository(OrderEntity).find({
@@ -517,6 +519,8 @@ export class OrderService {
       }))
     );
 
+    this.eventEmitter.emit(OrderEvent.PAID, { orderId: order.id });
+
     return orderToReturn;
   }
 
@@ -554,6 +558,8 @@ export class OrderService {
       carrier: input.carrier
     });
 
+    this.eventEmitter.emit(OrderEvent.SHIPPED, { orderId: order.id });
+
     return await this.db.getRepository(OrderEntity).save({
       ...order,
       state: OrderState.SHIPPED,
@@ -584,6 +590,8 @@ export class OrderService {
         `Unable to transition order to state ${OrderState.DELIVERED}`
       );
     }
+
+    this.eventEmitter.emit(OrderEvent.DELIVERED, { orderId: order.id });
 
     return await this.db.getRepository(OrderEntity).save({
       ...order,
