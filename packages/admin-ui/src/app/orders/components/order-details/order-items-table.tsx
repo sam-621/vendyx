@@ -15,6 +15,7 @@ import {
   TableRow
 } from '@ebloc/theme';
 
+import { OrderStatusBadge } from '@/lib/components';
 import { DEFAULT_PRODUCT_IMAGE } from '@/lib/constants';
 import { type CommonOrderFragment } from '@/lib/ebloc/codegen/graphql';
 
@@ -24,8 +25,9 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex items-center flex-row justify-between space-y-0">
         <CardTitle>Products</CardTitle>
+        <OrderStatusBadge status={order.state} />
       </CardHeader>
 
       <CardContent>

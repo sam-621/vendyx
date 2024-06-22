@@ -1,3 +1,3 @@
 export * from './logo';
-export * from './orders-status';
+export * from './orders-state-badge';
 export * from './user-avatar';
