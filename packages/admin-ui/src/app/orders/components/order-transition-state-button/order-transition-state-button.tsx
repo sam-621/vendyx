@@ -4,6 +4,8 @@ import { Button } from '@ebloc/theme';
 
 import { OrderState } from '@/lib/ebloc/codegen/graphql';
 
+import { OrderMarkAsSentOrderButton } from './mark-as-sent-order/mark-as-sent-order-button';
+
 export const OrderTransitionOrderStateButton: FC<Props> = ({ orderState }) => {
   if (orderState === OrderState.Modifying) {
     return (
@@ -18,7 +20,7 @@ export const OrderTransitionOrderStateButton: FC<Props> = ({ orderState }) => {
   }
 
   if (orderState === OrderState.PaymentAuthorized) {
-    return <Button type="button">Mark as sent</Button>;
+    return <OrderMarkAsSentOrderButton />;
   }
 
   if (orderState === OrderState.Shipped) {

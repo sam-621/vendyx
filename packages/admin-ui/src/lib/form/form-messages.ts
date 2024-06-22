@@ -1,7 +1,7 @@
 export const FormMessages = {
-  required: 'Campo requerido',
-  minChars: (min: number) => `Debe de ser mínimo ${min} characters`,
-  maxChars: (max: number) => `Debe de ser máximo ${max} characters`,
-  minValue: (min: number) => `Debe de ser mínimo ${min}`,
-  maxValue: (max: number) => `Debe de ser máximo ${max}`
+  required: 'required field',
+  minChars: (min: number) => `Should be at least ${min} chars`,
+  maxChars: (max: number) => `Could not exceed ${max} chars`,
+  minValue: (min: number) => `Should be at least ${min}`,
+  maxValue: (max: number) => `Could not exceed ${max}`
 };
