@@ -1,13 +1,14 @@
 import { EBLOC_BASE_API_URL } from '../ebloc/constants';
 
-export const restFetcher = async <T>(
-  formData: FormData,
-  config?: { method: 'POST' | 'GET' | 'DELETE' }
-): Promise<T | undefined> => {
+export const restFetcher = async <T>({
+  body,
+  config,
+  url
+}: RestFetcherInput): Promise<T | undefined> => {
   try {
-    const response = await fetch(`${EBLOC_BASE_API_URL}/upload`, {
-      method: config?.method ?? 'POST',
-      body: formData
+    const response = await fetch(`${EBLOC_BASE_API_URL}/${url}`, {
+      method: config?.method ?? 'GET',
+      body
     });
 
     const data = await response.json();
@@ -16,4 +17,10 @@ export const restFetcher = async <T>(
   } catch (error) {
     console.log(error);
   }
+};
+
+type RestFetcherInput = {
+  body?: any;
+  config?: { method: 'POST' | 'GET' | 'DELETE' };
+  url?: string;
 };

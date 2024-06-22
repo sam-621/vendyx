@@ -4,17 +4,21 @@ import { Outlet } from 'react-router-dom';
 import { Button, Input } from '@ebloc/theme';
 import { BellIcon } from 'lucide-react';
 
+import { useConfigContext } from '@/app/config/contexts';
+
 import { Logo, UserAvatar } from '../items';
 import { AdminSidebar } from '../sections';
 
 export const AdminLayout: FC = () => {
+  const { brand } = useConfigContext();
+
   return (
     <div className="grid min-h-screen w-full grid-cols-[320px_1fr]">
       <aside className="flex flex-col border-r gap-4 max-h-screen sticky top-0">
         <div className="flex justify-between h-16 items-center px-4">
           <div className="flex gap-2">
             <Logo />
-            <h1 className="text-base font-medium">EBloc</h1>
+            <h1 className="text-base font-medium">{brand.name}</h1>
           </div>
           <div>
             <Button size="icon" variant="outline">

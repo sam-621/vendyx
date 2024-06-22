@@ -7,3 +7,12 @@ export type EblocAsset = {
   deletedAt: Date | null;
   type: 'IMAGE';
 };
+
+export type AdminUiConfig = {
+  brand: {
+    name: string;
+    description: string;
+    logoUrl: string;
+  };
+  serveUrl: string;
+};
