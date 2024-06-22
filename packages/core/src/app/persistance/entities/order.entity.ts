@@ -15,10 +15,25 @@ import { PaymentEntity } from './payment.entity';
 import { ShipmentEntity } from './shipment.entity';
 
 export enum OrderState {
+  /**
+   * The order is being modified by the customer (CRUD line actions, adding contact info and shipment info)
+   */
   MODIFYING = 'MODIFYING',
+  /**
+   * The order is ready to be paid
+   */
   PAYMENT_ADDED = 'PAYMENT_ADDED',
+  /**
+   * The payment has been authorized by the payment provider
+   */
   PAYMENT_AUTHORIZED = 'PAYMENT_AUTHORIZED',
+  /**
+   * The order has been shipped (carrier and tracking code added)
+   */
   SHIPPED = 'SHIPPED',
+  /**
+   * The order has been delivered and is completes
+   */
   DELIVERED = 'DELIVERED'
 }
 

@@ -17,6 +17,6 @@ export class ShippingMethodEntity extends Entity {
   @Column('boolean')
   enabled: boolean;
 
-  @OneToMany(() => ShipmentEntity, (p) => p.method)
+  @OneToMany(() => ShipmentEntity, p => p.method)
   shipments: ShipmentEntity[];
 }

@@ -11,6 +11,7 @@ import {
   CreateCustomerInput,
   CreateOrderLineInput,
   ListInput,
+  MarkOrderAsShippedInput,
   OrderErrorCode,
   UpdateOrderLineInput
 } from '@/app/api/common';
@@ -511,6 +512,75 @@ export class OrderService {
     );
 
     return this.recalculateOrderStats(order.id);
+  }
+
+  /**
+   * Mark order as shipped
+   *
+   * @description
+   * 1. Check if the order exists
+   * 2. Check if the order can be transitioned to the SHIPPED state
+   * 3. Save the shipment with the tracking code, carrier and state SHIPPED
+   */
+  async markAsShipped(
+    orderId: ID,
+    input: MarkOrderAsShippedInput
+  ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+      relations: { shipment: true }
+    });
+
+    if (!order) {
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
+    }
+
+    if (!this.validateOrderTransitionState(order, OrderState.SHIPPED)) {
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to transition order to state ${order.state}`
+      );
+    }
+
+    return await this.db.getRepository(OrderEntity).save({
+      ...order,
+      shipment: {
+        ...order.shipment,
+        trackingCode: input.trackingCode,
+        carrier: input.carrier
+      },
+      state: OrderState.SHIPPED
+    });
+  }
+
+  /**
+   * Mark order as delivered and complete it
+   *
+   * @description
+   * 1. Check if the order exists
+   * 2. Check if the order can be transitioned to the DELIVERED state
+   * 3. Update the order state to DELIVERED
+   */
+  async markAsDelivered(orderId: ID) {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId }
+    });
+
+    if (!order) {
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
+    }
+
+    if (this.validateOrderTransitionState(order, OrderState.DELIVERED)) {
+      return new ErrorResult(
+        OrderErrorCode.ORDER_TRANSITION_ERROR,
+        `Unable to transition order to state ${order.state}`
+      );
+    }
+
+    return await this.db.getRepository(OrderEntity).save({
+      ...order,
+      state: OrderState.DELIVERED
+    });
   }
 
   /**

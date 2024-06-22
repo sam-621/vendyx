@@ -1,7 +1,8 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { ListInput, ListResponse } from '@/app/api/common';
-import { OrderService } from '@/app/service';
+import { ListInput, ListResponse, MarkOrderAsShippedInput } from '@/app/api/common';
+import { ID } from '@/app/persistance';
+import { OrderService, isErrorResult } from '@/app/service';
 
 @Resolver('Order')
 export class OrderResolver {
@@ -12,5 +13,19 @@ export class OrderResolver {
     const order = await this.orderService.find(input);
 
     return new ListResponse(order, order.length);
+  }
+
+  @Mutation('markOrderAsShipped')
+  async markOrderAsShipped(@Args('id') id: ID, @Args('input') input: MarkOrderAsShippedInput) {
+    const result = await this.orderService.markAsShipped(id, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+  }
+
+  @Mutation('markOrderAsDelivered')
+  async markOrderAsDelivered(@Args('id') id: ID) {
+    const result = await this.orderService.markAsDelivered(id);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
   }
 }

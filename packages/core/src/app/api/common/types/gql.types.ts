@@ -18,6 +18,17 @@ export enum OptionErrorCode {
     OPTION_VALUE_NOT_FOUND = "OPTION_VALUE_NOT_FOUND"
 }
 
+export enum OrderErrorCode {
+    ORDER_NOT_FOUND = "ORDER_NOT_FOUND",
+    LINE_NOT_FOUND = "LINE_NOT_FOUND",
+    ORDER_TRANSITION_ERROR = "ORDER_TRANSITION_ERROR",
+    NOT_ENOUGH_STOCK = "NOT_ENOUGH_STOCK",
+    CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
+    SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND",
+    PAYMENT_METHOD_NOT_FOUND = "PAYMENT_METHOD_NOT_FOUND",
+    PAYMENT_DECLINED = "PAYMENT_DECLINED"
+}
+
 export enum ProductErrorCode {
     PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
     NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
@@ -41,17 +52,6 @@ export enum OrderState {
     DELIVERED = "DELIVERED"
 }
 
-export enum OrderErrorCode {
-    ORDER_NOT_FOUND = "ORDER_NOT_FOUND",
-    LINE_NOT_FOUND = "LINE_NOT_FOUND",
-    ORDER_TRANSITION_ERROR = "ORDER_TRANSITION_ERROR",
-    NOT_ENOUGH_STOCK = "NOT_ENOUGH_STOCK",
-    CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
-    SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND",
-    PAYMENT_METHOD_NOT_FOUND = "PAYMENT_METHOD_NOT_FOUND",
-    PAYMENT_DECLINED = "PAYMENT_DECLINED"
-}
-
 export class AuthenticateInput {
     username: string;
     password: string;
@@ -69,6 +69,11 @@ export class UpdateOptionInput {
 export class UpdateOptionValueInput {
     id: string;
     value: string;
+}
+
+export class MarkOrderAsShippedInput {
+    carrier: string;
+    trackingCode: string;
 }
 
 export class CreateProductInput {
@@ -196,6 +201,10 @@ export abstract class IMutation {
 
     abstract removeOptionValues(ids: string[]): OptionResult | Promise<OptionResult>;
 
+    abstract markOrderAsShipped(id: string, input: MarkOrderAsShippedInput): OrderResult | Promise<OrderResult>;
+
+    abstract markOrderAsDelivered(id: string): OrderResult | Promise<OrderResult>;
+
     abstract createProduct(input: CreateProductInput): CreateProductResult | Promise<CreateProductResult>;
 
     abstract updateProduct(id: string, input: UpdateProductInput): UpdateProductResult | Promise<UpdateProductResult>;
@@ -272,6 +281,16 @@ export class UpdateOptionValueResult {
 
 export class OptionErrorResult {
     code: OptionErrorCode;
+    message: string;
+}
+
+export class OrderResult {
+    order?: Nullable<Order>;
+    apiErrors: OrderErrorResult[];
+}
+
+export class OrderErrorResult {
+    code: OrderErrorCode;
     message: string;
 }
 
@@ -507,16 +526,6 @@ export class Variant implements Node {
 export class VariantList implements List {
     items: Variant[];
     count: number;
-}
-
-export class OrderResult {
-    order?: Nullable<Order>;
-    apiErrors: OrderErrorResult[];
-}
-
-export class OrderErrorResult {
-    code: OrderErrorCode;
-    message: string;
 }
 
 type Nullable<T> = T | null;
