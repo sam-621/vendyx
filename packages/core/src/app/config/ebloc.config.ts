@@ -1,6 +1,6 @@
 import { AdminUiConfig } from './admin-ui/admin-ui.config';
 import { PaymentIntegration } from './payments/payment-integration.config';
-import { PluginConfig } from './plugins/plugins.config';
+import { PluginConfig } from './plugins/plugin.config';
 import { ShippingPriceCalculatorConfig } from './shipping/shipping-price-calculator.config';
 import { StorageProvider } from './storage/storage-provider.config';
 

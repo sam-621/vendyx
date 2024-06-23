@@ -6,7 +6,7 @@ import { dest, series, src } from 'gulp';
 import { BusinessExceptionFilter } from './app/api/common';
 import { AppModule } from './app/app.module';
 import { EblocConfig, getConfig, setConfig } from './app/config';
-import { PluginConfig } from './app/config/plugins/plugins.config';
+import { PluginConfig } from './app/config/plugins/plugin.config';
 
 /**
  * Copy gql schema files to dist folder
