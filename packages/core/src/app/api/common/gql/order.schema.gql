@@ -31,9 +31,24 @@ type Order implements Node {
 
   lines: OrderLineList!
   customer: Customer
-  shippingAddress: Address
+  shippingAddress: OrderShippingAddressJson
   payment: Payment
   shipment: Shipment
+}
+
+type OrderShippingAddressJson {
+    streetLine1: String!
+    streetLine2: String
+    city: String!
+    """
+    State or region
+    """
+    province: String!
+    country: String!
+    phoneNumber: String
+    phoneCountryCode: String
+    postalCode: String!
+    references: String
 }
 
 type OrderList implements List {

@@ -1,5 +1,6 @@
 import { AdminUiConfig } from './admin-ui/admin-ui.config';
 import { PaymentIntegration } from './payments/payment-integration.config';
+import { PluginConfig } from './plugins/plugins.config';
 import { ShippingPriceCalculatorConfig } from './shipping/shipping-price-calculator.config';
 import { StorageProvider } from './storage/storage-provider.config';
 
@@ -14,7 +15,6 @@ export interface EblocConfig {
   db: {
     url: string;
   };
-  adminUi?: Partial<AdminUiConfig>;
   assets: {
     storageProvider: StorageProvider;
   };
@@ -24,4 +24,6 @@ export interface EblocConfig {
   shipping: {
     priceCalculators: ShippingPriceCalculatorConfig[];
   };
+  adminUi: AdminUiConfig;
+  plugins: PluginConfig[];
 }

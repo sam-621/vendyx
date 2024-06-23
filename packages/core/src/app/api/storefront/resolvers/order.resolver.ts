@@ -20,7 +20,7 @@ export class OrderResolver {
   async createOrder(@Args('input') input: CreateOrderInput) {
     const newOrder = await this.orderService.create();
 
-    const result = await this.orderService.addLine(newOrder.id, input.line);
+    const result = input.line ? await this.orderService.addLine(newOrder.id, input.line) : newOrder;
 
     return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
   }

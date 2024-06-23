@@ -7,8 +7,21 @@ import { getConfig } from '@/app/config';
 export class AdminUiConfigController {
   @Get('')
   async getAdminUiConfig(@Res() res: Response) {
-    const { adminUi } = getConfig();
+    const { adminUi, plugins } = getConfig();
 
-    return res.status(200).json(adminUi);
+    const extraUiModules = plugins
+      .map(p => p.uiModules)
+      .flat()
+      .map(uiModule => ({
+        id: uiModule.compiledUiModule.rename,
+        ...uiModule.sidebarNavLink
+      }));
+
+    const response = {
+      branding: adminUi.branding,
+      extraUiModules: extraUiModules
+    };
+
+    return res.status(200).json(response);
   }
 }

@@ -11,7 +11,7 @@ export class PaymentService {
   async findMethod(id: ID) {
     const payment = await this.db.getRepository(PaymentEntity).findOne({
       where: { id },
-      relations: { method: true },
+      relations: { method: true }
     });
 
     return payment.method;

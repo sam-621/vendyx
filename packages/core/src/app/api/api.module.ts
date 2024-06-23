@@ -8,7 +8,6 @@ import { AdminUiConfigModule } from './admin-ui-config';
 import { GraphqlApiModule } from './common/graphql-api.module';
 import { StorefrontApiModule } from './storefront/storefront-api.module';
 import { UploadModule } from './upload';
-import { getConfig } from '../config';
 
 const COMMON_SCHEMA_PATH = './common/**/*.schema.gql';
 const ADMIN_API_SCHEMA_PATH = './admin/**/*.schema.gql';
@@ -30,12 +29,17 @@ const STOREFRONT_API_SCHEMA_PATH = './storefront/**/*.schema.gql';
     }),
     ServeStaticModule.forRootAsync({
       useFactory: () => {
-        const { adminUi } = getConfig();
+        console.log({
+          rootPath: path.join(__dirname, '../../admin-ui'),
+          __dirname,
+          process: process.cwd()
+        });
+
         return [
           {
-            // TODO: move admin-ui dist folder into core package
-            rootPath: path.join(__dirname, '../../admin-ui'),
-            serveRoot: adminUi.serveUrl ?? '/admin',
+            // rootPath: path.join(__dirname, '../../admin-ui'),
+            rootPath: path.join(process.cwd(), '/admin-ui'),
+            serveRoot: '/admin',
             exclude: ['/api/(.*)']
           }
         ];

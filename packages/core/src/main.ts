@@ -1,9 +1,12 @@
+import * as path from 'path';
+
 import { NestFactory } from '@nestjs/core';
 import { dest, series, src } from 'gulp';
 
 import { BusinessExceptionFilter } from './app/api/common';
 import { AppModule } from './app/app.module';
 import { EblocConfig, getConfig, setConfig } from './app/config';
+import { PluginConfig } from './app/config/plugins/plugins.config';
 
 /**
  * Copy gql schema files to dist folder
@@ -20,6 +23,11 @@ export async function bootstrap(config: EblocConfig) {
 
   series(copySchemaToDistFolder)(() => console.log('Schema copied to dist folder'));
 
+  const { plugins } = getConfig();
+  copyUiModulesAndAdminUiToDistFolderInServerPackage(
+    plugins.map(plugin => plugin.uiModules).flat()
+  );
+
   const app = await NestFactory.create(AppModule, {
     // TODO: Check this to do it the right way
     cors: true
@@ -29,3 +37,23 @@ export async function bootstrap(config: EblocConfig) {
 
   await app.listen(port);
 }
+
+/**
+ * Copy the compiled ui modules to the admin-ui folder of the server package
+ * Also copy the admin-ui dist folder to the admin-ui folder of the server package
+ */
+const copyUiModulesAndAdminUiToDistFolderInServerPackage = (
+  uiModules: PluginConfig['uiModules']
+) => {
+  uiModules.forEach(uiModule => {
+    const { compiledUiModule } = uiModule;
+
+    src(path.join(compiledUiModule.path, '/**/*')).pipe(
+      dest(path.join(process.cwd(), `admin-ui/${compiledUiModule.rename}`))
+    );
+  });
+
+  src(path.join(__dirname, '../../admin-ui/dist/**/*')).pipe(
+    dest(path.join(process.cwd(), 'admin-ui/'))
+  );
+};

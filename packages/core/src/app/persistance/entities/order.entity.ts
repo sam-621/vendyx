@@ -71,7 +71,7 @@ export class OrderEntity extends Entity {
   totalQuantity: number;
 
   @Column('simple-json', { nullable: true, name: 'shipping_address' })
-  shippingAddress: AddressEntity;
+  shippingAddress: Omit<AddressEntity, 'id' | 'createdAt' | 'updatedAt'>;
 
   @OneToMany(() => OrderLineEntity, l => l.order)
   lines: OrderLineEntity[];

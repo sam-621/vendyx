@@ -9,10 +9,14 @@ export type EblocAsset = {
 };
 
 export type AdminUiConfig = {
-  brand: {
+  branding: {
     name: string;
     description: string;
-    logoUrl: string;
   };
-  serveUrl: string;
+  extraUiModules: {
+    url: string;
+    label: string;
+    icon: string;
+    id: string;
+  }[];
 };

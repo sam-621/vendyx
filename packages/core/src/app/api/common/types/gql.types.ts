@@ -21,11 +21,14 @@ export enum OptionErrorCode {
 export enum OrderErrorCode {
     ORDER_NOT_FOUND = "ORDER_NOT_FOUND",
     LINE_NOT_FOUND = "LINE_NOT_FOUND",
+    VARIANT_NOT_FOUND = "VARIANT_NOT_FOUND",
     ORDER_TRANSITION_ERROR = "ORDER_TRANSITION_ERROR",
     NOT_ENOUGH_STOCK = "NOT_ENOUGH_STOCK",
     CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
     SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND",
     MISSING_SHIPPING_ADDRESS = "MISSING_SHIPPING_ADDRESS",
+    MISSING_SHIPPING_PRICE_CALCULATOR = "MISSING_SHIPPING_PRICE_CALCULATOR",
+    MISSING_PAYMENT_INTEGRATION = "MISSING_PAYMENT_INTEGRATION",
     PAYMENT_METHOD_NOT_FOUND = "PAYMENT_METHOD_NOT_FOUND",
     PAYMENT_DECLINED = "PAYMENT_DECLINED"
 }
@@ -436,9 +439,21 @@ export class Order implements Node {
     totalQuantity: number;
     lines: OrderLineList;
     customer?: Nullable<Customer>;
-    shippingAddress?: Nullable<Address>;
+    shippingAddress?: Nullable<OrderShippingAddressJson>;
     payment?: Nullable<Payment>;
     shipment?: Nullable<Shipment>;
+}
+
+export class OrderShippingAddressJson {
+    streetLine1: string;
+    streetLine2?: Nullable<string>;
+    city: string;
+    province: string;
+    country: string;
+    phoneNumber?: Nullable<string>;
+    phoneCountryCode?: Nullable<string>;
+    postalCode: string;
+    references?: Nullable<string>;
 }
 
 export class OrderList implements List {

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AdminLayout, LogoLoader } from '@/lib/components';
@@ -6,6 +7,7 @@ import { ConfigProvider } from './config/contexts';
 import { useGetAdminUiConfig } from './config/hooks';
 import { AuthWrapper } from './auth-wrapper';
 import { DashboardPage } from './dashboard';
+import { ExtraUiModulePage } from './extra-ui-module-page';
 import { CreateProductPage, ProductDetailsPage, ProductsPage } from './inventory';
 import { LoginPage } from './login';
 import { OrderDetailsPage, OrderPages } from './orders';
@@ -32,6 +34,8 @@ export const AppRouter = () => {
   // TODO: Add a error ui
   if (!data) return null;
 
+  const { extraUiModules } = data;
+
   return (
     <ConfigProvider value={data}>
       <BrowserRouter basename={import.meta.env.BASE_URL}>
@@ -45,6 +49,18 @@ export const AppRouter = () => {
               <Route path="/inventory/:slug" element={<ProductDetailsPage />} />
               <Route path="/orders" element={<OrderPages />} />
               <Route path="/orders/:slug" element={<OrderDetailsPage />} />
+
+              {extraUiModules.map(uiModule => (
+                <Route
+                  key={uiModule.url}
+                  path={uiModule.url}
+                  element={
+                    <Suspense fallback={<LogoLoader />}>
+                      <ExtraUiModulePage id={uiModule.id} />
+                    </Suspense>
+                  }
+                />
+              ))}
             </Route>
           </Route>
         </Routes>

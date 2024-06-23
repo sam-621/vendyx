@@ -3,7 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@ebloc/theme';
 import { HomeIcon, PackageIcon, Settings, ShoppingCartIcon, UserIcon } from 'lucide-react';
 
+import { useConfigContext } from '@/app/config/contexts';
+
 export const AdminSidebar = () => {
+  const { extraUiModules } = useConfigContext();
   const { pathname } = useLocation();
 
   const isInDashboard = pathname.includes('/') && pathname.length === 1;
@@ -64,6 +67,18 @@ export const AdminSidebar = () => {
           <UserIcon size={16} />
           Customers
         </Link>
+        {extraUiModules.map(uiModule => (
+          <Link
+            key={uiModule.url}
+            to={uiModule.url}
+            className={cn(
+              'text-sm font-medium flex items-center gap-3 rounded-lg px-3 py-2 transition-all text-muted-foreground hover:text-primary'
+            )}
+          >
+            <UserIcon size={16} />
+            {uiModule.label}
+          </Link>
+        ))}
       </div>
       <Link
         className={cn(

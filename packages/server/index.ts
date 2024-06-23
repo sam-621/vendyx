@@ -6,6 +6,7 @@ import {
   bootstrap
 } from '@ebloc/core';
 import { config } from 'dotenv';
+import path from 'path';
 
 config();
 
@@ -32,5 +33,30 @@ bootstrap({
   },
   payments: {
     integrations: [new PaypalIntegration(), new StripeIntegration()]
-  }
+  },
+  adminUi: {
+    branding: {
+      name: 'EBloc',
+      description:
+        "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement."
+    },
+    serveUrl: '/admin'
+  },
+  plugins: [
+    {
+      uiModules: [
+        {
+          sidebarNavLink: {
+            icon: 'home',
+            label: 'Hello-world',
+            url: '/hello-world'
+          },
+          compiledUiModule: {
+            path: path.join(process.cwd(), './ui-modules/hello-world/dist'),
+            rename: 'hello-world'
+          }
+        }
+      ]
+    }
+  ]
 });

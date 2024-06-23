@@ -18,14 +18,6 @@ export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
   db: {
     url: 'postgres://postgres:postgres@localhost:5432/ebloc'
   },
-  adminUi: {
-    brand: {
-      name: 'EBloc',
-      description:
-        "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement."
-    },
-    serveUrl: '/admin'
-  },
   assets: {
     storageProvider: new CloudinaryStorageProvider({
       cloudName: 'dnvp4s8pe',
@@ -38,5 +30,14 @@ export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
   },
   shipping: {
     priceCalculators: [new CountryPriceCalculator(), new FedexPriceCalculator()]
-  }
+  },
+  adminUi: {
+    branding: {
+      name: 'EBloc',
+      description:
+        "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement."
+    },
+    serveUrl: '/admin'
+  },
+  plugins: []
 };

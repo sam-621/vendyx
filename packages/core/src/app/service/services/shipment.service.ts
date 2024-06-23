@@ -11,7 +11,7 @@ export class ShipmentService {
   async findMethod(id: ID) {
     const shipment = await this.db.getRepository(ShipmentEntity).findOne({
       where: { id },
-      relations: { method: true },
+      relations: { method: true }
     });
 
     return shipment.method;

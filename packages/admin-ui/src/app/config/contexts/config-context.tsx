@@ -5,13 +5,11 @@ import { type AdminUiConfig } from '@/lib/ebloc/rest';
 type Context = AdminUiConfig;
 
 const ConfigContext = createContext<Context>({
-  brand: {
-    name: 'Ebloc',
-    description:
-      "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.",
-    logoUrl: ''
+  branding: {
+    name: '',
+    description: ''
   },
-  serveUrl: ''
+  extraUiModules: []
 });
 
 export const ConfigProvider = ConfigContext.Provider;

@@ -12,14 +12,4 @@ export const copySchemaToDistFolder = () => {
   return stream.pipe(dest('../dist'));
 };
 
-// TODO: Build admin-ui before copying to dist folder, by now we add admin-ui package  as dependency of core package to make sure it is built before this package
-export const copyAdminUiToDistFolder = () => {
-  const stream = src('../../admin-ui/dist/**/*');
-
-  return stream.pipe(dest('../dist/admin-ui'));
-};
-
-export const postBuild = parallel(
-  copySchemaToDistFolder,
-  copyAdminUiToDistFolder,
-);
+export const postBuild = parallel(copySchemaToDistFolder);

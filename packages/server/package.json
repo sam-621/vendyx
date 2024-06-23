@@ -6,12 +6,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node index.ts",
-    "build": "tsc",
+    "build": "rm -r ./admin-ui && tsc",
     "start": "node dist/index.js"
   },
   "dependencies": {
     "@ebloc/core": "*",
     "dotenv": "^16.4.5",
+    "path": "^0.12.7",
     "ts-node": "^10.9.2"
   }
 }
