@@ -45,7 +45,7 @@ export function EBlocPlugin(metadata: EBlocPluginMetadata): ClassDecorator {
 }
 
 /**
- * Metadata for the EBlocPlugin decorator
+ * Metadata for the EBlocPlugin decorator (otherwise throws an error)
  */
 export interface EBlocPluginMetadata extends ModuleMetadata {
   /**

@@ -6,12 +6,12 @@ import { dest, series, src } from 'gulp';
 import { BusinessExceptionFilter } from './app/api/common';
 import { AppModule } from './app/app.module';
 import { EblocConfig, getConfig, setConfig } from './app/config';
-import { getPluginMetadata } from './app/plugins';
+import { getPluginMetadata } from './app/plugin';
 import {
   EBlocPluginMetadata,
   EBlocPluginMetadataKeys,
   UiModuleConfig
-} from './app/plugins/ebloc.plugin';
+} from './app/plugin/ebloc.plugin';
 
 /**
  * Copy gql schema files to dist folder

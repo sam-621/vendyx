@@ -11,7 +11,7 @@ export * from './app/config/shipping/shipping-price-calculator.config';
 export * from './app/config/storage/storage-provider.config';
 export * from './app/config/admin-ui/admin-ui.config';
 
-export * from './app/plugins/ebloc.plugin';
+export * from './app/plugin/ebloc.plugin';
 
 export * from './lib/storage';
 export * from './lib/shipping';

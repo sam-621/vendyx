@@ -2,7 +2,7 @@ import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 import { getConfig } from '@/app/config';
-import { EBlocPluginMetadataKeys, UiModuleConfig, getPluginMetadata } from '@/app/plugins';
+import { EBlocPluginMetadataKeys, UiModuleConfig, getPluginMetadata } from '@/app/plugin';
 
 @Controller('admin-ui-config')
 export class AdminUiConfigController {
