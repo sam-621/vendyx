@@ -1,8 +1,11 @@
-import { PluginConfig } from '@ebloc/core';
+import { EBlocPlugin } from '@ebloc/core';
 import { HelloWorldEntity } from './entities/hello-world.entity';
-import { HelloWorldModule } from './ui-module/modules/hello-world.module';
+import { HelloWorldUiModule } from './ui-module/modules/hello-world.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-export const HelloWorld: PluginConfig = {
+@EBlocPlugin({
   entities: [HelloWorldEntity],
-  uiModules: [HelloWorldModule]
-};
+  uiModules: [HelloWorldUiModule],
+  imports: [TypeOrmModule.forFeature([HelloWorldEntity])]
+})
+export class HelloWorldPlugin {}

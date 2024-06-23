@@ -1,14 +1,14 @@
 import { UiModuleConfig } from '@ebloc/core';
 import path from 'path';
 
-export const HelloWorldModule: UiModuleConfig = {
+export const HelloWorldUiModule: UiModuleConfig = {
   sidebarNavLink: {
     icon: 'home',
     label: 'Hello-world',
     url: '/hello-world'
   },
   compiledUiModule: {
-    path: path.join(process.cwd(), './ui-modules/hello-world/dist'),
+    path: path.join(process.cwd(), './plugins/hello-world/ui-module/dist'),
     rename: 'hello-world'
   }
 };

@@ -6,7 +6,7 @@ import {
   bootstrap
 } from '@ebloc/core';
 import { config } from 'dotenv';
-import path from 'path';
+import { HelloWorldPlugin } from './plugins/hello-world/hello-world.plugin';
 
 config();
 
@@ -42,21 +42,5 @@ bootstrap({
     },
     serveUrl: '/admin'
   },
-  plugins: [
-    {
-      uiModules: [
-        {
-          sidebarNavLink: {
-            icon: 'home',
-            label: 'Hello-world',
-            url: '/hello-world'
-          },
-          compiledUiModule: {
-            path: path.join(process.cwd(), './ui-modules/hello-world/dist'),
-            rename: 'hello-world'
-          }
-        }
-      ]
-    }
-  ]
+  plugins: [HelloWorldPlugin]
 });

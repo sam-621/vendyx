@@ -1,6 +1,7 @@
+import { DynamicModule } from '@nestjs/common';
+
 import { AdminUiConfig } from './admin-ui/admin-ui.config';
 import { PaymentIntegration } from './payments/payment-integration.config';
-import { PluginConfig } from './plugins/plugin.config';
 import { ShippingPriceCalculatorConfig } from './shipping/shipping-price-calculator.config';
 import { StorageProvider } from './storage/storage-provider.config';
 
@@ -25,5 +26,5 @@ export interface EblocConfig {
     priceCalculators: ShippingPriceCalculatorConfig[];
   };
   adminUi: AdminUiConfig;
-  plugins: PluginConfig[];
+  plugins: DynamicModule[] | any[];
 }

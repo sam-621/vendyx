@@ -2,15 +2,17 @@ import { Controller, Get, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 import { getConfig } from '@/app/config';
+import { EBlocPluginMetadataKeys, UiModuleConfig, getPluginMetadata } from '@/app/plugins';
 
 @Controller('admin-ui-config')
 export class AdminUiConfigController {
   @Get('')
   async getAdminUiConfig(@Res() res: Response) {
-    const { adminUi, plugins } = getConfig();
+    const { adminUi } = getConfig();
+    const { plugins } = getConfig();
 
     const extraUiModules = plugins
-      .map(p => p.uiModules)
+      .map(p => getPluginMetadata<UiModuleConfig>(EBlocPluginMetadataKeys.UI_MODULES, p))
       .flat()
       .map(uiModule => ({
         id: uiModule.compiledUiModule.rename,

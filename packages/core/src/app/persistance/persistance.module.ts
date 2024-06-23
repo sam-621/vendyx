@@ -42,13 +42,11 @@ export const ENTITIES = [
       useFactory: () => {
         const { url } = getConfig().db;
 
-        const { plugins } = getConfig();
-        const entitiesInPlugins = plugins.map(plugin => plugin.entities).flat();
-
         return {
           type: 'postgres',
           url: url,
-          entities: [...ENTITIES, ...entitiesInPlugins],
+          // TODO: Do i need to add entities here?
+          entities: [...ENTITIES],
           // Indicates if database schema should be auto created on every application launch.
           synchronize: true,
           autoLoadEntities: true

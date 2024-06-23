@@ -1,3 +1,4 @@
+import { DEFAULT_EBLOC_CONFIG } from './default.config';
 import { EblocConfig } from './ebloc.config';
 
 let config: EblocConfig;
@@ -11,4 +12,7 @@ export const setConfig = (input?: Partial<EblocConfig>) => {
   };
 };
 
-export const getConfig = () => config;
+/**
+ * Returns the current configuration.
+ */
+export const getConfig = () => config ?? DEFAULT_EBLOC_CONFIG;

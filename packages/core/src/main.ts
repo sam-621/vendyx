@@ -6,7 +6,12 @@ import { dest, series, src } from 'gulp';
 import { BusinessExceptionFilter } from './app/api/common';
 import { AppModule } from './app/app.module';
 import { EblocConfig, getConfig, setConfig } from './app/config';
-import { PluginConfig } from './app/config/plugins/plugin.config';
+import { getPluginMetadata } from './app/plugins';
+import {
+  EBlocPluginMetadata,
+  EBlocPluginMetadataKeys,
+  UiModuleConfig
+} from './app/plugins/ebloc.plugin';
 
 /**
  * Copy gql schema files to dist folder
@@ -24,8 +29,11 @@ export async function bootstrap(config: EblocConfig) {
   series(copySchemaToDistFolder)(() => console.log('Schema copied to dist folder'));
 
   const { plugins } = getConfig();
+
   copyUiModulesAndAdminUiToDistFolderInServerPackage(
-    plugins.map(plugin => plugin.uiModules).flat()
+    plugins
+      .map(plugin => getPluginMetadata<UiModuleConfig>(EBlocPluginMetadataKeys.UI_MODULES, plugin))
+      .flat()
   );
 
   const app = await NestFactory.create(AppModule, {
@@ -43,7 +51,7 @@ export async function bootstrap(config: EblocConfig) {
  * Also copy the admin-ui dist folder to the admin-ui folder of the server package
  */
 const copyUiModulesAndAdminUiToDistFolderInServerPackage = (
-  uiModules: PluginConfig['uiModules']
+  uiModules: EBlocPluginMetadata['uiModules']
 ) => {
   uiModules.forEach(uiModule => {
     const { compiledUiModule } = uiModule;
