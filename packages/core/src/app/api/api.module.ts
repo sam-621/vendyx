@@ -29,12 +29,6 @@ const STOREFRONT_API_SCHEMA_PATH = './storefront/**/*.schema.gql';
     }),
     ServeStaticModule.forRootAsync({
       useFactory: () => {
-        console.log({
-          rootPath: path.join(__dirname, '../../admin-ui'),
-          __dirname,
-          process: process.cwd()
-        });
-
         return [
           {
             // rootPath: path.join(__dirname, '../../admin-ui'),

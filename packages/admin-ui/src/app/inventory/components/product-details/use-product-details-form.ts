@@ -10,6 +10,7 @@ import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 import { parseFormattedPrice } from '@/lib/utils';
 
+import { useProductDetailsContext } from '../../context';
 import {
   InventoryKeys,
   useCreateProduct,
@@ -24,6 +25,7 @@ import {
  * @returns Form methods and state
  */
 export const useProductDetailsForm = (update?: { productId: string; variantId: string }) => {
+  const { product } = useProductDetailsContext();
   const navigate = useNavigate();
   const { createAsset } = useCreateAsset();
   const { createProduct } = useCreateProduct();
@@ -77,7 +79,12 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
       navigate(`/inventory/${input.slug}`);
     }
 
+    const productHasOptions = Boolean(product?.options.length);
+    if (productHasOptions) return;
+
     // set formatted price to price input
+    // We do not do it when product has option because this code expects that the default variant form is rendered
+    // And when the product has options, the default variant form is not rendered
     methods.setValue(
       'price',
       getFormattedPrice(input.price * 100).replace('$', '') as unknown as number
@@ -97,11 +104,11 @@ const schema = z.object({
   assets: z.any(),
   prevAssets: z.array(z.string()).optional(),
   price: z.preprocess(
-    value => Number(parseFormattedPrice(value as string) ?? 0),
+    value => Number(parseFormattedPrice((value as string) ?? '') ?? 0),
     z.number().min(0).optional()
   ),
   quantity: z.preprocess(value => Number(value ?? 0), z.number().min(0).optional()),
-  sku: z.string(),
+  sku: z.string().optional(),
   published: z.boolean(),
   onlineOnly: z.boolean()
 } satisfies MakeAny<ProductDetailsFormInput>);
