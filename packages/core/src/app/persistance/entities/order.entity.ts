@@ -9,7 +9,7 @@ import {
 
 import { AddressEntity } from './address.entity';
 import { CustomerEntity } from './customer.entity';
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 import { OrderLineEntity } from './order-line.entity';
 import { PaymentEntity } from './payment.entity';
 import { ShipmentEntity } from './shipment.entity';
@@ -38,7 +38,7 @@ export enum OrderState {
 }
 
 @TypeOrmEntity('orders')
-export class OrderEntity extends Entity {
+export class OrderEntity extends EBlocEntity {
   @Column('varchar')
   code: string;
 

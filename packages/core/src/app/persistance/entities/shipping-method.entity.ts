@@ -1,10 +1,10 @@
 import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 import { ShipmentEntity } from './shipment.entity';
 
 @TypeOrmEntity('shipping_method')
-export class ShippingMethodEntity extends Entity {
+export class ShippingMethodEntity extends EBlocEntity {
   @Column('varchar')
   name: string;
 

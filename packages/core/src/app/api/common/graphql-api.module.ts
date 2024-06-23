@@ -17,10 +17,10 @@ export class GraphqlApiModule {
         introspection: true,
         driver: ApolloDriver,
         plugins: [ApolloServerPluginLandingPageLocalDefault()],
-        formatError: (error) => {
+        formatError: error => {
           return {
             message: error.message,
-            code: error.extensions?.code,
+            code: error.extensions?.code
           };
         },
         // definitions: {
@@ -32,8 +32,8 @@ export class GraphqlApiModule {
         // },
         path: options.path,
         typePaths: options.typePaths,
-        include: options.include,
-      }),
+        include: options.include
+      })
     };
   }
 }

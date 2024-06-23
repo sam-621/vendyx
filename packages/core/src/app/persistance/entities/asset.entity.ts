@@ -1,14 +1,14 @@
 import { Column, ManyToMany, Entity as TypeOrmEntity } from 'typeorm';
 
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 import { ProductEntity } from './product.entity';
 
 export enum AssetType {
-  IMAGE = 'IMAGE',
+  IMAGE = 'IMAGE'
 }
 
 @TypeOrmEntity('asset')
-export class AssetEntity extends Entity {
+export class AssetEntity extends EBlocEntity {
   @Column('varchar')
   name: string;
 
@@ -18,10 +18,10 @@ export class AssetEntity extends Entity {
   @Column({
     type: 'enum',
     enum: AssetType,
-    default: AssetType.IMAGE,
+    default: AssetType.IMAGE
   })
   type: string;
 
-  @ManyToMany(() => ProductEntity, (p) => p.assets)
+  @ManyToMany(() => ProductEntity, p => p.assets)
   products: ProductEntity[];
 }

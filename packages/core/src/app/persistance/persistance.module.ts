@@ -15,7 +15,7 @@ import {
   ProductEntity,
   ShipmentEntity,
   ShippingMethodEntity,
-  VariantEntity,
+  VariantEntity
 } from './entities';
 import { getConfig } from '../config';
 
@@ -33,7 +33,7 @@ export const ENTITIES = [
   PaymentEntity,
   ShipmentEntity,
   PaymentMethodEntity,
-  ShippingMethodEntity,
+  ShippingMethodEntity
 ];
 
 @Module({
@@ -42,15 +42,19 @@ export const ENTITIES = [
       useFactory: () => {
         const { url } = getConfig().db;
 
+        const { plugins } = getConfig();
+        const entitiesInPlugins = plugins.map(plugin => plugin.entities).flat();
+
         return {
           type: 'postgres',
           url: url,
-          entities: ENTITIES,
+          entities: [...ENTITIES, ...entitiesInPlugins],
           // Indicates if database schema should be auto created on every application launch.
           synchronize: true,
+          autoLoadEntities: true
         };
-      },
-    }),
-  ],
+      }
+    })
+  ]
 })
 export class PersistanceModule {}

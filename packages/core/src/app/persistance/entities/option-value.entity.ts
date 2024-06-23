@@ -1,11 +1,11 @@
 import { Column, ManyToMany, ManyToOne, Entity as TypeOrmEntity } from 'typeorm';
 
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 import { OptionEntity } from './option.entity';
 import { VariantEntity } from './variant.entity';
 
 @TypeOrmEntity('option_value')
-export class OptionValueEntity extends Entity {
+export class OptionValueEntity extends EBlocEntity {
   @Column('varchar')
   value: string;
 

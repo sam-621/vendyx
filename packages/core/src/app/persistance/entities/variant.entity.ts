@@ -7,13 +7,13 @@ import {
   Entity as TypeOrmEntity
 } from 'typeorm';
 
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 import { OptionValueEntity } from './option-value.entity';
 import { OrderLineEntity } from './order-line.entity';
 import { ProductEntity } from './product.entity';
 
 @TypeOrmEntity('variant')
-export class VariantEntity extends Entity {
+export class VariantEntity extends EBlocEntity {
   @Column('varchar')
   sku: string;
 

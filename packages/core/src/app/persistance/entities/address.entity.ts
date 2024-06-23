@@ -1,10 +1,10 @@
 import { Column, ManyToOne, Entity as TypeOrmEntity } from 'typeorm';
 
 import { CustomerEntity } from './customer.entity';
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 
 @TypeOrmEntity('address')
-export class AddressEntity extends Entity {
+export class AddressEntity extends EBlocEntity {
   @Column('varchar', { name: 'street_line_1' })
   streetLine1: string;
 

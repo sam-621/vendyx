@@ -1,11 +1,11 @@
 import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
 import { AddressEntity } from './address.entity';
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 import { OrderEntity } from './order.entity';
 
 @TypeOrmEntity('customer')
-export class CustomerEntity extends Entity {
+export class CustomerEntity extends EBlocEntity {
   @Column('varchar', { name: 'first_name', nullable: true })
   firstName: string;
 
@@ -24,9 +24,9 @@ export class CustomerEntity extends Entity {
   @Column('boolean')
   enable: boolean;
 
-  @OneToMany(() => OrderEntity, (o) => o.customer)
+  @OneToMany(() => OrderEntity, o => o.customer)
   orders: OrderEntity[];
 
-  @OneToMany(() => AddressEntity, (a) => a.customer)
+  @OneToMany(() => AddressEntity, a => a.customer)
   addresses: AddressEntity[];
 }

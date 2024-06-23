@@ -1,11 +1,11 @@
 import { Column, JoinTable, ManyToMany, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
 import { AssetEntity } from './asset.entity';
-import { Entity } from './entity';
+import { EBlocEntity } from './ebloc-entity';
 import { VariantEntity } from './variant.entity';
 
 @TypeOrmEntity('product')
-export class ProductEntity extends Entity {
+export class ProductEntity extends EBlocEntity {
   @Column('varchar')
   name: string;
 

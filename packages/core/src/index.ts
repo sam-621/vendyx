@@ -4,6 +4,14 @@
 
 export * from './main';
 export * from './app/service/services';
+export * from './app/persistance/entities';
+
+export * from './app/config/payments/payment-integration.config';
+export * from './app/config/shipping/shipping-price-calculator.config';
+export * from './app/config/storage/storage-provider.config';
+export * from './app/config/plugins/plugin.config';
+export * from './app/config/admin-ui/admin-ui.config';
+
 export * from './lib/storage';
 export * from './lib/shipping';
 export * from './lib/payments';

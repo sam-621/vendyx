@@ -12,7 +12,7 @@ import {
   ProductService,
   ShipmentService,
   ShippingMethodService,
-  VariantService,
+  VariantService
 } from './services';
 import { ENTITIES } from '../persistance';
 import { SecurityModule } from '../security';
@@ -28,12 +28,12 @@ const SERVICES = [
   PaymentMethodService,
   PaymentService,
   ShippingMethodService,
-  ShipmentService,
+  ShipmentService
 ];
 
 @Module({
   imports: [SecurityModule, TypeOrmModule.forFeature([...ENTITIES])],
   providers: [...SERVICES],
-  exports: [...SERVICES],
+  exports: [...SERVICES]
 })
 export class ServiceModule {}
