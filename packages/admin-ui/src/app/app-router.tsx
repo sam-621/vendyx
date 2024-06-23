@@ -52,8 +52,8 @@ export const AppRouter = () => {
 
               {extraUiModules.map(uiModule => (
                 <Route
-                  key={uiModule.url}
-                  path={uiModule.url}
+                  key={uiModule.slug}
+                  path={uiModule.slug}
                   element={
                     <Suspense fallback={<LogoLoader />}>
                       <ExtraUiModulePage id={uiModule.id} />

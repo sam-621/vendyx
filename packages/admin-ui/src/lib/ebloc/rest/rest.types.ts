@@ -14,7 +14,7 @@ export type AdminUiConfig = {
     description: string;
   };
   extraUiModules: {
-    url: string;
+    slug: string;
     label: string;
     icon: string;
     id: string;

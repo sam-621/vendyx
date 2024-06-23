@@ -1,7 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
 
 import { cn } from '@ebloc/theme';
-import { HomeIcon, PackageIcon, Settings, ShoppingCartIcon, UserIcon } from 'lucide-react';
+import {
+  GlobeIcon,
+  HomeIcon,
+  PackageIcon,
+  Settings,
+  ShoppingCartIcon,
+  UserIcon
+} from 'lucide-react';
 
 import { useConfigContext } from '@/app/config/contexts';
 
@@ -69,13 +76,13 @@ export const AdminSidebar = () => {
         </Link>
         {extraUiModules.map(uiModule => (
           <Link
-            key={uiModule.url}
-            to={uiModule.url}
+            key={uiModule.slug}
+            to={uiModule.slug}
             className={cn(
               'text-sm font-medium flex items-center gap-3 rounded-lg px-3 py-2 transition-all text-muted-foreground hover:text-primary'
             )}
           >
-            <UserIcon size={16} />
+            <GlobeIcon size={16} />
             {uiModule.label}
           </Link>
         ))}

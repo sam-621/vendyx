@@ -86,9 +86,9 @@ export interface EBlocPluginMetadata extends ModuleMetadata {
 export interface UiModuleConfig {
   sidebarNavLink: {
     /**
-     * The url where de module ui will be loaded.
+     * The slug where de module ui will be loaded.
      */
-    url: string;
+    slug: string;
     /**
      * The label that will be displayed in the sidebar.
      */
@@ -104,7 +104,10 @@ export interface UiModuleConfig {
      */
     path: string;
     /**
-     * rename your dist folder to a custom name, this name is used to reference the compiled ui module in the admin panel.
+     * rename your dist folder to a custom name, this name is used to reference the compiled ui module in the ebloc admin server.
+     *
+     * @warning
+     * This name should be unique for each ui module and should be different from the slug you defined in the sidebarNavLink.
      */
     rename: string;
   };
