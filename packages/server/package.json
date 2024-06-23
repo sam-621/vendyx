@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node index.ts",
-    "build": "rimraf ./admin-ui && tsc",
+    "build": "rimraf ./admin-ui && cd ui-modules/hello-world && yarn && yarn build && cd ../ && tsc",
     "start": "node dist/index.js"
   },
   "dependencies": {
