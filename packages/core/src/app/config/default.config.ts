@@ -1,4 +1,5 @@
 import { EblocConfig } from './ebloc.config';
+import { MockPlugin } from './mocks/plugin/mock.plugin';
 
 import { MercadoPagoIntegration, PaypalIntegration, StripeIntegration } from '@/lib/payments';
 import { CountryPriceCalculator, FedexPriceCalculator } from '@/lib/shipping';

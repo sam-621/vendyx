@@ -4,7 +4,6 @@ import { NestFactory } from '@nestjs/core';
 import { dest, series, src } from 'gulp';
 
 import { BusinessExceptionFilter } from './app/api/common';
-import { AppModule } from './app/app.module';
 import { EblocConfig, getConfig, setConfig } from './app/config';
 import { getPluginMetadata } from './app/plugin';
 import {
@@ -33,10 +32,20 @@ export async function bootstrap(config: EblocConfig) {
   copyUiModulesAndAdminUiToDistFolderInServerPackage(
     plugins
       .map(plugin => getPluginMetadata<UiModuleConfig>(EBlocPluginMetadataKeys.UI_MODULES, plugin))
+      .filter(uiModules => uiModules)
       .flat()
   );
 
-  const app = await NestFactory.create(AppModule, {
+  /**
+   * We need to import the app module dynamically
+   * because we need to be sure that config is already set
+   * before AppModule decorator is evaluated.
+   *
+   * This avoid having a undefined config in the AppModule
+   */
+  const appModule = await import('./app/app.module.js');
+
+  const app = await NestFactory.create(appModule.AppModule, {
     // TODO: Check this to do it the right way
     cors: true
   });
@@ -51,10 +60,10 @@ export async function bootstrap(config: EblocConfig) {
  * Also copy the admin-ui dist folder to the admin-ui folder of the server package
  */
 const copyUiModulesAndAdminUiToDistFolderInServerPackage = (
-  uiModules: EBlocPluginMetadata['uiModules']
+  uiModules: EBlocPluginMetadata['uiModules'] | undefined
 ) => {
   uiModules.forEach(uiModule => {
-    const { compiledUiModule } = uiModule;
+    const { compiledUiModule } = uiModule ?? {};
 
     src(path.join(compiledUiModule.path, '/**/*')).pipe(
       dest(path.join(process.cwd(), `admin-ui/${compiledUiModule.rename}`))
