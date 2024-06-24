@@ -82,8 +82,20 @@ export interface EBlocPluginMetadata extends ModuleMetadata {
    */
   uiModules?: UiModuleConfig[];
 
+  /**
+   * Storefront api extensions
+   *
+   * @description
+   * storefrontApiExtensions is the way you can extend the storefront graphql api with new types and resolvers.
+   */
   storefrontApiExtensions?: GraphqlApiExtension;
 
+  /**
+   * Admin api extensions
+   *
+   * @description
+   * adminApiExtensions is the way you can extend the admin graphql api with new types and resolvers.
+   */
   adminApiExtensions?: GraphqlApiExtension;
 }
 
@@ -118,7 +130,20 @@ export interface UiModuleConfig {
 }
 
 export interface GraphqlApiExtension {
+  /**
+   * Paths to files that contain GraphQL definitions.
+   *
+   * @example
+   * You should reference your file using an absolute path from the root of the project
+   *
+   * ```ts
+   * typePaths: [path.join(process.cwd(), 'path/to/your/schema.gql')]
+   * ```
+   */
   typePaths: string[];
+  /**
+   * NestJs Resolvers that will be added to the api.
+   */
   resolvers: any[];
 }
 

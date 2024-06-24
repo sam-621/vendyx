@@ -9,7 +9,6 @@ import { HelloWorldResolverAdmin } from './resolvers/hello-world-admin.resolver'
 
 @EBlocPlugin({
   entities: [HelloWorldEntity],
-  uiModules: [HelloWorldUiModule],
   imports: [TypeOrmModule.forFeature([HelloWorldEntity])],
   controllers: [HelloWorldController],
   storefrontApiExtensions: {
