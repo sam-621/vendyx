@@ -14,6 +14,7 @@ export class AdminUiConfigController {
     const extraUiModules = plugins
       .map(p => getPluginMetadata<UiModuleConfig>(EBlocPluginMetadataKeys.UI_MODULES, p))
       .flat()
+      .filter(uiModule => uiModule)
       .map(uiModule => ({
         id: uiModule.compiledUiModule.rename,
         ...uiModule.sidebarNavLink

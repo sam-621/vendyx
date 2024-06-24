@@ -8,14 +8,16 @@ export const getPluginMetadata = <T>(key: EBlocPluginMetadataKeys, target: any):
 export const getPluginTypePaths = (type: 'admin' | 'storefront') => {
   const { plugins } = getConfig();
 
-  const apiExtensions = plugins.map(p =>
-    getPluginMetadata<GraphqlApiExtension>(
-      EBlocPluginMetadataKeys[
-        type === 'admin' ? 'ADMIN_API_EXTENSIONS' : 'STOREFRONT_API_EXTENSIONS'
-      ],
-      p
+  const apiExtensions = plugins
+    .map(p =>
+      getPluginMetadata<GraphqlApiExtension>(
+        EBlocPluginMetadataKeys[
+          type === 'admin' ? 'ADMIN_API_EXTENSIONS' : 'STOREFRONT_API_EXTENSIONS'
+        ],
+        p
+      )
     )
-  );
+    .filter(apiExtension => apiExtension);
 
   const extensionsTypePaths = apiExtensions.map(apiExtension => apiExtension.typePaths).flat();
 
@@ -25,14 +27,16 @@ export const getPluginTypePaths = (type: 'admin' | 'storefront') => {
 export const getPluginResolvers = (type: 'admin' | 'storefront') => {
   const { plugins } = getConfig();
 
-  const apiExtensions = plugins.map(p =>
-    getPluginMetadata<GraphqlApiExtension>(
-      EBlocPluginMetadataKeys[
-        type === 'admin' ? 'ADMIN_API_EXTENSIONS' : 'STOREFRONT_API_EXTENSIONS'
-      ],
-      p
+  const apiExtensions = plugins
+    .map(p =>
+      getPluginMetadata<GraphqlApiExtension>(
+        EBlocPluginMetadataKeys[
+          type === 'admin' ? 'ADMIN_API_EXTENSIONS' : 'STOREFRONT_API_EXTENSIONS'
+        ],
+        p
+      )
     )
-  );
+    .filter(apiExtension => apiExtension);
 
   const extensionsResolvers = apiExtensions.map(apiExtension => apiExtension.resolvers).flat();
 
