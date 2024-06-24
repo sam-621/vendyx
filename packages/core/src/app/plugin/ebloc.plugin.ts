@@ -81,6 +81,10 @@ export interface EBlocPluginMetadata extends ModuleMetadata {
    * and the compiled ui module path (the path to the compiled ui module that will be loaded in the admin panel).
    */
   uiModules?: UiModuleConfig[];
+
+  storefrontApiExtensions?: GraphqlApiExtension;
+
+  adminApiExtensions?: GraphqlApiExtension;
 }
 
 export interface UiModuleConfig {
@@ -113,7 +117,14 @@ export interface UiModuleConfig {
   };
 }
 
+export interface GraphqlApiExtension {
+  typePaths: string[];
+  resolvers: any[];
+}
+
 export enum EBlocPluginMetadataKeys {
+  STOREFRONT_API_EXTENSIONS = 'storefrontApiExtensions',
+  ADMIN_API_EXTENSIONS = 'adminApiExtensions',
   ENTITIES = 'entities',
   UI_MODULES = 'uiModules'
 }
