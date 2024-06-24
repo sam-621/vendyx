@@ -64,7 +64,9 @@ export class OptionService {
       return new ErrorResult(OptionErrorCode.OPTION_NOT_FOUND, 'Option not found');
     }
 
-    return await this.db.getRepository(OptionEntity).save({ ...optionToUpdate, name });
+    return await this.db
+      .getRepository(OptionEntity)
+      .save({ ...optionToUpdate, name: name ?? undefined });
   }
 
   /**
@@ -74,6 +76,10 @@ export class OptionService {
     const optionToRemove = await this.db
       .getRepository(OptionEntity)
       .findOne({ where: { id }, relations: { values: true } });
+
+    if (!optionToRemove) {
+      return new ErrorResult(OptionErrorCode.OPTION_NOT_FOUND, 'Option not found');
+    }
 
     const optionValuesToRemove = optionToRemove.values;
 

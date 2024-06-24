@@ -14,6 +14,6 @@ export class ShipmentService {
       relations: { method: true }
     });
 
-    return shipment.method;
+    return shipment?.method;
   }
 }

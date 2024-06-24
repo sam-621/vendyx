@@ -14,6 +14,6 @@ export class PaymentService {
       relations: { method: true }
     });
 
-    return payment.method;
+    return payment?.method;
   }
 }

@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 
-import { getParsedSlug } from '@ebloc/common';
+import { clean, getParsedSlug } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, In, Not } from 'typeorm';
@@ -21,7 +21,7 @@ export class ProductService {
 
   async find(input: ListInput & { where?: FindOptionsWhere<ProductEntity> }) {
     return this.db.getRepository(ProductEntity).find({
-      ...input,
+      ...clean(input),
       where: input?.where,
       order: { createdAt: 'DESC' }
     });
@@ -47,20 +47,20 @@ export class ProductService {
     return null;
   }
 
-  async findVariants(id: ID, listInput?: ListInput) {
+  async findVariants(id: ID, listInput: ListInput) {
     const variants = await this.db.getRepository(VariantEntity).find({
       where: { product: { id } },
       order: { createdAt: 'ASC' },
-      ...listInput
+      ...clean(listInput)
     });
 
     return variants;
   }
 
-  async findAssets(id: ID, listInput?: ListInput) {
+  async findAssets(id: ID, listInput: ListInput) {
     const assets = await this.db.getRepository(AssetEntity).find({
       where: { products: { id: id } },
-      ...listInput
+      ...clean(listInput)
     });
 
     return assets;
@@ -109,7 +109,7 @@ export class ProductService {
       : undefined;
 
     const productToSave = this.db.getRepository(ProductEntity).create({
-      ...data,
+      ...clean(data),
       assets
     });
     return this.db.getRepository(ProductEntity).save(productToSave);
@@ -156,7 +156,7 @@ export class ProductService {
 
     return await this.db.getRepository(ProductEntity).save({
       ...productToUpdate,
-      ...input,
+      ...clean(input),
       slug: input.slug ? getParsedSlug(input.slug) : productToUpdate.slug,
       assets: newAssets
     });

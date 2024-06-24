@@ -17,7 +17,7 @@ export class OptionResolver {
 
   @Mutation('createOption')
   async createOption(@Args('input') input: CreateOptionInput) {
-    const result = await this.service.create(input.name, input.values);
+    const result = await this.service.create(input.name, input.values ?? []);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { option: result, apiErrors: [] };
   }

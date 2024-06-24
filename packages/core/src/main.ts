@@ -60,9 +60,9 @@ export async function bootstrap(config: EblocConfig) {
  * Also copy the admin-ui dist folder to the admin-ui folder of the server package
  */
 const copyUiModulesAndAdminUiToDistFolderInServerPackage = (
-  uiModules: EBlocPluginMetadata['uiModules'] | undefined
+  uiModules: EBlocPluginMetadata['uiModules']
 ) => {
-  uiModules.forEach(uiModule => {
+  uiModules?.forEach(uiModule => {
     const { compiledUiModule } = uiModule ?? {};
 
     src(path.join(compiledUiModule.path, '/**/*')).pipe(

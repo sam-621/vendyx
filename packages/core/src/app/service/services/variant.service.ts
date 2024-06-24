@@ -1,4 +1,4 @@
-import { convertToCent } from '@ebloc/common';
+import { clean, convertToCent } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, In, Not } from 'typeorm';
@@ -24,7 +24,7 @@ export class VariantService {
   constructor(@InjectDataSource() private db: DataSource) {}
 
   async find(input: ListInput) {
-    return this.db.getRepository(VariantEntity).find(input);
+    return this.db.getRepository(VariantEntity).find(clean(input));
   }
 
   async findUnique(id: ID) {
@@ -59,7 +59,7 @@ export class VariantService {
   ): Promise<ErrorResult<VariantErrorCode> | VariantEntity> {
     const product = await this.db
       .getRepository(ProductEntity)
-      .findOneBy({ id: productId, deletedAt: null });
+      .findOneBy({ id: productId, deletedAt: undefined });
 
     if (!product) {
       return new ErrorResult(VariantErrorCode.PRODUCT_NOT_FOUND, 'Product not found');
@@ -101,14 +101,14 @@ export class VariantService {
     // save price as 0 if input price is 0, otherwise convert to cents, if input price is undefined, keep the same price
     const priceToUpdate =
       input.price !== undefined
-        ? input.price === 0
+        ? input.price === 0 || input.price === null
           ? 0
           : convertToCent(input.price)
         : variantToUpdate.price;
 
     return this.db.getRepository(VariantEntity).save({
       ...variantToUpdate,
-      ...input,
+      ...clean(input),
       price: priceToUpdate,
       optionValues: optionValues
     });

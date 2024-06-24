@@ -1,3 +1,4 @@
+import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectDataSource } from '@nestjs/typeorm';
@@ -38,8 +39,8 @@ export class OrderService {
 
   async find(input: ListInput) {
     return await this.db.getRepository(OrderEntity).find({
-      skip: input?.skip,
-      take: input?.take,
+      skip: input?.skip ?? undefined,
+      take: input?.take ?? undefined,
       order: { createdAt: 'DESC' },
       where: { state: Not(OrderState.MODIFYING) }
     });
@@ -72,7 +73,7 @@ export class OrderService {
       relations: { productVariant: true }
     });
 
-    return orderLine.productVariant;
+    return orderLine?.productVariant;
   }
 
   async findCustomer(orderId: ID) {
@@ -81,7 +82,7 @@ export class OrderService {
       relations: { customer: true }
     });
 
-    return order.customer;
+    return order?.customer;
   }
 
   async findShippingAddress(orderId: ID) {
@@ -89,7 +90,7 @@ export class OrderService {
       where: { id: orderId }
     });
 
-    if (!order.shippingAddress) {
+    if (!order?.shippingAddress) {
       return null;
     }
 
@@ -103,7 +104,7 @@ export class OrderService {
       relations: { payment: true }
     });
 
-    return order.payment;
+    return order?.payment;
   }
 
   async findShipment(orderId: ID) {
@@ -112,7 +113,7 @@ export class OrderService {
       relations: { shipment: true }
     });
 
-    return order.shipment;
+    return order?.shipment;
   }
 
   /**
@@ -162,6 +163,10 @@ export class OrderService {
     const variant = await this.db.getRepository(VariantEntity).findOne({
       where: { id: input.productVariantId }
     });
+
+    if (!variant) {
+      return new ErrorResult(OrderErrorCode.VARIANT_NOT_FOUND, 'Variant not found');
+    }
 
     const variantInOrderLine = order.lines.find(line => line.productVariant.id === variant.id);
 
@@ -314,8 +319,12 @@ export class OrderService {
     });
 
     let customerUpdated = this.db.getRepository(CustomerEntity).create({
-      ...customer,
-      ...input
+      firstName: input.firstName ?? customer?.firstName,
+      lastName: input.lastName ?? customer?.lastName,
+      email: input.email,
+      phoneNumber: input.phoneNumber ?? customer?.phoneNumber,
+      phoneCountryCode: input.phoneCountryCode ?? customer?.phoneCountryCode,
+      enable: input.enable ?? customer?.enable
     });
 
     customerUpdated = await this.db.getRepository(CustomerEntity).save(customerUpdated);
@@ -355,7 +364,7 @@ export class OrderService {
       );
     }
 
-    const address = this.db.getRepository(AddressEntity).create(input);
+    const address = this.db.getRepository(AddressEntity).create(clean(input));
 
     order.shippingAddress = address;
 
@@ -413,7 +422,7 @@ export class OrderService {
       p => p.code === shippingMethod.priceCalculatorCode
     );
 
-    const shippingPrice = await shippingPriceCalculator.calculatePrice(order);
+    const shippingPrice = await shippingPriceCalculator?.calculatePrice(order);
 
     const shipment = await this.db.getRepository(ShipmentEntity).save({
       amount: shippingPrice,
@@ -474,7 +483,14 @@ export class OrderService {
       p => p.code === paymentMethod.integrationCode
     );
 
-    const paymentIntegrationResult = await paymentIntegration.createPayment(order);
+    const paymentIntegrationResult = await paymentIntegration?.createPayment(order);
+
+    if (!paymentIntegrationResult) {
+      return new ErrorResult(
+        OrderErrorCode.MISSING_PAYMENT_INTEGRATION,
+        'No payment integration found for the given payment method'
+      );
+    }
 
     // TODO: do something with paymentIntegrationResult.error
     if (paymentIntegrationResult.status === 'declined') {
@@ -620,7 +636,7 @@ export class OrderService {
         relations: { customer: true, shipment: true }
       });
 
-      if (!orderToVerify.customer || !orderToVerify.shipment) {
+      if (!orderToVerify?.customer || !orderToVerify?.shipment) {
         return false;
       }
     }
@@ -637,9 +653,9 @@ export class OrderService {
       relations: { lines: true, shipment: true }
     });
 
-    const subtotal = order.lines.reduce((acc, line) => acc + line.linePrice, 0);
-    const total = subtotal + (order.shipment?.amount ?? 0);
-    const totalQuantity = order.lines.reduce((acc, line) => acc + line.quantity, 0);
+    const subtotal = order?.lines.reduce((acc, line) => acc + line.linePrice, 0) ?? 0;
+    const total = subtotal + (order?.shipment?.amount ?? 0);
+    const totalQuantity = order?.lines.reduce((acc, line) => acc + line.quantity, 0);
 
     return await this.db.getRepository(OrderEntity).save({
       ...order,

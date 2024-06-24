@@ -13,7 +13,7 @@ export class OptionValueService {
       .getRepository(OptionValueEntity)
       .findOne({ where: { id: id }, relations: { option: true } });
 
-    return option.option;
+    return option?.option;
   }
 
   // TODO: REFACTOR THIS TO A TRANSACTION

@@ -9,3 +9,9 @@ export type StringifyObject<T> = {
 export type MakeAny<T> = {
   [K in keyof T]: any;
 };
+
+export type NullToUndefined<T> = T extends null
+  ? undefined
+  : T extends object
+  ? { [K in keyof T]: NullToUndefined<T[K]> }
+  : T;
