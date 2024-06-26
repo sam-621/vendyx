@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 
 import { cn } from '@ebloc/theme';
-import { GlobeIcon, HomeIcon, PackageIcon, Settings, ShoppingCartIcon } from 'lucide-react';
+import { GlobeIcon, PackageIcon, Settings, ShoppingCartIcon } from 'lucide-react';
 
 import { useConfigContext } from '@/app/config/contexts';
 
@@ -9,26 +9,12 @@ export const AdminSidebar = () => {
   const { extraUiModules } = useConfigContext();
   const { pathname } = useLocation();
 
-  const isInDashboard = pathname.includes('/') && pathname.length === 1;
   const isInOrders = pathname.includes('/orders');
   const isInInventory = pathname.includes('/inventory');
 
   return (
     <div className="flex flex-1 flex-col justify-between px-4 pb-4">
       <div className="flex flex-col gap-1">
-        <Link
-          className={cn(
-            'text-sm font-medium flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary',
-            {
-              'text-primary bg-muted': isInDashboard,
-              'text-muted-foreground': !isInDashboard
-            }
-          )}
-          to="/"
-        >
-          <HomeIcon size={16} />
-          Dashboard
-        </Link>
         <Link
           className={cn(
             'text-sm font-medium flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary',
