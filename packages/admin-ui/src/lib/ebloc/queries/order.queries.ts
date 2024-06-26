@@ -18,6 +18,10 @@ export const CommonOrder = graphql(`
         productVariant {
           id
           sku
+          optionValues {
+            id
+            value
+          }
           product {
             name
             slug
@@ -40,7 +44,6 @@ export const CommonOrder = graphql(`
       phoneCountryCode
     }
     shippingAddress {
-      id
       streetLine1
       streetLine2
       postalCode

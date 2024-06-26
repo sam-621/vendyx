@@ -2,6 +2,7 @@ import { type FC } from 'react';
 
 import { getFormattedPrice } from '@ebloc/common';
 import {
+  Badge,
   Card,
   CardContent,
   CardHeader,
@@ -54,7 +55,12 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
                       }
                       className="h-12 w-12 object-cover rounded-md"
                     />
-                    {line.productVariant.product.name}
+                    <div className="flex flex-col justify-between h-12">
+                      <span>{line.productVariant.product.name}</span>
+                      <Badge variant="secondary" className="py-0 text-xs">
+                        {line.productVariant.optionValues?.map(v => v.value).join(' / ')}
+                      </Badge>
+                    </div>
                   </TableCell>
                   <TableCell>{getFormattedPrice(line.unitPrice)}</TableCell>
                   <TableCell>{line.quantity}</TableCell>

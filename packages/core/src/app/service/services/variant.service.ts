@@ -135,8 +135,6 @@ export class VariantService {
       .getRepository(OrderLineEntity)
       .findOne({ where: { productVariant: { id } } });
 
-    // await this.removeUnusedOptionValues(variantToRemove, isVariantInAnyOrder ? 'soft' : 'hard');
-
     if (isVariantInAnyOrder) {
       await this.db.getRepository(VariantEntity).softDelete({ id });
     } else {
