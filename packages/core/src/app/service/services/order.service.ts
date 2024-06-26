@@ -70,7 +70,8 @@ export class OrderService {
   async findVariantInLine(orderLineId: ID) {
     const orderLine = await this.db.getRepository(OrderLineEntity).findOne({
       where: { id: orderLineId },
-      relations: { productVariant: true }
+      relations: { productVariant: true },
+      withDeleted: true
     });
 
     return orderLine?.productVariant;

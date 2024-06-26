@@ -47,7 +47,8 @@ export class VariantService {
 
   async findProduct(id: ID) {
     const optionValues = await this.db.getRepository(ProductEntity).findOne({
-      where: { variants: { id } }
+      where: { variants: { id } },
+      withDeleted: true
     });
 
     return optionValues;
