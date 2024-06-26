@@ -10,8 +10,8 @@ export abstract class EBlocEntity extends EntitySchema {
   @PrimaryGeneratedColumn('uuid')
   id: ID;
 
-  // DESC - Newest first
-  // ASC - Oldest first
+  // DESC - Newest first - oldest last
+  // ASC - Oldest first - newest last
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

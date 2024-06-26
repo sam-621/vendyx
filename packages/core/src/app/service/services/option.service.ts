@@ -17,11 +17,10 @@ export class OptionService {
 
   async findValues(id: ID) {
     const optionValues = await this.db.getRepository(OptionValueEntity).find({
-      where: { option: { id } },
-      order: { value: 'DESC' }
+      where: { option: { id } }
     });
 
-    return optionValues;
+    return optionValues.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   }
 
   /**

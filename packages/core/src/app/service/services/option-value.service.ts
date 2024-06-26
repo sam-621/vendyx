@@ -17,9 +17,15 @@ export class OptionValueService {
   }
 
   // TODO: REFACTOR THIS TO A TRANSACTION
-  create(values: string[]) {
-    return this.db
-      .getRepository(OptionValueEntity)
-      .save(values.map(value => this.db.getRepository(OptionValueEntity).create({ value })));
+  async create(values: string[]) {
+    const results: OptionValueEntity[] = [];
+
+    for (const value of values) {
+      const optionValue = this.db.getRepository(OptionValueEntity).create({ value });
+      const savedOptionValue = await this.db.getRepository(OptionValueEntity).save(optionValue);
+      results.push(savedOptionValue);
+    }
+
+    return results;
   }
 }

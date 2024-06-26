@@ -132,7 +132,9 @@ export const useUpdateOptionForm = (
     }
 
     const optionValuesToUpdate = newOptionValues.filter(
-      v => oldOptionValues.find(o => o.id === v.id)?.value !== v.value
+      v =>
+        oldOptionValues.find(o => o.id === v.id) &&
+        oldOptionValues.find(o => o.id === v.id)?.value !== v.value
     );
     if (optionValuesToUpdate.length) {
       await updateOptionValues(optionValuesToUpdate.map(v => ({ id: v.id, value: v.value })));
