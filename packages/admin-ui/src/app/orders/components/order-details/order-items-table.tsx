@@ -37,7 +37,6 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
             <TableCaption>Order breakdown.</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead>SKU</TableHead>
                 <TableHead>Product</TableHead>
                 <TableHead>Unit price</TableHead>
                 <TableHead>Quantity</TableHead>
@@ -47,7 +46,6 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
             <TableBody>
               {lines.map(line => (
                 <TableRow key={line.id}>
-                  <TableCell>{line.productVariant.sku}</TableCell>
                   <TableCell className="flex items-center gap-2 w-full">
                     <img
                       src={
@@ -72,7 +70,6 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
                 <TableCell>Subtotal</TableCell>
                 <TableCell>{order.totalQuantity} Products</TableCell>
                 <TableCell></TableCell>
-                <TableCell></TableCell>
                 <TableCell>{getFormattedPrice(order.subtotal)}</TableCell>
               </TableRow>
 
@@ -80,13 +77,11 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
                 <TableCell>Shipment</TableCell>
                 <TableCell>{shipment?.method.name ?? ''}</TableCell>
                 <TableCell></TableCell>
-                <TableCell></TableCell>
                 <TableCell>{getFormattedPrice(shipment?.amount ?? 0)}</TableCell>
               </TableRow>
 
               <TableRow className="border-transparent">
                 <TableCell className="font-semibold">Total</TableCell>
-                <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell className="font-semibold">{getFormattedPrice(order.total)}</TableCell>
