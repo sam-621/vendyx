@@ -185,9 +185,6 @@ export class ProductService {
       where: { product: { id } },
       withDeleted: true
     });
-    console.log({
-      productVariants
-    });
 
     const hasVariantsSoftDeleted = productVariants.some(v => v.deletedAt !== null);
     const variantsInProduct = productVariants.filter(v => !v.deletedAt);

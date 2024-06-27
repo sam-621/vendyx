@@ -33,9 +33,6 @@ export const useRemoveProduct = () => {
       productBeginUpdated = await removeSingleVariant(variant.id, {
         ...productBeginUpdated
       });
-      console.log({
-        productOptions: productBeginUpdated
-      });
     }
 
     const {

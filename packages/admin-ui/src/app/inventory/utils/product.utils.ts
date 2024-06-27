@@ -37,11 +37,6 @@ export const isProductDetailsFormDirty = (
     quantity: Number(formInput.quantity)
   };
 
-  console.log({
-    persisted,
-    formattedInput
-  });
-
   const result = Object.keys(persisted).some(key => {
     if (['price', 'sku', 'quantity'].includes(key) && product.variants.items.length > 1) {
       return false;

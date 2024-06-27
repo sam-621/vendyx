@@ -15,6 +15,7 @@ import {
   ID,
   OptionValueEntity,
   OrderLineEntity,
+  OrderState,
   ProductEntity,
   VariantEntity
 } from '@/app/persistance';
@@ -133,11 +134,23 @@ export class VariantService {
       return new ErrorResult(VariantErrorCode.VARIANT_NOT_FOUND, 'Variant not found');
     }
 
-    const isVariantInAnyOrder = await this.db
+    const orderLinesWhereVariantIs = await this.db
       .getRepository(OrderLineEntity)
-      .findOne({ where: { productVariant: { id } } });
+      .find({ where: { productVariant: { id } }, relations: { order: true } });
 
-    if (isVariantInAnyOrder) {
+    const ordersWithModifyingState = orderLinesWhereVariantIs.filter(
+      orderLine => orderLine.order.state === OrderState.MODIFYING
+    );
+
+    // Variant belongs to an order that is in the modifying state (adding items) we remove the order line
+    await this.db.getRepository(OrderLineEntity).remove(ordersWithModifyingState);
+
+    const ordersAlreadySettled = orderLinesWhereVariantIs.filter(
+      orderLine => orderLine.order.state !== OrderState.MODIFYING
+    );
+
+    // Variant belongs to an order that has already been settled
+    if (ordersAlreadySettled.length) {
       await this.db.getRepository(VariantEntity).softDelete({ id });
     } else {
       await this.db.getRepository(VariantEntity).remove(variantToRemove);
