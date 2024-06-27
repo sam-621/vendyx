@@ -320,12 +320,8 @@ export class OrderService {
     });
 
     let customerUpdated = this.db.getRepository(CustomerEntity).create({
-      firstName: input.firstName ?? customer?.firstName,
-      lastName: input.lastName ?? customer?.lastName,
-      email: input.email,
-      phoneNumber: input.phoneNumber ?? customer?.phoneNumber,
-      phoneCountryCode: input.phoneCountryCode ?? customer?.phoneCountryCode,
-      enable: input.enable ?? customer?.enable
+      ...customer,
+      ...clean(input)
     });
 
     customerUpdated = await this.db.getRepository(CustomerEntity).save(customerUpdated);

@@ -72,8 +72,8 @@ export const useUpdateOptionForm = (
     );
     const duplicatedVariants = getVariantsWithDuplicatedValues(variantsWithoutOption);
 
-    await removeOption(option.id);
     await Promise.all(duplicatedVariants.map(async v => await removeVariant(v.id)));
+    await removeOption(option.id);
 
     const allVariantsWereRemoved = duplicatedVariants.length === product?.variants?.items?.length;
 

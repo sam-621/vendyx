@@ -31,10 +31,11 @@ export class VariantService {
     return this.findById(id);
   }
 
-  async findOptionValues(id: ID) {
+  async findOptionValues(id: ID, withDeleted = false) {
     const optionValues = await this.db.getRepository(OptionValueEntity).find({
       where: { variants: { id } },
-      relations: { option: true }
+      relations: { option: true },
+      withDeleted: withDeleted
     });
 
     // order option values by option created at date

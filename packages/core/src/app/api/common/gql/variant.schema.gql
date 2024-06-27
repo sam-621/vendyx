@@ -7,7 +7,7 @@ type Variant implements Node {
   stock: Int!
   published: Boolean!
 
-  optionValues: [OptionValue!]
+  optionValues(withDeleted: Boolean): [OptionValue!]
   product: Product!
 }
 

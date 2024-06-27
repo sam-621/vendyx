@@ -30,12 +30,12 @@ const cleanDb = async () => {
 
   console.log('Adding shipping and payment methods 🚚 💳');
   await dataSource.query(`
-    INSERT INTO shipping_method (name, description, price_calculator_code, enabled)
-    VALUES ('Fedex', 'Envíos con Fedex', 'fedex-calculator', true);
+    INSERT INTO shipping_method (id, name, description, price_calculator_code, enabled)
+    VALUES ('96f617d5-0e01-4993-97c7-512d2870efd4', 'Fedex', 'Envíos con Fedex', 'fedex-calculator', true);
 
-    INSERT INTO payment_method (name, description, integration_code, enabled)
-    VALUES ('Stripe', 'Pago con tarjeta de crédito y débito', 'stripe', true),
-           ('PayPal', 'Pago con tu cuenta de PayPal', 'paypal', true);
+    INSERT INTO payment_method (id, name, description, integration_code, enabled)
+    VALUES ('d438933f-7fb3-4c7b-9424-ead4cae81866', 'Stripe', 'Pago con tarjeta de crédito y débito', 'stripe', true),
+           ('27333884-a0db-4e37-8056-a6522d459b20', 'PayPal', 'Pago con tu cuenta de PayPal', 'paypal', true);
   `);
   console.log('Shipping and payment methods added ✨');
   console.log("Shipping methods: 'Fedex'");

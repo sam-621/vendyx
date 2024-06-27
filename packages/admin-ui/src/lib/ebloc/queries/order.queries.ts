@@ -18,7 +18,7 @@ export const CommonOrder = graphql(`
         productVariant {
           id
           sku
-          optionValues {
+          optionValues(withDeleted: true) {
             id
             value
           }

@@ -18,6 +18,7 @@ import { useProductDetailsContext } from '@/app/inventory/context';
 import {
   InventoryKeys,
   useCreateVariant,
+  useRemoveOption,
   useRemoveOptionValues,
   useRemoveVariant
 } from '@/app/inventory/hooks';
@@ -30,12 +31,23 @@ export const RemoveVariantButton: FC<Props> = ({ variant }) => {
   const { removeVariant } = useRemoveVariant();
   const { createVariant } = useCreateVariant();
   const { removeOptionValues } = useRemoveOptionValues();
+  const { removeOption } = useRemoveOption();
 
   const variantName = variant.optionValues?.map(({ value }) => value).join(' / ');
 
   const onRemove = async () => {
-    await removeUnusedOptionValues();
     await removeVariant(variant.id);
+    const optionValuesRemoved = await removeUnusedOptionValues();
+
+    const productOptions = product?.options ?? [];
+
+    const optionsToRemove = productOptions.filter(option =>
+      option.values?.every(value => optionValuesRemoved?.includes(value.id))
+    );
+
+    if (optionsToRemove?.length) {
+      await Promise.all(optionsToRemove.map(async option => await removeOption(option.id)));
+    }
 
     const isTheLastVariant = product?.variants?.items?.length === 1;
 
@@ -76,6 +88,8 @@ export const RemoveVariantButton: FC<Props> = ({ variant }) => {
     if (optionValuesToDelete?.length) {
       await removeOptionValues(optionValuesToDelete);
     }
+
+    return optionValuesToDelete ?? [];
   };
 
   return (

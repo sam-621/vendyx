@@ -74,16 +74,35 @@ export class OptionService {
   async remove(id: ID) {
     const optionToRemove = await this.db
       .getRepository(OptionEntity)
-      .findOne({ where: { id }, relations: { values: true } });
+      .findOne({ where: { id }, relations: { values: { variants: true } }, withDeleted: true });
 
     if (!optionToRemove) {
       return new ErrorResult(OptionErrorCode.OPTION_NOT_FOUND, 'Option not found');
     }
 
-    const optionValuesToRemove = optionToRemove.values;
+    const optionValuesToRemove = optionToRemove.values.filter(v => !v.deletedAt);
+    const hasOptionValuesAlreadySoftDeleted = optionToRemove.values.some(v => v.deletedAt);
+    const anyOptionValueToRemoveHasVariants = optionValuesToRemove.some(v => v.variants.length);
 
-    await this.db.getRepository(OptionValueEntity).remove(optionValuesToRemove);
-    await this.db.getRepository(OptionEntity).remove(optionToRemove);
+    const optionValuesForSoftDelete = optionValuesToRemove.filter(v => v.variants.length);
+    const optionValuesForHardDelete = optionValuesToRemove.filter(
+      v => !optionValuesForSoftDelete.map(v => v.id).includes(v.id)
+    );
+
+    await this.db.getRepository(OptionValueEntity).remove(optionValuesForHardDelete);
+    await this.db
+      .getRepository(OptionValueEntity)
+      .softRemove(optionValuesForSoftDelete.map(v => ({ id: v.id })));
+
+    if (
+      optionValuesForSoftDelete.length ||
+      hasOptionValuesAlreadySoftDeleted ||
+      anyOptionValueToRemoveHasVariants
+    ) {
+      await this.db.getRepository(OptionEntity).softDelete(optionToRemove.id);
+    } else {
+      await this.db.getRepository(OptionEntity).remove(optionToRemove);
+    }
 
     return true;
   }
@@ -128,12 +147,23 @@ export class OptionService {
    * 2. Remove option values from db
    */
   async removeOptionValues(ids: ID[]) {
-    const optionValuesToRemove = await this.db
-      .getRepository(OptionValueEntity)
-      .find({ where: { id: In(ids) }, relations: { option: true } });
+    const optionValuesToRemove = await this.db.getRepository(OptionValueEntity).find({
+      where: { id: In(ids) },
+      relations: { option: true, variants: true },
+      withDeleted: true
+    });
+
     const option = optionValuesToRemove[0].option;
 
-    await this.db.getRepository(OptionValueEntity).remove(optionValuesToRemove);
+    const optionsForSoftDelete = optionValuesToRemove.filter(v => v.variants.length);
+    const optionsForHardDelete = optionValuesToRemove.filter(
+      v => !optionsForSoftDelete.map(v => v.id).includes(v.id)
+    );
+
+    await this.db.getRepository(OptionValueEntity).remove(optionsForHardDelete);
+    await this.db
+      .getRepository(OptionValueEntity)
+      .softRemove(optionsForSoftDelete.map(v => ({ id: v.id })));
 
     return await this.db.getRepository(OptionEntity).findOne({ where: { id: option.id } });
   }

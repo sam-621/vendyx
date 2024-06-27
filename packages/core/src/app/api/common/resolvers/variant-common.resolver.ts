@@ -1,4 +1,4 @@
-import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { VariantEntity } from '@/app/persistance';
 import { VariantService } from '@/app/service';
@@ -8,8 +8,12 @@ export class VariantCommonResolver {
   constructor(private readonly variantService: VariantService) {}
 
   @ResolveField('optionValues')
-  async optionValues(@Parent() variant: VariantEntity) {
-    const optionValues = await this.variantService.findOptionValues(variant.id);
+  async optionValues(@Parent() variant: VariantEntity, @Args('withDeleted') withDeleted: boolean) {
+    console.log({
+      withDeleted
+    });
+
+    const optionValues = await this.variantService.findOptionValues(variant.id, withDeleted);
 
     return optionValues;
   }
