@@ -1,5 +1,8 @@
 import { type MutableRefObject, useEffect, useState } from 'react';
 
+/**
+ * Hook to check if an element is visible in the viewport.
+ */
 export function useIsVisible(ref: MutableRefObject<HTMLElement | null>, options?: Options) {
   const [isIntersecting, setIntersecting] = useState(options?.defaultValue ?? false);
 
