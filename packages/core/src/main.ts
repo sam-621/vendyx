@@ -3,7 +3,7 @@ import * as path from 'path';
 import { NestFactory } from '@nestjs/core';
 import { dest, series, src } from 'gulp';
 
-import { BusinessExceptionFilter } from './app/api/common';
+import { GlobalExceptionFilter } from './app/api/common';
 import { EblocConfig, getConfig, setConfig } from './app/config';
 import { getPluginMetadata } from './app/plugin';
 import {
@@ -50,7 +50,7 @@ export async function bootstrap(config: EblocConfig) {
     cors: true
   });
 
-  app.useGlobalFilters(new BusinessExceptionFilter());
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   await app.listen(port);
 }
