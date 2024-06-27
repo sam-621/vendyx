@@ -4,10 +4,8 @@ import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -47,15 +45,6 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem
-          onClick={async () => {
-            await navigator.clipboard.writeText(product.sku);
-            notification.success('SKU copied to clipboard');
-          }}
-        >
-          {t('inventory.action.copy-sku')}
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>{t('inventory.action.state')}</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>

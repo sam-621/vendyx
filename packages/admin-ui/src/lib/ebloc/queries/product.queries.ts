@@ -51,7 +51,7 @@ export const GetProductsQuery = graphql(`
         slug
         onlineOnly
         published
-        variants(input: { take: 1 }) {
+        variants {
           items {
             id
             sku

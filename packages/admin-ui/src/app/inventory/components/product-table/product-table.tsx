@@ -18,7 +18,7 @@ export const ProductTable = () => {
 
   const data: TableProduct[] =
     products?.map(p => {
-      const variant = p.variants.items[0];
+      const totalStock = p.variants.items.reduce((acc, v) => acc + v.stock, 0);
       const image = p.assets.items[0];
 
       return {
@@ -27,9 +27,8 @@ export const ProductTable = () => {
         slug: p.slug,
         status: p.published ? 'enabled' : 'disabled',
         image: image?.source ?? DEFAULT_PRODUCT_IMAGE,
-        price: variant?.price ?? 0,
-        sku: variant?.sku,
-        stock: variant?.stock
+        stock: totalStock,
+        totalVariants: p.variants.items.length
       };
     }) ?? [];
 
@@ -63,11 +62,10 @@ export const ProductTable = () => {
 
 export type TableProduct = {
   id: string;
-  sku: string;
   image: string;
   name: string;
   slug: string;
-  price: number;
   stock: number;
+  totalVariants: number;
   status: 'enabled' | 'disabled';
 };

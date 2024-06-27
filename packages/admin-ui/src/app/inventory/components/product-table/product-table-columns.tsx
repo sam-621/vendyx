@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { getFormattedPrice } from '@ebloc/common';
-import { Badge, Checkbox } from '@ebloc/theme';
+import { Badge, Checkbox, cn } from '@ebloc/theme';
 import { type ColumnDef } from '@tanstack/react-table';
 
 import { DataTableColumnHeader } from '@/lib/components/data-table';
@@ -54,21 +53,19 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
     }
   },
   {
-    accessorKey: 'price',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title={t('inventory.table.header.price')} />;
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.original.price.toString());
-      const formatted = getFormattedPrice(amount);
-
-      return <div className="font-medium">{formatted}</div>;
-    }
-  },
-  {
     accessorKey: 'stock',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title={t('inventory.table.header.stock')} />;
+    },
+    cell: ({ row }) => {
+      return (
+        <p>
+          <span className={cn(row.original.stock < 10 && 'text-destructive')}>
+            {row.original.stock} in stock
+          </span>{' '}
+          {row.original.totalVariants > 1 ? `for ${row.original.totalVariants} variants` : ''}
+        </p>
+      );
     }
   },
   {
