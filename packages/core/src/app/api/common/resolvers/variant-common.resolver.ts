@@ -9,10 +9,6 @@ export class VariantCommonResolver {
 
   @ResolveField('optionValues')
   async optionValues(@Parent() variant: VariantEntity, @Args('withDeleted') withDeleted: boolean) {
-    console.log({
-      withDeleted
-    });
-
     const optionValues = await this.variantService.findOptionValues(variant.id, withDeleted);
 
     return optionValues;
