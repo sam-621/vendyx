@@ -52,6 +52,7 @@ enum ProductErrorCode {
   PRODUCT_NOT_FOUND
   NO_ID_OR_SLUG_PROVIDED
   DUPLICATED_SLUG
+  PRODUCT_HAS_VARIANTS
 }
 
 interface ProductResult {

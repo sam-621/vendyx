@@ -41,7 +41,17 @@ export const ProductTable = () => {
       onRemove={async products => {
         const id = notification.loading('Removing products...');
 
-        await Promise.all(products.map(async product => await removeProduct(product.id)));
+        const results = await Promise.all(
+          products.map(async product => await removeProduct(product.slug))
+        );
+
+        const errorMessage = results.find(r => r !== undefined);
+        if (errorMessage) {
+          notification.error(errorMessage);
+          notification.dismiss(id);
+          return;
+        }
+
         await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
         notification.dismiss(id);

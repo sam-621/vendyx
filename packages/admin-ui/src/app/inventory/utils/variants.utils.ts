@@ -159,3 +159,30 @@ export const getVariantsGroupedByOption = (
 
   return groups;
 };
+
+/**
+ * Method to get the option values that are not in use in the product variants. Should be use after a variant has been removed
+ *
+ * @param product Product your are performing the operation
+ * @param variantId Variant id that has been removed
+ */
+export const getUnusedOptionValues = (product: CommonProductFragment, variantId: string) => {
+  const variantsWithoutRemoved =
+    product?.variants?.items?.filter(({ id: currentId }) => currentId !== variantId) ?? [];
+
+  const optionValuesInUse = variantsWithoutRemoved
+    .map(variant => variant.optionValues)
+    .flat()
+    .map(v => v?.id ?? '');
+
+  const optionValuesInProduct = product?.options
+    .map(option => option.values)
+    .flat()
+    .map(v => v?.id ?? '');
+
+  const optionValuesToDelete = optionValuesInProduct?.filter(
+    optionValue => !optionValuesInUse.includes(optionValue)
+  );
+
+  return optionValuesToDelete ?? [];
+};

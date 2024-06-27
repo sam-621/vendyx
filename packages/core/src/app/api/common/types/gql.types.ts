@@ -36,7 +36,8 @@ export enum OrderErrorCode {
 export enum ProductErrorCode {
     PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
     NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
-    DUPLICATED_SLUG = "DUPLICATED_SLUG"
+    DUPLICATED_SLUG = "DUPLICATED_SLUG",
+    PRODUCT_HAS_VARIANTS = "PRODUCT_HAS_VARIANTS"
 }
 
 export enum VariantErrorCode {

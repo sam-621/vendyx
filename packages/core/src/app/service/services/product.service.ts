@@ -181,14 +181,37 @@ export class ProductService {
       );
     }
 
+    const productVariants = await this.db.getRepository(VariantEntity).find({
+      where: { product: { id } }
+    });
+    console.log({
+      productVariants
+    });
+
+    const hasVariantsSoftDeleted = productVariants.some(v => v.deletedAt !== null);
+    const variantsInProduct = productVariants.filter(v => !v.deletedAt);
+
+    if (variantsInProduct.length) {
+      return new ErrorResult(
+        ProductErrorCode.PRODUCT_HAS_VARIANTS,
+        'The product has variants, please remove them first'
+      );
+    }
+
     await this.db.getRepository(ProductEntity).save({
       ...productToRemove,
+      assets: [],
       // avoid slug duplication for new records
       slug: randomUUID()
     });
-    await this.db.getRepository(ProductEntity).softDelete({ id });
-    await this.db.getRepository(VariantEntity).softDelete({ product: { id } });
 
+    if (hasVariantsSoftDeleted) {
+      await this.db.getRepository(ProductEntity).softDelete({ id });
+      return true;
+    }
+
+    await this.db.getRepository(ProductEntity).delete({ id });
+    // await this.db.getRepository(VariantEntity).softDelete({ product: { id } });
     return true;
   }
 
