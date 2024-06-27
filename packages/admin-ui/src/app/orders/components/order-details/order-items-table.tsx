@@ -57,7 +57,7 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
                     />
                     <div className="flex flex-col justify-between h-12">
                       <span>{line.productVariant.product.name}</span>
-                      <Badge variant="secondary" className="py-0 text-xs">
+                      <Badge variant="secondary" className="py-0 px-1 w-fit text-xs">
                         {line.productVariant.optionValues?.map(v => v.value).join(' / ')}
                       </Badge>
                     </div>
