@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { Button, Input } from '@ebloc/theme';
+import { Button, Separator } from '@ebloc/theme';
 import { BellIcon } from 'lucide-react';
 
 import { useConfigContext } from '@/app/config/contexts';
@@ -29,10 +29,13 @@ export const AdminLayout: FC = () => {
         <AdminSidebar />
       </aside>
       <div className="flex flex-col">
-        <header className="flex justify-between items-center h-16 px-8 bg-body border-b sticky top-0 z-10">
-          <Input placeholder="Search..." className="bg-background w-60" />
-          <UserAvatar />
-        </header>
+        <div className="sticky top-0 z-10">
+          <header className="flex justify-end items-center h-16 px-8 bg-body sticky">
+            {/* <Input placeholder="Search..." className="bg-background w-60" /> */}
+            <UserAvatar />
+          </header>
+          <Separator />
+        </div>
         <main className="flex-1 w-full bg-body">
           <Outlet />
         </main>

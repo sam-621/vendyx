@@ -27,6 +27,7 @@ export const CreateProductPage = () => {
             container: 'w-[775px] mx-auto'
           }}
           backUrl="/inventory"
+          stickyHeader
         >
           <ProductDetails />
         </PageLayout>

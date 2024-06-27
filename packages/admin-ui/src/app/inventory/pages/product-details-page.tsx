@@ -34,6 +34,7 @@ export const ProductDetailsPage = () => {
             main: 'flex flex-col gap-8',
             container: 'w-[775px] mx-auto'
           }}
+          stickyHeader
         >
           <ProductDetails product={product} />
         </PageLayout>
