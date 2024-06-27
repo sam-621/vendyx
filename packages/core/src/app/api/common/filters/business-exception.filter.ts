@@ -14,6 +14,10 @@ export class BusinessExceptionFilter implements GqlExceptionFilter {
       raw: exception
     });
 
+    console.log({
+      exception
+    });
+
     // No Favicon found apollo server error
     if ((exception as any)?.response?.status === 404) return;
 

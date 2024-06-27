@@ -182,7 +182,8 @@ export class ProductService {
     }
 
     const productVariants = await this.db.getRepository(VariantEntity).find({
-      where: { product: { id } }
+      where: { product: { id } },
+      withDeleted: true
     });
     console.log({
       productVariants
