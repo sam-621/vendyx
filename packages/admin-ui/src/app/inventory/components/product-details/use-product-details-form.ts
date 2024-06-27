@@ -33,12 +33,14 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
   const { updateProduct } = useUpdateProduct();
   const { updateVariant } = useUpdateVariant();
 
-  const methods = useForm<ProductDetailsFormInput>({
+  const form = useForm<ProductDetailsFormInput>({
     resolver: zodResolver(schema)
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    const isUpdating = update?.productId && update?.variantId;
+    if (!form.formState.isDirty) return;
+
+    const isUpdating = update?.productId;
     const assets = input.assets ? await createAsset(input.assets) : undefined;
 
     const productInput = {
@@ -61,7 +63,7 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
       const { productId, variantId } = update;
 
       await updateProduct(productId, productInput);
-      await updateVariant(variantId, variantInput);
+      variantId && (await updateVariant(variantId, variantInput));
       await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
       notification.success('Product updated');
@@ -85,15 +87,15 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
     // set formatted price to price input
     // We do not do it when product has option because this code expects that the default variant form is rendered
     // And when the product has options, the default variant form is not rendered
-    methods.setValue(
+    form.setValue(
       'price',
       getFormattedPrice(input.price * 100).replace('$', '') as unknown as number
     );
   };
 
   return {
-    onSubmit: methods.handleSubmit(onSubmit),
-    ...methods
+    onSubmit: form.handleSubmit(onSubmit),
+    ...form
   };
 };
 

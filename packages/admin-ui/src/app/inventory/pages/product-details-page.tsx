@@ -15,8 +15,11 @@ import { useGetProductDetails } from '../hooks';
 export const ProductDetailsPage = () => {
   const { slug } = useParams();
   const { isLoading, product } = useGetProductDetails(slug ?? '');
-  const defaultVariant = product?.variants.items[0];
-  const methods = useProductDetailsForm({
+
+  const defaultVariant =
+    Number(product?.variants.items.length ?? 0) > 1 ? null : product?.variants.items[0];
+
+  const form = useProductDetailsForm({
     productId: product?.id ?? '',
     variantId: defaultVariant?.id ?? ''
   });
@@ -28,13 +31,17 @@ export const ProductDetailsPage = () => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.onSubmit}>
+    <FormProvider {...form}>
+      <form onSubmit={form.onSubmit}>
         <PageLayout
           title={product.name}
           subtitle={`Added at ${getFormattedDate(new Date(product.createdAt as string))}`}
           actions={
-            <Button isLoading={methods.formState.isSubmitting} type="submit">
+            <Button
+              disabled={!form.formState.isDirty}
+              isLoading={form.formState.isSubmitting}
+              type="submit"
+            >
               {t('product-details.action.save')}
             </Button>
           }
