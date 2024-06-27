@@ -5,9 +5,9 @@ import { buttonVariants, Card, CardContent, CardHeader, CardTitle } from '@ebloc
 import { PlusIcon } from 'lucide-react';
 
 import { Dropzone } from '@/lib/components/forms';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { t } from '@/lib/locales';
 import { getFileListIntoArray } from '@/lib/utils';
-import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
 

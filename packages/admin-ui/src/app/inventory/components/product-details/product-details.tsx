@@ -1,7 +1,6 @@
-import { type FC, useEffect } from 'react';
+import { type FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { getParsedSlug } from '@ebloc/common';
 import { Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/lib/components/forms';
@@ -11,18 +10,12 @@ import { t } from '@/lib/locales';
 import { ProductDetailsProvider } from '../../context/product-details-context';
 import { AssetDetails } from './asset-details/asset-details';
 import { VariantDetails } from './variant-details/variant-details';
+import { ProductDetailsSlugInput } from './product-details-slug-input';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
-  const { register, control, formState, watch, setValue } =
-    useFormContext<ProductDetailsFormInput>();
+  const { register, control, formState } = useFormContext<ProductDetailsFormInput>();
   const { errors } = formState;
-
-  const parsedSlug = getParsedSlug(watch('name') ?? product?.name ?? '');
-
-  useEffect(() => {
-    setValue('slug', parsedSlug);
-  }, [parsedSlug]);
 
   return (
     <ProductDetailsProvider value={{ product }}>
@@ -39,13 +32,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
               label={t('product-details.general.input.name')}
               placeholder="Black T-shirt"
             />
-            <FormInput
-              {...register('slug')}
-              value={parsedSlug ?? product?.slug}
-              label={t('product-details.general.input.slug')}
-              placeholder="black-t-shirt"
-              disabled
-            />
+            <ProductDetailsSlugInput product={product} />
           </div>
           <FormTextarea
             {...register('description')}

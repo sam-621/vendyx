@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { useCreateAsset } from '@/app/assets';
+import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { FormMessages, useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 import { parseFormattedPrice } from '@/lib/utils';
 
-import { useProductDetailsContext } from '../../context';
 import {
   InventoryKeys,
   useCreateProduct,
@@ -18,14 +18,14 @@ import {
   useUpdateProduct,
   useUpdateVariant
 } from '../../hooks';
+import { isProductDetailsFormDirty } from '../../utils';
 
 /**
  * Hook to handle the product details form
  * @param update If provided, the form will update the product with the given id
  * @returns Form methods and state
  */
-export const useProductDetailsForm = (update?: { productId: string; variantId: string }) => {
-  const { product } = useProductDetailsContext();
+export const useProductDetailsForm = (product?: CommonProductFragment | null | undefined) => {
   const navigate = useNavigate();
   const { createAsset } = useCreateAsset();
   const { createProduct } = useCreateProduct();
@@ -38,9 +38,8 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    if (!form.formState.isDirty) return;
+    if (product && !isProductDetailsFormDirty(product, input)) return;
 
-    const isUpdating = update?.productId;
     const assets = input.assets ? await createAsset(input.assets) : undefined;
 
     const productInput = {
@@ -59,11 +58,13 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
       published: input.published
     };
 
-    if (isUpdating) {
-      const { productId, variantId } = update;
+    if (product) {
+      const variantId = product.variants.items[0].id;
+      const hasDefaultVariant = product.variants.items.length === 1;
+      const productId = product.id;
 
       await updateProduct(productId, productInput);
-      variantId && (await updateVariant(variantId, variantInput));
+      hasDefaultVariant && (await updateVariant(variantId, variantInput));
       await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
 
       notification.success('Product updated');
@@ -81,9 +82,6 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
       navigate(`/inventory/${input.slug}`);
     }
 
-    const productHasOptions = Boolean(product?.options.length);
-    if (productHasOptions) return;
-
     // set formatted price to price input
     // We do not do it when product has option because this code expects that the default variant form is rendered
     // And when the product has options, the default variant form is not rendered
@@ -91,6 +89,8 @@ export const useProductDetailsForm = (update?: { productId: string; variantId: s
       'price',
       getFormattedPrice(input.price * 100).replace('$', '') as unknown as number
     );
+    form.setValue('prevAssets', assets?.map(asset => asset.id) ?? []);
+    form.setValue('assets', []);
   };
 
   return {
