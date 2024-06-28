@@ -27,6 +27,10 @@ type Query {
 
 type Mutation {
   removeCustomer(id: ID!): CustomerResult!
+  """
+  Update the customer's data.
+  """
+  updateCustomer(accessToken: String!, input: UpdateCustomerInput!): CustomerResult!
 }
 
 input CreateCustomerInput {

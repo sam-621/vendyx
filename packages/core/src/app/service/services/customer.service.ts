@@ -53,19 +53,14 @@ export class CustomerService {
   /**
    * Create a new customer
    */
-  async create(
-    input: CreateCustomerInput
-  ): Promise<ErrorResult<CustomerErrorCode> | CustomerEntity> {
+  async create(input: CreateCustomerInput): CustomerMutationResult {
     return this.db.getRepository(CustomerEntity).save(clean(input));
   }
 
   /**
    * Update a customer by the given id
    */
-  async update(
-    accessToken: string,
-    input: UpdateCustomerInput
-  ): Promise<ErrorResult<CustomerErrorCode> | CustomerEntity> {
+  async update(accessToken: string, input: UpdateCustomerInput): CustomerMutationResult {
     const { email } = await this.verifyAccessToken(accessToken);
 
     if (!email) {
@@ -96,7 +91,7 @@ export class CustomerService {
    * 4. Hash the new password
    * 5. Update the customer's password
    */
-  async updatePassword(token: string, input: UpdateCustomerPasswordInput) {
+  async updatePassword(token: string, input: UpdateCustomerPasswordInput): CustomerMutationResult {
     const { email } = await this.verifyAccessToken(token);
 
     if (!email) {
@@ -131,7 +126,10 @@ export class CustomerService {
    * 2. Compare the password
    * 3. Generate a new access token
    */
-  async generateCustomerAccessToken(email: string, password: string) {
+  async generateCustomerAccessToken(
+    email: string,
+    password: string
+  ): CustomerMutationResult<string> {
     const customer = await this.db.getRepository(CustomerEntity).findOne({ where: { email } });
 
     if (!customer) {
@@ -158,3 +156,4 @@ export class CustomerService {
 }
 
 type CustomerJwtPayloadInput = Pick<CustomerJwtPayload, 'sub' | 'email'>;
+type CustomerMutationResult<R = CustomerEntity> = Promise<ErrorResult<CustomerErrorCode> | R>;

@@ -3,6 +3,7 @@ import * as path from 'path';
 import { DynamicModule, Module } from '@nestjs/common';
 
 import {
+  CustomerResolver,
   OrderResolver,
   PaymentMethodResolver,
   ProductResolver,
@@ -43,6 +44,7 @@ export class StorefrontApiModule {
     VariantResolver,
     PaymentMethodResolver,
     ShippingMethodResolver,
+    CustomerResolver,
     ...getPluginResolvers('storefront')
   ]
 })

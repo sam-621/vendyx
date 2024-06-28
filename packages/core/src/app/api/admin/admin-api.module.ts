@@ -4,6 +4,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 
 import {
   AdminResolver,
+  CustomerResolver,
   OptionResolver,
   OrderResolver,
   ProductResolver,
@@ -43,6 +44,7 @@ export class AdminApiModule {
     VariantResolver,
     OptionResolver,
     OrderResolver,
+    CustomerResolver,
     ...getPluginResolvers('admin')
   ]
 })

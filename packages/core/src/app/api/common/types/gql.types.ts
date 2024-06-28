@@ -215,8 +215,6 @@ export class Admin implements Node {
 export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
-    abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
-
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
 
     abstract updateOption(id: string, input: UpdateOptionInput): OptionResult | Promise<OptionResult>;
@@ -247,9 +245,11 @@ export abstract class IMutation {
 
     abstract removeCustomer(id: string): CustomerResult | Promise<CustomerResult>;
 
+    abstract updateCustomer(accessToken: string, input: UpdateCustomerInput): CustomerResult | Promise<CustomerResult>;
+
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
-    abstract updateCustomerPassword(accessToken: string, input: updateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
+    abstract updateCustomerPassword(accessToken: string, input: UpdateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
 
     abstract generateCustomerAccessToken(email: string, password: string): CustomerResult | Promise<CustomerResult>;
 
@@ -281,7 +281,7 @@ export abstract class IQuery {
 
     abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
 
-    abstract customer(id: string): Nullable<Customer> | Promise<Nullable<Customer>>;
+    abstract customer(accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 

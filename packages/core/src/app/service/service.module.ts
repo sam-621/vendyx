@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   AdminService,
   AssetService,
+  CustomerService,
   OptionService,
   OptionValueService,
   OrderService,
@@ -28,7 +29,8 @@ const SERVICES = [
   PaymentMethodService,
   PaymentService,
   ShippingMethodService,
-  ShipmentService
+  ShipmentService,
+  CustomerService
 ];
 
 @Module({

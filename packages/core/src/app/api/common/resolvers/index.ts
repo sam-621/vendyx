@@ -6,3 +6,4 @@ export * from './payment-common.resolver';
 export * from './shipment-common.resolver';
 export * from './option-values-common.resolver';
 export * from './option-common.resolver';
+export * from './customer-common.resolver';

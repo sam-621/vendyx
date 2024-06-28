@@ -4,17 +4,13 @@ type Mutation {
   """
   createCustomer(input: CreateCustomerInput!): CustomerResult!
   """
-  Update the customer's data.
-  """
-  updateCustomer(accessToken: String!, input: UpdateCustomerInput!): CustomerResult!
-  """
   Update the customer's password providing the current password and the new password
   """
-  updateCustomerPassword(accessToken: String!, input: updateCustomerPasswordInput!): CustomerResult!
+  updateCustomerPassword(accessToken: String!, input: UpdateCustomerPasswordInput!): CustomerResult!
   """
   Generate a token for the customer. This token is used to modify the customer's data.
   """
-  generateCustomerAccessToken(email: String!, password: String!): CustomerResult!
+  generateCustomerAccessToken(email: String!, password: String!): GenerateCustomerAccessTokenResult!
   """
   Send an email to the customer with a link to reset the password. The link contains a token that is used to execute the recoverCustomerPassword mutation.
   """
@@ -25,7 +21,7 @@ type Mutation {
   recoverCustomerPassword(urlToken: String!, password: String!): CustomerResult!
 }
 
-input updateCustomerPasswordInput {
+input UpdateCustomerPasswordInput {
   password: String!
   newPassword: String!
 }
@@ -34,4 +30,9 @@ extend enum CustomerErrorCode {
   INVALID_ACCESS_TOKEN
   PASSWORDS_DO_NOT_MATCH
   INVALID_CREDENTIALS
+}
+
+type GenerateCustomerAccessTokenResult {
+  accessToken: String
+  apiErrors: [CustomerErrorResult!]!
 }
