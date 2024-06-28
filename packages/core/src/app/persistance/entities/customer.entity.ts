@@ -15,6 +15,9 @@ export class CustomerEntity extends EBlocEntity {
   @Column('varchar', { unique: true })
   email: string;
 
+  @Column('varchar')
+  password: string;
+
   @Column('varchar', { name: 'phone_number', nullable: true })
   phoneNumber: string;
 

@@ -2,15 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { AdminEntity } from '../persistance';
-
 @Injectable()
 export class SecurityService {
   constructor(private readonly jwtService: JwtService) {}
 
-  async generateToken(admin: AdminEntity) {
-    const payload = { username: admin.username, sub: admin.id };
-
+  async generateToken<TPayload extends object>(payload: TPayload) {
     return {
       accessToken: await this.jwtService.signAsync(payload)
     };
@@ -18,6 +14,10 @@ export class SecurityService {
 
   async verifyToken(token: string) {
     return await this.jwtService.verifyAsync(token);
+  }
+
+  async decodeAccessToken<TPayload>(token: string) {
+    return await this.jwtService.decode<TPayload>(token);
   }
 
   async hash(str: string) {

@@ -7,6 +7,7 @@ import { ErrorResult } from '../utils';
 import { AdminErrorCode } from '@/app/api/common';
 import { AdminEntity } from '@/app/persistance';
 import { SecurityService } from '@/app/security';
+import { AdminJwtPayload } from '@/app/security/strategies/jwt/jwt.types';
 
 @Injectable()
 export class AdminService {
@@ -37,8 +38,13 @@ export class AdminService {
       return new ErrorResult(AdminErrorCode.INVALID_CREDENTIALS, 'Invalid username or password');
     }
 
-    const { accessToken } = await this.securityService.generateToken(admin);
+    const { accessToken } = await this.securityService.generateToken<AdminJwtPayloadInput>({
+      sub: admin.id,
+      username: admin.username
+    });
 
     return accessToken;
   }
 }
+
+type AdminJwtPayloadInput = Pick<AdminJwtPayload, 'sub' | 'username'>;

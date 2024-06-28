@@ -50,6 +50,9 @@ export enum AssetType {
 }
 
 export enum CustomerErrorCode {
+    INVALID_ACCESS_TOKEN = "INVALID_ACCESS_TOKEN",
+    PASSWORDS_DO_NOT_MATCH = "PASSWORDS_DO_NOT_MATCH",
+    INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
     INVALID_EMAIL = "INVALID_EMAIL",
     CUSTOMER_NOT_FOUND = "CUSTOMER_NOT_FOUND"
 }
@@ -154,6 +157,11 @@ export class CreateCustomerInput {
     phoneCountryCode?: Nullable<string>;
 }
 
+export class UpdateCustomerPasswordInput {
+    password: string;
+    newPassword: string;
+}
+
 export class CreateOrderInput {
     line?: Nullable<CreateOrderLineInput>;
 }
@@ -207,7 +215,7 @@ export class Admin implements Node {
 export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
-    abstract updateCustomer(id: string, input: UpdateCustomerInput, token: string): CustomerResult | Promise<CustomerResult>;
+    abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
 
@@ -241,13 +249,13 @@ export abstract class IMutation {
 
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
+    abstract updateCustomerPassword(accessToken: string, input: updateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
+
     abstract generateCustomerAccessToken(email: string, password: string): CustomerResult | Promise<CustomerResult>;
 
     abstract requestRecoveryCustomerPassword(email: string): CustomerResult | Promise<CustomerResult>;
 
-    abstract recoverCustomerPassword(token: string, password: string): CustomerResult | Promise<CustomerResult>;
-
-    abstract updateCustomerPassword(password: string, newPassword: string): CustomerResult | Promise<CustomerResult>;
+    abstract recoverCustomerPassword(urlToken: string, password: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOrder(input?: Nullable<CreateOrderInput>): OrderResult | Promise<OrderResult>;
 
