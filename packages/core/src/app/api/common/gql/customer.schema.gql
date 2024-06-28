@@ -44,3 +44,20 @@ input UpdateCustomerInput {
   phoneNumber: String
   phoneCountryCode: String
 }
+
+" Results "
+type CustomerResult {
+  customer: Customer
+  apiErrors: [CustomerErrorResult!]!
+}
+
+type CustomerErrorResult {
+  code: CustomerErrorCode!
+  message: String!
+}
+
+" Utils "
+enum CustomerErrorCode {
+  INVALID_EMAIL
+  CUSTOMER_NOT_FOUND
+}

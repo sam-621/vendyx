@@ -1,8 +1,7 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-
-import { UnauthorizedError } from '@/lib/errors';
+import { GraphQLError } from 'graphql';
 
 @Injectable()
 export class AdminJwtAuthGuard extends AuthGuard('admin-jwt') {
@@ -12,12 +11,13 @@ export class AdminJwtAuthGuard extends AuthGuard('admin-jwt') {
     return ctx.getContext().req;
   }
 
-  handleRequest<TUser = any>(err: any, user: any, info: any): TUser {
+  handleRequest<TUser = any>(err: any, user: any): TUser {
     if (err || !user) {
-      throw new UnauthorizedError('Invalid token', {
-        err,
-        info: info?.message
-      });
+      throw new GraphQLError('Invalid token', { extensions: { code: 'UNAUTHORIZED' } });
+      // throw new UnauthorizedError('Invalid token', {
+      //   err,
+      //   info: info?.message
+      // });
     }
 
     return user;

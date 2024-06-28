@@ -12,19 +12,19 @@ export class ProductEntity extends EBlocEntity {
   @Column('varchar', { unique: true })
   slug: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   description: string;
 
   /**
    * Determines if the product is exposes to storefront API or not
    */
-  @Column('boolean', { default: true })
+  @Column('boolean')
   published: boolean;
 
   /**
    * Determines if the product requires shipping or not
    */
-  @Column('boolean', { default: false })
+  @Column('boolean')
   onlineOnly: boolean;
 
   @OneToMany(() => VariantEntity, v => v.product)

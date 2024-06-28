@@ -3,17 +3,19 @@ import { GqlExceptionFilter } from '@nestjs/graphql';
 import { Response } from 'express';
 import { GraphQLError } from 'graphql';
 
-import { BusinessError } from '@/lib/errors';
-
 @Catch()
 export class GlobalExceptionFilter implements GqlExceptionFilter {
-  catch(exception: BusinessError, host: ArgumentsHost) {
+  catch(exception: Error, host: ArgumentsHost) {
     Logger.error({
-      code: exception.code,
+      code: (exception as any).code,
       message: exception.message,
-      metadata: exception.metadata,
+      metadata: (exception as any).metadata,
       raw: exception
     });
+
+    if (exception instanceof GraphQLError) {
+      return exception;
+    }
 
     if (exception instanceof HttpException) {
       const errorMessage = (exception.getResponse() as HttpGenericError).message;

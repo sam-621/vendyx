@@ -12,7 +12,7 @@ export class SecurityService {
     const payload = { username: admin.username, sub: admin.id };
 
     return {
-      accessToken: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload)
     };
   }
 

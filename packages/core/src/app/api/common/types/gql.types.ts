@@ -49,6 +49,11 @@ export enum AssetType {
     IMAGE = "IMAGE"
 }
 
+export enum CustomerErrorCode {
+    INVALID_EMAIL = "INVALID_EMAIL",
+    CUSTOMER_NOT_FOUND = "CUSTOMER_NOT_FOUND"
+}
+
 export enum OrderState {
     MODIFYING = "MODIFYING",
     PAYMENT_ADDED = "PAYMENT_ADDED",
@@ -60,6 +65,15 @@ export enum OrderState {
 export class AuthenticateInput {
     username: string;
     password: string;
+}
+
+export class UpdateCustomerInput {
+    enabled?: Nullable<boolean>;
+    firstName?: Nullable<string>;
+    lastName?: Nullable<string>;
+    email?: Nullable<string>;
+    phoneNumber?: Nullable<string>;
+    phoneCountryCode?: Nullable<string>;
 }
 
 export class CreateOptionInput {
@@ -132,16 +146,12 @@ export class ListInput {
     take?: Nullable<number>;
 }
 
-export class UpdateCus {
-}
-
 export class CreateCustomerInput {
     firstName?: Nullable<string>;
     lastName: string;
     email: string;
     phoneNumber?: Nullable<string>;
     phoneCountryCode?: Nullable<string>;
-    enabled?: Nullable<boolean>;
 }
 
 export class CreateOrderInput {
@@ -197,6 +207,8 @@ export class Admin implements Node {
 export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
+    abstract updateCustomer(id: string, input: UpdateCustomerInput, token: string): CustomerResult | Promise<CustomerResult>;
+
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
 
     abstract updateOption(id: string, input: UpdateOptionInput): OptionResult | Promise<OptionResult>;
@@ -224,6 +236,18 @@ export abstract class IMutation {
     abstract updateVariant(id: string, input: UpdateVariantInput): UpdateVariantResult | Promise<UpdateVariantResult>;
 
     abstract removeVariant(id: string): RemoveVariantResult | Promise<RemoveVariantResult>;
+
+    abstract removeCustomer(id: string): CustomerResult | Promise<CustomerResult>;
+
+    abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
+
+    abstract generateCustomerAccessToken(email: string, password: string): CustomerResult | Promise<CustomerResult>;
+
+    abstract requestRecoveryCustomerPassword(email: string): CustomerResult | Promise<CustomerResult>;
+
+    abstract recoverCustomerPassword(token: string, password: string): CustomerResult | Promise<CustomerResult>;
+
+    abstract updateCustomerPassword(password: string, newPassword: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOrder(input?: Nullable<CreateOrderInput>): OrderResult | Promise<OrderResult>;
 
@@ -274,11 +298,6 @@ export class AuthenticateResult {
 export class AdminErrorResult {
     code: AdminErrorCode;
     message: string;
-}
-
-export class CustomerList implements List {
-    items: Customer[];
-    count: number;
 }
 
 export class OptionResult {
@@ -397,6 +416,21 @@ export class Customer implements Node {
     enabled: boolean;
     orders?: Nullable<OrderList[]>;
     addresses?: Nullable<AddressList[]>;
+}
+
+export class CustomerList implements List {
+    items: Customer[];
+    count: number;
+}
+
+export class CustomerResult {
+    customer?: Nullable<Customer>;
+    apiErrors: CustomerErrorResult[];
+}
+
+export class CustomerErrorResult {
+    code: CustomerErrorCode;
+    message: string;
 }
 
 export class OptionValue implements Node {
