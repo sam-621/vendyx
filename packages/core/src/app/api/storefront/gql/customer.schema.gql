@@ -4,6 +4,10 @@ type Mutation {
   """
   createCustomer(input: CreateCustomerInput!): CustomerResult!
   """
+  Update the customer's data.
+  """
+  updateCustomer(accessToken: String!, input: UpdateCustomerInput!): CustomerResult!
+  """
   Update the customer's password providing the current password and the new password
   """
   updateCustomerPassword(accessToken: String!, input: UpdateCustomerPasswordInput!): CustomerResult!
@@ -30,6 +34,7 @@ extend enum CustomerErrorCode {
   INVALID_ACCESS_TOKEN
   PASSWORDS_DO_NOT_MATCH
   INVALID_CREDENTIALS
+  CUSTOMER_ALREADY_EXISTS
 }
 
 type GenerateCustomerAccessTokenResult {

@@ -53,6 +53,7 @@ export enum CustomerErrorCode {
     INVALID_ACCESS_TOKEN = "INVALID_ACCESS_TOKEN",
     PASSWORDS_DO_NOT_MATCH = "PASSWORDS_DO_NOT_MATCH",
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
+    CUSTOMER_ALREADY_EXISTS = "CUSTOMER_ALREADY_EXISTS",
     INVALID_EMAIL = "INVALID_EMAIL",
     CUSTOMER_NOT_FOUND = "CUSTOMER_NOT_FOUND"
 }
@@ -153,6 +154,7 @@ export class CreateCustomerInput {
     firstName?: Nullable<string>;
     lastName: string;
     email: string;
+    password: string;
     phoneNumber?: Nullable<string>;
     phoneCountryCode?: Nullable<string>;
 }
@@ -251,7 +253,7 @@ export abstract class IMutation {
 
     abstract updateCustomerPassword(accessToken: string, input: UpdateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
 
-    abstract generateCustomerAccessToken(email: string, password: string): CustomerResult | Promise<CustomerResult>;
+    abstract generateCustomerAccessToken(email: string, password: string): GenerateCustomerAccessTokenResult | Promise<GenerateCustomerAccessTokenResult>;
 
     abstract requestRecoveryCustomerPassword(email: string): CustomerResult | Promise<CustomerResult>;
 
@@ -277,7 +279,7 @@ export abstract class IMutation {
 export abstract class IQuery {
     abstract validateToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
 
-    abstract customers(input?: Nullable<ListInput>): Nullable<Customer> | Promise<Nullable<Customer>>;
+    abstract customers(input?: Nullable<ListInput>): CustomerList | Promise<CustomerList>;
 
     abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
 
@@ -593,6 +595,11 @@ export class Variant implements Node {
 export class VariantList implements List {
     items: Variant[];
     count: number;
+}
+
+export class GenerateCustomerAccessTokenResult {
+    accessToken?: Nullable<string>;
+    apiErrors: CustomerErrorResult[];
 }
 
 type Nullable<T> = T | null;

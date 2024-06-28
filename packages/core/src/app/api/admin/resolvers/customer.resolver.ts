@@ -1,8 +1,9 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { ListInput } from '../../common';
+import { ListInput, ListResponse, UpdateCustomerInput } from '../../common';
 
-import { CustomerService } from '@/app/service/services/customer.service';
+import { ID } from '@/app/persistance';
+import { CustomerService, isErrorResult } from '@/app/service';
 
 @Resolver('Customer')
 export class CustomerResolver {
@@ -10,6 +11,15 @@ export class CustomerResolver {
 
   @Query('customers')
   async customers(@Args('input') input: ListInput) {
-    return await this.customerService.find(input);
+    const result = await this.customerService.find(input);
+
+    return new ListResponse(result, result.length);
+  }
+
+  @Mutation('updateCustomer')
+  async updateCustomer(@Args('id') id: ID, @Args('input') input: UpdateCustomerInput) {
+    const result = await this.customerService.updateById(id, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { customer: result, apiErrors: [] };
   }
 }

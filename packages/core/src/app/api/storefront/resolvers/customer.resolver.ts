@@ -1,9 +1,12 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { CreateCustomerInput, UpdateCustomerPasswordInput } from '../../common';
+import {
+  CreateCustomerInput,
+  UpdateCustomerInput,
+  UpdateCustomerPasswordInput
+} from '../../common';
 
-import { isErrorResult } from '@/app/service';
-import { CustomerService } from '@/app/service/services/customer.service';
+import { CustomerService, isErrorResult } from '@/app/service';
 
 @Resolver('Customer')
 export class CustomerResolver {
@@ -12,6 +15,16 @@ export class CustomerResolver {
   @Mutation('createCustomer')
   async createCustomer(@Args('input') input: CreateCustomerInput) {
     const result = await this.customerService.create(input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { customer: result, apiErrors: [] };
+  }
+
+  @Mutation('updateCustomer')
+  async updateCustomer(
+    @Args('accessToken') accessToken: string,
+    @Args('input') input: UpdateCustomerInput
+  ) {
+    const result = await this.customerService.updateByAccessToken(accessToken, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { customer: result, apiErrors: [] };
   }

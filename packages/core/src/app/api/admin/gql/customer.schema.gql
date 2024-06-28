@@ -1,5 +1,9 @@
 type Query {
-  customers(input: ListInput): Customer
+  customers(input: ListInput): CustomerList!
+}
+
+type Mutation {
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): CustomerResult!
 }
 
 extend input UpdateCustomerInput {
