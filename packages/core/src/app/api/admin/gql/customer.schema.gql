@@ -1,0 +1,11 @@
+type Query {
+  customers(input: ListInput): Customer
+}
+
+type Mutation {
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): CustomerResult!
+}
+
+extend input UpdateCustomerInput {
+  enabled: Boolean
+}

@@ -132,13 +132,16 @@ export class ListInput {
     take?: Nullable<number>;
 }
 
+export class UpdateCus {
+}
+
 export class CreateCustomerInput {
     firstName?: Nullable<string>;
     lastName: string;
     email: string;
     phoneNumber?: Nullable<string>;
     phoneCountryCode?: Nullable<string>;
-    enabled: boolean;
+    enabled?: Nullable<boolean>;
 }
 
 export class CreateOrderInput {
@@ -242,7 +245,11 @@ export abstract class IMutation {
 export abstract class IQuery {
     abstract validateToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract customers(input?: Nullable<ListInput>): Nullable<Customer> | Promise<Nullable<Customer>>;
+
     abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
+
+    abstract customer(id: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
@@ -267,6 +274,11 @@ export class AuthenticateResult {
 export class AdminErrorResult {
     code: AdminErrorCode;
     message: string;
+}
+
+export class CustomerList implements List {
+    items: Customer[];
+    count: number;
 }
 
 export class OptionResult {
@@ -385,11 +397,6 @@ export class Customer implements Node {
     enabled: boolean;
     orders?: Nullable<OrderList[]>;
     addresses?: Nullable<AddressList[]>;
-}
-
-export class CustomerList implements List {
-    items: Customer[];
-    count: number;
 }
 
 export class OptionValue implements Node {

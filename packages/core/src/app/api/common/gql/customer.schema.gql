@@ -21,11 +21,26 @@ type CustomerList implements List {
   count: Int!
 }
 
+type Query {
+  customer(id: ID!): Customer
+}
+
+type Mutation {
+  removeCustomer(id: ID!): CustomerResult!
+}
+
 input CreateCustomerInput {
   firstName: String
   lastName: String!
   email: String!
   phoneNumber: String
   phoneCountryCode: String
-  enabled: Boolean!
+}
+
+input UpdateCustomerInput {
+  firstName: String
+  lastName: String
+  email: String
+  phoneNumber: String
+  phoneCountryCode: String
 }
