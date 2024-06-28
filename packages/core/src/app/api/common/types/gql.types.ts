@@ -217,6 +217,8 @@ export class Admin implements Node {
 export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
+    abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
+
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
 
     abstract updateOption(id: string, input: UpdateOptionInput): OptionResult | Promise<OptionResult>;
@@ -246,8 +248,6 @@ export abstract class IMutation {
     abstract removeVariant(id: string): RemoveVariantResult | Promise<RemoveVariantResult>;
 
     abstract removeCustomer(id: string): CustomerResult | Promise<CustomerResult>;
-
-    abstract updateCustomer(accessToken: string, input: UpdateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
