@@ -21,8 +21,14 @@ export class CustomerEntity extends EBlocEntity {
   @Column('char', { length: 2, name: 'phone_country_code', nullable: true })
   phoneCountryCode: string;
 
-  @Column('boolean')
-  enable: boolean;
+  /**
+   * @description
+   * to customer be able to login, place orders, etc. the customer must be enabled
+   *
+   * @default true
+   */
+  @Column('boolean', { default: true })
+  enabled: boolean;
 
   @OneToMany(() => OrderEntity, o => o.customer)
   orders: OrderEntity[];

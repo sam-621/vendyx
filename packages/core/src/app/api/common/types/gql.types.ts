@@ -138,7 +138,7 @@ export class CreateCustomerInput {
     email: string;
     phoneNumber?: Nullable<string>;
     phoneCountryCode?: Nullable<string>;
-    enable: boolean;
+    enabled: boolean;
 }
 
 export class CreateOrderInput {
@@ -382,7 +382,7 @@ export class Customer implements Node {
     email: string;
     phoneNumber?: Nullable<string>;
     phoneCountryCode?: Nullable<string>;
-    enable: boolean;
+    enabled: boolean;
     orders?: Nullable<OrderList[]>;
     addresses?: Nullable<AddressList[]>;
 }

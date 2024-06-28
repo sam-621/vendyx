@@ -7,7 +7,10 @@ type Customer implements Node {
   email: String!
   phoneNumber: String
   phoneCountryCode: String
-  enable: Boolean!
+  """
+  to customer be able to login, place orders, etc. the customer must be enabled
+  """
+  enabled: Boolean!
 
   orders: [OrderList!]
   addresses: [AddressList!]
@@ -24,5 +27,5 @@ input CreateCustomerInput {
   email: String!
   phoneNumber: String
   phoneCountryCode: String
-  enable: Boolean!
+  enabled: Boolean!
 }
