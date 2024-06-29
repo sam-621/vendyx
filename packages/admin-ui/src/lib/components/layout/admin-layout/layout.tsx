@@ -6,8 +6,8 @@ import { BellIcon } from 'lucide-react';
 
 import { useConfigContext } from '@/app/config/contexts';
 
-import { Logo, UserAvatar } from '../items';
-import { AdminSidebar } from '../sections';
+import { Logo, UserAvatar } from '../../items';
+import { AdminSidebar } from './layout-sidebar';
 
 export const AdminLayout: FC = () => {
   const { branding } = useConfigContext();
