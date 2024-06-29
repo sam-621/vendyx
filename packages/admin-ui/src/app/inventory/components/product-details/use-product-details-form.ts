@@ -11,6 +11,7 @@ import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 import { parseFormattedPrice } from '@/lib/utils';
 
+import { useVariantsContext } from '../../context';
 import {
   ProductKeys,
   useCreateProduct,
@@ -27,6 +28,7 @@ import { isProductDetailsFormDirty } from '../../utils';
  */
 export const useProductDetailsForm = (product?: CommonProductFragment | null | undefined) => {
   const navigate = useNavigate();
+  const { variantsWithChanges, resetVariantsWithChanges } = useVariantsContext();
   const { createAsset } = useCreateAsset();
   const { createProduct } = useCreateProduct();
   const { createVariant } = useCreateVariant();
@@ -38,7 +40,8 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    if (product && !isProductDetailsFormDirty(product, input)) return;
+    if (product && !isProductDetailsFormDirty(product, input) && !variantsWithChanges.length)
+      return;
 
     const assets = input.assets ? await createAsset(input.assets) : undefined;
 
@@ -63,9 +66,19 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
       const hasDefaultVariant = product.variants.items.length === 1;
       const productId = product.id;
 
+      if (hasDefaultVariant) {
+        await updateVariant(variantId, variantInput);
+      }
+
+      if (variantsWithChanges.length) {
+        for (const variant of variantsWithChanges) {
+          await updateVariant(variant.id, variant.input);
+        }
+      }
+
       await updateProduct(productId, productInput);
-      hasDefaultVariant && (await updateVariant(variantId, variantInput));
       await queryClient.invalidateQueries({ queryKey: ProductKeys.all });
+      resetVariantsWithChanges();
 
       notification.success('Product updated');
     } else {

@@ -50,10 +50,14 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
 
     addVariantWithChanges(variant.id, {
       sku: sku === variant.sku ? undefined : sku,
-      price: formattedPrice === variant.price ? undefined : formattedPrice,
+      price: formattedPrice === variant.price ? undefined : Number(price),
       stock: Number(stock) === variant.stock ? undefined : Number(stock)
     });
   }, [sku, price, stock]);
+
+  useEffect(() => {
+    setPrice(getFormattedPrice(variant.price).replace('$', ''));
+  }, [variant]);
 
   return (
     <div
@@ -67,20 +71,16 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
         <span>{variantName}</span>
       </div>
       <div className="flex gap-2 items-end">
-        <FormInput
-          placeholder="SKU - 000"
-          defaultValue={variant.sku}
-          onChange={e => setSku(e.target.value)}
-        />
+        <FormInput placeholder="SKU - 000" value={sku} onChange={e => setSku(e.target.value)} />
         <FormInput
           placeholder="$ 0.00"
-          defaultValue={getFormattedPrice(variant.price).replace('$', '')}
+          value={price}
           onChange={e => setPrice(e.target.value)}
           onFocus={e => e.target.select()}
         />
         <FormInput
           placeholder="0"
-          defaultValue={variant.stock}
+          value={stock}
           onChange={e => setStock(e.target.value)}
           onFocus={e => e.target.select()}
         />

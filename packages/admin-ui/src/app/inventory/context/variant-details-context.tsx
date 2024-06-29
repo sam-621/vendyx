@@ -36,10 +36,6 @@ export const VariantDetailsProvider: FC<PropsWithChildren> = ({ children }) => {
     []
   );
 
-  console.log({
-    variantsWithChanges
-  });
-
   const addCheckedVariant = (id: string) => {
     setCheckedVariants([...checkedVariants, id]);
   };
