@@ -20,6 +20,10 @@ import { type CommonCustomerFragment } from '@/lib/ebloc/codegen/graphql';
 import { formatDate } from '@/lib/utils';
 
 export const CustomerOrdersTable: FC<Props> = ({ orders }) => {
+  if (!orders.length) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>

@@ -11,7 +11,7 @@ export class CustomerResolver {
 
   @Query('customer')
   async customer(@Args('id') id: ID) {
-    return await this.customerService.findUnique({ id });
+    return await this.customerService.findUnique({ id, onlyEnabled: false });
   }
 
   @Query('customers')

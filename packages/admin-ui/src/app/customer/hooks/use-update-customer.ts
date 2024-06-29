@@ -8,16 +8,22 @@ export const useUpdateCustomer = () => {
 
   const updateCustomer = async (id: string, input: UpdateCustomerInput) => {
     const {
-      updateCustomer: { apiErrors, customer }
+      updateCustomer: { apiErrors }
     } = await mutateAsync({ id, input });
 
     const errorMessage = getCustomerErrorMessage(apiErrors[0]);
 
     if (errorMessage) {
-      return errorMessage;
+      return {
+        error: true,
+        message: errorMessage,
+        errorCode: apiErrors[0].code
+      };
     }
 
-    return customer?.id;
+    return {
+      error: false
+    };
   };
 
   return {

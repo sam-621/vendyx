@@ -2,16 +2,42 @@ import { type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { type CommonCustomerFragment } from '@/lib/ebloc/codegen/graphql';
+import { type CommonCustomerFragment, CustomerErrorCode } from '@/lib/ebloc/codegen/graphql';
 import { FormMessages, useForm } from '@/lib/form';
+import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
+
+import { CustomersKeys, useUpdateCustomer } from '../../hooks';
 
 export const useCustomerDetailsForm = (customer: CommonCustomerFragment | null | undefined) => {
+  const { updateCustomer } = useUpdateCustomer();
+
   const form = useForm<CustomerDetailsFormInput>({
     resolver: zodResolver(schema)
   });
 
   const onSubmit = async (input: CustomerDetailsFormInput) => {
-    console.log(input);
+    if (!customer) {
+      return;
+    }
+
+    const result = await updateCustomer(customer.id, input);
+
+    if (result.error) {
+      if (
+        result.errorCode === CustomerErrorCode.EmailAlreadyExists ||
+        result.errorCode === CustomerErrorCode.InvalidEmail
+      ) {
+        form.setError('email', { message: result.message });
+        return;
+      }
+
+      notification.error(result.message ?? '');
+      return;
+    }
+
+    await queryClient.invalidateQueries({ queryKey: CustomersKeys.single(customer.id) });
+    notification.success('Customer updated');
   };
 
   return {

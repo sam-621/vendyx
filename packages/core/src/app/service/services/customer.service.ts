@@ -1,7 +1,7 @@
 import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, Not } from 'typeorm';
 
 import { ErrorResult, validateEmail } from '../utils';
 
@@ -12,7 +12,7 @@ import {
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
 } from '@/app/api/common';
-import { AddressEntity, CustomerEntity, ID, OrderEntity } from '@/app/persistance';
+import { AddressEntity, CustomerEntity, ID, OrderEntity, OrderState } from '@/app/persistance';
 import { SecurityService } from '@/app/security';
 import { CustomerJwtPayload } from '@/app/security/strategies/jwt/jwt.types';
 
@@ -70,7 +70,8 @@ export class CustomerService {
    */
   async findOrders(id: ID, input: ListInput) {
     const result = await this.db.getRepository(OrderEntity).find({
-      where: { customer: { id } },
+      // TODO: Add state filter in api
+      where: { customer: { id }, state: Not(OrderState.MODIFYING) },
       ...clean(input)
     });
 

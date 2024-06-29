@@ -24,5 +24,5 @@ export const getCustomerErrorMessage = (error?: CustomerErrorResult) => {
 const CustomerErrorMessage = {
   CustomerNotFound: 'Customer not found',
   invalidEmail: 'Invalid email',
-  EmailAlreadyExists: 'User with that email already exists'
+  EmailAlreadyExists: 'Customer with that email already exists'
 };
