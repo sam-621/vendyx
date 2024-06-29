@@ -7,10 +7,10 @@ import { DataSource, Not } from 'typeorm';
 import { ErrorResult, ValidOrderTransitions, validateEmail } from '../utils';
 
 import {
+  AddCustomerToOrderInput,
   AddPaymentToOrderInput,
   AddShipmentToOrderInput,
   CreateAddressInput,
-  CreateCustomerInput,
   CreateOrderLineInput,
   ListInput,
   MarkOrderAsShippedInput,
@@ -294,7 +294,7 @@ export class OrderService {
    */
   async addCustomer(
     orderId: ID,
-    input: CreateCustomerInput
+    input: AddCustomerToOrderInput
   ): Promise<ErrorResult<OrderErrorCode> | OrderEntity> {
     if (!validateEmail(input.email)) {
       return new ErrorResult(OrderErrorCode.CUSTOMER_INVALID_EMAIL, 'Invalid email');
@@ -318,6 +318,10 @@ export class OrderService {
     const customer = await this.db.getRepository(CustomerEntity).findOne({
       where: { email: input.email }
     });
+
+    if (customer?.enabled === false) {
+      return new ErrorResult(OrderErrorCode.CUSTOMER_DISABLED, 'Customer is disabled');
+    }
 
     let customerUpdated = this.db.getRepository(CustomerEntity).create({
       ...customer,

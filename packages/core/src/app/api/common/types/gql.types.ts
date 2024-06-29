@@ -25,6 +25,7 @@ export enum OrderErrorCode {
     ORDER_TRANSITION_ERROR = "ORDER_TRANSITION_ERROR",
     NOT_ENOUGH_STOCK = "NOT_ENOUGH_STOCK",
     CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
+    CUSTOMER_DISABLED = "CUSTOMER_DISABLED",
     SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND",
     MISSING_SHIPPING_ADDRESS = "MISSING_SHIPPING_ADDRESS",
     MISSING_SHIPPING_PRICE_CALCULATOR = "MISSING_SHIPPING_PRICE_CALCULATOR",
@@ -177,6 +178,14 @@ export class UpdateOrderLineInput {
     quantity: number;
 }
 
+export class AddCustomerToOrderInput {
+    firstName?: Nullable<string>;
+    lastName: string;
+    email: string;
+    phoneNumber?: Nullable<string>;
+    phoneCountryCode?: Nullable<string>;
+}
+
 export class AddPaymentToOrderInput {
     methodId: string;
 }
@@ -247,11 +256,11 @@ export abstract class IMutation {
 
     abstract removeVariant(id: string): RemoveVariantResult | Promise<RemoveVariantResult>;
 
-    abstract removeCustomer(id: string): CustomerResult | Promise<CustomerResult>;
-
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
     abstract updateCustomerPassword(accessToken: string, input: UpdateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
+
+    abstract addAddressToCustomer(accessToken: string, input: CreateAddressInput): CustomerResult | Promise<CustomerResult>;
 
     abstract generateCustomerAccessToken(email: string, password: string): GenerateCustomerAccessTokenResult | Promise<GenerateCustomerAccessTokenResult>;
 
@@ -267,7 +276,7 @@ export abstract class IMutation {
 
     abstract removeOrderLine(lineId: string): OrderResult | Promise<OrderResult>;
 
-    abstract addCustomerToOrder(orderId: string, input: CreateCustomerInput): OrderResult | Promise<OrderResult>;
+    abstract addCustomerToOrder(orderId: string, input: AddCustomerToOrderInput): OrderResult | Promise<OrderResult>;
 
     abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): OrderResult | Promise<OrderResult>;
 
@@ -424,8 +433,8 @@ export class Customer implements Node {
     phoneNumber?: Nullable<string>;
     phoneCountryCode?: Nullable<string>;
     enabled: boolean;
-    orders?: Nullable<OrderList[]>;
-    addresses?: Nullable<AddressList[]>;
+    orders: OrderList;
+    addresses: AddressList;
 }
 
 export class CustomerList implements List {

@@ -3,7 +3,7 @@ type Mutation {
   addLineToOrder(orderId: ID!, input: CreateOrderLineInput!): OrderResult!
   updateOrderLine(lineId: ID!, input: UpdateOrderLineInput!): OrderResult!
   removeOrderLine(lineId: ID!): OrderResult!
-  addCustomerToOrder(orderId: ID!, input: CreateCustomerInput!): OrderResult!
+  addCustomerToOrder(orderId: ID!, input: AddCustomerToOrderInput!): OrderResult!
   addShippingAddressToOrder(orderId: ID!, input: CreateAddressInput!): OrderResult!
   addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): OrderResult!
   addShipmentToOrder(orderId: ID!, input: AddShipmentToOrderInput!): OrderResult!
@@ -20,6 +20,14 @@ input CreateOrderLineInput {
 
 input UpdateOrderLineInput {
   quantity: Int!
+}
+
+input AddCustomerToOrderInput {
+  firstName: String
+  lastName: String!
+  email: String!
+  phoneNumber: String
+  phoneCountryCode: String
 }
 
 " Results "
@@ -41,6 +49,7 @@ enum OrderErrorCode {
   ORDER_TRANSITION_ERROR
   NOT_ENOUGH_STOCK
   CUSTOMER_INVALID_EMAIL
+  CUSTOMER_DISABLED
   SHIPPING_METHOD_NOT_FOUND
   MISSING_SHIPPING_ADDRESS
   MISSING_SHIPPING_PRICE_CALCULATOR

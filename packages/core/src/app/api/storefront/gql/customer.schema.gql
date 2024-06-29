@@ -11,6 +11,11 @@ type Mutation {
   Update the customer's password providing the current password and the new password
   """
   updateCustomerPassword(accessToken: String!, input: UpdateCustomerPasswordInput!): CustomerResult!
+
+  """
+  Add a new address to the customer.
+  """
+  addAddressToCustomer(accessToken: String!, input: CreateAddressInput!): CustomerResult!
   """
   Generate a token for the customer. This token is used to modify the customer's data.
   """

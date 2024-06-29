@@ -12,8 +12,8 @@ type Customer implements Node {
   """
   enabled: Boolean!
 
-  orders: [OrderList!]
-  addresses: [AddressList!]
+  orders: OrderList!
+  addresses: AddressList!
 }
 
 type CustomerList implements List {
@@ -23,10 +23,6 @@ type CustomerList implements List {
 
 type Query {
   customer(accessToken: String!): Customer
-}
-
-type Mutation {
-  removeCustomer(id: ID!): CustomerResult!
 }
 
 input CreateCustomerInput {

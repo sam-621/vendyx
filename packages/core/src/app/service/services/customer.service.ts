@@ -12,7 +12,7 @@ import {
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
 } from '@/app/api/common';
-import { CustomerEntity, ID } from '@/app/persistance';
+import { AddressEntity, CustomerEntity, ID, OrderEntity } from '@/app/persistance';
 import { SecurityService } from '@/app/security';
 import { CustomerJwtPayload } from '@/app/security/strategies/jwt/jwt.types';
 
@@ -62,6 +62,30 @@ export class CustomerService {
     }
 
     return await this.findUnique({ id: sub });
+  }
+
+  /**
+   * Find a customer's orders by customer id
+   */
+  async findOrders(id: ID, input: ListInput) {
+    const result = await this.db.getRepository(OrderEntity).find({
+      where: { customer: { id } },
+      ...clean(input)
+    });
+
+    return result;
+  }
+
+  /**
+   * Find a customer's addresses by customer id
+   */
+  async findAddresses(id: ID, input: ListInput) {
+    const result = this.db.getRepository(AddressEntity).find({
+      where: { customer: { id } },
+      ...clean(input)
+    });
+
+    return result;
   }
 
   /**
