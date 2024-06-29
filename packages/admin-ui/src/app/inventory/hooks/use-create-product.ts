@@ -1,8 +1,8 @@
-import { useGqlMutation } from '@/lib/gql';
-import { notification } from '@/lib/notifications';
 import { type CreateProductInput } from '@/lib/ebloc/codegen/graphql';
 import { getProductErrorMessages } from '@/lib/ebloc/errors';
 import { CreateProductMutation } from '@/lib/ebloc/mutations';
+import { useGqlMutation } from '@/lib/gql';
+import { notification } from '@/lib/notifications';
 
 export const useCreateProduct = () => {
   const { mutateAsync, isPending } = useGqlMutation(CreateProductMutation);

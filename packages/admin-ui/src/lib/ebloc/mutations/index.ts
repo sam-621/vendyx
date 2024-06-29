@@ -1,4 +1,5 @@
 export * from './admin.mutation';
+export * from './customer.mutation';
 export * from './option.mutation';
 export * from './order.mutation';
 export * from './product.mutation';

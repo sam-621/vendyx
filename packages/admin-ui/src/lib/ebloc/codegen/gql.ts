@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input) {\n      authToken\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.AuthenticateDocument,
+    "\n  mutation UpdateCustomer($id: ID!, $input: UpdateCustomerInput!) {\n    updateCustomer(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      customer {\n        id\n      }\n    }\n  }\n": types.UpdateCustomerDocument,
     "\n  mutation CreateOption($createOptionInput: CreateOptionInput!) {\n    createOption(input: $createOptionInput) {\n      apiErrors {\n        code\n        message\n      }\n      option {\n        id\n        name\n        values {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.CreateOptionDocument,
     "\n  mutation RemoveOption($id: ID!) {\n    removeOption(id: $id) {\n      success\n    }\n  }\n": types.RemoveOptionDocument,
     "\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.UpdateOptionDocument,
@@ -58,6 +59,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input) {\n      authToken\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input) {\n      authToken\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateCustomer($id: ID!, $input: UpdateCustomerInput!) {\n    updateCustomer(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      customer {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateCustomer($id: ID!, $input: UpdateCustomerInput!) {\n    updateCustomer(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      customer {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

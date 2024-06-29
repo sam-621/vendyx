@@ -46,7 +46,6 @@ extend enum CustomerErrorCode {
   INVALID_ACCESS_TOKEN
   PASSWORDS_DO_NOT_MATCH
   INVALID_CREDENTIALS
-  CUSTOMER_ALREADY_EXISTS
 }
 
 type GenerateCustomerAccessTokenResult {

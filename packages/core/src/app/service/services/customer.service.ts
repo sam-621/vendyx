@@ -98,13 +98,10 @@ export class CustomerService {
     }
 
     const customerExists = await this.findUnique({ email: input.email, onlyEnabled: false });
-    console.log({
-      customerExists
-    });
 
     if (customerExists) {
       return new ErrorResult(
-        CustomerErrorCode.CUSTOMER_ALREADY_EXISTS,
+        CustomerErrorCode.EMAIL_ALREADY_EXISTS,
         'Customer with that email already exists'
       );
     }
@@ -154,6 +151,21 @@ export class CustomerService {
 
     if (!customerToUpdate) {
       return new ErrorResult(CustomerErrorCode.CUSTOMER_NOT_FOUND, 'Customer not found');
+    }
+
+    if (input.email) {
+      if (!validateEmail(input.email)) {
+        return new ErrorResult(CustomerErrorCode.INVALID_EMAIL, 'Invalid email');
+      }
+
+      const customerExists = await this.findUnique({ email: input.email, onlyEnabled: false });
+
+      if (customerExists && customerExists.id !== id) {
+        return new ErrorResult(
+          CustomerErrorCode.EMAIL_ALREADY_EXISTS,
+          'Customer with that email already exists'
+        );
+      }
     }
 
     return this.db.getRepository(CustomerEntity).save({

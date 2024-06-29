@@ -51,6 +51,7 @@ type CustomerErrorResult {
 
 " Utils "
 enum CustomerErrorCode {
-  INVALID_EMAIL
   CUSTOMER_NOT_FOUND
+  INVALID_EMAIL
+  EMAIL_ALREADY_EXISTS
 }
