@@ -8,6 +8,7 @@ import { formatDate } from '@/lib/utils';
 import { ProductDetails } from '../components/product-details';
 import { ProductDetailsSubmitButton } from '../components/product-details/product-details-submit-button';
 import { useProductDetailsForm } from '../components/product-details/use-product-details-form';
+import { VariantDetailsProvider } from '../context';
 import { useGetProductDetails } from '../hooks';
 
 export const ProductDetailsPage = () => {
@@ -23,22 +24,24 @@ export const ProductDetailsPage = () => {
   }
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.onSubmit}>
-        <PageLayout
-          title={product.name}
-          subtitle={`Added at ${formatDate(new Date(product.createdAt as string))}`}
-          actions={<ProductDetailsSubmitButton product={product} />}
-          backUrl="/inventory"
-          className={{
-            main: 'flex flex-col gap-8',
-            container: 'w-[775px] mx-auto'
-          }}
-          stickyHeader
-        >
-          <ProductDetails product={product} />
-        </PageLayout>
-      </form>
-    </FormProvider>
+    <VariantDetailsProvider>
+      <FormProvider {...form}>
+        <form onSubmit={form.onSubmit}>
+          <PageLayout
+            title={product.name}
+            subtitle={`Added at ${formatDate(new Date(product.createdAt as string))}`}
+            actions={<ProductDetailsSubmitButton product={product} />}
+            backUrl="/inventory"
+            className={{
+              main: 'flex flex-col gap-8',
+              container: 'w-[775px] mx-auto'
+            }}
+            stickyHeader
+          >
+            <ProductDetails product={product} />
+          </PageLayout>
+        </form>
+      </FormProvider>
+    </VariantDetailsProvider>
   );
 };

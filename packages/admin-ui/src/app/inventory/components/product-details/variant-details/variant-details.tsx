@@ -1,14 +1,4 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  cn,
-  Label,
-  Separator
-} from '@ebloc/theme';
+import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, cn } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
 import { OptionDetailsProvider, useProductDetailsContext } from '@/app/inventory/context';
@@ -16,7 +6,7 @@ import { t } from '@/lib/locales';
 
 import { OptionsDetails } from './options-details/options-details';
 import { useManageOptionsStates } from './options-details/use-manage-options';
-import { VariantsListing } from './variant-listing/variants-listing';
+import { VariantListing } from './variant-listing/variant-listing';
 
 export const VariantDetails = () => {
   const { product } = useProductDetailsContext();
@@ -54,16 +44,7 @@ export const VariantDetails = () => {
           <OptionsDetails options={defaultOptions} />
         </OptionDetailsProvider>
 
-        {(Boolean(product?.options.length) || Boolean(optionStateUtilities.options.length)) && (
-          <div className="flex flex-col gap-4">
-            <Separator />
-            <Label className="pl-6">Variants</Label>
-            <Separator />
-          </div>
-        )}
-        <div className="flex flex-col gap-4">
-          <VariantsListing variants={variants} />
-        </div>
+        <VariantListing areOptionsInMemory={Boolean(optionStateUtilities.options.length)} />
       </CardContent>
       <CardFooter
         className={cn('w-full flex justify-center', {

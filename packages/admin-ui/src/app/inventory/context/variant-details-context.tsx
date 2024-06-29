@@ -1,9 +1,9 @@
 import { createContext, type FC, type PropsWithChildren, useContext, useState } from 'react';
 
 type Variant = {
-  sku: string;
-  price: number;
-  stock: number;
+  sku: string | undefined;
+  price: number | undefined;
+  stock: number | undefined;
 };
 
 type Context = {
@@ -36,6 +36,10 @@ export const VariantDetailsProvider: FC<PropsWithChildren> = ({ children }) => {
     []
   );
 
+  console.log({
+    variantsWithChanges
+  });
+
   const addCheckedVariant = (id: string) => {
     setCheckedVariants([...checkedVariants, id]);
   };
@@ -49,7 +53,9 @@ export const VariantDetailsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const addVariantWithChanges = (id: string, input: Variant) => {
-    setVariantsWithChanges([...variantsWithChanges, { id, input }]);
+    const newVariantsWithChanges = variantsWithChanges.filter(v => v.id !== id);
+
+    setVariantsWithChanges([...newVariantsWithChanges, { id, input }]);
   };
 
   const removeVariantWithChanges = (id: string) => {

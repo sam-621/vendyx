@@ -13,7 +13,11 @@ export const FormInput = forwardRef<HTMLInputElement, Props>(function FormInput(
       <Input
         ref={ref}
         placeholder={placeholder}
-        className={cn(error && 'border-destructive focus-visible:ring-destructive', className)}
+        className={cn(
+          'bg-background',
+          error && 'border-destructive focus-visible:ring-destructive',
+          className
+        )}
         {...inputProps}
       />
       {error && <p className="text-sm text-red-500">{error}</p>}

@@ -27,11 +27,8 @@ export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
         </div>
 
         <AccordionContent className="flex flex-col border-t pb-0">
-          {variants.map((variant, i) => (
-            <>
-              <VariantItem key={variant.id} variant={variant} inGroup />
-              {/* {i + 1 !== variants.length && <Separator />} */}
-            </>
+          {variants.map(variant => (
+            <VariantItem key={variant.id} variant={variant} inGroup />
           ))}
         </AccordionContent>
       </AccordionItem>

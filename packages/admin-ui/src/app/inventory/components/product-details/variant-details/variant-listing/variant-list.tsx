@@ -13,7 +13,7 @@ import { type ProductDetailsFormInput } from '../../use-product-details-form';
 import { VariantGroup } from './variant-group';
 import { VariantItem } from './variant-item';
 
-export const VariantsListing: FC<Props> = ({ variants }) => {
+export const VariantList: FC<Props> = ({ variants }) => {
   const { product } = useProductDetailsContext();
 
   if (!variants?.items.length) {
