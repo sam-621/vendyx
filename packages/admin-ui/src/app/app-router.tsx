@@ -6,6 +6,7 @@ import { AdminLayout, LogoLoader } from '@/lib/components';
 import { ConfigProvider } from './config/contexts';
 import { useGetAdminUiConfig } from './config/hooks';
 import { AuthWrapper } from './auth-wrapper';
+import { CustomersPage } from './customer';
 import { ExtraUiModulePage } from './extra-ui-module-page';
 import { CreateProductPage, ProductDetailsPage, ProductsPage } from './inventory';
 import { LoginPage } from './login';
@@ -39,6 +40,8 @@ export const AppRouter = () => {
               <Route path="/inventory/:slug" element={<ProductDetailsPage />} />
               <Route path="/orders" element={<OrderPages />} />
               <Route path="/orders/:slug" element={<OrderDetailsPage />} />
+              <Route path="/orders/:slug" element={<OrderDetailsPage />} />
+              <Route path="/customers" element={<CustomersPage />} />
 
               {extraUiModules.map(uiModule => (
                 <Route
