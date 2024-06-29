@@ -19,9 +19,9 @@ We know there are so many other options for e-commerce platform, so why choose u
 - [x] Inventory management
 - [x] Order management
 - [x] Storefront API
-- [ ] Extensible by code 🚧
-- [ ] Collections
-- [ ] Customers
+- [x] Customers
+- [ ] Collections 🚧
+- [ ] Extensible by code
 
 ## Tech stack
 
