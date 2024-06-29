@@ -1,75 +1,48 @@
-import { type FC } from 'react';
+import { type FC, useState } from 'react';
 
-import { getFormattedPrice } from '@ebloc/common';
-import { Button } from '@ebloc/theme';
-import { LoaderCircleIcon, SaveIcon } from 'lucide-react';
+import { Checkbox, cn } from '@ebloc/theme';
 
 import { getVariantName } from '@/app/inventory/utils';
 import { FormInput } from '@/lib/components';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
-import { RemoveVariantButton } from './remove-variant-button';
 import { useUpdateVariantForm } from './use-update-variant-form';
 
 export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
-  const { onSubmit, register, formState, watch } = useUpdateVariantForm(variant);
+  const [isChecked, setIsChecked] = useState(false);
+  const { register, formState } = useUpdateVariantForm(variant);
 
-  const { errors, isSubmitting } = formState;
+  const { errors } = formState;
   // when in group, the first option value is the group name so we skip it
   const variantName = getVariantName(
     inGroup ? variant.optionValues?.slice(1, 3) : variant.optionValues
   );
 
-  const price = watch('price') ?? '';
-  const quantity = watch('quantity');
-  const sku = watch('sku');
-
-  const formHasChanges =
-    String(price) !== getFormattedPrice(variant.price).replace('$', '') ||
-    String(quantity) !== String(variant.stock) ||
-    sku !== variant.sku;
-
   return (
-    <div className="flex justify-between items-center px-6">
-      <div className="flex gap-1">
+    <div
+      className={cn(
+        'flex justify-between items-center px-6 pl-10 hover:bg-muted/50 py-4',
+        isChecked && 'bg-muted/50'
+      )}
+    >
+      <div className="flex items-center gap-3">
+        <Checkbox checked={isChecked} onCheckedChange={() => setIsChecked(!isChecked)} />
         <span>{variantName}</span>
       </div>
       <div className="flex gap-2 items-end">
+        <FormInput {...register('sku')} placeholder="SKU - 000" error={errors.sku?.message} />
         <FormInput
           {...register('price')}
-          label="Price"
           placeholder="$ 0.00"
           error={errors.price?.message}
           onFocus={e => e.target.select()}
         />
         <FormInput
-          {...register('sku')}
-          label="SKU"
-          placeholder="SKU - 000"
-          error={errors.sku?.message}
-        />
-        <FormInput
           {...register('quantity')}
-          label="Stock"
           placeholder="0"
           error={errors.quantity?.message}
           onFocus={e => e.target.select()}
         />
-        <Button
-          disabled={isSubmitting || !formHasChanges}
-          variant="ghost"
-          size="icon"
-          className="p-2"
-          type="button"
-          onClick={onSubmit}
-        >
-          {isSubmitting ? (
-            <LoaderCircleIcon className="animate-spin" size={16} />
-          ) : (
-            <SaveIcon size={16} />
-          )}
-        </Button>
-        <RemoveVariantButton variant={variant} />
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export const FormInput = forwardRef<HTMLInputElement, Props>(function FormInput(
 });
 
 type Props = InputProps & {
-  label: string;
+  label?: string;
   containerClassName?: string;
   error?: string;
 };

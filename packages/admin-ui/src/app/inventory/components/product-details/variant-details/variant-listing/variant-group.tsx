@@ -20,20 +20,18 @@ export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
               <p className="w-fit pl-6">{variants.length} variants</p>
             </AccordionTrigger>
           </div>
-          <div className="flex gap-2 flex-col items-center h-full pr-6">
-            <FormInput
-              containerClassName="w-fit"
-              label="Total stock"
-              placeholder="0"
-              disabled
-              value={totalStock}
-            />
+          <div className="flex gap-2 items-end h-full pr-6">
+            <FormInput label="Price" placeholder="$ 0.00" onFocus={e => e.target.select()} />
+            <FormInput label="Total stock" placeholder="0" disabled value={totalStock} />
           </div>
         </div>
 
-        <AccordionContent className="flex flex-col gap-4 pt-4 border-t">
-          {variants.map(variant => (
-            <VariantItem key={variant.id} variant={variant} inGroup />
+        <AccordionContent className="flex flex-col border-t pb-0">
+          {variants.map((variant, i) => (
+            <>
+              <VariantItem key={variant.id} variant={variant} inGroup />
+              {/* {i + 1 !== variants.length && <Separator />} */}
+            </>
           ))}
         </AccordionContent>
       </AccordionItem>
