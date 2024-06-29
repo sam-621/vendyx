@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { getFormattedPrice } from '@ebloc/common';
-import { Checkbox } from '@ebloc/theme';
+import { Badge, Checkbox } from '@ebloc/theme';
 import { type ColumnDef } from '@tanstack/react-table';
 import { UserIcon } from 'lucide-react';
 
@@ -44,6 +44,15 @@ export const CustomerTableColumns: ColumnDef<TableCustomer>[] = [
     }
   },
   {
+    accessorKey: 'email',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Email" />;
+    },
+    cell: ({ row }) => {
+      return <span>{row.original.email}</span>;
+    }
+  },
+  {
     accessorKey: 'orders',
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Order" />;
@@ -51,7 +60,7 @@ export const CustomerTableColumns: ColumnDef<TableCustomer>[] = [
     cell: ({ row }) => {
       return (
         <span>
-          {row.original.orders} {row.original.orders > 1 ? 'orders' : 'order'}
+          {row.original.orders} {row.original.orders === 1 ? 'order' : 'orders'}
         </span>
       );
     }
@@ -62,7 +71,20 @@ export const CustomerTableColumns: ColumnDef<TableCustomer>[] = [
       return <DataTableColumnHeader column={column} title="Total spent" />;
     },
     cell: ({ row }) => {
-      return <span>${getFormattedPrice(row.original.totalSpent)}</span>;
+      return <span>{getFormattedPrice(row.original.totalSpent)}</span>;
+    }
+  },
+  {
+    accessorKey: 'enabled',
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Enabled" />;
+    },
+    cell: ({ row }) => {
+      return (
+        <Badge variant={row.original.enabled ? 'default' : 'secondary'}>
+          {row.original.enabled ? 'enabled' : 'disabled'}
+        </Badge>
+      );
     },
     enableSorting: false
   }
