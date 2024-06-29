@@ -6,7 +6,6 @@ import {
   bootstrap
 } from '@ebloc/core';
 import { config } from 'dotenv';
-import { HelloWorldPlugin } from './plugins/hello-world/hello-world.plugin';
 
 config();
 
@@ -42,5 +41,5 @@ bootstrap({
     },
     serveUrl: '/admin'
   },
-  plugins: [HelloWorldPlugin]
+  plugins: []
 });
