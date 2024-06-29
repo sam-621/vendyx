@@ -1,6 +1,6 @@
 import { useProductDetailsContext } from '@/app/inventory/context';
 import {
-  InventoryKeys,
+  ProductKeys,
   useAddOptionValues,
   useCreateVariant,
   useRemoveOption,
@@ -81,7 +81,7 @@ export const useUpdateOptionForm = (
       await createDefaultVariant();
     }
 
-    await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
+    await queryClient.invalidateQueries({ queryKey: ProductKeys.single(product?.slug ?? '') });
 
     onFinish();
     notification.success('Option removed successfully');
@@ -148,7 +148,7 @@ export const useUpdateOptionForm = (
     const anyChangeWasMade =
       optionValuesWereModified || optionNameWasModified || optionValuesToUpdate.length;
     if (anyChangeWasMade) {
-      await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product?.slug ?? '') });
+      await queryClient.invalidateQueries({ queryKey: ProductKeys.single(product?.slug ?? '') });
       notification.success('Option updated');
     }
 

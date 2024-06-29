@@ -4,7 +4,7 @@ import { getFormattedPrice, type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { InventoryKeys, useUpdateVariant } from '@/app/inventory/hooks';
+import { ProductKeys, useUpdateVariant } from '@/app/inventory/hooks';
 import { getVariantName } from '@/app/inventory/utils';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { useForm } from '@/lib/form';
@@ -42,7 +42,7 @@ export const useUpdateVariantForm = (variant: CommonProductFragment['variants'][
       ) as unknown as number
     );
 
-    await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(slug ?? '') });
+    await queryClient.invalidateQueries({ queryKey: ProductKeys.single(slug ?? '') });
     notification.success(`Variant ${variantName} updated`);
   };
 

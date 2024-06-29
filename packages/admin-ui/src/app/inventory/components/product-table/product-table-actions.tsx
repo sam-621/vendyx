@@ -18,7 +18,7 @@ import { t } from '@/lib/locales';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
-import { InventoryKeys, useUpdateProduct } from '../../hooks';
+import { ProductKeys, useUpdateProduct } from '../../hooks';
 import { type TableProduct } from './product-table';
 
 export const InventoryTableActions: FC<Props> = ({ row }) => {
@@ -30,7 +30,7 @@ export const InventoryTableActions: FC<Props> = ({ row }) => {
     const notificationId = notification.loading('Updating product state...');
 
     await updateProduct(product.id, { published });
-    await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+    await queryClient.invalidateQueries({ queryKey: ProductKeys.all });
 
     notification.dismiss(notificationId);
     notification.success(`Product ${published ? 'enabled' : 'disabled'}`);

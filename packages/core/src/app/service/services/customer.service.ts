@@ -28,7 +28,8 @@ export class CustomerService {
    */
   find(input: ListInput) {
     return this.db.getRepository(CustomerEntity).find({
-      ...clean(input)
+      ...clean(input),
+      order: { createdAt: 'DESC' }
     });
   }
 

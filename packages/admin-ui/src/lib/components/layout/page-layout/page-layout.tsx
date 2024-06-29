@@ -10,6 +10,7 @@ export const PageLayout: FC<Props> = ({
   title,
   subtitle,
   backUrl,
+  status,
   actions,
   className,
   stickyHeader = false,
@@ -53,9 +54,14 @@ export const PageLayout: FC<Props> = ({
                 </Button>
               </Link>
             )}
-            <div className="flex flex-col gap-1">
-              {title && <h1 className="text-xl font-medium">{title}</h1>}
-              {subtitle && <p className="text-muted-foreground text-sm font-normal">{subtitle}</p>}
+            <div className="flex gap-4 items-start">
+              <div className="flex flex-col gap-1">
+                {title && <h1 className="text-xl font-medium">{title}</h1>}
+                {subtitle && (
+                  <p className="text-muted-foreground text-sm font-normal">{subtitle}</p>
+                )}
+              </div>
+              {status && <div>{status}</div>}
             </div>
           </div>
           <div className="flex gap-3">{actions}</div>
@@ -70,6 +76,7 @@ type Props = PropsWithChildren & {
   title?: string;
   subtitle?: string;
   backUrl?: string;
+  status?: ReactElement;
   className?: {
     container?: string;
     main?: string;

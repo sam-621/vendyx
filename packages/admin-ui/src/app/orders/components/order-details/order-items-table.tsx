@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  cn,
   Table,
   TableBody,
   TableCaption,
@@ -33,61 +34,66 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
 
       <CardContent>
         <Table>
-          <Table>
-            <TableCaption>Order breakdown.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Product</TableHead>
-                <TableHead>Unit price</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Total</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {lines.map(line => (
-                <TableRow key={line.id}>
-                  <TableCell className="flex items-center gap-2 w-full">
-                    <img
-                      src={
-                        line.productVariant.product.assets.items[0]?.source ?? DEFAULT_PRODUCT_IMAGE
-                      }
-                      className="h-12 w-12 object-cover rounded-md"
-                    />
-                    <div className="flex flex-col justify-between h-12">
-                      <span>{line.productVariant.product.name}</span>
+          <TableCaption>Order breakdown.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Product</TableHead>
+              <TableHead>Unit price</TableHead>
+              <TableHead>Quantity</TableHead>
+              <TableHead>Total</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {lines.map(line => (
+              <TableRow key={line.id}>
+                <TableCell className="flex items-center gap-2 w-full">
+                  <img
+                    src={
+                      line.productVariant.product.assets.items[0]?.source ?? DEFAULT_PRODUCT_IMAGE
+                    }
+                    className="h-12 w-12 object-cover rounded-md"
+                  />
+                  <div
+                    className={cn(
+                      'flex flex-col justify-between',
+                      line.productVariant.optionValues?.length && 'h-12'
+                    )}
+                  >
+                    <span>{line.productVariant.product.name}</span>
+                    {Boolean(line.productVariant.optionValues?.length) && (
                       <Badge variant="secondary" className="py-0 px-1 w-fit text-xs">
                         {line.productVariant.optionValues?.map(v => v.value).join(' / ')}
                       </Badge>
-                    </div>
-                  </TableCell>
-                  <TableCell>{getFormattedPrice(line.unitPrice)}</TableCell>
-                  <TableCell>{line.quantity}</TableCell>
-                  <TableCell>{getFormattedPrice(line.linePrice)}</TableCell>
-                </TableRow>
-              ))}
-
-              <TableRow className="border-transparent">
-                <TableCell>Subtotal</TableCell>
-                <TableCell>{order.totalQuantity} Products</TableCell>
-                <TableCell></TableCell>
-                <TableCell>{getFormattedPrice(order.subtotal)}</TableCell>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>{getFormattedPrice(line.unitPrice)}</TableCell>
+                <TableCell>{line.quantity}</TableCell>
+                <TableCell>{getFormattedPrice(line.linePrice)}</TableCell>
               </TableRow>
+            ))}
 
-              <TableRow className="border-transparent">
-                <TableCell>Shipment</TableCell>
-                <TableCell>{shipment?.method.name ?? ''}</TableCell>
-                <TableCell></TableCell>
-                <TableCell>{getFormattedPrice(shipment?.amount ?? 0)}</TableCell>
-              </TableRow>
+            <TableRow className="border-transparent">
+              <TableCell>Subtotal</TableCell>
+              <TableCell>{order.totalQuantity} Products</TableCell>
+              <TableCell></TableCell>
+              <TableCell>{getFormattedPrice(order.subtotal)}</TableCell>
+            </TableRow>
 
-              <TableRow className="border-transparent">
-                <TableCell className="font-semibold">Total</TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell className="font-semibold">{getFormattedPrice(order.total)}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+            <TableRow className="border-transparent">
+              <TableCell>Shipment</TableCell>
+              <TableCell>{shipment?.method.name ?? ''}</TableCell>
+              <TableCell></TableCell>
+              <TableCell>{getFormattedPrice(shipment?.amount ?? 0)}</TableCell>
+            </TableRow>
+
+            <TableRow className="border-transparent">
+              <TableCell className="font-semibold">Total</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell className="font-semibold">{getFormattedPrice(order.total)}</TableCell>
+            </TableRow>
+          </TableBody>
         </Table>
       </CardContent>
     </Card>

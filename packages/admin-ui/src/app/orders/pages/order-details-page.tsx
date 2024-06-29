@@ -3,7 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import { useGetOrderDetails } from '@/app/orders';
 import { PageLayout } from '@/lib/components';
 import { LogoLoader } from '@/lib/components/loaders';
-import { getFormattedDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 import {
   OrderCustomerCard,
@@ -28,8 +28,8 @@ export const OrderDetailsPage = () => {
 
   return (
     <PageLayout
-      title={`# ${order.code}`}
-      subtitle={getFormattedDate(new Date(order.createdAt as string))}
+      title={`#${order.code}`}
+      subtitle={formatDate(new Date(order.createdAt as string))}
       actions={
         <div className="flex gap-4 items-center">
           <OrderTransitionOrderStateButton order={order} />

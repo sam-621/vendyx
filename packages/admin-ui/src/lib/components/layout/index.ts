@@ -1,2 +1,2 @@
-export * from './admin-layout/layout';
-export * from './page-layout/layout';
+export * from './admin-layout/admin-layout';
+export * from './page-layout/page-layout';

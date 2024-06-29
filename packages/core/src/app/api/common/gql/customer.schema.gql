@@ -21,10 +21,6 @@ type CustomerList implements List {
   count: Int!
 }
 
-type Query {
-  customer(accessToken: String!): Customer
-}
-
 input CreateCustomerInput {
   firstName: String
   lastName: String!

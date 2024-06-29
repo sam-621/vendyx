@@ -124,7 +124,7 @@ export class OrderService {
   async create() {
     const ordersCount = await this.db.getRepository(OrderEntity).count();
     const order = this.db.getRepository(OrderEntity).create({
-      code: String(ordersCount + 1)
+      code: String(ordersCount + 1000)
     });
 
     return await this.db.getRepository(OrderEntity).save(order);

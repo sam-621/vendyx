@@ -1,4 +1,4 @@
-export * from './inventory.keys';
+export * from './product.keys';
 export * from './use-add-option-values';
 export * from './use-create-option';
 export * from './use-create-product';

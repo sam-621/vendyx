@@ -1,10 +1,10 @@
 import { GetProductsQuery } from '@/lib/ebloc/queries';
 import { useGqlQuery } from '@/lib/gql';
 
-import { InventoryKeys } from './inventory.keys';
+import { ProductKeys } from './product.keys';
 
 export const useGetProducts = () => {
-  const { data, isLoading } = useGqlQuery({ document: GetProductsQuery, key: InventoryKeys.all });
+  const { data, isLoading } = useGqlQuery({ document: GetProductsQuery, key: ProductKeys.all });
 
   return {
     products: data?.products.items,

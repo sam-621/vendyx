@@ -16,7 +16,7 @@ import { Trash2Icon } from 'lucide-react';
 
 import { useProductDetailsContext } from '@/app/inventory/context';
 import {
-  InventoryKeys,
+  ProductKeys,
   useCreateVariant,
   useRemoveOption,
   useRemoveOptionValues,
@@ -61,7 +61,7 @@ export const RemoveVariantButton: FC<Props> = ({ variant }) => {
     }
 
     await queryClient.invalidateQueries({
-      queryKey: InventoryKeys.single(product?.slug ?? '')
+      queryKey: ProductKeys.single(product?.slug ?? '')
     });
 
     notification.success(`Variant ${variantName} removed`);

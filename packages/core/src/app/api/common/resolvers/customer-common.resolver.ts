@@ -1,4 +1,4 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { ListInput } from '../types';
 import { ListResponse } from '../utils';
@@ -9,11 +9,6 @@ import { CustomerService } from '@/app/service';
 @Resolver('Customer')
 export class CustomerCommonResolver {
   constructor(private readonly customerService: CustomerService) {}
-
-  @Query('customer')
-  async customer(@Args('accessToken') accessToken: string) {
-    return await this.customerService.findByAccessToken(accessToken);
-  }
 
   @ResolveField('orders')
   async orders(@Parent() customer: CustomerEntity, @Args('input') input: ListInput) {

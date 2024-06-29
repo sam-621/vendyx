@@ -5,7 +5,7 @@ import { t } from '@/lib/locales';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
-import { InventoryKeys, useGetProducts, useRemoveProduct } from '../../hooks';
+import { ProductKeys, useGetProducts, useRemoveProduct } from '../../hooks';
 import { ProductTableColumns } from './product-table-columns';
 
 export const ProductTable = () => {
@@ -51,7 +51,7 @@ export const ProductTable = () => {
           return;
         }
 
-        await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+        await queryClient.invalidateQueries({ queryKey: ProductKeys.all });
 
         notification.dismiss(id);
         notification.success('Products removed successfully');

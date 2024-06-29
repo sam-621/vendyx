@@ -1,3 +1,10 @@
+type Query {
+  """
+  Get the customer by the access token.
+  """
+  customer(accessToken: String!): Customer
+}
+
 type Mutation {
   """
   Create a new customer. 

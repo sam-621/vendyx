@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useProductDetailsContext } from '@/app/inventory/context';
 import {
-  InventoryKeys,
+  ProductKeys,
   useCreateOption,
   useCreateVariant,
   useRemoveVariant,
@@ -113,7 +113,7 @@ export const useNewOptionForm = () => {
     const variantsWithNoOptionValues = product.variants.items.filter(v => !v.optionValues?.length);
     await Promise.all(variantsWithNoOptionValues.map(async v => await removeVariant(v.id)));
 
-    await queryClient.invalidateQueries({ queryKey: InventoryKeys.single(product.slug) });
+    await queryClient.invalidateQueries({ queryKey: ProductKeys.single(product.slug) });
 
     setIsLoading(false);
 

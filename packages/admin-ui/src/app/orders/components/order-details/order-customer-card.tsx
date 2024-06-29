@@ -1,9 +1,11 @@
 import { type FC } from 'react';
+import { Link } from 'react-router-dom';
 
+import { clean } from '@ebloc/common';
 import { Card, CardContent, CardHeader, CardTitle, Label } from '@ebloc/theme';
 
-import { getFormattedPhoneNumber } from '@/lib/utils';
 import { type CommonOrderFragment } from '@/lib/ebloc/codegen/graphql';
+import { formatPhoneNumber, getFullName } from '@/lib/utils';
 
 export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
   return (
@@ -15,13 +17,14 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
       <CardContent className="flex flex-col gap-6 text-sm">
         {customer ? (
           <div className="flex flex-col gap-2">
-            <p className="font-medium text-distinct">
-              {customer?.firstName} {customer?.lastName}
-            </p>
+            <Link
+              to={`/customers/${customer.id}`}
+              className="font-medium text-distinct hover:underline"
+            >
+              {getFullName(clean(customer))}
+            </Link>
             <p>{customer.email}</p>
-            {customer.phoneNumber && (
-              <p>{`+ ${customer.phoneCountryCode} ${getFormattedPhoneNumber(customer.phoneNumber)}`}</p>
-            )}
+            {customer.phoneNumber && <p>{formatPhoneNumber(clean(customer))}</p>}
           </div>
         ) : (
           <p>Guest</p>
@@ -36,9 +39,7 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
             </p>
             <p>{address.country}</p>
             {address.phoneCountryCode && address.phoneNumber && (
-              <p>
-                +{address.phoneCountryCode} {getFormattedPhoneNumber(address.phoneNumber)}
-              </p>
+              <p>{formatPhoneNumber(clean(address))}</p>
             )}
           </div>
         )}

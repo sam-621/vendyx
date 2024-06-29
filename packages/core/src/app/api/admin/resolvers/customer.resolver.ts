@@ -9,6 +9,11 @@ import { CustomerService, isErrorResult } from '@/app/service';
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
+  @Query('customer')
+  async customer(@Args('id') id: ID) {
+    return await this.customerService.findUnique({ id });
+  }
+
   @Query('customers')
   async customers(@Args('input') input: ListInput) {
     const result = await this.customerService.find(input);

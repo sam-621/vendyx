@@ -1,5 +1,6 @@
 type Query {
   customers(input: ListInput): CustomerList!
+  customer(id: ID!): Customer
 }
 
 type Mutation {

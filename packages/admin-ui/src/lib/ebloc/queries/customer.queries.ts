@@ -1,5 +1,34 @@
 import { graphql } from '../codegen';
 
+export const CommonCustomer = graphql(`
+  fragment CommonCustomer on Customer {
+    id
+    createdAt
+    firstName
+    lastName
+    email
+    phoneNumber
+    phoneCountryCode
+    enabled
+    orders {
+      count
+      items {
+        id
+        code
+        placedAt
+        state
+        total
+        shipment {
+          method {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`);
+
 export const GetCustomersQuery = graphql(`
   query GetCustomers {
     customers {
@@ -17,6 +46,14 @@ export const GetCustomersQuery = graphql(`
           }
         }
       }
+    }
+  }
+`);
+
+export const GetCustomerDetailsQuery = graphql(`
+  query GetCustomerDetails($id: ID!) {
+    customer(id: $id) {
+      ...CommonCustomer
     }
   }
 `);

@@ -290,9 +290,9 @@ export abstract class IQuery {
 
     abstract customers(input?: Nullable<ListInput>): CustomerList | Promise<CustomerList>;
 
-    abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
+    abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
-    abstract customer(accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
+    abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
 
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 

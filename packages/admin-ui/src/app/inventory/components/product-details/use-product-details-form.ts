@@ -12,7 +12,7 @@ import { queryClient } from '@/lib/query-client';
 import { parseFormattedPrice } from '@/lib/utils';
 
 import {
-  InventoryKeys,
+  ProductKeys,
   useCreateProduct,
   useCreateVariant,
   useUpdateProduct,
@@ -65,7 +65,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
 
       await updateProduct(productId, productInput);
       hasDefaultVariant && (await updateVariant(variantId, variantInput));
-      await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+      await queryClient.invalidateQueries({ queryKey: ProductKeys.all });
 
       notification.success('Product updated');
     } else {
@@ -76,7 +76,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
       if (!createdProductId) return;
 
       await createVariant(createdProductId, variantInput);
-      await queryClient.invalidateQueries({ queryKey: InventoryKeys.all });
+      await queryClient.invalidateQueries({ queryKey: ProductKeys.all });
 
       notification.success(`Product ${input.name} created`);
       navigate(`/inventory/${input.slug}`);

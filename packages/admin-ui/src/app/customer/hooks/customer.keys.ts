@@ -1,4 +1,4 @@
 export const CustomersKeys = {
-  all: ['all'],
+  all: ['customers'],
   single: (id: string) => [...CustomersKeys.all, id]
 };

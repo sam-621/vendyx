@@ -77,12 +77,12 @@ export const CustomerTableColumns: ColumnDef<TableCustomer>[] = [
   {
     accessorKey: 'enabled',
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Enabled" />;
+      return <DataTableColumnHeader column={column} title="Status" />;
     },
     cell: ({ row }) => {
       return (
         <Badge variant={row.original.enabled ? 'default' : 'secondary'}>
-          {row.original.enabled ? 'enabled' : 'disabled'}
+          {row.original.enabled ? 'Active' : 'Disabled'}
         </Badge>
       );
     },

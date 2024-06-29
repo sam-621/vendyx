@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
   CreateCustomerInput,
@@ -11,6 +11,11 @@ import { CustomerService, isErrorResult } from '@/app/service';
 @Resolver('Customer')
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
+
+  @Query('customer')
+  async customer(@Args('accessToken') accessToken: string) {
+    return await this.customerService.findByAccessToken(accessToken);
+  }
 
   @Mutation('createCustomer')
   async createCustomer(@Args('input') input: CreateCustomerInput) {

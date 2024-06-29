@@ -5,7 +5,7 @@ import { GlobeIcon, PackageIcon, Settings, ShoppingCartIcon, UserIcon } from 'lu
 
 import { useConfigContext } from '@/app/config/contexts';
 
-import { LayoutSidebarItem } from './layout-sidebar-item';
+import { LayoutSidebarItem } from './admin-layout-sidebar-item';
 
 export const AdminSidebar = () => {
   const { extraUiModules } = useConfigContext();

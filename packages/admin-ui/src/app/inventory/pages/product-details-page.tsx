@@ -3,7 +3,7 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { PageLayout } from '@/lib/components';
 import { LogoLoader } from '@/lib/components/loaders';
-import { getFormattedDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 import { ProductDetails } from '../components/product-details';
 import { ProductDetailsSubmitButton } from '../components/product-details/product-details-submit-button';
@@ -27,7 +27,7 @@ export const ProductDetailsPage = () => {
       <form onSubmit={form.onSubmit}>
         <PageLayout
           title={product.name}
-          subtitle={`Added at ${getFormattedDate(new Date(product.createdAt as string))}`}
+          subtitle={`Added at ${formatDate(new Date(product.createdAt as string))}`}
           actions={<ProductDetailsSubmitButton product={product} />}
           backUrl="/inventory"
           className={{

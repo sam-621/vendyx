@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import { type ColumnDef } from '@tanstack/react-table';
 import { getFormattedPrice } from '@ebloc/common';
 import { Checkbox } from '@ebloc/theme';
+import { type ColumnDef } from '@tanstack/react-table';
 import { User } from 'lucide-react';
 
 import { DataTableColumnHeader } from '@/lib/components/data-table';
@@ -36,7 +36,7 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
       return <DataTableColumnHeader column={column} title="Code" />;
     },
     cell: ({ row }) => {
-      return <span className="w-20">{row.original.code}</span>;
+      return <span className="w-20">#{row.original.code}</span>;
     },
     enableSorting: false
   },
