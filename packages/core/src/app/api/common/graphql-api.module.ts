@@ -1,3 +1,4 @@
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -9,13 +10,13 @@ export class GraphqlApiModule {
       imports: options.include,
       ...GraphQLModule.forRoot<ApolloDriverConfig>({
         // false to use apollo studio
-        playground: true,
+        playground: false,
         // TODO: false in production, true in dev
         includeStacktraceInErrorResponses: true,
         // Always true because the graphql playground must be public
         introspection: true,
         driver: ApolloDriver,
-        // plugins: [ApolloServerPluginLandingPageLocalDefault()],
+        plugins: [ApolloServerPluginLandingPageLocalDefault()],
         formatError: error => {
           return {
             message: error.message,

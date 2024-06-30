@@ -12,6 +12,12 @@ export enum AdminErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
 }
 
+export enum CollectionErrorCode {
+    COLLECTION_NOT_FOUND = "COLLECTION_NOT_FOUND",
+    NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
+    DUPLICATED_SLUG = "DUPLICATED_SLUG"
+}
+
 export enum OptionErrorCode {
     DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES",
     OPTION_NOT_FOUND = "OPTION_NOT_FOUND",
@@ -70,6 +76,20 @@ export enum OrderState {
 export class AuthenticateInput {
     username: string;
     password: string;
+}
+
+export class CreateCollectionInput {
+    name: string;
+    slug: string;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+}
+
+export class UpdateCollectionInput {
+    name?: Nullable<string>;
+    slug?: Nullable<string>;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
 }
 
 export class UpdateCustomerInput {
@@ -194,11 +214,6 @@ export class AddShipmentToOrderInput {
     shippingMethodId: string;
 }
 
-export interface ProductResult {
-    product?: Nullable<Product>;
-    apiErrors: ProductErrorResult[];
-}
-
 export interface VariantResult {
     variant?: Nullable<Variant>;
     apiErrors: VariantErrorResult[];
@@ -226,6 +241,14 @@ export class Admin implements Node {
 export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
+    abstract createCollection(input: CreateCollectionInput): CollectionResult | Promise<CollectionResult>;
+
+    abstract updateCollection(id: string, input: UpdateCollectionInput): CollectionResult | Promise<CollectionResult>;
+
+    abstract removeCollection(id: string): CollectionResult | Promise<CollectionResult>;
+
+    abstract setProductsInCollection(id: string, productIds: string[]): CollectionResult | Promise<CollectionResult>;
+
     abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
@@ -244,11 +267,13 @@ export abstract class IMutation {
 
     abstract markOrderAsDelivered(id: string): OrderResult | Promise<OrderResult>;
 
-    abstract createProduct(input: CreateProductInput): CreateProductResult | Promise<CreateProductResult>;
+    abstract createProduct(input: CreateProductInput): ProductResult | Promise<ProductResult>;
 
-    abstract updateProduct(id: string, input: UpdateProductInput): UpdateProductResult | Promise<UpdateProductResult>;
+    abstract updateProduct(id: string, input: UpdateProductInput): ProductResult | Promise<ProductResult>;
 
     abstract removeProduct(id: string): RemoveProductResult | Promise<RemoveProductResult>;
+
+    abstract setCollectionsInProduct(id: string, collectionIds: string[]): ProductResult | Promise<ProductResult>;
 
     abstract createVariant(productId: string, input: CreateVariantInput): CreateVariantResult | Promise<CreateVariantResult>;
 
@@ -294,6 +319,10 @@ export abstract class IQuery {
 
     abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
 
+    abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
+
+    abstract collection(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
+
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
@@ -316,6 +345,16 @@ export class AuthenticateResult {
 
 export class AdminErrorResult {
     code: AdminErrorCode;
+    message: string;
+}
+
+export class CollectionResult {
+    collection?: Nullable<Collection>;
+    apiErrors: CollectionErrorResult[];
+}
+
+export class CollectionErrorResult {
+    code: CollectionErrorCode;
     message: string;
 }
 
@@ -349,18 +388,13 @@ export class OrderErrorResult {
     message: string;
 }
 
-export class CreateProductResult implements ProductResult {
-    product?: Nullable<Product>;
-    apiErrors: ProductErrorResult[];
-}
-
-export class UpdateProductResult implements ProductResult {
-    product?: Nullable<Product>;
-    apiErrors: ProductErrorResult[];
-}
-
 export class RemoveProductResult {
     success?: Nullable<boolean>;
+    apiErrors: ProductErrorResult[];
+}
+
+export class ProductResult {
+    product?: Nullable<Product>;
     apiErrors: ProductErrorResult[];
 }
 
@@ -420,6 +454,23 @@ export class Asset implements Node {
 
 export class AssetList implements List {
     items: Asset[];
+    count: number;
+}
+
+export class Collection implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    slug: string;
+    description?: Nullable<string>;
+    enabled: string;
+    products?: ProductList;
+    assets?: AssetList;
+}
+
+export class CollectionList implements List {
+    items: Collection[];
     count: number;
 }
 

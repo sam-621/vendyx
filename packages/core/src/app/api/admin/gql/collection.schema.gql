@@ -1,0 +1,38 @@
+type Mutation {
+  createCollection(input: CreateCollectionInput!): CollectionResult!
+  updateCollection(id: ID!, input: UpdateCollectionInput!): CollectionResult!
+  removeCollection(id: ID!): CollectionResult!
+  setProductsInCollection(id: ID!, productIds: [ID!]!): CollectionResult!
+}
+
+
+input CreateCollectionInput {
+  name: String!
+  slug: String!
+  description: String  
+  enabled: Boolean
+}
+
+input UpdateCollectionInput {
+  name: String
+  slug: String
+  description: String
+  enabled: Boolean
+}
+
+" Utils "
+type CollectionResult {
+  collection: Collection
+  apiErrors: [CollectionErrorResult!]!
+}
+
+type CollectionErrorResult {
+  code: CollectionErrorCode!
+  message: String!
+}
+
+enum CollectionErrorCode {
+  COLLECTION_NOT_FOUND
+  NO_ID_OR_SLUG_PROVIDED
+  DUPLICATED_SLUG
+}

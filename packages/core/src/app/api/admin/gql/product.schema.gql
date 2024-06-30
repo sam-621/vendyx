@@ -1,8 +1,9 @@
 
 type Mutation {
-  createProduct(input: CreateProductInput!): CreateProductResult!
-  updateProduct(id: ID!, input: UpdateProductInput!): UpdateProductResult!
+  createProduct(input: CreateProductInput!): ProductResult!
+  updateProduct(id: ID!, input: UpdateProductInput!): ProductResult!
   removeProduct(id: ID!): RemoveProductResult!
+  setCollectionsInProduct(id: ID!, collectionIds: [ID!]!): ProductResult!
 }
 
 " Inputs "
@@ -27,18 +28,14 @@ input UpdateProductInput {
 }
 
 " Results "
-type CreateProductResult implements ProductResult {
-  product: Product
-  apiErrors: [ProductErrorResult!]!
-}
-
-type UpdateProductResult implements ProductResult {
-  product: Product
-  apiErrors: [ProductErrorResult!]!
-}
-
 type RemoveProductResult {
   success: Boolean
+  apiErrors: [ProductErrorResult!]!
+}
+
+" Utils "
+type ProductResult {
+  product: Product
   apiErrors: [ProductErrorResult!]!
 }
 
@@ -47,15 +44,9 @@ type ProductErrorResult {
   message: String!
 }
 
-" Utils "
 enum ProductErrorCode {
   PRODUCT_NOT_FOUND
   NO_ID_OR_SLUG_PROVIDED
   DUPLICATED_SLUG
   PRODUCT_HAS_VARIANTS
-}
-
-interface ProductResult {
-  product: Product
-  apiErrors: [ProductErrorResult!]!
 }
