@@ -17,7 +17,7 @@ export const CollectionDetails: FC<Props> = ({ collection }) => {
         <CollectionProductsTable products={products} />
       </div>
       <div className="col-span-1 flex flex-col gap-6">
-        <CollectionVisibility />
+        <CollectionVisibility isPublished={collection.enabled} />
       </div>
     </div>
   );

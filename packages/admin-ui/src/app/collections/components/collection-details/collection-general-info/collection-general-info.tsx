@@ -1,8 +1,14 @@
+import { useFormContext } from 'react-hook-form';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 
 import { FormInput, FormTextarea } from '@/lib/components';
 
+import { type CollectionDetailsFormInput } from '../use-collection-details-form';
+
 export const CollectionGeneralInfo = () => {
+  const { register } = useFormContext<CollectionDetailsFormInput>();
+
   return (
     <Card>
       <CardHeader>
@@ -11,10 +17,10 @@ export const CollectionGeneralInfo = () => {
 
       <CardContent className="flex flex-col gap-4">
         <div className="flex gap-4 w-full">
-          <FormInput label="Name" placeholder="Electronics" />
-          <FormInput label="Slug" placeholder="electronics" />
+          <FormInput {...register('name')} label="Name" placeholder="Electronics" />
+          <FormInput {...register('slug')} label="Slug" placeholder="electronics" />
         </div>
-        <FormTextarea label="Description" />
+        <FormTextarea {...register('description')} label="Description" />
       </CardContent>
     </Card>
   );
