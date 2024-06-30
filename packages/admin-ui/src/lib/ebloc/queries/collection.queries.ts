@@ -48,7 +48,7 @@ export const GetCollectionsQuery = graphql(`
 `);
 
 export const GetCollectionDetailsQuery = graphql(`
-  query GetCollection($id: String) {
+  query GetCollection($id: ID!) {
     collection(id: $id) {
       ...CommonCollection
     }

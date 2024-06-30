@@ -469,7 +469,7 @@ export class Collection implements Node {
     name: string;
     slug: string;
     description?: Nullable<string>;
-    enabled: string;
+    enabled: boolean;
     products?: ProductList;
     assets?: AssetList;
 }
