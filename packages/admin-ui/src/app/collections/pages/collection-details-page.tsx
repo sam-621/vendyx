@@ -46,11 +46,11 @@ export const CollectionDetailsPage = () => {
         <div className="col-span-1 flex flex-col gap-6">
           <Card>
             <CardContent className="flex flex-col gap-4 mt-6">
-              <Label className="text-base">Collection visibility</Label>
+              <Label className="text-base">Visibility</Label>
               <div className="flex items-center space-x-2">
                 <Switch id="collection-status" />
                 <Label htmlFor="collection-status" className="cursor-pointer">
-                  Active
+                  Online store
                 </Label>
               </div>
             </CardContent>
