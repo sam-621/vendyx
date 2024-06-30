@@ -1,7 +1,7 @@
 type Mutation {
   createCollection(input: CreateCollectionInput!): CollectionResult!
   updateCollection(id: ID!, input: UpdateCollectionInput!): CollectionResult!
-  removeCollection(id: ID!): CollectionResult!
+  removeCollection(id: ID!): RemoveCollectionResult!
   setProductsInCollection(id: ID!, productIds: [ID!]!): CollectionResult!
 }
 
@@ -18,6 +18,11 @@ input UpdateCollectionInput {
   slug: String
   description: String
   enabled: Boolean
+}
+
+type RemoveCollectionResult {
+  success: Boolean
+  apiErrors: [CollectionErrorResult!]!
 }
 
 " Utils "

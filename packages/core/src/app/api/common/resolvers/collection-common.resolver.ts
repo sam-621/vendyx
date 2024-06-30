@@ -1,8 +1,9 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { ListInput } from '../types';
 import { ListResponse } from '../utils';
 
+import { CollectionEntity } from '@/app/persistance';
 import { CollectionService } from '@/app/service';
 
 @Resolver('Collection')
@@ -12,6 +13,13 @@ export class CollectionCommonResolver {
   @Query('collections')
   async collections(@Args() input: ListInput) {
     const result = await this.collectionService.find(input);
+
+    return new ListResponse(result, result.length);
+  }
+
+  @ResolveField('products')
+  async products(@Parent() collection: CollectionEntity, @Args('input') input: ListInput) {
+    const result = await this.collectionService.findProducts(collection.id, input);
 
     return new ListResponse(result, result.length);
   }

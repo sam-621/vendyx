@@ -28,34 +28,40 @@ export class CollectionService {
    * Get a collection by id or slug, if none is provided, throw an error.
    */
   async findUnique({ id, slug, onlyEnabled }: FinUniqueInput) {
-    if (id) {
+    if (typeof id === 'string') {
       return this.db
         .getRepository(CollectionEntity)
         .findOne({ where: { id, enabled: onlyEnabled || undefined } });
     }
 
-    if (slug) {
+    if (typeof slug === 'string') {
       return this.db
         .getRepository(CollectionEntity)
         .findOne({ where: { slug, enabled: onlyEnabled || undefined } });
     }
 
-    throw new Error('You must provide either an id or a slug to find a collection');
+    throw new Error('You must provide either an ID or a SLUG to find a collection');
   }
 
   /**
    * Get a collection by id or slug. If none is provided, throw a graphql error
    */
   async findByIdOrdSlug({ id, slug, onlyEnabled }: FinUniqueInput) {
-    if (id) {
+    if (typeof id === 'string') {
       return this.findUnique({ id, onlyEnabled });
     }
 
-    if (slug) {
+    if (typeof slug === 'string') {
       return this.findUnique({ slug, onlyEnabled });
     }
 
-    throw new GraphQLError('You must provide either an id or a slug to find a collection');
+    throw new GraphQLError('You must provide either an ID or a SLUG to find a collection');
+  }
+
+  async findProducts(id: ID, input: ListInput) {
+    return this.db
+      .getRepository(ProductEntity)
+      .find({ where: { collections: { id } }, ...clean(input) });
   }
 
   /**
@@ -104,7 +110,7 @@ export class CollectionService {
   /**
    * Remove a collection.
    */
-  async remove(id: ID): MutationResult {
+  async remove(id: ID): MutationResult<boolean> {
     const collection = await this.findUnique({ id });
 
     if (!collection) {
@@ -114,7 +120,9 @@ export class CollectionService {
       );
     }
 
-    return this.db.getRepository(CollectionEntity).remove(collection);
+    await this.db.getRepository(CollectionEntity).remove(collection);
+
+    return true;
   }
 
   /**
@@ -142,5 +150,5 @@ export class CollectionService {
   }
 }
 
-type MutationResult = Promise<CollectionEntity | ErrorResult<CollectionErrorCode>>;
+type MutationResult<R = CollectionEntity> = Promise<R | ErrorResult<CollectionErrorCode>>;
 type FinUniqueInput = { id?: ID; slug?: string; onlyEnabled?: boolean };

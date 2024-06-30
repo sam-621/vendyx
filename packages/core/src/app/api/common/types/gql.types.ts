@@ -245,7 +245,7 @@ export abstract class IMutation {
 
     abstract updateCollection(id: string, input: UpdateCollectionInput): CollectionResult | Promise<CollectionResult>;
 
-    abstract removeCollection(id: string): CollectionResult | Promise<CollectionResult>;
+    abstract removeCollection(id: string): RemoveCollectionResult | Promise<RemoveCollectionResult>;
 
     abstract setProductsInCollection(id: string, productIds: string[]): CollectionResult | Promise<CollectionResult>;
 
@@ -346,6 +346,11 @@ export class AuthenticateResult {
 export class AdminErrorResult {
     code: AdminErrorCode;
     message: string;
+}
+
+export class RemoveCollectionResult {
+    success?: Nullable<boolean>;
+    apiErrors: CollectionErrorResult[];
 }
 
 export class CollectionResult {

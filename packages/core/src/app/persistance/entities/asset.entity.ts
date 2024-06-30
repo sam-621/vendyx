@@ -23,7 +23,7 @@ export class AssetEntity extends EBlocEntity {
   })
   type: string;
 
-  @ManyToMany(() => ProductEntity, p => p.collections)
+  @ManyToMany(() => ProductEntity, p => p.assets)
   products: ProductEntity[];
 
   @ManyToMany(() => CollectionEntity, c => c.assets)

@@ -1,4 +1,5 @@
 import {
+  CollectionCommonResolver,
   CustomerCommonResolver,
   OptionCommonResolver,
   OptionValueCommonResolver,
@@ -19,5 +20,6 @@ export const COMMON_RESOLVERS = [
   ShipmentCommonResolver,
   OptionValueCommonResolver,
   OptionCommonResolver,
-  CustomerCommonResolver
+  CustomerCommonResolver,
+  CollectionCommonResolver
 ];

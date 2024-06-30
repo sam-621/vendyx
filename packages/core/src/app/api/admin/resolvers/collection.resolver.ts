@@ -32,7 +32,7 @@ export class CollectionResolver {
   async removeCollection(@Args('id') id: ID) {
     const result = await this.collectionService.remove(id);
 
-    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], collection: result };
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], success: result };
   }
 
   @Mutation('setProductsInCollection')
