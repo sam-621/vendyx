@@ -92,7 +92,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
       await queryClient.invalidateQueries({ queryKey: ProductKeys.all });
 
       notification.success(`Product ${input.name} created`);
-      navigate(`/inventory/${input.slug}`);
+      navigate(`/products/${input.slug}`);
     }
 
     // set formatted price to price input

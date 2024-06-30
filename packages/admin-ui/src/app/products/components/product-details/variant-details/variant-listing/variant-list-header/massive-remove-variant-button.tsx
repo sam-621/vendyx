@@ -12,8 +12,8 @@ import {
 } from '@ebloc/theme';
 import { Trash2Icon } from 'lucide-react';
 
-import { useProductDetailsContext, useVariantsContext } from '@/app/inventory/context';
-import { ProductKeys, useMassiveVariantRemove } from '@/app/inventory/hooks';
+import { useProductDetailsContext, useVariantsContext } from '@/app/products/context';
+import { ProductKeys, useMassiveVariantRemove } from '@/app/products/hooks';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 

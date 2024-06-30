@@ -1,7 +1,7 @@
 import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, cn } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
-import { OptionDetailsProvider, useProductDetailsContext } from '@/app/inventory/context';
+import { OptionDetailsProvider, useProductDetailsContext } from '@/app/products/context';
 import { t } from '@/lib/locales';
 
 import { OptionsDetails } from './options-details/options-details';

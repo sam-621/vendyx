@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-import { useProductDetailsContext } from '@/app/inventory/context';
+import { useProductDetailsContext } from '@/app/products/context';
 import {
   ProductKeys,
   useCreateOption,
   useCreateVariant,
   useRemoveVariant,
   useUpdateVariant
-} from '@/app/inventory/hooks';
-import { getNewVariantsByNewOption } from '@/app/inventory/utils';
+} from '@/app/products/hooks';
+import { getNewVariantsByNewOption } from '@/app/products/utils';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 

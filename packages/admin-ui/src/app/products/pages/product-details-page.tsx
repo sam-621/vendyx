@@ -20,7 +20,7 @@ const Page = () => {
   if (isLoading) return <LogoLoader />;
 
   if (!product) {
-    return <Navigate to="/inventory" />;
+    return <Navigate to="/products" />;
   }
 
   return (
@@ -30,7 +30,7 @@ const Page = () => {
           title={product.name}
           subtitle={`Added at ${formatDate(new Date(product.createdAt as string))}`}
           actions={<ProductDetailsSubmitButton product={product} />}
-          backUrl="/inventory"
+          backUrl="/products"
           className={{
             main: 'flex flex-col gap-8',
             container: 'w-[775px] mx-auto'

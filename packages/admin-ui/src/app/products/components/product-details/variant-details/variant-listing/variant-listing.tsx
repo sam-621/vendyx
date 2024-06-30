@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { useProductDetailsContext } from '@/app/inventory/context';
+import { useProductDetailsContext } from '@/app/products/context';
 
 import { VariantListHeader } from './variant-list-header/variant-list-header';
 import { VariantList } from './variant-list';

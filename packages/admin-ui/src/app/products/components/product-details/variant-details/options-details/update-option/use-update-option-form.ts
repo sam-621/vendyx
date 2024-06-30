@@ -1,4 +1,4 @@
-import { useProductDetailsContext } from '@/app/inventory/context';
+import { useProductDetailsContext } from '@/app/products/context';
 import {
   ProductKeys,
   useAddOptionValues,
@@ -8,13 +8,13 @@ import {
   useRemoveVariant,
   useUpdateOption,
   useUpdateOptionValues
-} from '@/app/inventory/hooks';
+} from '@/app/products/hooks';
 import {
   getNewVariantsByNewOptionValues,
   getVariantsWithDuplicatedValues,
   getVariantsWithoutOptionValues,
   removeVariantsWithDuplicatedOptionValues
-} from '@/app/inventory/utils';
+} from '@/app/products/utils';
 import { useFragment } from '@/lib/ebloc/codegen';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import {

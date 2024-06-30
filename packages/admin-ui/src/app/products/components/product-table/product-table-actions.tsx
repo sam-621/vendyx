@@ -21,7 +21,7 @@ import { queryClient } from '@/lib/query-client';
 import { ProductKeys, useUpdateProduct } from '../../hooks';
 import { type TableProduct } from './product-table';
 
-export const InventoryTableActions: FC<Props> = ({ row }) => {
+export const ProductTableActions: FC<Props> = ({ row }) => {
   const { updateProduct } = useUpdateProduct();
   const product: TableProduct = row.original;
   const productState = product.status === 'enabled' ? 'enabled' : 'disabled';

@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { Button, cn } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
-import { useOptionDetailsContext } from '@/app/inventory/context';
+import { useOptionDetailsContext } from '@/app/products/context';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { OptionDetailsForm } from '../option-details-form';

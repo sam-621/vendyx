@@ -9,9 +9,9 @@ import { CustomerDetailsPage } from './customer/pages/customer-details-page';
 import { AuthWrapper } from './auth-wrapper';
 import { CustomersPage } from './customer';
 import { ExtraUiModulePage } from './extra-ui-module-page';
-import { CreateProductPage, ProductDetailsPage, ProductsPage } from './inventory';
 import { LoginPage } from './login';
 import { OrderDetailsPage, OrderPages } from './orders';
+import { CreateProductPage, ProductDetailsPage, ProductsPage } from './products';
 
 export const AppRouter = () => {
   const { data, isLoading } = useGetAdminUiConfig();
@@ -36,9 +36,9 @@ export const AppRouter = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<AdminLayout />}>
               {/* <Route path="/" element={<DashboardPage />} /> */}
-              <Route path="/inventory" element={<ProductsPage />} />
-              <Route path="/inventory/new" element={<CreateProductPage />} />
-              <Route path="/inventory/:slug" element={<ProductDetailsPage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/new" element={<CreateProductPage />} />
+              <Route path="/products/:slug" element={<ProductDetailsPage />} />
               <Route path="/orders" element={<OrderPages />} />
               <Route path="/orders/:slug" element={<OrderDetailsPage />} />
               <Route path="/orders/:slug" element={<OrderDetailsPage />} />

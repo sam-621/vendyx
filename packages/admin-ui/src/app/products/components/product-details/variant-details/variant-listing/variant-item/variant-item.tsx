@@ -3,8 +3,8 @@ import { type FC, useEffect, useState } from 'react';
 import { convertToCent, getFormattedPrice } from '@ebloc/common';
 import { Checkbox, cn } from '@ebloc/theme';
 
-import { useVariantsContext } from '@/app/inventory/context';
-import { getVariantName } from '@/app/inventory/utils';
+import { useVariantsContext } from '@/app/products/context';
+import { getVariantName } from '@/app/products/utils';
 import { FormInput } from '@/lib/components';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { parseFormattedPrice } from '@/lib/utils';

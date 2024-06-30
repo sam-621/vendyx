@@ -11,10 +11,10 @@ import { ProductTable } from '../components/product-table';
 export const ProductsPage = () => {
   return (
     <PageLayout
-      title={t('inventory.title')}
+      title="Products"
       subtitle={t('inventory.subtitle')}
       actions={
-        <Link to="/inventory/new">
+        <Link to="/products/new">
           <Button className="flex gap-2">
             <PlusIcon size={16} /> {t('inventory.action.new')}
           </Button>

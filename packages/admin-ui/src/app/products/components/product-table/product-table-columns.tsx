@@ -7,7 +7,7 @@ import { DataTableColumnHeader } from '@/lib/components/data-table';
 import { t } from '@/lib/locales';
 
 import { type TableProduct } from './product-table';
-import { InventoryTableActions } from './product-table-actions';
+import { ProductTableActions } from './product-table-actions';
 
 export const ProductTableColumns: ColumnDef<TableProduct>[] = [
   {
@@ -37,7 +37,7 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          to={`/inventory/${row.original.slug ?? ''}`}
+          to={`/products/${row.original.slug ?? ''}`}
           className="flex items-center gap-2 w-full"
         >
           {row.original.image && (
@@ -85,6 +85,6 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
   {
     id: 'actions',
     header: () => <div></div>,
-    cell: ({ row }) => <InventoryTableActions row={row} />
+    cell: ({ row }) => <ProductTableActions row={row} />
   }
 ];

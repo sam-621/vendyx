@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import { cn } from '@ebloc/theme';
 
-import { useOptionDetailsContext } from '@/app/inventory/context';
+import { useOptionDetailsContext } from '@/app/products/context';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { NewOptionForm } from './new-option/new-option-form';

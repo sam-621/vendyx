@@ -3,8 +3,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { getFormattedPrice } from '@ebloc/common';
 
-import { useProductDetailsContext } from '@/app/inventory/context';
-import { getVariantsGroupedByOption } from '@/app/inventory/utils';
+import { useProductDetailsContext } from '@/app/products/context';
+import { getVariantsGroupedByOption } from '@/app/products/utils';
 import { FormInput } from '@/lib/components';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { t } from '@/lib/locales';

@@ -26,7 +26,7 @@ export const CreateProductPage = () => {
             main: 'flex flex-col gap-8',
             container: 'w-[775px] mx-auto'
           }}
-          backUrl="/inventory"
+          backUrl="/products"
           stickyHeader
         >
           <ProductDetails />

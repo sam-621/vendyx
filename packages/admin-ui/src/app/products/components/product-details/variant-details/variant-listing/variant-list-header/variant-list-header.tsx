@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import { Label } from '@ebloc/theme';
 
-import { useVariantsContext } from '@/app/inventory/context';
+import { useVariantsContext } from '@/app/products/context';
 
 import { MassiveRemoveVariantButton } from './massive-remove-variant-button';
 

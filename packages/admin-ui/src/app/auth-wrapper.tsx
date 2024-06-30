@@ -13,10 +13,10 @@ export const AuthWrapper: FC<Props> = ({ children }) => {
   if (!isAuthenticated && pathname !== '/login') return <Navigate to="/login" replace />;
 
   // is in login with valid token, have to redirect to admin
-  if (isAuthenticated && pathname === '/login') return <Navigate to="/inventory" replace />;
+  if (isAuthenticated && pathname === '/login') return <Navigate to="/products" replace />;
 
-  // is in root with valid token, have to redirect to main page (inventory)
-  if (isAuthenticated && pathname === '/') return <Navigate to="/inventory" replace />;
+  // is in root with valid token, have to redirect to main page (products)
+  if (isAuthenticated && pathname === '/') return <Navigate to="/products" replace />;
 
   // Everything is ok, render the children
   return children ?? <Outlet />;

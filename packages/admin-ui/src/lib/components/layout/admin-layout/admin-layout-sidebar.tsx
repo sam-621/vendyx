@@ -1,7 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
 
 import { cn } from '@ebloc/theme';
-import { GlobeIcon, PackageIcon, Settings, ShoppingCartIcon, UserIcon } from 'lucide-react';
+import {
+  BoxesIcon,
+  GlobeIcon,
+  PackageIcon,
+  Settings,
+  ShoppingCartIcon,
+  UserIcon
+} from 'lucide-react';
 
 import { useConfigContext } from '@/app/config/contexts';
 
@@ -11,16 +18,23 @@ export const AdminSidebar = () => {
   const { extraUiModules } = useConfigContext();
   const { pathname } = useLocation();
 
-  const isInInventory = pathname.includes('/inventory');
+  const isInProducts = pathname.includes('/products');
+  const isInCollections = pathname.includes('/collections');
   const isInOrders = pathname.includes('/orders');
   const isInCustomers = pathname.includes('/customers');
 
   const SIDEBAR_ITEMS = [
     {
       icon: PackageIcon,
-      to: '/inventory',
-      label: 'Inventory',
-      isActive: isInInventory
+      to: '/products',
+      label: 'Products',
+      isActive: isInProducts
+    },
+    {
+      icon: BoxesIcon,
+      to: '/collections',
+      label: 'Collections',
+      isActive: isInCollections
     },
     {
       icon: ShoppingCartIcon,

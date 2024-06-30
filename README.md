@@ -16,10 +16,10 @@ We know there are so many other options for e-commerce platform, so why choose u
 > [!NOTE]
 > **Ebloc is in development. Check marks indicate completed MVP sections; more features will be added.**
 
-- [x] Inventory management
-- [x] Order management
-- [x] Storefront API
+- [x] Products
+- [x] Orders
 - [x] Customers
+- [x] Storefront API
 - [ ] Collections 🚧
 - [ ] Extensible by code
 
