@@ -5,6 +5,7 @@ export * from './use-create-product';
 export * from './use-create-variant';
 export * from './use-get-product-details';
 export * from './use-get-products';
+export * from './use-massive-variant-remove';
 export * from './use-remove-option';
 export * from './use-remove-option-values';
 export * from './use-remove-product';

@@ -10,8 +10,8 @@ import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { t } from '@/lib/locales';
 
 import { type ProductDetailsFormInput } from '../../use-product-details-form';
-import { VariantGroup } from './variant-group';
-import { VariantItem } from './variant-item';
+import { VariantGroup } from './variant-item/variant-group';
+import { VariantItem } from './variant-item/variant-item';
 
 export const VariantList: FC<Props> = ({ variants }) => {
   const { product } = useProductDetailsContext();

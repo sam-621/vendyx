@@ -11,7 +11,7 @@ export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
   const totalStock = variants.reduce((acc, variant) => acc + variant.stock, 0);
 
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible className="w-full pt-3">
       <AccordionItem value="item-1">
         <div className="flex w-full justify-between items-center pb-4">
           <div className="flex flex-col gap-2">

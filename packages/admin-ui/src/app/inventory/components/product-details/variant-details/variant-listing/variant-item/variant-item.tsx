@@ -71,15 +71,22 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
         <span>{variantName}</span>
       </div>
       <div className="flex gap-2 items-end">
-        <FormInput placeholder="SKU - 000" value={sku} onChange={e => setSku(e.target.value)} />
+        <FormInput
+          placeholder="SKU - 000"
+          label={!inGroup ? 'SKU' : undefined}
+          value={sku}
+          onChange={e => setSku(e.target.value)}
+        />
         <FormInput
           placeholder="$ 0.00"
+          label={!inGroup ? 'Price' : undefined}
           value={price}
           onChange={e => setPrice(e.target.value)}
           onFocus={e => e.target.select()}
         />
         <FormInput
           placeholder="0"
+          label={!inGroup ? 'Stock' : undefined}
           value={stock}
           onChange={e => setStock(e.target.value)}
           onFocus={e => e.target.select()}
