@@ -92,6 +92,54 @@ export type AuthenticateResult = {
   authToken?: Maybe<Scalars['String']['output']>;
 };
 
+export type Collection = Node & {
+  __typename?: 'Collection';
+  assets: AssetList;
+  createdAt: Scalars['Date']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  enabled: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  products: ProductList;
+  slug: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+
+export type CollectionAssetsArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+
+export type CollectionProductsArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+export enum CollectionErrorCode {
+  CollectionNotFound = 'COLLECTION_NOT_FOUND',
+  DuplicatedSlug = 'DUPLICATED_SLUG',
+  NoIdOrSlugProvided = 'NO_ID_OR_SLUG_PROVIDED'
+}
+
+export type CollectionErrorResult = {
+  __typename?: 'CollectionErrorResult';
+  code: CollectionErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type CollectionList = List & {
+  __typename?: 'CollectionList';
+  count: Scalars['Int']['output'];
+  items: Array<Collection>;
+};
+
+/**  Utils  */
+export type CollectionResult = {
+  __typename?: 'CollectionResult';
+  apiErrors: Array<CollectionErrorResult>;
+  collection?: Maybe<Collection>;
+};
+
 export type CreateAddressInput = {
   city: Scalars['String']['input'];
   country: Scalars['String']['input'];
@@ -102,6 +150,13 @@ export type CreateAddressInput = {
   references?: InputMaybe<Scalars['String']['input']>;
   streetLine1: Scalars['String']['input'];
   streetLine2?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateCollectionInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  slug: Scalars['String']['input'];
 };
 
 export type CreateCustomerInput = {
@@ -126,13 +181,6 @@ export type CreateProductInput = {
   onlineOnly: Scalars['Boolean']['input'];
   published: Scalars['Boolean']['input'];
   slug: Scalars['String']['input'];
-};
-
-/**  Results  */
-export type CreateProductResult = ProductResult & {
-  __typename?: 'CreateProductResult';
-  apiErrors: Array<ProductErrorResult>;
-  product?: Maybe<Product>;
 };
 
 export type CreateVariantInput = {
@@ -213,19 +261,24 @@ export type Mutation = {
   __typename?: 'Mutation';
   addOptionValues: OptionResult;
   authenticate: AuthenticateResult;
+  createCollection: CollectionResult;
   createOption: OptionResult;
-  createProduct: CreateProductResult;
+  createProduct: ProductResult;
   createVariant: CreateVariantResult;
   markOrderAsDelivered: OrderResult;
   markOrderAsShipped: OrderResult;
+  removeCollection: RemoveCollectionResult;
   removeOption: RemoveOptionResult;
   removeOptionValues: OptionResult;
   removeProduct: RemoveProductResult;
   removeVariant: RemoveVariantResult;
+  setCollectionsInProduct: ProductResult;
+  setProductsInCollection: CollectionResult;
+  updateCollection: CollectionResult;
   updateCustomer: CustomerResult;
   updateOption: OptionResult;
   updateOptionValues: UpdateOptionValueResult;
-  updateProduct: UpdateProductResult;
+  updateProduct: ProductResult;
   updateVariant: UpdateVariantResult;
 };
 
@@ -238,6 +291,11 @@ export type MutationAddOptionValuesArgs = {
 
 export type MutationAuthenticateArgs = {
   input: AuthenticateInput;
+};
+
+
+export type MutationCreateCollectionArgs = {
+  input: CreateCollectionInput;
 };
 
 
@@ -268,6 +326,11 @@ export type MutationMarkOrderAsShippedArgs = {
 };
 
 
+export type MutationRemoveCollectionArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type MutationRemoveOptionArgs = {
   id: Scalars['ID']['input'];
 };
@@ -285,6 +348,24 @@ export type MutationRemoveProductArgs = {
 
 export type MutationRemoveVariantArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationSetCollectionsInProductArgs = {
+  collectionIds: Array<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationSetProductsInCollectionArgs = {
+  id: Scalars['ID']['input'];
+  productIds: Array<Scalars['ID']['input']>;
+};
+
+
+export type MutationUpdateCollectionArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCollectionInput;
 };
 
 
@@ -503,7 +584,6 @@ export type ProductVariantsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
-/**  Utils  */
 export enum ProductErrorCode {
   DuplicatedSlug = 'DUPLICATED_SLUG',
   NoIdOrSlugProvided = 'NO_ID_OR_SLUG_PROVIDED',
@@ -523,13 +603,17 @@ export type ProductList = List & {
   items: Array<Product>;
 };
 
+/**  Utils  */
 export type ProductResult = {
+  __typename?: 'ProductResult';
   apiErrors: Array<ProductErrorResult>;
   product?: Maybe<Product>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  collection?: Maybe<Collection>;
+  collections: CollectionList;
   customer?: Maybe<Customer>;
   customers: CustomerList;
   order?: Maybe<Order>;
@@ -539,6 +623,17 @@ export type Query = {
   validateToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
   variants: VariantList;
+};
+
+
+export type QueryCollectionArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryCollectionsArgs = {
+  input?: InputMaybe<ListInput>;
 };
 
 
@@ -583,12 +678,19 @@ export type QueryVariantsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
+export type RemoveCollectionResult = {
+  __typename?: 'RemoveCollectionResult';
+  apiErrors: Array<CollectionErrorResult>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+};
+
 export type RemoveOptionResult = {
   __typename?: 'RemoveOptionResult';
   apiErrors: Array<OptionErrorResult>;
   success: Scalars['Boolean']['output'];
 };
 
+/**  Results  */
 export type RemoveProductResult = {
   __typename?: 'RemoveProductResult';
   apiErrors: Array<ProductErrorResult>;
@@ -629,6 +731,13 @@ export type ShippingMethod = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type UpdateCollectionInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateCustomerInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
@@ -660,12 +769,6 @@ export type UpdateProductInput = {
   onlineOnly?: InputMaybe<Scalars['Boolean']['input']>;
   published?: InputMaybe<Scalars['Boolean']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateProductResult = ProductResult & {
-  __typename?: 'UpdateProductResult';
-  apiErrors: Array<ProductErrorResult>;
-  product?: Maybe<Product>;
 };
 
 export type UpdateVariantInput = {
@@ -808,7 +911,7 @@ export type CreateProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductMutation = { __typename?: 'Mutation', createProduct: { __typename?: 'CreateProductResult', apiErrors: Array<{ __typename?: 'ProductErrorResult', message: string, code: ProductErrorCode }>, product?: { __typename?: 'Product', id: string } | null } };
+export type CreateProductMutation = { __typename?: 'Mutation', createProduct: { __typename?: 'ProductResult', apiErrors: Array<{ __typename?: 'ProductErrorResult', message: string, code: ProductErrorCode }>, product?: { __typename?: 'Product', id: string } | null } };
 
 export type RemoveProductMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
@@ -823,7 +926,7 @@ export type UpdateProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductMutation = { __typename?: 'Mutation', updateProduct: { __typename?: 'UpdateProductResult', apiErrors: Array<{ __typename?: 'ProductErrorResult', code: ProductErrorCode, message: string }>, product?: { __typename?: 'Product', id: string } | null } };
+export type UpdateProductMutation = { __typename?: 'Mutation', updateProduct: { __typename?: 'ProductResult', apiErrors: Array<{ __typename?: 'ProductErrorResult', code: ProductErrorCode, message: string }>, product?: { __typename?: 'Product', id: string } | null } };
 
 export type CreateVariantMutationVariables = Exact<{
   createVariantProductId: Scalars['ID']['input'];
