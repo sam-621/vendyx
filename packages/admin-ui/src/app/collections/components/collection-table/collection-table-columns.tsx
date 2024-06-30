@@ -35,7 +35,7 @@ export const CollectionTableColumns: ColumnDef<TableCollection>[] = [
     cell: ({ row }) => {
       return (
         <Link
-          to={`/products/${row.original.slug ?? ''}`}
+          to={`/collections/${row.original.id ?? ''}`}
           className="flex items-center gap-2 w-full"
         >
           {row.original.image && (

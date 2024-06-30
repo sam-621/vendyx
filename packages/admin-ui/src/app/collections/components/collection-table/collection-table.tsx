@@ -24,7 +24,7 @@ export const CollectionTable = () => {
     <DataTable
       columns={CollectionTableColumns}
       data={data}
-      search={{ filterKey: 'name', placeholder: 'Search customers...' }}
+      search={{ filterKey: 'name', placeholder: 'Search collections...' }}
     />
   );
 };
