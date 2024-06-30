@@ -25,7 +25,7 @@ export const isFormDirty = (
   formInput: CustomerDetailsFormInput
 ) => {
   return Object.keys(formInput).some(key => {
-    return (customer as any)[key] !== (formInput as any)[key];
+    return ((customer as any)[key] ?? '') !== ((formInput as any)[key] ?? '');
   });
 };
 
