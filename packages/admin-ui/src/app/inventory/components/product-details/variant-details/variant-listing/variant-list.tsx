@@ -41,7 +41,7 @@ const DefaultVariant: FC<DefaultVariantProps> = ({ variant }) => {
   const { errors } = formState;
 
   return (
-    <div className="flex gap-4 px-6">
+    <div className="flex gap-4 px-6 pb-6">
       <FormInput
         {...register('price')}
         error={errors.price?.message}

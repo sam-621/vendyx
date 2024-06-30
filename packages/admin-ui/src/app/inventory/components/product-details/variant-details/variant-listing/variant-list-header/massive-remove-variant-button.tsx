@@ -19,7 +19,7 @@ import { queryClient } from '@/lib/query-client';
 
 export const MassiveRemoveVariantButton = () => {
   const { product } = useProductDetailsContext();
-  const { checkedVariants } = useVariantsContext();
+  const { checkedVariants, resetCheckedVariants } = useVariantsContext();
   const { massiveVariantRemove } = useMassiveVariantRemove();
 
   const onRemove = async () => {
@@ -33,6 +33,7 @@ export const MassiveRemoveVariantButton = () => {
     );
 
     await queryClient.invalidateQueries({ queryKey: ProductKeys.single(product.slug) });
+    resetCheckedVariants();
 
     notification.dismiss(notificationId);
     notification.success('Variants removed successfully');
