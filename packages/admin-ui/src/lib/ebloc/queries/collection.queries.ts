@@ -13,6 +13,7 @@ export const CommonCollection = graphql(`
       items {
         id
         name
+        slug
         published
         assets(input: { take: 1 }) {
           items {
