@@ -1,6 +1,7 @@
 import { Column, JoinTable, ManyToMany, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
 import { AssetEntity } from './asset.entity';
+import { CollectionEntity } from './collection.entity';
 import { EBlocEntity } from './ebloc-entity';
 import { VariantEntity } from './variant.entity';
 
@@ -29,6 +30,10 @@ export class ProductEntity extends EBlocEntity {
 
   @OneToMany(() => VariantEntity, v => v.product)
   variants: VariantEntity[];
+
+  @ManyToMany(() => CollectionEntity, c => c.products)
+  @JoinTable({ name: 'product_on_collection' })
+  collections: CollectionEntity[];
 
   @ManyToMany(() => AssetEntity, a => a.products)
   @JoinTable({ name: 'asset_on_product' })

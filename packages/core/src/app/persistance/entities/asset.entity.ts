@@ -1,5 +1,6 @@
 import { Column, ManyToMany, Entity as TypeOrmEntity } from 'typeorm';
 
+import { CollectionEntity } from './collection.entity';
 import { EBlocEntity } from './ebloc-entity';
 import { ProductEntity } from './product.entity';
 
@@ -22,6 +23,9 @@ export class AssetEntity extends EBlocEntity {
   })
   type: string;
 
-  @ManyToMany(() => ProductEntity, p => p.assets)
+  @ManyToMany(() => ProductEntity, p => p.collections)
   products: ProductEntity[];
+
+  @ManyToMany(() => CollectionEntity, c => c.assets)
+  collections: CollectionEntity[];
 }
