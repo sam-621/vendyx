@@ -1,5 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
+import { ListInput, ListResponse } from '../../common';
+
 import { ID } from '@/app/persistance';
 import { CollectionService } from '@/app/service';
 
@@ -7,8 +9,15 @@ import { CollectionService } from '@/app/service';
 export class CollectionResolver {
   constructor(private readonly collectionService: CollectionService) {}
 
+  @Query('collections')
+  async collections(@Args() input: ListInput) {
+    const result = await this.collectionService.find({ ...input, onlyEnabled: true });
+
+    return new ListResponse(result, result.length);
+  }
+
   @Query('collection')
-  async collections(@Args('id') id: ID, @Args('slug') slug: string) {
+  async collection(@Args('id') id: ID, @Args('slug') slug: string) {
     return this.collectionService.findByIdOrdSlug({ id, slug, onlyEnabled: true });
   }
 }
