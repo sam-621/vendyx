@@ -7,3 +7,4 @@ export * from './shipment-common.resolver';
 export * from './option-values-common.resolver';
 export * from './option-common.resolver';
 export * from './customer-common.resolver';
+export * from './collection-common.resolver';

@@ -27,7 +27,7 @@ export class CollectionService {
   /**
    * Get a collection by id or slug, if none is provided, throw an error.
    */
-  async findUnique({ id, slug, onlyEnabled }: { id?: ID; slug?: string; onlyEnabled?: boolean }) {
+  async findUnique({ id, slug, onlyEnabled }: FinUniqueInput) {
     if (id) {
       return this.db
         .getRepository(CollectionEntity)
@@ -46,7 +46,7 @@ export class CollectionService {
   /**
    * Get a collection by id or slug. If none is provided, throw a graphql error
    */
-  async findByIdOrdSlug(id?: ID, slug?: string, onlyEnabled?: boolean) {
+  async findByIdOrdSlug({ id, slug, onlyEnabled }: FinUniqueInput) {
     if (id) {
       return this.findUnique({ id, onlyEnabled });
     }
@@ -143,3 +143,4 @@ export class CollectionService {
 }
 
 type MutationResult = Promise<CollectionEntity | ErrorResult<CollectionErrorCode>>;
+type FinUniqueInput = { id?: ID; slug?: string; onlyEnabled?: boolean };
