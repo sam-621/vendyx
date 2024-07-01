@@ -19,11 +19,12 @@ export class GlobalExceptionFilter implements GqlExceptionFilter {
 
     if (exception instanceof HttpException) {
       const errorMessage = (exception.getResponse() as HttpGenericError).message;
-      const errorCode = (exception.getResponse() as HttpGenericError).error;
+      // const errorCode = (exception.getResponse() as HttpGenericError).error;
+      const statusCode = exception.getStatus();
       const ctx = host.switchToHttp();
       const response = ctx.getResponse<Response>();
 
-      const formattedErrorCode = errorCode.toUpperCase().replace(' ', '_');
+      // const formattedErrorCode = errorCode.toUpperCase().replace(' ', '_');
 
       // for some reason sometimes the graphql playground does not find the favicon.ico and throws an error
       if (errorMessage == 'Cannot GET /favicon.ico' || exception.getStatus() === 404) {
@@ -31,7 +32,10 @@ export class GlobalExceptionFilter implements GqlExceptionFilter {
         return;
       }
 
-      throw new GraphQLError(errorMessage, { extensions: { code: formattedErrorCode } });
+      return response.status(statusCode).json({
+        timestamp: new Date().toISOString(),
+        message: errorMessage
+      });
     }
 
     throw new GraphQLError('INTERNAL SERVER ERROR', {

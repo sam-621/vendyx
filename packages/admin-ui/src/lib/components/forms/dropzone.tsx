@@ -1,12 +1,39 @@
-import { type Dispatch, type FC, type SetStateAction } from 'react';
+import { type FC } from 'react';
 
 import { cn } from '@ebloc/theme';
 import { UploadCloudIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';
-import { getFileListIntoArray } from '@/lib/utils';
 
-export const Dropzone: FC<Props> = ({ setAssets, className }) => {
+// If no product work with previews
+// if product, upload images and show url previews
+export const Dropzone: FC<Props> = ({ onDrop, previews = [], className }) => {
+  const defaultAsset = previews[0];
+
+  if (previews?.length) {
+    return (
+      <div className="flex gap-4">
+        <img
+          src={defaultAsset}
+          alt="Asset"
+          className="rounded-md w-36 h-36 object-cover flex-shrink-0"
+        />
+        <div className="flex gap-4 flex-wrap">
+          {previews
+            .filter(preview => preview !== defaultAsset)
+            .map(preview => (
+              <img key={preview} src={preview} className="rounded-md w-16 h-16 object-cover" />
+            ))}
+          <SingleDropzone className="w-16 h-16" onDrop={onDrop} />
+        </div>
+      </div>
+    );
+  }
+
+  return <SingleDropzone className={className} onDrop={onDrop} isFull />;
+};
+
+const SingleDropzone: FC<SingleDropzoneProps> = ({ onDrop, isFull, className }) => {
   return (
     <label
       htmlFor="dropzone-file"
@@ -15,12 +42,15 @@ export const Dropzone: FC<Props> = ({ setAssets, className }) => {
         className
       )}
     >
-      <div className="flex flex-col items-center justify-center pt-5 pb-6 gap-2">
-        <UploadCloudIcon width={24} className="text-muted-foreground" />
-        <p className="text-sm text-muted-foreground">{t('product-details.assets.placeholder')}</p>
+      <div className="flex flex-col items-center justify-center gap-2">
+        <UploadCloudIcon width={isFull ? 24 : 16} className="text-muted-foreground" />
+        {isFull && (
+          <p className="text-sm text-muted-foreground">{t('product-details.assets.placeholder')}</p>
+        )}
       </div>
       <input
-        onChange={e => setAssets(getFileListIntoArray(e.target.files))}
+        // onChange={e => setAssets(getFileListIntoArray(e.target.files))}
+        onChange={e => onDrop(e.target.files)}
         multiple
         id="dropzone-file"
         type="file"
@@ -31,6 +61,16 @@ export const Dropzone: FC<Props> = ({ setAssets, className }) => {
 };
 
 type Props = {
-  setAssets: Dispatch<SetStateAction<File[]>>;
+  onDrop: (files: FileList | null) => void;
+  previews?: string[];
+  className?: string;
+};
+
+type SingleDropzoneProps = {
+  onDrop: (files: FileList | null) => void;
+  /**
+   * If true, dropzone label will be show and icon will be bigger
+   */
+  isFull?: boolean;
   className?: string;
 };

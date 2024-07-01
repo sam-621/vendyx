@@ -15,7 +15,9 @@ export const restFetcher = async <T>({
 
     return data as T;
   } catch (error) {
-    console.log(error);
+    console.log({
+      error
+    });
   }
 };
 

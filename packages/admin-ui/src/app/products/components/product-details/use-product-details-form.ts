@@ -51,7 +51,10 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
       description: input.description,
       onlineOnly: input.onlineOnly,
       published: input.published,
-      assetsIds: [...input.prevAssets, ...(assets?.map(asset => asset.id) ?? [])]
+      assetsIds: [
+        ...(product?.assets.items.map(asset => asset.id) ?? []),
+        ...(assets?.map(asset => asset.id) ?? [])
+      ]
     };
 
     const variantInput = {
