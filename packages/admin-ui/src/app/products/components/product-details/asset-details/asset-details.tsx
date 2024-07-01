@@ -14,6 +14,7 @@ import { queryClient } from '@/lib/query-client';
 import { getFileListIntoArray, getFilePreview } from '@/lib/utils';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
+import { AssetPreview } from './asset-preview';
 
 export const AssetDetails: FC<Props> = () => {
   const { createAsset } = useCreateAsset();
@@ -26,6 +27,7 @@ export const AssetDetails: FC<Props> = () => {
 
   const [previews, setPreviews] = useState<string[]>(defaultAssets.map(asset => asset.source));
   const [files, setFiles] = useState<File[]>([]);
+  const [assetToPreview, setAssetToPreview] = useState('');
 
   useEffect(() => {
     setValue('assets', files);
@@ -36,50 +38,59 @@ export const AssetDetails: FC<Props> = () => {
   }, [product]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('product-details.assets.title')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <Dropzone
-          previews={previews}
-          onDrop={async droppedFiles => {
-            if (isCreatingProducts) {
-              // add previews state
-              setPreviews([
-                ...previews,
-                ...getFileListIntoArray(droppedFiles).map(file => getFilePreview(file))
-              ]);
-              setFiles([...files, ...getFileListIntoArray(droppedFiles)]);
-            } else {
-              // mark page as loading
-              // upload assets
-              // update product
-              const assets = (await createAsset(getFileListIntoArray(droppedFiles))) ?? [];
-              if (!assets.length) {
-                notification.error('Failed to upload asset');
-                return;
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('product-details.assets.title')}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <Dropzone
+            previews={previews}
+            onAssetClick={source => setAssetToPreview(source)}
+            onDrop={async droppedFiles => {
+              if (isCreatingProducts) {
+                // add previews state
+                setPreviews([
+                  ...previews,
+                  ...getFileListIntoArray(droppedFiles).map(file => getFilePreview(file))
+                ]);
+                setFiles([...files, ...getFileListIntoArray(droppedFiles)]);
+              } else {
+                // mark page as loading
+                // upload assets
+                // update product
+                const assets = (await createAsset(getFileListIntoArray(droppedFiles))) ?? [];
+                if (!assets.length) {
+                  notification.error('Failed to upload asset');
+                  return;
+                }
+
+                await updateProduct(product.id, {
+                  assetsIds: [
+                    ...defaultAssets.map(asset => asset.id),
+                    ...assets.map(asset => asset.id)
+                  ]
+                });
+                console.log({
+                  products: product.id
+                });
+
+                await queryClient.invalidateQueries({ queryKey: ProductKeys.single(product.slug) });
+
+                notification.success('Asset uploaded successfully');
               }
-
-              await updateProduct(product.id, {
-                assetsIds: [
-                  ...defaultAssets.map(asset => asset.id),
-                  ...assets.map(asset => asset.id)
-                ]
-              });
-              console.log({
-                products: product.id
-              });
-
-              await queryClient.invalidateQueries({ queryKey: ProductKeys.single(product.slug) });
-
-              notification.success('Asset uploaded successfully');
-            }
-          }}
-          className="h-36"
-        />
-      </CardContent>
-    </Card>
+            }}
+            className="h-36"
+          />
+        </CardContent>
+      </Card>
+      <AssetPreview
+        assets={defaultAssets}
+        source={assetToPreview}
+        isOpen={!!assetToPreview}
+        setIsOpen={(isOpen: boolean) => setAssetToPreview(isOpen ? assetToPreview : '')}
+      />
+    </>
   );
 };
 

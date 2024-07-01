@@ -7,7 +7,7 @@ import { t } from '@/lib/locales';
 
 // If no product work with previews
 // if product, upload images and show url previews
-export const Dropzone: FC<Props> = ({ onDrop, previews = [], className }) => {
+export const Dropzone: FC<Props> = ({ onDrop, onAssetClick, previews = [], className }) => {
   const defaultAsset = previews[0];
 
   if (previews?.length) {
@@ -16,13 +16,19 @@ export const Dropzone: FC<Props> = ({ onDrop, previews = [], className }) => {
         <img
           src={defaultAsset}
           alt="Asset"
-          className="rounded-md w-36 h-36 object-cover flex-shrink-0"
+          className="rounded-md w-36 h-36 object-cover flex-shrink-0 cursor-pointer"
+          onClick={() => onAssetClick(defaultAsset)}
         />
         <div className="flex gap-4 flex-wrap">
           {previews
             .filter(preview => preview !== defaultAsset)
             .map(preview => (
-              <img key={preview} src={preview} className="rounded-md w-16 h-16 object-cover" />
+              <img
+                key={preview}
+                src={preview}
+                className="rounded-md w-16 h-16 object-cover cursor-pointer"
+                onClick={() => onAssetClick(preview)}
+              />
             ))}
           <SingleDropzone className="w-16 h-16" onDrop={onDrop} />
         </div>
@@ -62,6 +68,7 @@ const SingleDropzone: FC<SingleDropzoneProps> = ({ onDrop, isFull, className }) 
 
 type Props = {
   onDrop: (files: FileList | null) => void;
+  onAssetClick: (source: string) => void;
   previews?: string[];
   className?: string;
 };

@@ -33,6 +33,7 @@ export const CommonProductFragment = graphql(`
     assets {
       items {
         id
+        createdAt
         name
         source
       }
