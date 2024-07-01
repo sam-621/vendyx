@@ -16,11 +16,7 @@ export const useCollectionDetailsForm = (collection: CommonCollectionFragment) =
     }
   });
 
-  const onSubmit = async (input: CollectionDetailsFormInput) => {
-    console.log({
-      input
-    });
-  };
+  const onSubmit = async (input: CollectionDetailsFormInput) => {};
 
   return {
     onSubmit: form.handleSubmit(onSubmit),
