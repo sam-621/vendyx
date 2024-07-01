@@ -93,11 +93,6 @@ export class CollectionService {
       );
     }
 
-    console.log({
-      collection,
-      input
-    });
-
     if (input.slug && input.slug !== collection.slug) {
       const slugAlreadyExists = await this.findUnique({ slug: input.slug });
 

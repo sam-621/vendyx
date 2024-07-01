@@ -88,36 +88,31 @@ export class ProductService {
    * @returns Error Result or the created product
    */
   async create(input: CreateProductInput): Promise<ErrorResult<ProductErrorCode> | ProductEntity> {
-    try {
-      const data = {
-        ...input,
-        slug: getParsedSlug(input.slug)
-      };
+    const data = {
+      ...input,
+      slug: getParsedSlug(input.slug)
+    };
 
-      const isDuplicatedSlug = await this.findBySlug(data.slug);
+    const isDuplicatedSlug = await this.findBySlug(data.slug);
 
-      if (isDuplicatedSlug) {
-        return new ErrorResult(
-          ProductErrorCode.DUPLICATED_SLUG,
-          `A product with slug "${data.slug}" already exists`
-        );
-      }
-
-      const assets = input.assetsIds?.length
-        ? await this.db.getRepository(AssetEntity).find({
-            where: { id: In(input.assetsIds) }
-          })
-        : undefined;
-
-      const productToSave = this.db.getRepository(ProductEntity).create({
-        ...clean(data),
-        assets
-      });
-      return this.db.getRepository(ProductEntity).save(productToSave);
-    } catch (error) {
-      console.log(error);
-      return new ErrorResult(ProductErrorCode.DUPLICATED_SLUG, 'An error occurred');
+    if (isDuplicatedSlug) {
+      return new ErrorResult(
+        ProductErrorCode.DUPLICATED_SLUG,
+        `A product with slug "${data.slug}" already exists`
+      );
     }
+
+    const assets = input.assetsIds?.length
+      ? await this.db.getRepository(AssetEntity).find({
+          where: { id: In(input.assetsIds) }
+        })
+      : undefined;
+
+    const productToSave = this.db.getRepository(ProductEntity).create({
+      ...clean(data),
+      assets
+    });
+    return this.db.getRepository(ProductEntity).save(productToSave);
   }
 
   /**
