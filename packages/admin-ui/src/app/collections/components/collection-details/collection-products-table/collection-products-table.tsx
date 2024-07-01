@@ -2,7 +2,7 @@ import { type FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  Button,
+  Badge,
   Card,
   CardContent,
   CardDescription,
@@ -19,7 +19,11 @@ import { Trash2Icon } from 'lucide-react';
 
 import { type CommonCollectionFragment } from '@/lib/ebloc/codegen/graphql';
 
-export const CollectionProductsTable: FC<Props> = ({ products }) => {
+import { CollectionProductsSearcherDialog } from './collection-products-searcher/collection-products-searcher-dialog';
+
+export const CollectionProductsTable: FC<Props> = ({ collection }) => {
+  const products = collection.products.items;
+
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between items-center">
@@ -27,7 +31,7 @@ export const CollectionProductsTable: FC<Props> = ({ products }) => {
           <CardTitle>Products</CardTitle>
           <CardDescription>This collection contains 214 products</CardDescription>
         </div>
-        <Button variant="secondary">Add products</Button>
+        <CollectionProductsSearcherDialog collection={collection} />
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
@@ -48,7 +52,7 @@ export const CollectionProductsTable: FC<Props> = ({ products }) => {
                     to={`/products/${product.slug ?? ''}`}
                     className="flex items-center gap-2 w-full"
                   >
-                    {product.assets.items.length && (
+                    {Boolean(product.assets.items.length) && (
                       <img
                         src={product.assets.items[0].source}
                         alt={product.name}
@@ -59,9 +63,13 @@ export const CollectionProductsTable: FC<Props> = ({ products }) => {
                   </Link>
                 </TableCell>
                 <TableCell>{product.variants.items.reduce((acc, v) => acc + v.stock, 0)}</TableCell>
-                <TableCell>{product.published}</TableCell>
                 <TableCell>
-                  <Trash2Icon className="cursor-pointer" />
+                  <Badge variant={product.published ? 'default' : 'secondary'}>
+                    {product.published ? 'Published' : 'Disabled'}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Trash2Icon size={16} className="cursor-pointer" />
                 </TableCell>
               </TableRow>
             ))}
@@ -73,5 +81,5 @@ export const CollectionProductsTable: FC<Props> = ({ products }) => {
 };
 
 type Props = {
-  products: CommonCollectionFragment['products']['items'];
+  collection: CommonCollectionFragment;
 };

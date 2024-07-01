@@ -7,14 +7,12 @@ import { CollectionProductsTable } from './collection-products-table/collection-
 import { CollectionVisibility } from './collection-visibility/collection-visibility';
 
 export const CollectionDetails: FC<Props> = ({ collection }) => {
-  const products = collection?.products.items ?? [];
-
   return (
     <div className="grid grid-cols-4 gap-6">
       <div className="col-span-3 flex flex-col gap-6">
         <CollectionGeneralInfo />
 
-        <CollectionProductsTable products={products} />
+        {collection && <CollectionProductsTable collection={collection} />}
       </div>
       <div className="col-span-1 flex flex-col gap-6">
         <CollectionVisibility />

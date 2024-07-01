@@ -1,3 +1,4 @@
+import { getCollectionErrorMessage } from '@/lib/ebloc/errors';
 import { SetProductsInCollectionMutation } from '@/lib/ebloc/mutations';
 import { useGqlMutation } from '@/lib/gql';
 
@@ -9,8 +10,10 @@ export const useSetProductsInCollection = () => {
       setProductsInCollection: { apiErrors }
     } = await mutateAsync({ id, productIds });
 
-    if (apiErrors) {
-      return { errorMessage: apiErrors[0].message };
+    const errorMessage = getCollectionErrorMessage(apiErrors[0]);
+
+    if (errorMessage) {
+      return { errorMessage };
     }
 
     return { success: true };
