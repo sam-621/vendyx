@@ -7,7 +7,7 @@ import { CollectionProductsTable } from './collection-products-table/collection-
 import { CollectionVisibility } from './collection-visibility/collection-visibility';
 
 export const CollectionDetails: FC<Props> = ({ collection }) => {
-  const products = collection.products.items ?? [];
+  const products = collection?.products.items ?? [];
 
   return (
     <div className="grid grid-cols-4 gap-6">
@@ -24,5 +24,5 @@ export const CollectionDetails: FC<Props> = ({ collection }) => {
 };
 
 type Props = {
-  collection: CommonCollectionFragment;
+  collection?: CommonCollectionFragment;
 };

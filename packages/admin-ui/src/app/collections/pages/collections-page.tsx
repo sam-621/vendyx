@@ -13,7 +13,7 @@ export const CollectionsPage = () => {
       title="Collections"
       subtitle="Manage your collections"
       actions={
-        <Link to="/products/new">
+        <Link to="/collections/new">
           <Button className="flex gap-2">
             <PlusIcon size={16} /> New
           </Button>

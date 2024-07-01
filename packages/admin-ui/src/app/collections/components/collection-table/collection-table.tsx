@@ -17,7 +17,7 @@ export const CollectionTable = () => {
       slug: collection.slug,
       image: '',
       totalProducts: collection.products.count,
-      enabled: collection.enabled
+      enabled: collection.published
     })) ?? [];
 
   return (

@@ -7,7 +7,7 @@ import { ConfigProvider } from './config/contexts';
 import { useGetAdminUiConfig } from './config/hooks';
 import { CustomerDetailsPage } from './customer/pages/customer-details-page';
 import { AuthWrapper } from './auth-wrapper';
-import { CollectionDetailsPage, CollectionsPage } from './collections';
+import { CollectionDetailsPage, CollectionsPage, CreateCollectionPage } from './collections';
 import { CustomersPage } from './customer';
 import { ExtraUiModulePage } from './extra-ui-module-page';
 import { LoginPage } from './login';
@@ -42,6 +42,7 @@ export const AppRouter = () => {
               <Route path="/products/:slug" element={<ProductDetailsPage />} />
               <Route path="/collections" element={<CollectionsPage />} />
               <Route path="/collections/:id" element={<CollectionDetailsPage />} />
+              <Route path="/collections/new" element={<CreateCollectionPage />} />
               <Route path="/orders" element={<OrderPages />} />
               <Route path="/orders/:slug" element={<OrderDetailsPage />} />
               <Route path="/orders/:slug" element={<OrderDetailsPage />} />
