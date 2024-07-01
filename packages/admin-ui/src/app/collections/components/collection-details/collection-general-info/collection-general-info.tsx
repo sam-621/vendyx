@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 
 import { FormInput, FormTextarea } from '@/lib/components';
 
+import { CollectionSlugInput } from '../collection-slug-input';
 import { type CollectionDetailsFormInput } from '../use-collection-details-form';
 
 export const CollectionGeneralInfo = () => {
@@ -24,12 +25,7 @@ export const CollectionGeneralInfo = () => {
             label="Name"
             placeholder="Electronics"
           />
-          <FormInput
-            {...register('slug')}
-            error={errors.slug?.message}
-            label="Slug"
-            placeholder="electronics"
-          />
+          <CollectionSlugInput />
         </div>
         <FormTextarea {...register('description')} label="Description" />
       </CardContent>
