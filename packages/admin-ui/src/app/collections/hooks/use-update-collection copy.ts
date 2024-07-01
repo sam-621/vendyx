@@ -8,7 +8,7 @@ export const useUpdateCollection = () => {
 
   const updateCollection = async (id: string, input: UpdateCollectionInput) => {
     const {
-      updateCollection: { apiErrors }
+      updateCollection: { apiErrors, collection }
     } = await mutateAsync({ id, input });
 
     const errorMessage = getCollectionErrorMessage(apiErrors[0]);
@@ -17,7 +17,7 @@ export const useUpdateCollection = () => {
       return { errorMessage };
     }
 
-    return { success: true };
+    return { id: collection?.id };
   };
 
   return {

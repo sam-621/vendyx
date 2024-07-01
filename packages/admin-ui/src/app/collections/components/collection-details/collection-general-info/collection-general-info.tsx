@@ -7,7 +7,8 @@ import { FormInput, FormTextarea } from '@/lib/components';
 import { type CollectionDetailsFormInput } from '../use-collection-details-form';
 
 export const CollectionGeneralInfo = () => {
-  const { register } = useFormContext<CollectionDetailsFormInput>();
+  const { register, formState } = useFormContext<CollectionDetailsFormInput>();
+  const { errors } = formState;
 
   return (
     <Card>
@@ -17,8 +18,18 @@ export const CollectionGeneralInfo = () => {
 
       <CardContent className="flex flex-col gap-4">
         <div className="flex gap-4 w-full">
-          <FormInput {...register('name')} label="Name" placeholder="Electronics" />
-          <FormInput {...register('slug')} label="Slug" placeholder="electronics" />
+          <FormInput
+            {...register('name')}
+            error={errors.name?.message}
+            label="Name"
+            placeholder="Electronics"
+          />
+          <FormInput
+            {...register('slug')}
+            error={errors.slug?.message}
+            label="Slug"
+            placeholder="electronics"
+          />
         </div>
         <FormTextarea {...register('description')} label="Description" />
       </CardContent>

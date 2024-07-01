@@ -16,9 +16,9 @@ export class CollectionService {
   /**
    * Get all collections.
    */
-  async find(input: ListInput & { onlyEnabled?: boolean }) {
+  async find(input: ListInput & { onlyPublished?: boolean }) {
     return this.db.getRepository(CollectionEntity).find({
-      where: { enabled: input.onlyEnabled || undefined },
+      where: { published: input.onlyPublished || undefined },
       ...clean(input),
       order: { createdAt: 'DESC' }
     });
@@ -27,17 +27,17 @@ export class CollectionService {
   /**
    * Get a collection by id or slug, if none is provided, throw an error.
    */
-  async findUnique({ id, slug, onlyEnabled }: FinUniqueInput) {
+  async findUnique({ id, slug, onlyPublished }: FinUniqueInput) {
     if (typeof id === 'string') {
       return this.db
         .getRepository(CollectionEntity)
-        .findOne({ where: { id, enabled: onlyEnabled || undefined } });
+        .findOne({ where: { id, published: onlyPublished || undefined } });
     }
 
     if (typeof slug === 'string') {
       return this.db
         .getRepository(CollectionEntity)
-        .findOne({ where: { slug, enabled: onlyEnabled || undefined } });
+        .findOne({ where: { slug, published: onlyPublished || undefined } });
     }
 
     throw new Error('You must provide either an ID or a SLUG to find a collection');
@@ -46,13 +46,13 @@ export class CollectionService {
   /**
    * Get a collection by id or slug. If none is provided, throw a graphql error
    */
-  async findByIdOrdSlug({ id, slug, onlyEnabled }: FinUniqueInput) {
+  async findByIdOrdSlug({ id, slug, onlyPublished }: FinUniqueInput) {
     if (typeof id === 'string') {
-      return this.findUnique({ id, onlyEnabled });
+      return this.findUnique({ id, onlyPublished });
     }
 
     if (typeof slug === 'string') {
-      return this.findUnique({ slug, onlyEnabled });
+      return this.findUnique({ slug, onlyPublished });
     }
 
     throw new GraphQLError('You must provide either an ID or a SLUG to find a collection');
@@ -92,6 +92,11 @@ export class CollectionService {
         `Collection with id ${id} not found`
       );
     }
+
+    console.log({
+      collection,
+      input
+    });
 
     if (input.slug && input.slug !== collection.slug) {
       const slugAlreadyExists = await this.findUnique({ slug: input.slug });
@@ -151,4 +156,4 @@ export class CollectionService {
 }
 
 type MutationResult<R = CollectionEntity> = Promise<R | ErrorResult<CollectionErrorCode>>;
-type FinUniqueInput = { id?: ID; slug?: string; onlyEnabled?: boolean };
+type FinUniqueInput = { id?: ID; slug?: string; onlyPublished?: boolean };

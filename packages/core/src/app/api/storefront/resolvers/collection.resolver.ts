@@ -11,13 +11,13 @@ export class CollectionResolver {
 
   @Query('collections')
   async collections(@Args() input: ListInput) {
-    const result = await this.collectionService.find({ ...input, onlyEnabled: true });
+    const result = await this.collectionService.find({ ...input, onlyPublished: true });
 
     return new ListResponse(result, result.length);
   }
 
   @Query('collection')
   async collection(@Args('id') id: ID, @Args('slug') slug: string) {
-    return this.collectionService.findByIdOrdSlug({ id, slug, onlyEnabled: true });
+    return this.collectionService.findByIdOrdSlug({ id, slug, onlyPublished: true });
   }
 }

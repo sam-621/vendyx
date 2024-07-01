@@ -5,7 +5,7 @@ type Collection implements Node {
   name: String!
   slug: String!
   description: String
-  enabled: Boolean!
+  published: Boolean!
 
   products(input: ListInput): ProductList!
   assets(input: ListInput): AssetList!

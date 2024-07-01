@@ -16,7 +16,7 @@ export class CollectionEntity extends EBlocEntity {
   description: string;
 
   @Column('boolean', { default: true })
-  enabled: boolean;
+  published: boolean;
 
   @ManyToMany(() => ProductEntity, p => p.collections)
   products: ProductEntity[];

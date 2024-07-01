@@ -82,14 +82,14 @@ export class CreateCollectionInput {
     name: string;
     slug: string;
     description?: Nullable<string>;
-    enabled?: Nullable<boolean>;
+    published?: Nullable<boolean>;
 }
 
 export class UpdateCollectionInput {
     name?: Nullable<string>;
     slug?: Nullable<string>;
     description?: Nullable<string>;
-    enabled?: Nullable<boolean>;
+    published?: Nullable<boolean>;
 }
 
 export class UpdateCustomerInput {
@@ -469,7 +469,7 @@ export class Collection implements Node {
     name: string;
     slug: string;
     description?: Nullable<string>;
-    enabled: boolean;
+    published: boolean;
     products?: ProductList;
     assets?: AssetList;
 }

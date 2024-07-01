@@ -10,14 +10,14 @@ input CreateCollectionInput {
   name: String!
   slug: String!
   description: String  
-  enabled: Boolean
+  published: Boolean
 }
 
 input UpdateCollectionInput {
   name: String
   slug: String
   description: String
-  enabled: Boolean
+  published: Boolean
 }
 
 type RemoveCollectionResult {

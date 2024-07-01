@@ -7,7 +7,7 @@ export const CommonCollection = graphql(`
     name
     slug
     description
-    enabled
+    published
     products {
       count
       items {
@@ -39,7 +39,7 @@ export const GetCollectionsQuery = graphql(`
         createdAt
         name
         slug
-        enabled
+        published
         products {
           count
         }
