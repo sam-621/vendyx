@@ -61,7 +61,7 @@ export class ProductService {
     const assets = await this.db.getRepository(AssetEntity).find({
       where: { products: { id: id } },
       ...clean(listInput),
-      order: { createdAt: 'DESC' }
+      order: { createdAt: 'ASC' }
     });
 
     return assets;

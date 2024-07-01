@@ -43,7 +43,11 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
     if (product && !isProductDetailsFormDirty(product, input) && !variantsWithChanges.length)
       return;
 
-    const assets = input.assets ? await createAsset(input.assets) : undefined;
+    // We add a revers because we want to add the assets in the same order as the user added them
+    // When returning assets in response, we return them in ascending order (Oldest first - newest last)
+    // But when user adds them, we want to show them in descending order (Newest first - oldest last)
+    // So we reverse the array to keep the order the user added them
+    const assets = input.assets ? await createAsset(input.assets.reverse()) : undefined;
 
     const productInput = {
       name: input.name,
@@ -105,7 +109,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
       'price',
       getFormattedPrice(input.price * 100).replace('$', '') as unknown as number
     );
-    form.setValue('prevAssets', assets?.map(asset => asset.id) ?? []);
     form.setValue('assets', []);
   };
 
@@ -120,7 +123,6 @@ const schema = z.object({
   slug: z.string().min(3, FormMessages.maxChars(3)),
   description: z.string().optional(),
   assets: z.any(),
-  prevAssets: z.array(z.string()).optional(),
   price: z.preprocess(
     value => Number(parseFormattedPrice((value as string) ?? '') ?? 0),
     z.number().min(0).optional()
@@ -136,7 +138,6 @@ export type ProductDetailsFormInput = {
   slug: string;
   description: string;
   assets: File[];
-  prevAssets: string[];
   price: number;
   sku: string;
   quantity: number;

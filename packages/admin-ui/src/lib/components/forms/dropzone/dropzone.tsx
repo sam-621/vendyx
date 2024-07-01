@@ -5,29 +5,47 @@ import { UploadCloudIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';
 
+import { DropzonePreviewItem } from './dropzone-preview-item';
+
 // If no product work with previews
 // if product, upload images and show url previews
-export const Dropzone: FC<Props> = ({ onDrop, onAssetClick, previews = [], className }) => {
+export const Dropzone: FC<Props> = ({
+  onDrop,
+  onAssetClick,
+  setChecked,
+  checked,
+  previews = [],
+  className
+}) => {
   const defaultAsset = previews[0];
+
+  const handleCheck = (isChecked: boolean, source: string) => {
+    if (isChecked) {
+      setChecked([...checked, source]);
+    } else {
+      setChecked(checked.filter(item => item !== source));
+    }
+  };
 
   if (previews?.length) {
     return (
       <div className="flex gap-4">
-        <img
-          src={defaultAsset}
-          alt="Asset"
-          className="rounded-md w-36 h-36 object-cover flex-shrink-0 cursor-pointer"
+        <DropzonePreviewItem
+          className="w-36 h-36"
+          source={defaultAsset}
           onClick={() => onAssetClick(defaultAsset)}
+          onCheck={isChecked => handleCheck(isChecked, defaultAsset)}
         />
         <div className="flex gap-4 flex-wrap">
           {previews
             .filter(preview => preview !== defaultAsset)
             .map(preview => (
-              <img
+              <DropzonePreviewItem
                 key={preview}
-                src={preview}
-                className="rounded-md w-16 h-16 object-cover cursor-pointer"
-                onClick={() => onAssetClick(preview)}
+                className="w-16 h-16"
+                source={preview}
+                onClick={() => onAssetClick(defaultAsset)}
+                onCheck={isChecked => handleCheck(isChecked, preview)}
               />
             ))}
           <SingleDropzone className="w-16 h-16" onDrop={onDrop} />
@@ -69,6 +87,8 @@ const SingleDropzone: FC<SingleDropzoneProps> = ({ onDrop, isFull, className }) 
 type Props = {
   onDrop: (files: FileList | null) => void;
   onAssetClick: (source: string) => void;
+  setChecked: (checked: string[]) => void;
+  checked: string[];
   previews?: string[];
   className?: string;
 };

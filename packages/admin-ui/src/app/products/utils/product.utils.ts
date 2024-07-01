@@ -13,8 +13,7 @@ export const isProductDetailsFormDirty = (
 ) => {
   if (formInput.assets?.length) return true;
 
-  const persisted: Omit<ProductDetailsFormInput, 'assets' | 'prevAssets'> &
-    THashMap<string | number | boolean> = {
+  const persisted: Omit<ProductDetailsFormInput, 'assets'> & THashMap<string | number | boolean> = {
     name: product.name,
     slug: product.slug,
     description: product.description ?? '',
@@ -25,7 +24,7 @@ export const isProductDetailsFormDirty = (
     quantity: product.variants.items[0].stock
   };
 
-  const formattedInput: Omit<ProductDetailsFormInput, 'assets' | 'prevAssets'> &
+  const formattedInput: Omit<ProductDetailsFormInput, 'assets'> &
     THashMap<string | number | boolean> = {
     name: formInput.name,
     slug: formInput.slug,
