@@ -15,6 +15,7 @@ import {
   UpdateProductInput
 } from '@/app/api/common';
 import { AssetEntity, ID, ProductEntity, VariantEntity } from '@/app/persistance';
+import { AssetInProductEntity } from '@/app/persistance/entities/asset-on-product.entity';
 
 @Injectable()
 export class ProductService {
@@ -63,7 +64,7 @@ export class ProductService {
 
   async findAssets(id: ID, listInput: ListInput) {
     const assets = await this.db.getRepository(AssetEntity).find({
-      where: { products: { id: id } },
+      where: { assetsInProduct: { product: { id } } },
       ...clean(listInput),
       order: { createdAt: 'ASC' }
     });
@@ -114,10 +115,23 @@ export class ProductService {
       : undefined;
 
     const productToSave = this.db.getRepository(ProductEntity).create({
-      ...clean(data),
-      assets
+      ...clean(data)
     });
-    return this.db.getRepository(ProductEntity).save(productToSave);
+
+    const productCreated = await this.db.getRepository(ProductEntity).save(productToSave);
+
+    if (assets?.length) {
+      await this.db.getRepository(AssetInProductEntity).save(
+        assets.map(asset => ({
+          asset_in_product: asset.id + productCreated.id,
+          asset: asset,
+          product: productCreated,
+          order: 1
+        }))
+      );
+    }
+
+    return productCreated;
   }
 
   /**
@@ -159,11 +173,21 @@ export class ProductService {
           })
         : undefined;
 
+    if (newAssets?.length) {
+      await this.db.getRepository(AssetInProductEntity).save(
+        newAssets.map(asset => ({
+          asset_in_product: asset.id + productToUpdate.id,
+          asset: asset,
+          product: productToUpdate,
+          order: 1
+        }))
+      );
+    }
+
     return await this.db.getRepository(ProductEntity).save({
       ...productToUpdate,
       ...clean(input),
-      slug: input.slug ? getParsedSlug(input.slug) : productToUpdate.slug,
-      assets: newAssets
+      slug: input.slug ? getParsedSlug(input.slug) : productToUpdate.slug
     });
   }
 
@@ -181,7 +205,7 @@ export class ProductService {
   async remove(id: ID): Promise<ErrorResult<ProductErrorCode> | boolean> {
     const productToRemove = await this.db.getRepository(ProductEntity).findOne({
       where: { id },
-      relations: { assets: true }
+      relations: { assetsInProduct: { asset: true } }
     });
 
     if (!productToRemove) {
@@ -213,7 +237,7 @@ export class ProductService {
       slug: randomUUID()
     });
 
-    const assetsToRemove = productToRemove.assets;
+    const assetsToRemove = productToRemove.assetsInProduct.map(a => a.asset);
     await this.assetService.remove(assetsToRemove.map(asset => asset.id));
 
     if (hasVariantsSoftDeleted) {

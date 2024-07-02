@@ -1,4 +1,7 @@
 type Mutation {
+  """
+  Remove assets by their IDs and all its references.
+  """
   removeAssets(ids: [ID!]!): AssetResult!
 }
 

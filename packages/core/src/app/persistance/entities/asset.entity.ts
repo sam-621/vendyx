@@ -1,8 +1,8 @@
-import { Column, ManyToMany, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, ManyToMany, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
+import { AssetInProductEntity } from './asset-on-product.entity';
 import { CollectionEntity } from './collection.entity';
 import { EBlocEntity } from './ebloc-entity';
-import { ProductEntity } from './product.entity';
 
 export enum AssetType {
   IMAGE = 'IMAGE'
@@ -23,8 +23,8 @@ export class AssetEntity extends EBlocEntity {
   })
   type: string;
 
-  @ManyToMany(() => ProductEntity, p => p.assets)
-  products: ProductEntity[];
+  @OneToMany(() => AssetInProductEntity, e => e.asset)
+  assetsInProduct: AssetInProductEntity[];
 
   @ManyToMany(() => CollectionEntity, c => c.assets)
   collections: CollectionEntity[];

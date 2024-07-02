@@ -17,13 +17,12 @@ export const DropzoneItem: FC<Props> = ({ source, onClick, onCheck, checked, cla
 
   return (
     <div
-      onClick={onClick}
       ref={setNodeRef}
       style={style}
       {...attributes}
       className={cn('relative group cursor-pointer flex-shrink-0', className)}
     >
-      <div className="w-full h-full absolute group-hover:bg-muted/50"></div>
+      <div className="w-full h-full absolute group-hover:bg-muted/50" onClick={onClick}></div>
       <Checkbox
         id={source}
         className={cn(

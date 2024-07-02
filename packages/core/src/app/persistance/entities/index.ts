@@ -14,3 +14,4 @@ export * from './shipment.entity';
 export * from './payment-method.entity';
 export * from './shipping-method.entity';
 export * from './collection.entity';
+export * from './asset-on-product.entity';

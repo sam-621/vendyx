@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 
 import { getConfig } from '@/app/config';
-import { AssetEntity } from '@/app/persistance';
+import { AssetEntity, AssetInProductEntity } from '@/app/persistance';
 
 @Injectable()
 export class AssetService {
@@ -27,24 +27,14 @@ export class AssetService {
     return this.db.getRepository(AssetEntity).save(assetToSave);
   }
 
+  /**
+   * Remove assets by their ids
+   *
+   * 1. Remove all references to the assets in the product
+   * 2. Remove the assets
+   */
   async remove(ids: string[]) {
-    // Check if the assets are in use by products or collections. This is commented by now because is a complex operation and in the current admin ui we make sure that the assets are not in use before removing them.
-
-    // const AssetsToRemove = await this.db.getRepository(AssetEntity).find({
-    //   where: { id: In(ids) },
-    //   relations: {
-    //     products: true,
-    //     collections: true
-    //   }
-    // });
-
-    // if (AssetsToRemove.some(asset => asset.products.length || asset.collections.length)) {
-    //   return new ErrorResult(
-    //     AssetErrorCode.ASSET_IN_USE,
-    //     'Some of the assets are in use by products or collections'
-    //   );
-    // }
-
+    await this.db.getRepository(AssetInProductEntity).delete({ asset: { id: In(ids) } });
     await this.db.getRepository(AssetEntity).delete(ids);
 
     return true;

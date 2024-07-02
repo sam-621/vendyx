@@ -30,9 +30,10 @@ const cleanDb = async () => {
   await dataSource.query('DELETE FROM "option_value";');
   await dataSource.query('DELETE FROM "option";');
   await dataSource.query('DELETE FROM "variant";');
-  await dataSource.query('DELETE FROM "asset_on_product";');
+  await dataSource.query('DELETE FROM "asset_in_product";');
   await dataSource.query('DELETE FROM "asset";');
   await dataSource.query('DELETE FROM "product";');
+  await dataSource.query('DELETE FROM "collection";');
   console.log('Database cleaned ✨');
   console.log();
 

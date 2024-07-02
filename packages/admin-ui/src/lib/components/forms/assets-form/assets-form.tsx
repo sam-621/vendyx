@@ -66,10 +66,8 @@ export const AssetsForm: FC<Props> = ({
                 setPreviews(previews.filter(preview => !checked.includes(preview)));
                 setFiles(files.filter(file => !checked.includes(file.previewId)));
               } else {
-                const newAssets = allAssets.filter(asset => !checked.includes(asset.source));
                 const removedAssets = allAssets.filter(asset => checked.includes(asset.source));
 
-                await onNewAssets(newAssets.map(asset => asset.id));
                 await removeAssets(removedAssets.map(asset => asset.id));
 
                 await onFinishMutations();

@@ -5,6 +5,7 @@ import {
   AddressEntity,
   AdminEntity,
   AssetEntity,
+  AssetInProductEntity,
   CollectionEntity,
   CustomerEntity,
   OptionEntity,
@@ -35,7 +36,8 @@ export const ENTITIES = [
   PaymentEntity,
   ShipmentEntity,
   PaymentMethodEntity,
-  ShippingMethodEntity
+  ShippingMethodEntity,
+  AssetInProductEntity
 ];
 
 @Module({
