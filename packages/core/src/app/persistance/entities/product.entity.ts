@@ -19,13 +19,13 @@ export class ProductEntity extends EBlocEntity {
   /**
    * Determines if the product is exposes to storefront API or not
    */
-  @Column('boolean')
+  @Column('boolean', { default: true })
   published: boolean;
 
   /**
    * Determines if the product requires shipping or not
    */
-  @Column('boolean')
+  @Column('boolean', { default: false })
   onlineOnly: boolean;
 
   @OneToMany(() => VariantEntity, v => v.product)

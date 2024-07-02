@@ -15,6 +15,9 @@ export class CollectionEntity extends EBlocEntity {
   @Column('text', { nullable: true })
   description: string;
 
+  /**
+   * Determines if the product is exposes to storefront API or not
+   */
   @Column('boolean', { default: true })
   published: boolean;
 

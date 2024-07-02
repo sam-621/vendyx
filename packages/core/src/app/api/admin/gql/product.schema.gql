@@ -11,8 +11,8 @@ input CreateProductInput {
   name: String!
   slug: String!
   description: String
-  published: Boolean!
-  onlineOnly: Boolean!
+  published: Boolean
+  onlineOnly: Boolean
 
   assets: [AssetInEntityInput!]
 }
