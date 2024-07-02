@@ -12,6 +12,10 @@ export enum AdminErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
 }
 
+export enum AssetErrorCode {
+    ASSET_IN_USE = "ASSET_IN_USE"
+}
+
 export enum CollectionErrorCode {
     COLLECTION_NOT_FOUND = "COLLECTION_NOT_FOUND",
     NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
@@ -241,6 +245,8 @@ export class Admin implements Node {
 export abstract class IMutation {
     abstract authenticate(input: AuthenticateInput): AuthenticateResult | Promise<AuthenticateResult>;
 
+    abstract removeAssets(ids: string[]): AssetResult | Promise<AssetResult>;
+
     abstract createCollection(input: CreateCollectionInput): CollectionResult | Promise<CollectionResult>;
 
     abstract updateCollection(id: string, input: UpdateCollectionInput): CollectionResult | Promise<CollectionResult>;
@@ -348,6 +354,16 @@ export class AdminErrorResult {
     message: string;
 }
 
+export class AssetResult {
+    success?: Nullable<boolean>;
+    apiErrors: AssetErrorResult[];
+}
+
+export class AssetErrorResult {
+    code: AssetErrorCode;
+    message: string;
+}
+
 export class RemoveCollectionResult {
     success?: Nullable<boolean>;
     apiErrors: CollectionErrorResult[];
@@ -394,7 +410,7 @@ export class OrderErrorResult {
 }
 
 export class RemoveProductResult {
-    success?: Nullable<boolean>;
+    success: boolean;
     apiErrors: ProductErrorResult[];
 }
 

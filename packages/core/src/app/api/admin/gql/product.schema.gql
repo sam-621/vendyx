@@ -29,7 +29,7 @@ input UpdateProductInput {
 
 " Results "
 type RemoveProductResult {
-  success: Boolean
+  success: Boolean!
   apiErrors: [ProductErrorResult!]!
 }
 

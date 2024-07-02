@@ -4,9 +4,10 @@ import { useFormContext } from 'react-hook-form';
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 import { Trash2Icon } from 'lucide-react';
 
-import { useCreateAsset } from '@/app/assets';
+import { useCreateAsset, useRemoveAssets } from '@/app/assets';
 import { useProductDetailsContext } from '@/app/products/context';
 import { ProductKeys, useUpdateProduct } from '@/app/products/hooks';
+import { AssetPreview } from '@/lib/components';
 import { Dropzone } from '@/lib/components/forms';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 import { notification } from '@/lib/notifications';
@@ -14,10 +15,10 @@ import { queryClient } from '@/lib/query-client';
 import { getFileListIntoArray, getFilePreview } from '@/lib/utils';
 
 import { type ProductDetailsFormInput } from '../use-product-details-form';
-import { AssetPreview } from './asset-preview';
 
 export const AssetDetails: FC<Props> = () => {
   const { createAsset } = useCreateAsset();
+  const { removeAssets } = useRemoveAssets();
   const { updateProduct } = useUpdateProduct();
   const { setValue } = useFormContext<ProductDetailsFormInput>();
   const { product } = useProductDetailsContext();
@@ -54,11 +55,14 @@ export const AssetDetails: FC<Props> = () => {
                   setFiles(files.filter(file => !checked.includes(file.name)));
                 } else {
                   const newAssets = defaultAssets.filter(asset => !checked.includes(asset.source));
+                  const removedAssets = defaultAssets.filter(asset =>
+                    checked.includes(asset.source)
+                  );
 
-                  // remove assets from db
                   await updateProduct(product?.id, {
                     assetsIds: newAssets.map(asset => asset.id)
                   });
+                  await removeAssets(removedAssets.map(asset => asset.id));
                   await queryClient.invalidateQueries({
                     queryKey: ProductKeys.single(product.slug)
                   });

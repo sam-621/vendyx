@@ -1,6 +1,6 @@
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Logger, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
 @Module({})
@@ -18,6 +18,11 @@ export class GraphqlApiModule {
         driver: ApolloDriver,
         plugins: [ApolloServerPluginLandingPageLocalDefault()],
         formatError: error => {
+          Logger.error({
+            message: error.message,
+            raw: error
+          });
+
           return {
             message: error.message,
             code: error.extensions?.code

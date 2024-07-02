@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input) {\n      authToken\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.AuthenticateDocument,
+    "\n  mutation RemoveAssets($ids: [ID!]!) {\n    removeAssets(ids: $ids) {\n      success\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n": types.RemoveAssetsDocument,
     "\n  mutation CreateCollection($input: CreateCollectionInput!) {\n    createCollection(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      collection {\n        id\n      }\n    }\n  }\n": types.CreateCollectionDocument,
     "\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      collection {\n        id\n      }\n    }\n  }\n": types.UpdateCollectionDocument,
     "\n  mutation RemoveCollection($id: ID!) {\n    removeCollection(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveCollectionDocument,
@@ -66,6 +67,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input) {\n      authToken\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation Authenticate($input: AuthenticateInput!) {\n    authenticate(input: $input) {\n      authToken\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RemoveAssets($ids: [ID!]!) {\n    removeAssets(ids: $ids) {\n      success\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveAssets($ids: [ID!]!) {\n    removeAssets(ids: $ids) {\n      success\n      apiErrors {\n        code\n        message\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

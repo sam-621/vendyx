@@ -13,7 +13,7 @@ export class AssetResolver {
 
   @Mutation('removeAssets')
   async removeAssets(@Args('ids') ids: ID[]) {
-    const result = this.assetService.remove(ids);
+    const result = await this.assetService.remove(ids);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { success: result, apiErrors: [] };
   }

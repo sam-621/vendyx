@@ -8,12 +8,10 @@ type AssetResult {
 }
 
 type AssetErrorResult {
-  code: CollectionErrorCode!
+  code: AssetErrorCode!
   message: String!
 }
 
 enum AssetErrorCode {
-  COLLECTION_NOT_FOUND
-  NO_ID_OR_SLUG_PROVIDED
-  DUPLICATED_SLUG
+  ASSET_IN_USE
 }

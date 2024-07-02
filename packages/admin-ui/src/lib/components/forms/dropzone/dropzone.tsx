@@ -5,7 +5,7 @@ import { UploadCloudIcon } from 'lucide-react';
 
 import { t } from '@/lib/locales';
 
-import { DropzonePreviewItem } from './dropzone-preview-item';
+import { DropzoneItem } from './dropzone-item';
 
 // If no product work with previews
 // if product, upload images and show url previews
@@ -30,7 +30,7 @@ export const Dropzone: FC<Props> = ({
   if (previews?.length) {
     return (
       <div className="flex gap-4">
-        <DropzonePreviewItem
+        <DropzoneItem
           className="w-36 h-36"
           source={defaultAsset}
           onClick={() => onAssetClick(defaultAsset)}
@@ -40,7 +40,7 @@ export const Dropzone: FC<Props> = ({
           {previews
             .filter(preview => preview !== defaultAsset)
             .map(preview => (
-              <DropzonePreviewItem
+              <DropzoneItem
                 key={preview}
                 className="w-16 h-16"
                 source={preview}

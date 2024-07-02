@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import { Checkbox, cn } from '@ebloc/theme';
 
-export const DropzonePreviewItem: FC<Props> = ({ source, onClick, onCheck, className }) => {
+export const DropzoneItem: FC<Props> = ({ source, onClick, onCheck, className }) => {
   return (
     <div className={cn('relative group cursor-pointer', className)}>
       <div className="w-full h-full absolute group-hover:bg-muted/50" onClick={onClick}></div>
