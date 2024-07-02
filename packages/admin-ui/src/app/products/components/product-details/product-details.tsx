@@ -42,7 +42,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
         </CardContent>
       </Card>
 
-      <AssetDetails assets={product?.assets} />
+      <AssetDetails />
 
       <VariantDetails />
 

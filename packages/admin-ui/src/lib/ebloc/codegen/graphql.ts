@@ -71,14 +71,12 @@ export type Asset = Node & {
 };
 
 export enum AssetErrorCode {
-  CollectionNotFound = 'COLLECTION_NOT_FOUND',
-  DuplicatedSlug = 'DUPLICATED_SLUG',
-  NoIdOrSlugProvided = 'NO_ID_OR_SLUG_PROVIDED'
+  AssetInUse = 'ASSET_IN_USE'
 }
 
 export type AssetErrorResult = {
   __typename?: 'AssetErrorResult';
-  code: CollectionErrorCode;
+  code: AssetErrorCode;
   message: Scalars['String']['output'];
 };
 
@@ -718,7 +716,7 @@ export type RemoveOptionResult = {
 export type RemoveProductResult = {
   __typename?: 'RemoveProductResult';
   apiErrors: Array<ProductErrorResult>;
-  success?: Maybe<Scalars['Boolean']['output']>;
+  success: Scalars['Boolean']['output'];
 };
 
 export type RemoveVariantResult = {
@@ -862,7 +860,7 @@ export type RemoveAssetsMutationVariables = Exact<{
 }>;
 
 
-export type RemoveAssetsMutation = { __typename?: 'Mutation', removeAssets: { __typename?: 'AssetResult', success?: boolean | null, apiErrors: Array<{ __typename?: 'AssetErrorResult', code: CollectionErrorCode, message: string }> } };
+export type RemoveAssetsMutation = { __typename?: 'Mutation', removeAssets: { __typename?: 'AssetResult', success?: boolean | null, apiErrors: Array<{ __typename?: 'AssetErrorResult', code: AssetErrorCode, message: string }> } };
 
 export type CreateCollectionMutationVariables = Exact<{
   input: CreateCollectionInput;
@@ -979,7 +977,7 @@ export type RemoveProductMutationVariables = Exact<{
 }>;
 
 
-export type RemoveProductMutation = { __typename?: 'Mutation', removeProduct: { __typename?: 'RemoveProductResult', success?: boolean | null, apiErrors: Array<{ __typename?: 'ProductErrorResult', code: ProductErrorCode, message: string }> } };
+export type RemoveProductMutation = { __typename?: 'Mutation', removeProduct: { __typename?: 'RemoveProductResult', success: boolean, apiErrors: Array<{ __typename?: 'ProductErrorResult', code: ProductErrorCode, message: string }> } };
 
 export type UpdateProductMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
