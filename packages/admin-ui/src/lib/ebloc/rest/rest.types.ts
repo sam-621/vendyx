@@ -1,7 +1,8 @@
 export type EblocAsset = {
+  id: string;
   name: string;
   source: string;
-  id: string;
+  order: number;
   createdAt: string;
   updatedAt: string;
   deletedAt: Date | null;

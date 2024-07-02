@@ -23,7 +23,7 @@ export const AssetDetails: FC = () => {
       onFilesInMemoryChange={files => setValue('assets', files)}
       onNewAssets={async assets => {
         await updateProduct(product?.id ?? '', {
-          assetsIds: assets
+          assets: assets.map(asset => ({ id: asset.id, order: asset.order }))
         });
       }}
       onFinishMutations={async () => {

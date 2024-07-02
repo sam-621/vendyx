@@ -5,7 +5,14 @@ import { CSS } from '@dnd-kit/utilities';
 import { Checkbox, cn } from '@ebloc/theme';
 import { GripIcon } from 'lucide-react';
 
-export const DropzoneItem: FC<Props> = ({ source, onClick, onCheck, checked, className }) => {
+export const DropzoneItem: FC<Props> = ({
+  source,
+  canSort,
+  onClick,
+  onCheck,
+  checked,
+  className
+}) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: source
   });
@@ -31,11 +38,13 @@ export const DropzoneItem: FC<Props> = ({ source, onClick, onCheck, checked, cla
         checked={checked}
         onCheckedChange={checked => onCheck(Boolean(checked))}
       />
-      <GripIcon
-        {...listeners}
-        className="opacity-0 absolute top-1 right-1 group-hover:opacity-100 cursor-grab"
-        size={16}
-      />
+      {canSort && (
+        <GripIcon
+          {...listeners}
+          className="opacity-0 absolute top-1 right-1 group-hover:opacity-100 cursor-grab"
+          size={16}
+        />
+      )}
       <img
         src={source}
         alt="Asset"
@@ -46,9 +55,26 @@ export const DropzoneItem: FC<Props> = ({ source, onClick, onCheck, checked, cla
 };
 
 type Props = {
+  /**
+   * The source of the image to be displayed
+   */
   source: string;
-  onClick: () => void;
-  onCheck: (checked: boolean) => void;
+  /**
+   * Whether the item can be sorted. If true, a grip icon will be displayed and the item will be able to be dragged.
+   * Disabling this option could be useful when you need to use this component as a simple image preview or your item is out of the sortable context.
+   */
+  canSort: boolean;
+  /**
+   * Whether the item is checked
+   */
   checked: boolean;
+  /**
+   * Callback to be called when the item is clicked
+   */
+  onClick: () => void;
+  /**
+   * Callback to be called when the item is checked
+   */
+  onCheck: (checked: boolean) => void;
   className?: string;
 };

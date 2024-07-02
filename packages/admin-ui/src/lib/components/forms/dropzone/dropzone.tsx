@@ -40,6 +40,8 @@ import { DropzoneItem } from './dropzone-item';
  */
 export const Dropzone: FC<Props> = ({
   onDrop,
+  onHandleDragEnd,
+  onMarkAsDefault,
   allAssets = [],
   setChecked,
   checked,
@@ -65,24 +67,26 @@ export const Dropzone: FC<Props> = ({
     }
   };
 
-  function handleDragEnd(event: DragEndEvent) {
+  async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      setItems(items => {
-        const oldIndex = items.indexOf(active?.id as string);
-        const newIndex = items.indexOf(over?.id as string);
+      const oldIndex = items.indexOf(active?.id as string);
+      const newIndex = items.indexOf(over?.id as string);
 
-        const news = arrayMove(items, oldIndex, newIndex);
+      const orderedItems = arrayMove(items, oldIndex, newIndex);
+      const orderedAssetsIds = orderedItems
+        .map(item => allAssets.find(asset => asset.source === item)?.id)
+        .filter(Boolean) as string[];
 
-        return news;
-      });
+      setItems(orderedItems);
+      await onHandleDragEnd(orderedAssetsIds);
     }
   }
 
   useEffect(() => {
     setItems(previews.filter(preview => preview !== defaultAsset));
-  }, [previews.length]);
+  }, [previews.length, defaultAsset]);
 
   if (previews?.length) {
     return (
@@ -94,6 +98,7 @@ export const Dropzone: FC<Props> = ({
             checked={checked.includes(defaultAsset)}
             onClick={() => setAssetToPreview(defaultAsset)}
             onCheck={isChecked => handleCheck(isChecked, defaultAsset)}
+            canSort={false}
           />
           <div className="flex gap-4 flex-wrap">
             <SortableContext items={items} strategy={rectSortingStrategy}>
@@ -107,6 +112,7 @@ export const Dropzone: FC<Props> = ({
                     checked={checked.includes(preview)}
                     onClick={() => setAssetToPreview(preview)}
                     onCheck={isChecked => handleCheck(isChecked, preview)}
+                    canSort={Boolean(allAssets.length)}
                   />
                 ))}
             </SortableContext>
@@ -115,6 +121,7 @@ export const Dropzone: FC<Props> = ({
           </div>
         </div>
         <AssetPreview
+          onActionClick={async asset => await onMarkAsDefault(asset)}
           asset={allAssets.find(asset => asset.source === assetToPreview)}
           source={assetToPreview}
           isOpen={!!assetToPreview}
@@ -155,15 +162,43 @@ export const SingleDropzone: FC<SingleDropzoneProps> = ({ onDrop, isFull, classN
 };
 
 type Props = {
+  /**
+   * Callback to be called when files are dropped
+   */
   onDrop: (files: FileList | null) => void;
+  /**
+   * Callback to be called when assets have been reordered
+   */
+  onHandleDragEnd: (orderedAssetsIds: string[]) => Promise<void>;
+  /**
+   * Callback to be called when an asset is marked as default
+   */
+  onMarkAsDefault: (asset: DropzoneAsset) => Promise<void>;
+  /**
+   * Set function to update checked assets
+   */
   setChecked: (checked: string[]) => void;
+  /**
+   * Array of checked assets
+   */
   checked: string[];
+  /**
+   * Array of assets to be shown as previews, this is different from allAssets for two reasons:
+   * 1. It doesn't include the default asset
+   * 2. It's used to manage the internal state of new assets previews when localStateMode is true
+   */
   previews?: string[];
+  /**
+   * List of persisted assets. Used to show initial values
+   */
   allAssets?: DropzoneAsset[];
   className?: string;
 };
 
 type SingleDropzoneProps = {
+  /**
+   * Callback to be called when files are dropped
+   */
   onDrop: (files: FileList | null) => void;
   /**
    * If true, dropzone label will be show and icon will be bigger
@@ -172,4 +207,4 @@ type SingleDropzoneProps = {
   className?: string;
 };
 
-export type DropzoneAsset = Pick<EblocAsset, 'source' | 'id' | 'name' | 'createdAt'>;
+export type DropzoneAsset = Pick<EblocAsset, 'source' | 'id' | 'name' | 'createdAt' | 'order'>;

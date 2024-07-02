@@ -130,7 +130,7 @@ export class CreateProductInput {
     description?: Nullable<string>;
     published: boolean;
     onlineOnly: boolean;
-    assetsIds?: Nullable<string[]>;
+    assets?: Nullable<AssetInEntityInput[]>;
 }
 
 export class UpdateProductInput {
@@ -139,7 +139,7 @@ export class UpdateProductInput {
     description?: Nullable<string>;
     published?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
-    assetsIds?: Nullable<string[]>;
+    assets?: Nullable<AssetInEntityInput[]>;
 }
 
 export class CreateVariantInput {
@@ -168,6 +168,11 @@ export class CreateAddressInput {
     phoneCountryCode?: Nullable<string>;
     postalCode: string;
     references?: Nullable<string>;
+}
+
+export class AssetInEntityInput {
+    id: string;
+    order: number;
 }
 
 export class ListInput {
@@ -471,6 +476,7 @@ export class Asset implements Node {
     name: string;
     source: string;
     type: AssetType;
+    order: number;
 }
 
 export class AssetList implements List {

@@ -14,7 +14,7 @@ input CreateProductInput {
   published: Boolean!
   onlineOnly: Boolean!
 
-  assetsIds: [ID!]
+  assets: [AssetInEntityInput!]
 }
 
 input UpdateProductInput {
@@ -24,7 +24,7 @@ input UpdateProductInput {
   published: Boolean
   onlineOnly: Boolean
 
-  assetsIds: [ID!]
+  assets: [AssetInEntityInput!]
 }
 
 " Results "

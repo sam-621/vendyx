@@ -36,6 +36,7 @@ export const CommonProductFragment = graphql(`
         createdAt
         name
         source
+        order
       }
     }
   }

@@ -9,9 +9,15 @@ type Asset implements Node {
   name: String!
   source: String!
   type: AssetType!
+  order: Int!
 }
 
 type AssetList implements List {
   items: [Asset!]!
   count: Int!
+}
+
+input AssetInEntityInput {
+  id: ID!
+  order: Int!
 }

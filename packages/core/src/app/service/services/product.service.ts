@@ -63,13 +63,14 @@ export class ProductService {
   }
 
   async findAssets(id: ID, listInput: ListInput) {
-    const assets = await this.db.getRepository(AssetEntity).find({
-      where: { assetsInProduct: { product: { id } } },
+    const assets = await this.db.getRepository(AssetInProductEntity).find({
+      where: { product: { id } },
       ...clean(listInput),
-      order: { createdAt: 'ASC' }
+      order: { order: 'ASC' },
+      relations: { asset: true }
     });
 
-    return assets;
+    return assets.map(a => ({ ...a.asset, order: a.order }));
   }
 
   async findOptions(id: ID) {
@@ -108,9 +109,9 @@ export class ProductService {
       );
     }
 
-    const assets = input.assetsIds?.length
+    const assets = input.assets?.length
       ? await this.db.getRepository(AssetEntity).find({
-          where: { id: In(input.assetsIds) }
+          where: { id: In(input.assets.map(a => a.id)) }
         })
       : undefined;
 
@@ -126,7 +127,7 @@ export class ProductService {
           asset_in_product: asset.id + productCreated.id,
           asset: asset,
           product: productCreated,
-          order: 1
+          order: input.assets?.find(a => a.id === asset.id)?.order ?? 1
         }))
       );
     }
@@ -167,9 +168,9 @@ export class ProductService {
     }
 
     const newAssets =
-      input.assetsIds?.length !== undefined
+      input.assets?.length !== undefined
         ? await this.db.getRepository(AssetEntity).find({
-            where: { id: In(input.assetsIds) }
+            where: { id: In(input.assets.map(a => a.id)) }
           })
         : undefined;
 
@@ -179,7 +180,7 @@ export class ProductService {
           asset_in_product: asset.id + productToUpdate.id,
           asset: asset,
           product: productToUpdate,
-          order: 1
+          order: input.assets?.find(a => a.id === asset.id)?.order ?? 1
         }))
       );
     }

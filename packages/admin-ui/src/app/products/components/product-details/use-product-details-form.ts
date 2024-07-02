@@ -40,14 +40,11 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    if (product && !isProductDetailsFormDirty(product, input) && !variantsWithChanges.length)
+    if (product && !isProductDetailsFormDirty(product, input) && !variantsWithChanges.length) {
       return;
+    }
 
-    // We add a revers because we want to add the assets in the same order as the user added them
-    // When returning assets in response, we return them in ascending order (Oldest first - newest last)
-    // But when user adds them, we want to show them in descending order (Newest first - oldest last)
-    // So we reverse the array to keep the order the user added them
-    const assets = input.assets ? await createAsset(input.assets.reverse()) : undefined;
+    const assets = input.assets ? await createAsset(input.assets) : undefined;
 
     const productInput = {
       name: input.name,
@@ -55,10 +52,9 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
       description: input.description,
       onlineOnly: input.onlineOnly,
       published: input.published,
-      assetsIds: [
-        ...(product?.assets.items.map(asset => asset.id) ?? []),
-        ...(assets?.map(asset => asset.id) ?? [])
-      ]
+      assets: assets?.length
+        ? [...(assets?.map((asset, i) => ({ id: asset.id, order: i })) ?? [])]
+        : undefined
     };
 
     const variantInput = {

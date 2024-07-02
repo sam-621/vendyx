@@ -1,11 +1,22 @@
-import { type FC } from 'react';
+import { type FC, useState } from 'react';
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@ebloc/theme';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@ebloc/theme';
 
-import { type EblocAsset } from '@/lib/ebloc/rest';
 import { formatDate } from '@/lib/utils';
 
-export const AssetPreview: FC<Props> = ({ source, asset, isOpen, setIsOpen }) => {
+import { type DropzoneAsset } from '../forms';
+
+export const AssetPreview: FC<Props> = ({ source, asset, onActionClick, isOpen, setIsOpen }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <Dialog open={isOpen} onOpenChange={open => setIsOpen(open)}>
       <DialogContent>
@@ -18,10 +29,24 @@ export const AssetPreview: FC<Props> = ({ source, asset, isOpen, setIsOpen }) =>
         <div>
           <img src={source} alt="Asset Preview" />
         </div>
-        {/* <DialogFooter>
-          Footer
-          <DialogClose>Close</DialogClose>
-        </DialogFooter> */}
+        {asset && (
+          <DialogFooter>
+            <Button
+              className="w-full"
+              isLoading={isLoading}
+              onClick={async () => {
+                setIsLoading(true);
+
+                await onActionClick(asset);
+
+                setIsLoading(false);
+                setIsOpen(false);
+              }}
+            >
+              Mark as default
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
@@ -30,6 +55,7 @@ export const AssetPreview: FC<Props> = ({ source, asset, isOpen, setIsOpen }) =>
 type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  onActionClick: (asset: DropzoneAsset) => Promise<void>;
   source: string;
-  asset?: Pick<EblocAsset, 'source' | 'id' | 'name' | 'createdAt'>;
+  asset?: DropzoneAsset;
 };

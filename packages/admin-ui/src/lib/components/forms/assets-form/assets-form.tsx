@@ -41,6 +41,7 @@ export const AssetsForm: FC<Props> = ({
 
   const [previews, setPreviews] = useState<string[]>(allAssets.map(asset => asset.source));
   const [files, setFiles] = useState<{ file: File; previewId: string }[]>([]);
+  const [markedAsDefault, setMarkedAsDefault] = useState(0);
 
   const [checked, setChecked] = useState<string[]>([]);
 
@@ -50,7 +51,7 @@ export const AssetsForm: FC<Props> = ({
 
   useEffect(() => {
     setPreviews(allAssets.map(asset => asset.source));
-  }, [allAssets.length]);
+  }, [allAssets.length, markedAsDefault]);
 
   return (
     <Card>
@@ -89,6 +90,25 @@ export const AssetsForm: FC<Props> = ({
           previews={previews}
           checked={checked}
           setChecked={setChecked}
+          onMarkAsDefault={async asset => {
+            // Iterates all assets by 1 to avoid the default asset (0)
+            const reOrderedAssets = allAssets
+              .filter(a => a.id !== asset.id)
+              .map((asset, i) => ({ id: asset.id, order: i + 1 }));
+
+            await onNewAssets([{ id: asset.id, order: 0 }, ...reOrderedAssets]);
+            await onFinishMutations();
+            setMarkedAsDefault(markedAsDefault + 1);
+
+            notification.success('Asset marked as default');
+          }}
+          onHandleDragEnd={async orderedAssetsIds => {
+            // + 1 because the default asset (0) is not included in the sorted assets so we avoid the 0 index
+            await onNewAssets(orderedAssetsIds.map((asset, i) => ({ id: asset, order: i + 1 })));
+            await onFinishMutations();
+
+            notification.success('Assets reordered successfully');
+          }}
           onDrop={async droppedFiles => {
             if (localStateMode) {
               // add previews state
@@ -114,10 +134,11 @@ export const AssetsForm: FC<Props> = ({
                 return;
               }
 
-              await onNewAssets([
-                ...allAssets.map(asset => asset.id),
-                ...assets.map(asset => asset.id)
-              ]);
+              await onNewAssets(
+                [...allAssets.map(asset => asset.id), ...assets.map(asset => asset.id)].map(
+                  (asset, i) => ({ id: asset, order: i })
+                )
+              );
               await onFinishMutations();
 
               notification.dismiss(notificationId);
@@ -132,6 +153,9 @@ export const AssetsForm: FC<Props> = ({
 };
 
 type Props = {
+  /**
+   * List of persisted assets. Used to show initial values
+   */
   allAssets: DropzoneAsset[];
   /**
    * Flag to indicate if the form is creating a new entity. If true, the form will not make any request to the server, just update the local state
@@ -144,7 +168,7 @@ type Props = {
   /**
    * Callback to be called just after new assets are uploaded. Usually used to add the new assets to the entity
    */
-  onNewAssets: (assets: string[]) => Promise<void>;
+  onNewAssets: (assets: { id: string; order: number }[]) => Promise<void>;
   /**
    * Callback to be called when the files in memory change. Used to update the form state
    */
