@@ -1,5 +1,20 @@
-import { type FC, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates
+} from '@dnd-kit/sortable';
 import { cn } from '@ebloc/theme';
 import { UploadCloudIcon } from 'lucide-react';
 
@@ -31,7 +46,16 @@ export const Dropzone: FC<Props> = ({
   previews = [],
   className
 }) => {
+  const defaultAsset = previews[0];
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates
+    })
+  );
   const [assetToPreview, setAssetToPreview] = useState('');
+  const [items, setItems] = useState(previews.filter(preview => preview !== defaultAsset));
 
   const handleCheck = (isChecked: boolean, source: string) => {
     if (isChecked) {
@@ -41,33 +65,53 @@ export const Dropzone: FC<Props> = ({
     }
   };
 
-  const defaultAsset = previews[0];
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setItems(items => {
+        const oldIndex = items.indexOf(active?.id as string);
+        const newIndex = items.indexOf(over?.id as string);
+
+        const news = arrayMove(items, oldIndex, newIndex);
+
+        return news;
+      });
+    }
+  }
+
+  useEffect(() => {
+    setItems(previews.filter(preview => preview !== defaultAsset));
+  }, [previews.length]);
 
   if (previews?.length) {
     return (
-      <>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <div className="flex gap-4">
           <DropzoneItem
-            className="w-36 h-36"
+            className="w-52 h-52"
             source={defaultAsset}
             checked={checked.includes(defaultAsset)}
             onClick={() => setAssetToPreview(defaultAsset)}
             onCheck={isChecked => handleCheck(isChecked, defaultAsset)}
           />
           <div className="flex gap-4 flex-wrap">
-            {previews
-              .filter(preview => preview !== defaultAsset)
-              .map(preview => (
-                <DropzoneItem
-                  key={preview}
-                  className="w-16 h-16"
-                  source={preview}
-                  checked={checked.includes(preview)}
-                  onClick={() => setAssetToPreview(preview)}
-                  onCheck={isChecked => handleCheck(isChecked, preview)}
-                />
-              ))}
-            <SingleDropzone className="w-16 h-16" onDrop={onDrop} />
+            <SortableContext items={items} strategy={rectSortingStrategy}>
+              {items
+                .filter(preview => preview !== defaultAsset)
+                .map(preview => (
+                  <DropzoneItem
+                    key={preview}
+                    className="w-24 h-24"
+                    source={preview}
+                    checked={checked.includes(preview)}
+                    onClick={() => setAssetToPreview(preview)}
+                    onCheck={isChecked => handleCheck(isChecked, preview)}
+                  />
+                ))}
+            </SortableContext>
+
+            <SingleDropzone className="w-24 h-24" onDrop={onDrop} />
           </div>
         </div>
         <AssetPreview
@@ -76,14 +120,14 @@ export const Dropzone: FC<Props> = ({
           isOpen={!!assetToPreview}
           setIsOpen={(isOpen: boolean) => setAssetToPreview(isOpen ? assetToPreview : '')}
         />
-      </>
+      </DndContext>
     );
   }
 
   return <SingleDropzone className={className} onDrop={onDrop} isFull />;
 };
 
-const SingleDropzone: FC<SingleDropzoneProps> = ({ onDrop, isFull, className }) => {
+export const SingleDropzone: FC<SingleDropzoneProps> = ({ onDrop, isFull, className }) => {
   return (
     <label
       htmlFor="dropzone-file"

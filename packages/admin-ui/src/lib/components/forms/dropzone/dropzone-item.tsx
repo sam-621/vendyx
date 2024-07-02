@@ -1,11 +1,29 @@
 import { type FC } from 'react';
 
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Checkbox, cn } from '@ebloc/theme';
+import { GripIcon } from 'lucide-react';
 
 export const DropzoneItem: FC<Props> = ({ source, onClick, onCheck, checked, className }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: source
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  };
+
   return (
-    <div className={cn('relative group cursor-pointer', className)}>
-      <div className="w-full h-full absolute group-hover:bg-muted/50" onClick={onClick}></div>
+    <div
+      onClick={onClick}
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className={cn('relative group cursor-pointer flex-shrink-0', className)}
+    >
+      <div className="w-full h-full absolute group-hover:bg-muted/50"></div>
       <Checkbox
         id={source}
         className={cn(
@@ -13,6 +31,11 @@ export const DropzoneItem: FC<Props> = ({ source, onClick, onCheck, checked, cla
         )}
         checked={checked}
         onCheckedChange={checked => onCheck(Boolean(checked))}
+      />
+      <GripIcon
+        {...listeners}
+        className="opacity-0 absolute top-1 right-1 group-hover:opacity-100 cursor-grab"
+        size={16}
       />
       <img
         src={source}

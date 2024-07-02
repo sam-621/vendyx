@@ -13,6 +13,8 @@
     "codegen:watch": "yarn graphql-codegen --watch"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
     "@ebloc/common": "*",
     "@ebloc/theme": "*",
     "@fontsource/geist-sans": "^5.0.3",
