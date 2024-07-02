@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, In, Not } from 'typeorm';
 
+import { AssetService } from './asset.service';
 import { ErrorResult } from '../utils';
 
 import {
@@ -17,7 +18,10 @@ import { AssetEntity, ID, ProductEntity, VariantEntity } from '@/app/persistance
 
 @Injectable()
 export class ProductService {
-  constructor(@InjectDataSource() private db: DataSource) {}
+  constructor(
+    @InjectDataSource() private db: DataSource,
+    private readonly assetService: AssetService
+  ) {}
 
   async find(input: ListInput & { where?: FindOptionsWhere<ProductEntity> }) {
     return this.db.getRepository(ProductEntity).find({
@@ -164,15 +168,20 @@ export class ProductService {
   }
 
   /**
-   * Apply a soft delete for the current product and its variant, also update the slug to a random uuid to avoid duplication.
-   * We cannot remove permanently the product because it may have orders
-   * The assets are independent of the product so they are not removed
-   * @param id Product id to remove
-   * @returns Error Result or true if the product was removed
+   * Remove a product entity
+   *
+   * 1. Check if the product exists
+   * 2. Check if the product has variants
+   * 3. Remove the product
+   * 4. Remove the assets
+   * 5. Soft delete the product if it has variants soft deleted
+   * 6. Hard delete the product if it has no variants
+   *
    */
   async remove(id: ID): Promise<ErrorResult<ProductErrorCode> | boolean> {
     const productToRemove = await this.db.getRepository(ProductEntity).findOne({
-      where: { id }
+      where: { id },
+      relations: { assets: true }
     });
 
     if (!productToRemove) {
@@ -204,13 +213,15 @@ export class ProductService {
       slug: randomUUID()
     });
 
+    const assetsToRemove = productToRemove.assets;
+    await this.assetService.remove(assetsToRemove.map(asset => asset.id));
+
     if (hasVariantsSoftDeleted) {
       await this.db.getRepository(ProductEntity).softDelete({ id });
-      return true;
+    } else {
+      await this.db.getRepository(ProductEntity).delete({ id });
     }
 
-    await this.db.getRepository(ProductEntity).delete({ id });
-    // await this.db.getRepository(VariantEntity).softDelete({ product: { id } });
     return true;
   }
 
