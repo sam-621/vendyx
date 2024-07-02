@@ -30,7 +30,8 @@ export const PageLayout: FC<Props> = ({
         <header
           className={cn(
             'opacity-0 fixed top-0 justify-between items-center h-16 bg-body',
-            !isVisible && 'transition ease-in duration-150 opacity-100 flex z-10 sticky top-0'
+            !isVisible &&
+              'transition ease-in duration-150 flex z-10 sticky top-0 opacity-0 lg:opacity-100'
           )}
         >
           <div className="flex items-center gap-4">
