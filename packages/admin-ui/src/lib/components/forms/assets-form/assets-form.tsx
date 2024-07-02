@@ -10,7 +10,7 @@ import { getFileListIntoArray, getFilePreview } from '@/lib/utils';
 import { Dropzone, type DropzoneAsset } from '../dropzone/dropzone';
 
 /**
- * Common form to manage assets. It can be used to upload assets or remove them into a entity
+ * Common form to manage assets. It can be used to upload assets or remove them into an entity
  *
  * @example
  * ```tsx

@@ -17,7 +17,12 @@ export const PageLayout: FC<Props> = ({
   children
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isVisible = useIsVisible(ref, { canExecute: stickyHeader, threshold: 0.8 });
+  const isVisible = useIsVisible(ref, {
+    canExecute: stickyHeader,
+    threshold: 0.8,
+    // avoids layout shift
+    defaultValue: true
+  });
 
   return (
     <div className={cn('flex flex-col gap-8 mx-8 py-8', className?.container)}>
