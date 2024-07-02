@@ -50,7 +50,7 @@ export const AssetsForm: FC<Props> = ({
 
   useEffect(() => {
     setPreviews(allAssets.map(asset => asset.source));
-  }, [allAssets]);
+  }, [allAssets.length]);
 
   return (
     <Card>
@@ -106,9 +106,6 @@ export const AssetsForm: FC<Props> = ({
               setPreviews([...newPreviewsState]);
               setFiles([...newFilesState]);
             } else {
-              // mark page as loading
-              // upload assets
-              // update product
               const notificationId = notification.loading('Uploading asset...');
 
               const assets = (await createAsset(getFileListIntoArray(droppedFiles))) ?? [];
@@ -119,18 +116,11 @@ export const AssetsForm: FC<Props> = ({
                 return;
               }
 
-              // await updateProduct(product.id, {
-              //   assetsIds: [
-              //     ...defaultAssets.map(asset => asset.id),
-              //     ...assets.map(asset => asset.id)
-              //   ]
-              // });
               await onNewAssets([
                 ...allAssets.map(asset => asset.id),
                 ...assets.map(asset => asset.id)
               ]);
               await onFinishMutations();
-              // await queryClient.invalidateQueries({ queryKey: ProductKeys.single(product.slug) });
 
               notification.dismiss(notificationId);
               notification.success('Asset uploaded successfully');

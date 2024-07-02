@@ -15,7 +15,7 @@ import { DropzoneItem } from './dropzone-item';
  * @example
  * ```tsx
  * <Dropzone
- *   onDrop={files => console.log(files)}
+ *   onDrop={files => uploadFiles(files)}
  *   allAssets={defaultAssets}
  *   setChecked={setChecked}
  *   checked={checked}
