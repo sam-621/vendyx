@@ -1,0 +1,19 @@
+type Mutation {
+  removeAssets(ids: [ID!]!): AssetResult!
+}
+
+type AssetResult {
+  success: Boolean
+  apiErrors: [AssetErrorResult!]!
+}
+
+type AssetErrorResult {
+  code: CollectionErrorCode!
+  message: String!
+}
+
+enum AssetErrorCode {
+  COLLECTION_NOT_FOUND
+  NO_ID_OR_SLUG_PROVIDED
+  DUPLICATED_SLUG
+}

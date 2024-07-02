@@ -1,12 +1,6 @@
 import { unlink } from 'fs/promises';
 
-import {
-  Controller,
-  Post,
-  Res,
-  UploadedFiles,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 
@@ -21,9 +15,9 @@ export class uploadController {
   async upload(
     @UploadedFiles()
     files: Express.Multer.File[],
-    @Res() res: Response,
+    @Res() res: Response
   ) {
-    const assetUploadPromises = files.map(async (file) => {
+    const assetUploadPromises = files.map(async file => {
       return this.assetService.create(file);
     });
 
@@ -31,9 +25,9 @@ export class uploadController {
 
     // remove files from disk after upload
     await Promise.all(
-      files.map(async (file) => {
+      files.map(async file => {
         await unlink(file.path);
-      }),
+      })
     );
 
     return res.status(200).json(result);

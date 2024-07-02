@@ -26,4 +26,10 @@ export class AssetService {
 
     return this.db.getRepository(AssetEntity).save(assetToSave);
   }
+
+  async remove(ids: string[]) {
+    await this.db.getRepository(AssetEntity).delete(ids);
+
+    return true;
+  }
 }
