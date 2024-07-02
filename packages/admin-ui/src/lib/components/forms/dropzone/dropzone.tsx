@@ -1,23 +1,25 @@
-import { type FC } from 'react';
+import { type FC, useState } from 'react';
 
 import { cn } from '@ebloc/theme';
 import { UploadCloudIcon } from 'lucide-react';
 
+import { type EblocAsset } from '@/lib/ebloc/rest';
 import { t } from '@/lib/locales';
 
+import { AssetPreview } from '../../asset-preview/asset-preview';
 import { DropzoneItem } from './dropzone-item';
 
 // If no product work with previews
 // if product, upload images and show url previews
 export const Dropzone: FC<Props> = ({
   onDrop,
-  onAssetClick,
+  allAssets = [],
   setChecked,
   checked,
   previews = [],
   className
 }) => {
-  const defaultAsset = previews[0];
+  const [assetToPreview, setAssetToPreview] = useState('');
 
   const handleCheck = (isChecked: boolean, source: string) => {
     if (isChecked) {
@@ -27,30 +29,40 @@ export const Dropzone: FC<Props> = ({
     }
   };
 
+  const defaultAsset = previews[0];
+
   if (previews?.length) {
     return (
-      <div className="flex gap-4">
-        <DropzoneItem
-          className="w-36 h-36"
-          source={defaultAsset}
-          onClick={() => onAssetClick(defaultAsset)}
-          onCheck={isChecked => handleCheck(isChecked, defaultAsset)}
-        />
-        <div className="flex gap-4 flex-wrap">
-          {previews
-            .filter(preview => preview !== defaultAsset)
-            .map(preview => (
-              <DropzoneItem
-                key={preview}
-                className="w-16 h-16"
-                source={preview}
-                onClick={() => onAssetClick(defaultAsset)}
-                onCheck={isChecked => handleCheck(isChecked, preview)}
-              />
-            ))}
-          <SingleDropzone className="w-16 h-16" onDrop={onDrop} />
+      <>
+        <div className="flex gap-4">
+          <DropzoneItem
+            className="w-36 h-36"
+            source={defaultAsset}
+            onClick={() => setAssetToPreview(defaultAsset)}
+            onCheck={isChecked => handleCheck(isChecked, defaultAsset)}
+          />
+          <div className="flex gap-4 flex-wrap">
+            {previews
+              .filter(preview => preview !== defaultAsset)
+              .map(preview => (
+                <DropzoneItem
+                  key={preview}
+                  className="w-16 h-16"
+                  source={preview}
+                  onClick={() => setAssetToPreview(preview)}
+                  onCheck={isChecked => handleCheck(isChecked, preview)}
+                />
+              ))}
+            <SingleDropzone className="w-16 h-16" onDrop={onDrop} />
+          </div>
         </div>
-      </div>
+        <AssetPreview
+          asset={allAssets.find(asset => asset.source === assetToPreview)}
+          source={assetToPreview}
+          isOpen={!!assetToPreview}
+          setIsOpen={(isOpen: boolean) => setAssetToPreview(isOpen ? assetToPreview : '')}
+        />
+      </>
     );
   }
 
@@ -86,10 +98,10 @@ const SingleDropzone: FC<SingleDropzoneProps> = ({ onDrop, isFull, className }) 
 
 type Props = {
   onDrop: (files: FileList | null) => void;
-  onAssetClick: (source: string) => void;
   setChecked: (checked: string[]) => void;
   checked: string[];
   previews?: string[];
+  allAssets?: Pick<EblocAsset, 'source' | 'id' | 'name' | 'createdAt'>[];
   className?: string;
 };
 
