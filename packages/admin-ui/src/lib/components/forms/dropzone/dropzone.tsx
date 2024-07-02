@@ -9,8 +9,20 @@ import { t } from '@/lib/locales';
 import { AssetPreview } from '../../asset-preview/asset-preview';
 import { DropzoneItem } from './dropzone-item';
 
-// If no product work with previews
-// if product, upload images and show url previews
+/**
+ * Dropzone component to upload files
+ *
+ * @example
+ * ```tsx
+ * <Dropzone
+ *   onDrop={files => console.log(files)}
+ *   allAssets={defaultAssets}
+ *   setChecked={setChecked}
+ *   checked={checked}
+ *   previews={previews}
+ * />
+ * ```
+ */
 export const Dropzone: FC<Props> = ({
   onDrop,
   allAssets = [],
@@ -38,6 +50,7 @@ export const Dropzone: FC<Props> = ({
           <DropzoneItem
             className="w-36 h-36"
             source={defaultAsset}
+            checked={checked.includes(defaultAsset)}
             onClick={() => setAssetToPreview(defaultAsset)}
             onCheck={isChecked => handleCheck(isChecked, defaultAsset)}
           />
@@ -49,6 +62,7 @@ export const Dropzone: FC<Props> = ({
                   key={preview}
                   className="w-16 h-16"
                   source={preview}
+                  checked={checked.includes(preview)}
                   onClick={() => setAssetToPreview(preview)}
                   onCheck={isChecked => handleCheck(isChecked, preview)}
                 />
@@ -101,7 +115,7 @@ type Props = {
   setChecked: (checked: string[]) => void;
   checked: string[];
   previews?: string[];
-  allAssets?: Pick<EblocAsset, 'source' | 'id' | 'name' | 'createdAt'>[];
+  allAssets?: DropzoneAsset[];
   className?: string;
 };
 
@@ -113,3 +127,5 @@ type SingleDropzoneProps = {
   isFull?: boolean;
   className?: string;
 };
+
+export type DropzoneAsset = Pick<EblocAsset, 'source' | 'id' | 'name' | 'createdAt'>;
