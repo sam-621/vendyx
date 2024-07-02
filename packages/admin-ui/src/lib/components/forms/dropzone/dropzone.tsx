@@ -91,9 +91,9 @@ export const Dropzone: FC<Props> = ({
   if (previews?.length) {
     return (
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <div className="flex gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
           <DropzoneItem
-            className="w-52 h-52"
+            className="w-full lg:w-52 h-52"
             source={defaultAsset}
             checked={checked.includes(defaultAsset)}
             onClick={() => setAssetToPreview(defaultAsset)}

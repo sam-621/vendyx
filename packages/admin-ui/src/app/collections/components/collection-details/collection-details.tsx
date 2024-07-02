@@ -8,7 +8,7 @@ import { CollectionVisibility } from './collection-visibility/collection-visibil
 
 export const CollectionDetails: FC<Props> = ({ collection }) => {
   return (
-    <div className="grid grid-cols-4 gap-6">
+    <div className="flex flex-col lg:grid grid-cols-4 gap-6">
       <div className="col-span-3 flex flex-col gap-6">
         <CollectionGeneralInfo />
 

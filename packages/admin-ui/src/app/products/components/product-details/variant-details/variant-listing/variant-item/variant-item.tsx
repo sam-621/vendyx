@@ -62,7 +62,7 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
   return (
     <div
       className={cn(
-        'flex justify-between items-center px-6 pl-10 hover:bg-muted/50 py-4',
+        'flex justify-between items-center px-6 lg:pl-10 hover:bg-muted/50 py-4 overflow-x-scroll lg:overflow-auto gap-8 lg:gap-0',
         isChecked && 'bg-muted/50'
       )}
     >
@@ -70,7 +70,7 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
         <Checkbox checked={isChecked} onCheckedChange={onCheck} />
         <span>{variantName}</span>
       </div>
-      <div className="flex gap-2 items-end">
+      <div className="flex flex-shrink-0 gap-2 items-end">
         <FormInput
           placeholder="SKU - 000"
           label={!inGroup ? 'SKU' : undefined}

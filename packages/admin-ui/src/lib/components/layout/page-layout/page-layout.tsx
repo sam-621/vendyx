@@ -25,7 +25,7 @@ export const PageLayout: FC<Props> = ({
   });
 
   return (
-    <div className={cn('flex flex-col gap-8 mx-8 py-8', className?.container)}>
+    <div className={cn('mx-4 py-4 flex flex-col gap-8 xl:mx-8 xl:py-8', className?.container)}>
       {title && stickyHeader && (
         <header
           className={cn(
@@ -43,7 +43,11 @@ export const PageLayout: FC<Props> = ({
             )}
             <div className="flex flex-col gap-1">
               {title && <h1 className="text-xl font-medium">{title}</h1>}
-              {subtitle && <p className="text-muted-foreground text-sm font-normal">{subtitle}</p>}
+              {subtitle && (
+                <p className="hidden lg:block text-muted-foreground text-sm font-normal">
+                  {subtitle}
+                </p>
+              )}
             </div>
           </div>
           <div className="flex gap-3">{actions}</div>
@@ -51,10 +55,15 @@ export const PageLayout: FC<Props> = ({
       )}
       {title && (
         <header ref={ref} className={cn('flex justify-between items-center h-16 bg-body')}>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 lg:gap-4">
             {backUrl && (
               <Link to={backUrl}>
-                <Button type="button" variant="outline" size="icon">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 lg:h-9 lg:w-9"
+                >
                   <ChevronLeftIcon className="h-4 w-4" />
                 </Button>
               </Link>
@@ -63,7 +72,9 @@ export const PageLayout: FC<Props> = ({
               <div className="flex flex-col gap-1">
                 {title && <h1 className="text-xl font-medium">{title}</h1>}
                 {subtitle && (
-                  <p className="text-muted-foreground text-sm font-normal">{subtitle}</p>
+                  <p className="hidden lg:block text-muted-foreground text-sm font-normal">
+                    {subtitle}
+                  </p>
                 )}
               </div>
               {status && <div>{status}</div>}

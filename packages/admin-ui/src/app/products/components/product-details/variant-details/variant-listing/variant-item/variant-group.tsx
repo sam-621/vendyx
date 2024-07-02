@@ -13,14 +13,14 @@ export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
   return (
     <Accordion type="single" collapsible className="w-full pt-3">
       <AccordionItem value="item-1">
-        <div className="flex w-full justify-between items-center pb-4">
-          <div className="flex flex-col gap-2">
+        <div className="flex w-full justify-between items-center pb-4 overflow-x-scroll lg:overflow-auto gap-8">
+          <div className="flex flex-col gap-2 items-start">
             <p className="w-fit pl-6">{optionValue}</p>
             <AccordionTrigger className="py-0">
-              <p className="w-fit pl-6">{variants.length} variants</p>
+              <p className="w-fit pl-6 text-nowrap">{variants.length} variants</p>
             </AccordionTrigger>
           </div>
-          <div className="flex gap-2 items-end h-full pr-6">
+          <div className="flex gap-2 items-end h-full pr-6 flex-shrink-0">
             <FormInput label="Price" placeholder="$ 0.00" onFocus={e => e.target.select()} />
             <FormInput label="Total stock" placeholder="0" disabled value={totalStock} />
           </div>

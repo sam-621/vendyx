@@ -37,16 +37,16 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
           <TableCaption>Order breakdown.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>Unit price</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Total</TableHead>
+              <TableHead className="w-max text-nowrap">Product</TableHead>
+              <TableHead className="w-max text-nowrap">Unit price</TableHead>
+              <TableHead className="w-max text-nowrap">Quantity</TableHead>
+              <TableHead className="w-max text-nowrap">Total</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {lines.map(line => (
               <TableRow key={line.id}>
-                <TableCell className="flex items-center gap-2 w-full">
+                <TableCell className="flex items-center gap-2 w-max">
                   <img
                     src={
                       line.productVariant.product.assets.items[0]?.source ?? DEFAULT_PRODUCT_IMAGE
@@ -59,7 +59,7 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
                       line.productVariant.optionValues?.length && 'h-12'
                     )}
                   >
-                    <span>{line.productVariant.product.name}</span>
+                    <span className="text-nowrap">{line.productVariant.product.name}</span>
                     {Boolean(line.productVariant.optionValues?.length) && (
                       <Badge variant="secondary" className="py-0 px-1 w-fit text-xs">
                         {line.productVariant.optionValues?.map(v => v.value).join(' / ')}

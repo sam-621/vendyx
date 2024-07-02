@@ -31,14 +31,14 @@ export const OrderDetailsPage = () => {
       title={`#${order.code}`}
       subtitle={formatDate(new Date(order.createdAt as string))}
       actions={
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-2 lg:gap-4 items-center">
           <OrderTransitionOrderStateButton order={order} />
           <OrderActions />
         </div>
       }
       backUrl="/orders"
     >
-      <div className="grid grid-cols-4 gap-6">
+      <div className="flex flex-col lg:grid grid-cols-4 gap-6">
         <div className="col-span-3">
           <OrderItemsTable order={order} />
         </div>

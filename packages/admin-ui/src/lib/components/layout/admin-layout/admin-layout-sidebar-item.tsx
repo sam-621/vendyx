@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { cn } from '@ebloc/theme';
 import { type LucideIcon } from 'lucide-react';
 
-export const LayoutSidebarItem: FC<Props> = ({ isActive, icon: Icon, to, children }) => {
+export const LayoutSidebarItem: FC<Props> = ({ isActive, icon: Icon, to, onClick, children }) => {
   return (
     <Link
       className={cn(
@@ -15,6 +15,7 @@ export const LayoutSidebarItem: FC<Props> = ({ isActive, icon: Icon, to, childre
         }
       )}
       to={to}
+      onClick={onClick}
     >
       <Icon size={16} />
       {children}
@@ -26,5 +27,6 @@ type Props = {
   isActive: boolean;
   icon: LucideIcon;
   to: string;
+  onClick: () => void;
   children: string;
 };

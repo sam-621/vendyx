@@ -128,8 +128,8 @@ export class CreateProductInput {
     name: string;
     slug: string;
     description?: Nullable<string>;
-    published: boolean;
-    onlineOnly: boolean;
+    published?: Nullable<boolean>;
+    onlineOnly?: Nullable<boolean>;
     assets?: Nullable<AssetInEntityInput[]>;
 }
 

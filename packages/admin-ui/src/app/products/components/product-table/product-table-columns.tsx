@@ -36,18 +36,15 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Link
-          to={`/products/${row.original.slug ?? ''}`}
-          className="flex items-center gap-2 w-full"
-        >
+        <Link to={`/products/${row.original.slug ?? ''}`} className="flex items-center gap-2 w-max">
           {row.original.image && (
             <img
               src={row.original.image}
               alt={row.getValue('name')}
-              className="h-12 w-12 object-cover rounded-md"
+              className="h-12 w-12 object-cover rounded-md flex-shrink-0"
             />
           )}
-          <span>{row.original.name}</span>
+          <span className="text-nowrap">{row.original.name}</span>
         </Link>
       );
     }
@@ -59,7 +56,7 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p>
+        <p className="text-nowrap">
           <span className={cn(row.original.stock < 10 && 'text-destructive')}>
             {row.original.stock} in stock
           </span>{' '}

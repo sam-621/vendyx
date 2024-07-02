@@ -33,7 +33,7 @@ const Page = () => {
           backUrl="/products"
           className={{
             main: 'flex flex-col gap-8',
-            container: 'w-[775px] mx-auto'
+            container: 'max-w-[775px] px-4 mx-auto xl:mx-auto'
           }}
           stickyHeader
         >

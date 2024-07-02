@@ -33,6 +33,7 @@ export const CustomerDetailsPage = () => {
           subtitle={`Added at ${formatDate(new Date(customer.createdAt as string))}`}
           actions={<CustomerDetailsSubmitButton customer={customer} />}
           backUrl="/customers"
+          stickyHeader
         >
           <CustomerDetails customer={customer} />
         </PageLayout>

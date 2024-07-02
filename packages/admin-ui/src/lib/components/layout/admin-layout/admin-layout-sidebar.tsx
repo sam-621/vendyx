@@ -1,3 +1,4 @@
+import { type FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { cn } from '@ebloc/theme';
@@ -14,7 +15,7 @@ import { useConfigContext } from '@/app/config/contexts';
 
 import { LayoutSidebarItem } from './admin-layout-sidebar-item';
 
-export const AdminSidebar = () => {
+export const AdminSidebar: FC<Props> = ({ closeSidebar }) => {
   const { extraUiModules } = useConfigContext();
   const { pathname } = useLocation();
 
@@ -54,7 +55,13 @@ export const AdminSidebar = () => {
     <div className="flex flex-1 flex-col justify-between px-4 pb-4">
       <div className="flex flex-col gap-1">
         {SIDEBAR_ITEMS.map(({ label, to, icon, isActive }) => (
-          <LayoutSidebarItem key={to} icon={icon} isActive={isActive} to={to}>
+          <LayoutSidebarItem
+            onClick={closeSidebar}
+            key={to}
+            icon={icon}
+            isActive={isActive}
+            to={to}
+          >
             {label}
           </LayoutSidebarItem>
         ))}
@@ -62,6 +69,7 @@ export const AdminSidebar = () => {
           <Link
             key={uiModule.slug}
             to={uiModule.slug}
+            onClick={closeSidebar}
             className={cn(
               'text-sm font-medium flex items-center gap-3 rounded-lg px-3 py-2 transition-all text-muted-foreground hover:text-primary'
             )}
@@ -82,4 +90,8 @@ export const AdminSidebar = () => {
       </Link>
     </div>
   );
+};
+
+type Props = {
+  closeSidebar: () => void;
 };

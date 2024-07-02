@@ -36,8 +36,11 @@ export const CustomerTableColumns: ColumnDef<TableCustomer>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Link to={`/customers/${row.original.id}`} className="flex items-center gap-2 w-full">
-          <UserIcon size={24} />
+        <Link
+          to={`/customers/${row.original.id}`}
+          className="flex items-center gap-2 w-full text-nowrap"
+        >
+          <UserIcon className="flex-shrink-0" size={24} />
           <span>{row.original.name}</span>
         </Link>
       );

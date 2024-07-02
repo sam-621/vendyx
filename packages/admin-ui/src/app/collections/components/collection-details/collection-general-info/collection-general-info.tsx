@@ -18,7 +18,7 @@ export const CollectionGeneralInfo = () => {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
-        <div className="flex gap-4 w-full">
+        <div className="flex flex-col lg:flex-row gap-4 w-full">
           <FormInput
             {...register('name')}
             error={errors.name?.message}

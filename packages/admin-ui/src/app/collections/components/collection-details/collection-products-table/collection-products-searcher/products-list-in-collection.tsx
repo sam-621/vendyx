@@ -40,7 +40,7 @@ export const ProductsListInCollection: FC<Props> = ({
       <div>
         <div
           className={cn(
-            'divide-y border-y h-[calc(80px*5)]',
+            'divide-y border-y h-[calc(80px*2)] lg:h-[calc(80px*5)]',
             (productsInList?.length ?? 0) > 5 && 'overflow-y-scroll'
           )}
         >

@@ -18,7 +18,7 @@ export const CustomerContactInfoForm: FC<Props> = ({ customer }) => {
         <CardTitle>General</CardTitle>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-2 gap-4">
+      <CardContent className="flex flex-col lg:grid grid-cols-2 gap-4">
         <FormInput
           {...register('firstName')}
           error={errors.firstName?.message}

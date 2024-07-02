@@ -36,7 +36,7 @@ export const VariantDetails = () => {
         )}
       </CardHeader>
       <CardContent
-        className={cn('flex flex-col p-0', {
+        className={cn('flex flex-col p-0 lg:p-0', {
           'gap-4': Boolean(product?.options.length) || Boolean(optionStateUtilities.options.length)
         })}
       >
@@ -47,7 +47,7 @@ export const VariantDetails = () => {
         <VariantListing areOptionsInMemory={Boolean(optionStateUtilities.options.length)} />
       </CardContent>
       <CardFooter
-        className={cn('w-full flex justify-center pt-6', {
+        className={cn('w-full flex justify-center p-6 lg:pt-6', {
           'border-t ': [0, 1].includes(product?.options.length ?? 0)
         })}
       >

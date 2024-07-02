@@ -31,10 +31,10 @@ export const CollectionProductsTable: FC<Props> = ({ collection }) => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row justify-between items-center">
+      <CardHeader className="flex flex-row justify-between items-center space-y-0">
         <div>
           <CardTitle>Products</CardTitle>
-          <CardDescription>
+          <CardDescription className="hidden lg:block">
             This collection contains {products.length}{' '}
             {products.length === 1 ? 'Product' : 'products'}
           </CardDescription>

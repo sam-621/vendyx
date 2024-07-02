@@ -61,7 +61,7 @@ export const CollectionProductsSearcherDialog: FC<Props> = ({ collection }) => {
               selectedIds={selectedIds}
               setSelectedIds={setSelectedIds}
             />
-            <DialogFooter className="px-6">
+            <DialogFooter className="px-6 gap-2 ">
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
                   Cancel

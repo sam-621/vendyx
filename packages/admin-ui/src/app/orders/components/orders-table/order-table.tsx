@@ -1,6 +1,6 @@
+import { useGetOrders } from '@/app/orders/hooks';
 import { DataTable } from '@/lib/components/data-table';
 import { DataTableSkeleton } from '@/lib/components/skeletons';
-import { useGetOrders } from '@/app/orders/hooks';
 import { type OrderState } from '@/lib/ebloc/codegen/graphql';
 
 import { OrderTableColumns } from './order-table-columns';
