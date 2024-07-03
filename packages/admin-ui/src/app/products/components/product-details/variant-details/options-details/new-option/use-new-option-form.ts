@@ -74,26 +74,25 @@ export const useNewOptionForm = () => {
       : [];
 
     if (newVariants.length) {
-      await Promise.all(
-        newVariants.map(async variant => {
-          const { variantId, values } = variant;
+      for (const variant of newVariants) {
+        const { variantId, values } = variant;
 
-          // If the variantId is not present, it means that we need to create a new variant
-          if (!variantId) {
-            return await createVariant(product.id, {
-              price: 0,
-              published: true,
-              sku: '',
-              stock: 0,
-              optionValuesIds: values
-            });
-          }
-
-          return await updateVariant(variantId, {
+        // If the variantId is not present, it means that we need to create a new variant
+        if (!variantId) {
+          await createVariant(product.id, {
+            price: 0,
+            published: true,
+            sku: '',
+            stock: 0,
             optionValuesIds: values
           });
-        })
-      );
+          continue;
+        }
+
+        await updateVariant(variantId, {
+          optionValuesIds: values
+        });
+      }
     } else {
       // If not this means that the product has no variants yet, so we only need to create them
       await Promise.all(
