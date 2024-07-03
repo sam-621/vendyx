@@ -12,9 +12,10 @@ export const CollectionDetailsSubmitButton: FC<Props> = ({ collection }) => {
   const values = useWatch({ defaultValue: form.getValues() });
 
   const isDisabled = !isFormDirty(collection, values as CollectionDetailsFormInput);
+  const isLoading = form.formState.isSubmitting;
 
   return (
-    <Button disabled={isDisabled} isLoading={form.formState.isSubmitting} type="submit">
+    <Button disabled={isDisabled || isLoading} isLoading={isLoading} type="submit">
       Save
     </Button>
   );

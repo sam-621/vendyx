@@ -18,9 +18,10 @@ export const ProductDetailsSubmitButton: FC<Props> = ({ product }) => {
   const isDisabled =
     !isProductDetailsFormDirty(product, values as ProductDetailsFormInput) &&
     !variantsWithChanges.length;
+  const isLoading = form.formState.isSubmitting;
 
   return (
-    <Button disabled={isDisabled} isLoading={form.formState.isSubmitting} type="submit">
+    <Button disabled={isDisabled || isLoading} isLoading={isLoading} type="submit">
       {t('product-details.action.save')}
     </Button>
   );
