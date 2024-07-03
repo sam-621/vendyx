@@ -1,7 +1,8 @@
 import { type FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
+import { Button, Card, CardContent, CardHeader, CardTitle } from '@ebloc/theme';
 
 import { FormInput, FormTextarea, SwitchContainer } from '@/lib/components/forms';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
@@ -11,6 +12,7 @@ import { ProductDetailsProvider } from '../../context/product-details-context';
 import { AssetDetails } from './asset-details/asset-details';
 import { VariantDetails } from './variant-details/variant-details';
 import { ProductDetailsSlugInput } from './product-details-slug-input';
+import { ProductDetailsSubmitButton } from './product-details-submit-button';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
@@ -79,6 +81,15 @@ export const ProductDetails: FC<Props> = ({ product }) => {
           />
         </CardContent>
       </Card>
+
+      <div className="flex gap-3 justify-end lg:hidden">
+        <Link to="/products">
+          <Button variant="secondary" type="button">
+            Cancel
+          </Button>
+        </Link>
+        <ProductDetailsSubmitButton product={product} />
+      </div>
     </ProductDetailsProvider>
   );
 };

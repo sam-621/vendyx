@@ -19,7 +19,6 @@ import {
   useUpdateProduct,
   useUpdateVariant
 } from '../../hooks';
-import { isProductDetailsFormDirty } from '../../utils';
 
 /**
  * Hook to handle the product details form
@@ -40,7 +39,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    if (product && !isProductDetailsFormDirty(product, input) && !variantsWithChanges.length) {
+    if (!product) {
       return;
     }
 
