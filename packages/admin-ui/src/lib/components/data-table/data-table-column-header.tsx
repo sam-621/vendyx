@@ -1,4 +1,3 @@
-import type { Column } from '@tanstack/react-table';
 import {
   Button,
   cn,
@@ -8,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@ebloc/theme';
+import type { Column } from '@tanstack/react-table';
 import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, EyeOffIcon } from 'lucide-react';
 
 export const DataTableColumnHeader = <TData, TValue>({

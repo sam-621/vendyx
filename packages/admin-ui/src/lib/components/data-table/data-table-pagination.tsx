@@ -1,4 +1,3 @@
-import type { Table } from '@tanstack/react-table';
 import {
   Button,
   Select,
@@ -7,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@ebloc/theme';
+import type { Table } from '@tanstack/react-table';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,

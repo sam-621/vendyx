@@ -23,6 +23,7 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 
+import { DataTablePagination } from './data-table-pagination';
 // import { DataTablePagination } from './data-table-pagination';
 import { DataTableViewOptions } from './data-table-view-options';
 
@@ -120,7 +121,7 @@ export const DataTable = <TData, TValue>({
         </Table>
       </div>
       {/* footer */}
-      {/* <DataTablePagination table={table} /> */}
+      <DataTablePagination table={table} />
     </div>
   );
 };
