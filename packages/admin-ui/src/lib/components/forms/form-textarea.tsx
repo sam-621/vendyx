@@ -9,7 +9,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, Props>(function Form
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label>{label}</Label>
-      <Textarea ref={ref} placeholder={placeholder} {...textareaProps} />
+      <Textarea rows={6} ref={ref} placeholder={placeholder} {...textareaProps} />
     </div>
   );
 });
