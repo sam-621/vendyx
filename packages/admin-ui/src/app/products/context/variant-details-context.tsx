@@ -13,7 +13,7 @@ type Context = {
   resetCheckedVariants: () => void;
 
   variantsWithChanges: { id: string; input: Variant }[];
-  addVariantWithChanges: (id: string, input: Variant) => void;
+  addVariantWithChanges: (input: { id: string; input: Variant }[]) => void;
   removeVariantWithChanges: (id: string) => void;
   resetVariantsWithChanges: () => void;
 };
@@ -48,10 +48,12 @@ export const VariantDetailsProvider: FC<PropsWithChildren> = ({ children }) => {
     setCheckedVariants([]);
   };
 
-  const addVariantWithChanges = (id: string, input: Variant) => {
-    const newVariantsWithChanges = variantsWithChanges.filter(v => v.id !== id);
+  const addVariantWithChanges = (input: { id: string; input: Variant }[]) => {
+    const newVariantsWithChanges = variantsWithChanges.filter(v =>
+      input.map(i => i.id).includes(v.id)
+    );
 
-    setVariantsWithChanges([...newVariantsWithChanges, { id, input }]);
+    setVariantsWithChanges([...newVariantsWithChanges, ...input]);
   };
 
   const removeVariantWithChanges = (id: string) => {

@@ -2,13 +2,28 @@ import { type FC } from 'react';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@ebloc/theme';
 
+import { useVariantsContext } from '@/app/products/context';
 import { FormInput } from '@/lib/components';
 import { type CommonProductFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { VariantItem } from './variant-item';
 
 export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
+  const { addVariantWithChanges, variantsWithChanges } = useVariantsContext();
   const totalStock = variants.reduce((acc, variant) => acc + variant.stock, 0);
+
+  const handleNewPriceGroup = (price: number) => {
+    addVariantWithChanges(
+      variants.map(v => ({
+        id: v.id,
+        input: {
+          price,
+          sku: variantsWithChanges.find(vwc => vwc.id === v.id)?.input.sku,
+          stock: variantsWithChanges.find(vwc => vwc.id === v.id)?.input.stock
+        }
+      }))
+    );
+  };
 
   return (
     <Accordion type="single" collapsible className="w-full pt-3">
@@ -21,7 +36,12 @@ export const VariantGroup: FC<Props> = ({ optionValue, variants }) => {
             </AccordionTrigger>
           </div>
           <div className="flex gap-2 items-end h-full pr-6 flex-shrink-0">
-            <FormInput label="Price" placeholder="$ 0.00" onFocus={e => e.target.select()} />
+            <FormInput
+              label="Price"
+              placeholder="$ 0.00"
+              onFocus={e => e.target.select()}
+              onChange={e => handleNewPriceGroup(Number(e.target.value))}
+            />
             <FormInput label="Total stock" placeholder="0" disabled value={totalStock} />
           </div>
         </div>

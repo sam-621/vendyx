@@ -48,11 +48,16 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
       return;
     }
 
-    addVariantWithChanges(variant.id, {
-      sku: sku === variant.sku ? undefined : sku,
-      price: formattedPrice === variant.price ? undefined : Number(price),
-      stock: Number(stock) === variant.stock ? undefined : Number(stock)
-    });
+    addVariantWithChanges([
+      {
+        id: variant.id,
+        input: {
+          sku: sku === variant.sku ? undefined : sku,
+          price: formattedPrice === variant.price ? undefined : Number(price),
+          stock: Number(stock) === variant.stock ? undefined : Number(stock)
+        }
+      }
+    ]);
   }, [sku, price, stock]);
 
   useEffect(() => {
