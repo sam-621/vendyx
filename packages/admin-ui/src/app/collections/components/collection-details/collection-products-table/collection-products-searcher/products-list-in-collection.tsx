@@ -11,12 +11,20 @@ export const ProductsListInCollection: FC<Props> = ({
   selectedIds,
   setSelectedIds
 }) => {
-  const [productsInList, setProductsInList] = useState(allProducts);
+  const productsInCollectionFirst = allProducts.sort(a => {
+    if (productsInCollection.includes(a.id)) {
+      return -1;
+    }
+    return 1;
+  });
+
+  const [productsInList, setProductsInList] = useState(productsInCollectionFirst);
+
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
     if (searchValue === '') {
-      setProductsInList(allProducts);
+      setProductsInList(productsInCollectionFirst);
     } else {
       setProductsInList(
         allProducts?.filter(p => p.name.toLowerCase().includes(searchValue.toLowerCase()))
