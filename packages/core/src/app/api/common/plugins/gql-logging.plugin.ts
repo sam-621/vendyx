@@ -15,9 +15,9 @@ export class GqlLoggingPlugin implements ApolloServerPlugin {
     }
 
     const req = requestContext.request;
-    const url = requestContext?.request?.http?.headers?.get('referer') ?? '/';
+    const url = requestContext?.request?.http?.headers?.get('referer') ?? '';
 
-    Logger.debug(`${req.http?.method} ${new URL(url).pathname} ${req.operationName}`);
+    Logger.debug(`${req.http?.method} ${url ? new URL(url).pathname : ''} ${req.operationName}`);
 
     return {
       async willSendResponse() {
