@@ -3,6 +3,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
+import { GqlLoggingPlugin } from './plugins/gql-logging.plugin';
+
 @Module({})
 export class GraphqlApiModule {
   static register(options: GraphqlApiModuleOptions): DynamicModule {
@@ -16,7 +18,7 @@ export class GraphqlApiModule {
         // Always true because the graphql playground must be public
         introspection: true,
         driver: ApolloDriver,
-        plugins: [ApolloServerPluginLandingPageLocalDefault()],
+        plugins: [ApolloServerPluginLandingPageLocalDefault(), new GqlLoggingPlugin()],
         formatError: error => {
           // Logger.error({
           //   message: error.message,
