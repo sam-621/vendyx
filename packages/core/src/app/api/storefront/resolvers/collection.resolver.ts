@@ -10,7 +10,7 @@ export class CollectionResolver {
   constructor(private readonly collectionService: CollectionService) {}
 
   @Query('collections')
-  async collections(@Args() input: ListInput) {
+  async collections(@Args('input') input: ListInput) {
     const result = await this.collectionService.find({ ...input, onlyPublished: true });
 
     return new ListResponse(result, result.length);
