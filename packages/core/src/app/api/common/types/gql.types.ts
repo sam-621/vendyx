@@ -215,7 +215,7 @@ export class AddPaymentToOrderInput {
 }
 
 export class AddShipmentToOrderInput {
-    shippingMethodId: string;
+    methodId: string;
 }
 
 export interface VariantResult {

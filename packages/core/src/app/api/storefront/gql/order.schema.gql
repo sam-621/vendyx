@@ -29,6 +29,14 @@ input AddCustomerToOrderInput {
   phoneNumber: String
 }
 
+input AddPaymentToOrderInput {
+  methodId: ID!
+}
+
+input AddShipmentToOrderInput {
+  methodId: ID!
+}
+
 " Results "
 type OrderResult {
   order: Order
