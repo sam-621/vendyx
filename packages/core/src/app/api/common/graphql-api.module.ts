@@ -18,7 +18,7 @@ export class GraphqlApiModule {
         // Always true because the graphql playground must be public
         introspection: true,
         driver: ApolloDriver,
-        plugins: [ApolloServerPluginLandingPageLocalDefault(), new GqlLoggingPlugin()],
+        plugins: [ApolloServerPluginLandingPageLocalDefault()],
         formatError: error => {
           // Logger.error({
           //   message: error.message,

@@ -41,17 +41,14 @@ export const CommonOrder = graphql(`
       lastName
       email
       phoneNumber
-      phoneCountryCode
     }
     shippingAddress {
+      country
       streetLine1
       streetLine2
-      postalCode
-      city
       province
-      country
-      phoneCountryCode
-      phoneNumber
+      city
+      postalCode
     }
     payment {
       id

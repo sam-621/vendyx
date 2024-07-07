@@ -21,9 +21,6 @@ export class CustomerEntity extends EBlocEntity {
   @Column('varchar', { name: 'phone_number', nullable: true })
   phoneNumber: string;
 
-  @Column('char', { length: 2, name: 'phone_country_code', nullable: true })
-  phoneCountryCode: string;
-
   /**
    * @description
    * to customer be able to login, place orders, etc. the customer must be enabled

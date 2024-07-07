@@ -6,7 +6,6 @@ type Customer implements Node {
   lastName: String!
   email: String!
   phoneNumber: String
-  phoneCountryCode: String
   """
   to customer be able to login, place orders, etc. the customer must be enabled
   """
@@ -27,7 +26,6 @@ input CreateCustomerInput {
   email: String!
   password: String!
   phoneNumber: String
-  phoneCountryCode: String
 }
 
 input UpdateCustomerInput {
@@ -35,7 +33,6 @@ input UpdateCustomerInput {
   lastName: String
   email: String
   phoneNumber: String
-  phoneCountryCode: String
 }
 
 " Results "

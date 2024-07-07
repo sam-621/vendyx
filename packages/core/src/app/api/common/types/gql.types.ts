@@ -102,7 +102,6 @@ export class UpdateCustomerInput {
     lastName?: Nullable<string>;
     email?: Nullable<string>;
     phoneNumber?: Nullable<string>;
-    phoneCountryCode?: Nullable<string>;
 }
 
 export class CreateOptionInput {
@@ -159,13 +158,11 @@ export class UpdateVariantInput {
 }
 
 export class CreateAddressInput {
+    country: string;
     streetLine1: string;
     streetLine2?: Nullable<string>;
     city: string;
     province: string;
-    country: string;
-    phoneNumber?: Nullable<string>;
-    phoneCountryCode?: Nullable<string>;
     postalCode: string;
     references?: Nullable<string>;
 }
@@ -186,7 +183,6 @@ export class CreateCustomerInput {
     email: string;
     password: string;
     phoneNumber?: Nullable<string>;
-    phoneCountryCode?: Nullable<string>;
 }
 
 export class UpdateCustomerPasswordInput {
@@ -212,7 +208,6 @@ export class AddCustomerToOrderInput {
     lastName: string;
     email: string;
     phoneNumber?: Nullable<string>;
-    phoneCountryCode?: Nullable<string>;
 }
 
 export class AddPaymentToOrderInput {
@@ -453,13 +448,12 @@ export class Address implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
+    country: string;
+    fullName?: Nullable<string>;
     streetLine1: string;
     streetLine2?: Nullable<string>;
     city: string;
     province: string;
-    country: string;
-    phoneNumber?: Nullable<string>;
-    phoneCountryCode?: Nullable<string>;
     postalCode: string;
     references?: Nullable<string>;
 }
@@ -509,7 +503,6 @@ export class Customer implements Node {
     lastName: string;
     email: string;
     phoneNumber?: Nullable<string>;
-    phoneCountryCode?: Nullable<string>;
     enabled: boolean;
     orders: OrderList;
     addresses: AddressList;
@@ -584,13 +577,12 @@ export class Order implements Node {
 }
 
 export class OrderShippingAddressJson {
+    country: string;
+    fullName?: Nullable<string>;
     streetLine1: string;
     streetLine2?: Nullable<string>;
     city: string;
     province: string;
-    country: string;
-    phoneNumber?: Nullable<string>;
-    phoneCountryCode?: Nullable<string>;
     postalCode: string;
     references?: Nullable<string>;
 }

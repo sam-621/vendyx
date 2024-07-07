@@ -8,7 +8,6 @@ export const CommonCustomer = graphql(`
     lastName
     email
     phoneNumber
-    phoneCountryCode
     enabled
     orders {
       count

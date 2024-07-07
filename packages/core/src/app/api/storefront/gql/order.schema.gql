@@ -27,7 +27,6 @@ input AddCustomerToOrderInput {
   lastName: String!
   email: String!
   phoneNumber: String
-  phoneCountryCode: String
 }
 
 " Results "

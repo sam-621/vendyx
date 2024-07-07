@@ -38,9 +38,6 @@ export const OrderCustomerCard: FC<Props> = ({ customer, address }) => {
               {address.postalCode} {address?.city}, {address.province}
             </p>
             <p>{address.country}</p>
-            {address.phoneCountryCode && address.phoneNumber && (
-              <p>{formatPhoneNumber(clean(address))}</p>
-            )}
           </div>
         )}
       </CardContent>

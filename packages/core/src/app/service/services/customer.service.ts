@@ -100,7 +100,15 @@ export class CustomerService {
 
     const customerExists = await this.findUnique({ email: input.email, onlyEnabled: false });
 
-    if (customerExists) {
+    // Customer could exist without a password because we save the customer when
+    // addCustomerToOrder mutation is called and we don't save the password in that case,
+    // so the user can complete the registration later.
+    // When trying to create an account and found a customer with the same email
+    // we need to verify if the customer has password, if not is just a customer
+    // who has bought and now tries to create an account so that is allowed.
+    // If the customer found has a password, that means that some other customer
+    // already has an account in the store so that is not allowed.
+    if (customerExists && customerExists.password) {
       return new ErrorResult(
         CustomerErrorCode.EMAIL_ALREADY_EXISTS,
         'Customer with that email already exists'
@@ -110,6 +118,7 @@ export class CustomerService {
     const hashedPassword = await this.securityService.hash(input.password);
 
     return this.db.getRepository(CustomerEntity).save({
+      ...customerExists,
       ...clean(input),
       password: hashedPassword
     });

@@ -96,7 +96,7 @@ export class OrderService {
     }
 
     // The shipping address could be a json or a Address entity, so we need to normalize it
-    return { id: '', createdAt: '', updatedAt: '', ...order.shippingAddress };
+    return order.shippingAddress;
   }
 
   async findPayment(orderId: ID) {

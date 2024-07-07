@@ -5,6 +5,12 @@ import { EBlocEntity } from './ebloc-entity';
 
 @TypeOrmEntity('address')
 export class AddressEntity extends EBlocEntity {
+  @Column('varchar')
+  country: string;
+
+  @Column('varchar', { name: 'full_name', nullable: true })
+  fullName: string;
+
   @Column('varchar', { name: 'street_line_1' })
   streetLine1: string;
 
@@ -19,15 +25,6 @@ export class AddressEntity extends EBlocEntity {
    */
   @Column('varchar')
   province: string;
-
-  @Column('char', { length: 2 })
-  country: string;
-
-  @Column('varchar', { name: 'phone_number', nullable: true })
-  phoneNumber: string;
-
-  @Column('char', { length: 2, name: 'phone_country_code', nullable: true })
-  phoneCountryCode: string;
 
   @Column('varchar', { name: 'postal_code' })
   postalCode: string;
