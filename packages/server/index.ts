@@ -1,5 +1,6 @@
 import {
   CloudinaryStorageProvider,
+  CountryPriceCalculator,
   FedexPriceCalculator,
   PaypalIntegration,
   StripeIntegration,
@@ -28,7 +29,7 @@ bootstrap({
     })
   },
   shipping: {
-    priceCalculators: [new FedexPriceCalculator()]
+    priceCalculators: [new FedexPriceCalculator(), new CountryPriceCalculator()]
   },
   payments: {
     integrations: [new PaypalIntegration(), new StripeIntegration()]
