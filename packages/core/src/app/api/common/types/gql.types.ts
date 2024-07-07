@@ -346,7 +346,7 @@ export abstract class IQuery {
 
     abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 
-    abstract availableShippingMethods(): ShippingMethod[] | Promise<ShippingMethod[]>;
+    abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
 }
 
 export class AuthenticateResult {
@@ -665,6 +665,7 @@ export class ShippingMethod implements Node {
     name: string;
     description?: Nullable<string>;
     enabled: boolean;
+    price: number;
 }
 
 export class Variant implements Node {

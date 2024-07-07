@@ -423,7 +423,14 @@ export class OrderService {
       p => p.code === shippingMethod.priceCalculatorCode
     );
 
-    const shippingPrice = await shippingPriceCalculator?.calculatePrice(order);
+    if (!shippingPriceCalculator) {
+      return new ErrorResult(
+        OrderErrorCode.MISSING_SHIPPING_PRICE_CALCULATOR,
+        'Missing shipping price calculator'
+      );
+    }
+
+    const shippingPrice = await shippingPriceCalculator.calculatePrice(order);
 
     const shipment = await this.db.getRepository(ShipmentEntity).save({
       amount: shippingPrice,
