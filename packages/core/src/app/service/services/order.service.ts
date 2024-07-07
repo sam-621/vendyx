@@ -61,7 +61,7 @@ export class OrderService {
   async findLines(orderId: ID) {
     const lines = await this.db.getRepository(OrderLineEntity).find({
       where: { order: { id: orderId } },
-      order: { createdAt: 'DESC' }
+      order: { createdAt: 'ASC' }
     });
 
     return lines;
