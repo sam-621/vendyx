@@ -288,9 +288,11 @@ export class OrderService {
    * @description
    * 1. Check if the order exists
    * 2. Check if the order is in the MODIFYING state
-   * 3. Save customer
-   * 4. Update order with customer
-   * 5. Recalculate order stats
+   * 3. Check if the customer exists
+   * 4. If the customer is disabled, return a CUSTOMER_DISABLED error
+   * 5. If the customer exists, update the order with the customer
+   * 6. If the customer does not exist, create the customer and update the order with the new customer
+   * 7. Recalculate order stats
    */
   async addCustomer(
     orderId: ID,
@@ -323,8 +325,13 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.CUSTOMER_DISABLED, 'Customer is disabled');
     }
 
+    if (customer) {
+      order.customer = customer;
+      await this.db.getRepository(OrderEntity).save(order);
+      return this.recalculateOrderStats(order.id);
+    }
+
     let customerUpdated = this.db.getRepository(CustomerEntity).create({
-      ...customer,
       ...clean(input)
     });
 
