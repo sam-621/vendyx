@@ -72,7 +72,8 @@ export class CustomerService {
     const result = await this.db.getRepository(OrderEntity).find({
       // TODO: Add state filter in api
       where: { customer: { id }, state: Not(OrderState.MODIFYING) },
-      ...clean(input)
+      ...clean(input),
+      order: { createdAt: 'DESC' }
     });
 
     return result;
