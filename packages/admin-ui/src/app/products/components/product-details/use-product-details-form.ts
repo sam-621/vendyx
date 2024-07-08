@@ -39,10 +39,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment | null | u
   });
 
   const onSubmit = async (input: ProductDetailsFormInput) => {
-    if (!product) {
-      return;
-    }
-
     const assets = input.assets ? await createAsset(input.assets) : undefined;
 
     const productInput = {
