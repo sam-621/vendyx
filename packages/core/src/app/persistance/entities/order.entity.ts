@@ -64,7 +64,7 @@ export class OrderEntity extends EBlocEntity {
   /**
    * The date and time when a payment has been added to the order
    */
-  @Column('date', { nullable: true, name: 'placed_at' })
+  @Column('timestamp', { nullable: true, name: 'placed_at' })
   placedAt: Date;
 
   @Column('int', { default: 0 })
