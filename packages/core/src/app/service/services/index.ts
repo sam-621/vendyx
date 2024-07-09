@@ -11,3 +11,5 @@ export * from './shipping-method.service';
 export * from './shipment.service';
 export * from './customer.service';
 export * from './collection.service';
+export * from './country.service';
+export * from './state.service';

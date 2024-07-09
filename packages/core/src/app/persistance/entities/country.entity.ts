@@ -8,6 +8,9 @@ export class CountryEntity extends EBlocEntity {
   @Column('varchar')
   name: string;
 
+  @Column('boolean', { default: true })
+  enabled: boolean;
+
   @OneToMany(() => StateEntity, state => state.country)
   states: StateEntity[];
 }
