@@ -12,7 +12,7 @@ export class StateEntity extends EBlocEntity {
   @Column('boolean', { default: true })
   enabled: boolean;
 
-  @ManyToOne(() => CountryEntity, country => country.states)
+  @ManyToOne(() => CountryEntity, country => country.states, { onDelete: 'CASCADE' }) // If a country is deleted, all its states will be deleted
   country: CountryEntity;
 
   @ManyToMany(() => ShippingMethodEntity, s => s.states)

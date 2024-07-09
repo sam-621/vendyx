@@ -1,11 +1,11 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { CreateCountryInput, ListInput, ListResponse } from '../../common';
+import { CreateCountryInput, CreateStateInput, ListInput, ListResponse } from '../../common';
 
 import { CountryEntity, ID } from '@/app/persistance';
 import { CountryService, isErrorResult } from '@/app/service';
 
-@Resolver()
+@Resolver('Country')
 export class CountryResolver {
   constructor(private readonly countryService: CountryService) {}
 
@@ -38,6 +38,20 @@ export class CountryResolver {
   @Mutation('removeCountry')
   async removeCountry(@Args('id') id: ID) {
     const result = await this.countryService.remove(id);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], country: result };
+  }
+
+  @Mutation('addStatesToCountry')
+  async addStatesToCountry(@Args('id') id: ID, @Args('input') input: CreateStateInput[]) {
+    const result = await this.countryService.addStates(id, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], country: result };
+  }
+
+  @Mutation('removeStatesFromCountry')
+  async removeStatesFromCountry(@Args('id') id: ID, @Args('input') input: ID[]) {
+    const result = await this.countryService.removeStates(id, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], country: result };
   }

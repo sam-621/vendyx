@@ -16,10 +16,10 @@ export class CollectionService {
   /**
    * Get all collections.
    */
-  async find(input: ListInput & { onlyPublished?: boolean }) {
+  async find(input?: FindInput) {
     return this.db.getRepository(CollectionEntity).find({
-      where: { published: input.onlyPublished || undefined },
-      ...clean(input),
+      where: { published: input?.onlyPublished || undefined },
+      ...clean(input ?? {}),
       order: { createdAt: 'DESC' }
     });
   }
@@ -152,3 +152,4 @@ export class CollectionService {
 
 type MutationResult<R = CollectionEntity> = Promise<R | ErrorResult<CollectionErrorCode>>;
 type FinUniqueInput = { id?: ID; slug?: string; onlyPublished?: boolean };
+type FindInput = ListInput & { onlyPublished?: boolean };

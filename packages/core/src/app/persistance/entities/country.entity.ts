@@ -11,6 +11,6 @@ export class CountryEntity extends EBlocEntity {
   @Column('boolean', { default: true })
   enabled: boolean;
 
-  @OneToMany(() => StateEntity, state => state.country, { cascade: true })
+  @OneToMany(() => StateEntity, state => state.country, { cascade: ['insert'] })
   states: StateEntity[];
 }

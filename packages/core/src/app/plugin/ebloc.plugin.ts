@@ -52,7 +52,7 @@ export interface EBlocPluginMetadata extends ModuleMetadata {
    * Typeorm entities
    *
    * @description
-   * entities is the way you can add new tables to the database.
+   * Entities is the way you can add new tables to the database.
    * To create an entity a good practice is to extend from the EBlocEntity class, this way you can have access to the
    * `id`, `createdAt` and `updatedAt` fields that are automatically managed by the application.
    *

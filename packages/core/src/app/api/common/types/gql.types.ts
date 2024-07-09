@@ -24,6 +24,7 @@ export enum CollectionErrorCode {
 
 export enum CountryErrorCode {
     DUPLICATED_COUNTRY_NAME = "DUPLICATED_COUNTRY_NAME",
+    DUPLICATED_STATE_NAME_IN_COUNTRY = "DUPLICATED_STATE_NAME_IN_COUNTRY",
     COUNTRY_NOT_FOUND = "COUNTRY_NOT_FOUND"
 }
 
@@ -103,7 +104,7 @@ export class UpdateCollectionInput {
 
 export class CreateCountryInput {
     name: string;
-    states?: Nullable<CreateStateInput[]>;
+    states?: Nullable<Nullable<CreateStateInput>[]>;
 }
 
 export class UpdateCountryInput {
@@ -273,11 +274,15 @@ export abstract class IMutation {
 
     abstract setProductsInCollection(id: string, productIds: string[]): CollectionResult | Promise<CollectionResult>;
 
-    abstract createCountry(input: CreateCountryInput): Nullable<Country> | Promise<Nullable<Country>>;
+    abstract createCountry(input: CreateCountryInput): CountryResult | Promise<CountryResult>;
 
-    abstract updateCountry(id: string, input: UpdateCountryInput): Nullable<Country> | Promise<Nullable<Country>>;
+    abstract updateCountry(id: string, input: UpdateCountryInput): CountryResult | Promise<CountryResult>;
 
     abstract removeCountry(id: string): RemoveCountryResult | Promise<RemoveCountryResult>;
+
+    abstract addStatesToCountry(id: string, input: CreateStateInput[]): CountryResult | Promise<CountryResult>;
+
+    abstract removeStatesFromCountry(id: string, input: string[]): CountryResult | Promise<CountryResult>;
 
     abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
 
