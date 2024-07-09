@@ -1,0 +1,8 @@
+type Country implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+
+  states: StateList!
+}

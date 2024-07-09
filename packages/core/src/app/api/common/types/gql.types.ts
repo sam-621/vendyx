@@ -495,6 +495,14 @@ export class CollectionList implements List {
     count: number;
 }
 
+export class Country implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    states: StateList;
+}
+
 export class Customer implements Node {
     id: string;
     createdAt: Date;
@@ -658,6 +666,18 @@ export class ShippingMethod implements Node {
     description?: Nullable<string>;
     enabled: boolean;
     price: number;
+}
+
+export class State implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+}
+
+export class StateList implements List {
+    items: State[];
+    count: number;
 }
 
 export class Variant implements Node {

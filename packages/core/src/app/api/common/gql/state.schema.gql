@@ -1,0 +1,11 @@
+type State implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+}
+
+type StateList implements List {
+  items: [State!]!
+  count: Int!
+}
