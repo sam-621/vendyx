@@ -4,11 +4,11 @@ type Country implements Node {
   updatedAt: Date!
   name: String!
 
-  states: StateList!
+  states(input: ListInput): StateList!
 }
 
-type CountryList implements List {
-  items: [Country!]!
+type CountryList {
+  items: [Country]!
   count: Int!
 }
 

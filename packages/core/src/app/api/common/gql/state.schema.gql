@@ -5,11 +5,7 @@ type State implements Node {
   name: String!
 }
 
-type StateList implements List {
-  items: [State!]!
+type StateList {
+  items: [State]!
   count: Int!
-}
-
-type Query {
-  states: StateList!
 }

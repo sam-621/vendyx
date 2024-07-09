@@ -22,6 +22,11 @@ export enum CollectionErrorCode {
     DUPLICATED_SLUG = "DUPLICATED_SLUG"
 }
 
+export enum CountryErrorCode {
+    DUPLICATED_COUNTRY_NAME = "DUPLICATED_COUNTRY_NAME",
+    COUNTRY_NOT_FOUND = "COUNTRY_NOT_FOUND"
+}
+
 export enum OptionErrorCode {
     DUPLICATED_OPTION_VALUES = "DUPLICATED_OPTION_VALUES",
     OPTION_NOT_FOUND = "OPTION_NOT_FOUND",
@@ -96,6 +101,15 @@ export class UpdateCollectionInput {
     published?: Nullable<boolean>;
 }
 
+export class CreateCountryInput {
+    name: string;
+    states?: Nullable<CreateStateInput[]>;
+}
+
+export class UpdateCountryInput {
+    name?: Nullable<string>;
+}
+
 export class UpdateCustomerInput {
     enabled?: Nullable<boolean>;
     firstName?: Nullable<string>;
@@ -139,6 +153,10 @@ export class UpdateProductInput {
     published?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
     assets?: Nullable<AssetInEntityInput[]>;
+}
+
+export class CreateStateInput {
+    name: string;
 }
 
 export class CreateVariantInput {
@@ -255,6 +273,12 @@ export abstract class IMutation {
 
     abstract setProductsInCollection(id: string, productIds: string[]): CollectionResult | Promise<CollectionResult>;
 
+    abstract createCountry(input: CreateCountryInput): Nullable<Country> | Promise<Nullable<Country>>;
+
+    abstract updateCountry(id: string, input: UpdateCountryInput): Nullable<Country> | Promise<Nullable<Country>>;
+
+    abstract removeCountry(id: string): RemoveCountryResult | Promise<RemoveCountryResult>;
+
     abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
@@ -329,6 +353,10 @@ export abstract class IQuery {
 
     abstract collection(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
 
+    abstract countries(input?: Nullable<ListInput>): CountryList | Promise<CountryList>;
+
+    abstract country(id: string): Nullable<Country> | Promise<Nullable<Country>>;
+
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
@@ -376,6 +404,21 @@ export class CollectionResult {
 
 export class CollectionErrorResult {
     code: CollectionErrorCode;
+    message: string;
+}
+
+export class RemoveCountryResult {
+    success?: Nullable<boolean>;
+    apiErrors: Nullable<CountryErrorResult>[];
+}
+
+export class CountryResult {
+    country?: Nullable<Country>;
+    apiErrors: Nullable<CountryErrorResult>[];
+}
+
+export class CountryErrorResult {
+    code: CountryErrorCode;
     message: string;
 }
 
@@ -500,7 +543,12 @@ export class Country implements Node {
     createdAt: Date;
     updatedAt: Date;
     name: string;
-    states: StateList;
+    states?: StateList;
+}
+
+export class CountryList {
+    items: Nullable<Country>[];
+    count: number;
 }
 
 export class Customer implements Node {
@@ -675,8 +723,8 @@ export class State implements Node {
     name: string;
 }
 
-export class StateList implements List {
-    items: State[];
+export class StateList {
+    items: Nullable<State>[];
     count: number;
 }
 

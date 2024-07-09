@@ -1,0 +1,36 @@
+type Mutation {
+  createCountry(input: CreateCountryInput!): Country
+  updateCountry(id: ID!, input: UpdateCountryInput!): Country
+  removeCountry(id: ID!): RemoveCountryResult!
+}
+
+input CreateCountryInput {
+  name: String!
+  states: [CreateStateInput!]
+}
+
+input UpdateCountryInput {
+  name: String
+}
+
+" Results "
+type RemoveCountryResult {
+  success: Boolean
+  apiErrors: [CountryErrorResult]!
+}
+
+type CountryResult {
+  country: Country
+  apiErrors: [CountryErrorResult]!
+}
+
+type CountryErrorResult {
+  code: CountryErrorCode!
+  message: String!
+}
+
+" Utils "
+enum CountryErrorCode {
+  DUPLICATED_COUNTRY_NAME
+  COUNTRY_NOT_FOUND
+}
