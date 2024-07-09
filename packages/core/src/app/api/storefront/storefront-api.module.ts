@@ -4,6 +4,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 
 import {
   CollectionResolver,
+  CountryResolver,
   CustomerResolver,
   OrderResolver,
   PaymentMethodResolver,
@@ -47,6 +48,7 @@ export class StorefrontApiModule {
     ShippingMethodResolver,
     CustomerResolver,
     CollectionResolver,
+    CountryResolver,
     ...getPluginResolvers('storefront')
   ]
 })

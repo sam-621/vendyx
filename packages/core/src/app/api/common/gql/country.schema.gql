@@ -6,3 +6,13 @@ type Country implements Node {
 
   states: StateList!
 }
+
+type CountryList implements List {
+  items: [Country!]!
+  count: Int!
+}
+
+type Query {
+  countries(input: ListInput): CountryList!
+  country(id: ID!): Country
+}

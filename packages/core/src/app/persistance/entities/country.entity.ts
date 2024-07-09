@@ -5,7 +5,7 @@ import { StateEntity } from './state.entity';
 
 @TypeOrmEntity('country')
 export class CountryEntity extends EBlocEntity {
-  @Column('varchar')
+  @Column('varchar', { unique: true })
   name: string;
 
   @Column('boolean', { default: true })

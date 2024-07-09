@@ -9,3 +9,7 @@ type StateList implements List {
   items: [State!]!
   count: Int!
 }
+
+type Query {
+  states: StateList!
+}

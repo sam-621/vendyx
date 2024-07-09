@@ -6,6 +6,7 @@ import {
   AdminResolver,
   AssetResolver,
   CollectionResolver,
+  CountryResolver,
   CustomerResolver,
   OptionResolver,
   OrderResolver,
@@ -49,6 +50,7 @@ export class AdminApiModule {
     CustomerResolver,
     CollectionResolver,
     AssetResolver,
+    CountryResolver,
     ...getPluginResolvers('admin')
   ]
 })
