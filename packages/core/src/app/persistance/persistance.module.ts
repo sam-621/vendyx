@@ -7,6 +7,7 @@ import {
   AssetEntity,
   AssetInProductEntity,
   CollectionEntity,
+  CountryEntity,
   CustomerEntity,
   OptionEntity,
   OptionValueEntity,
@@ -17,6 +18,7 @@ import {
   ProductEntity,
   ShipmentEntity,
   ShippingMethodEntity,
+  StateEntity,
   VariantEntity
 } from './entities';
 import { getConfig } from '../config';
@@ -37,7 +39,9 @@ export const ENTITIES = [
   ShipmentEntity,
   PaymentMethodEntity,
   ShippingMethodEntity,
-  AssetInProductEntity
+  AssetInProductEntity,
+  CountryEntity,
+  StateEntity
 ];
 
 @Module({

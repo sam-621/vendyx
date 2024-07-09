@@ -1,7 +1,8 @@
-import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, JoinTable, ManyToMany, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
 import { EBlocEntity } from './ebloc-entity';
 import { ShipmentEntity } from './shipment.entity';
+import { StateEntity } from './state.entity';
 
 @TypeOrmEntity('shipping_method')
 export class ShippingMethodEntity extends EBlocEntity {
@@ -19,4 +20,8 @@ export class ShippingMethodEntity extends EBlocEntity {
 
   @OneToMany(() => ShipmentEntity, p => p.method)
   shipments: ShipmentEntity[];
+
+  @ManyToMany(() => StateEntity, s => s.shippingMethods)
+  @JoinTable({ name: 'state_on_shipping_method' })
+  states: StateEntity[];
 }
