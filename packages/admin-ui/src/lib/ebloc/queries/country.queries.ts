@@ -3,6 +3,7 @@ import { graphql } from '../codegen';
 export const CommonCountry = graphql(`
   fragment CommonCountry on Country {
     id
+    createdAt
     name
     enabled
     states {

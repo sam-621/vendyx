@@ -1,11 +1,26 @@
 import { type FC, type PropsWithChildren } from 'react';
+import { Link } from 'react-router-dom';
 
-export const SettingsPageLayout: FC<Props> = ({ title, subtitle, children }) => {
+import { Button } from '@ebloc/theme';
+import { ChevronLeftIcon } from 'lucide-react';
+
+export const SettingsPageLayout: FC<Props> = ({ title, subtitle, backUrl, children }) => {
   return (
     <div className="flex flex-col gap-6 max-w-3xl px-6 pb-6">
-      <header>
-        <h2 className="text-lg font-medium">{title}</h2>
-        <p className="text-muted-foreground text-sm font-light">{subtitle}</p>
+      <header className="flex items-center gap-4">
+        {backUrl && (
+          <div>
+            <Link to={backUrl}>
+              <Button type="button" variant="ghost" size="icon" className="h-8 w-8 lg:h-9 lg:w-9">
+                <ChevronLeftIcon className="h-6 w-6" />
+              </Button>
+            </Link>
+          </div>
+        )}
+        <div>
+          <h2 className="text-lg font-medium">{title}</h2>
+          <p className="text-muted-foreground text-sm font-light">{subtitle}</p>
+        </div>
       </header>
       <hr />
       <main>{children}</main>
@@ -16,4 +31,5 @@ export const SettingsPageLayout: FC<Props> = ({ title, subtitle, children }) => 
 type Props = PropsWithChildren & {
   title?: string;
   subtitle?: string;
+  backUrl?: string;
 };
