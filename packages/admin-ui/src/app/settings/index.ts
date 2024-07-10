@@ -1,1 +1,1 @@
-export * from './pages';
+export * from './coverage-zone';

@@ -3,12 +3,13 @@ type Country implements Node {
   createdAt: Date!
   updatedAt: Date!
   name: String!
+  enabled: Boolean!
 
   states(input: ListInput): StateList!
 }
 
 type CountryList {
-  items: [Country]!
+  items: [Country!]!
   count: Int!
 }
 

@@ -1,4 +1,4 @@
-import { type FC, type PropsWithChildren, type ReactElement } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 
 export const SettingsPageLayout: FC<Props> = ({ title, subtitle, children }) => {
   return (
@@ -16,12 +16,4 @@ export const SettingsPageLayout: FC<Props> = ({ title, subtitle, children }) => 
 type Props = PropsWithChildren & {
   title?: string;
   subtitle?: string;
-  backUrl?: string;
-  status?: ReactElement;
-  className?: {
-    container?: string;
-    main?: string;
-  };
-  stickyHeader?: boolean;
-  actions?: ReactElement;
 };

@@ -4,6 +4,7 @@ export const CommonCountry = graphql(`
   fragment CommonCountry on Country {
     id
     name
+    enabled
     states {
       items {
         id

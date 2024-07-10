@@ -548,11 +548,12 @@ export class Country implements Node {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+    enabled: boolean;
     states?: StateList;
 }
 
 export class CountryList {
-    items: Nullable<Country>[];
+    items: Country[];
     count: number;
 }
 
@@ -729,7 +730,7 @@ export class State implements Node {
 }
 
 export class StateList {
-    items: Nullable<State>[];
+    items: State[];
     count: number;
 }
 

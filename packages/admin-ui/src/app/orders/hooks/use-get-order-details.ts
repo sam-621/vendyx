@@ -1,6 +1,6 @@
-import { useGqlQuery } from '@/lib/gql';
 import { useFragment } from '@/lib/ebloc/codegen';
 import { CommonOrder, GetOrderDetails } from '@/lib/ebloc/queries';
+import { useGqlQuery } from '@/lib/gql';
 
 import { OrderKeys } from './order.keys';
 

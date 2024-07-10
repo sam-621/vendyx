@@ -38,8 +38,9 @@ const documents = {
     "\n  fragment CommonCollection on Collection {\n    id\n    createdAt\n    name\n    slug\n    description\n    published\n    products {\n      count\n      items {\n        id\n        name\n        slug\n        published\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        variants {\n          items {\n            stock\n          }\n        }\n      }\n    }\n  }\n": types.CommonCollectionFragmentDoc,
     "\n  query GetCollections {\n    collections {\n      items {\n        id\n        createdAt\n        name\n        slug\n        published\n        products {\n          count\n        }\n      }\n    }\n  }\n": types.GetCollectionsDocument,
     "\n  query GetCollection($id: ID!) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n": types.GetCollectionDocument,
-    "\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n": types.CommonCountryFragmentDoc,
+    "\n  fragment CommonCountry on Country {\n    id\n    name\n    enabled\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n": types.CommonCountryFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      count\n      items {\n        ...CommonCountry\n      }\n    }\n  }\n": types.GetCountriesDocument,
+    "\n  query GetCountry($id: ID!) {\n    country(id: $id) {\n      ...CommonCountry\n    }\n  }\n": types.GetCountryDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    orders {\n      count\n      items {\n        id\n        code\n        placedAt\n        state\n        total\n        shipment {\n          method {\n            id\n            name\n          }\n        }\n      }\n    }\n  }\n": types.CommonCustomerFragmentDoc,
     "\n  query GetCustomers {\n    customers {\n      count\n      items {\n        id\n        firstName\n        lastName\n        email\n        enabled\n        orders {\n          count\n          items {\n            total\n          }\n        }\n      }\n    }\n  }\n": types.GetCustomersDocument,
     "\n  query GetCustomerDetails($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n": types.GetCustomerDetailsDocument,
@@ -168,11 +169,15 @@ export function graphql(source: "\n  query GetCollection($id: ID!) {\n    collec
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment CommonCountry on Country {\n    id\n    name\n    enabled\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment CommonCountry on Country {\n    id\n    name\n    enabled\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetCountries {\n    countries {\n      count\n      items {\n        ...CommonCountry\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetCountries {\n    countries {\n      count\n      items {\n        ...CommonCountry\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetCountry($id: ID!) {\n    country(id: $id) {\n      ...CommonCountry\n    }\n  }\n"): (typeof documents)["\n  query GetCountry($id: ID!) {\n    country(id: $id) {\n      ...CommonCountry\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

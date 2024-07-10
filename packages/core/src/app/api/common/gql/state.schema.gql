@@ -6,6 +6,6 @@ type State implements Node {
 }
 
 type StateList {
-  items: [State]!
+  items: [State!]!
   count: Int!
 }
