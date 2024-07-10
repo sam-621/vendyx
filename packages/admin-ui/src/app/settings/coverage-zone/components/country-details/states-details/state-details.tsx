@@ -9,7 +9,7 @@ import {
   CardTitle,
   cn
 } from '@ebloc/theme';
-import { Edit2Icon } from 'lucide-react';
+import { Edit2Icon, PlusIcon } from 'lucide-react';
 
 import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
 
@@ -31,8 +31,12 @@ export const StatesDetails: FC<Props> = ({ states }) => {
         <div className="flex gap-2 items-center">
           {!isEditing ? (
             <Button variant="secondary" size="sm" onClick={() => setIsEditing(!isEditing)}>
-              <Edit2Icon className="mr-2" size={14} />
-              Edit
+              {hasNoStates ? (
+                <PlusIcon className="mr-2" size={14} />
+              ) : (
+                <Edit2Icon className="mr-2" size={14} />
+              )}
+              {hasNoStates ? 'Add' : 'Edit'}
             </Button>
           ) : (
             <Button variant="secondary" size="sm" onClick={() => setIsEditing(!isEditing)}>
