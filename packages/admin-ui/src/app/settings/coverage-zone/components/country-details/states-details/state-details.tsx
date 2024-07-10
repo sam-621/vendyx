@@ -1,6 +1,14 @@
 import { type FC, useState } from 'react';
 
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ebloc/theme';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  cn
+} from '@ebloc/theme';
 import { Edit2Icon } from 'lucide-react';
 
 import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
@@ -10,6 +18,8 @@ import { StatesTable } from './states-table';
 
 export const StatesDetails: FC<Props> = ({ states }) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const hasNoStates = !states.length;
 
   return (
     <Card>
@@ -32,7 +42,7 @@ export const StatesDetails: FC<Props> = ({ states }) => {
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className={cn(hasNoStates && !isEditing && '!p-0')}>
         {!isEditing ? (
           <StatesTable states={states} />
         ) : (

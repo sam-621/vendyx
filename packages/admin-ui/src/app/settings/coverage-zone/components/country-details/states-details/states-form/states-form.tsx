@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { Button } from '@ebloc/theme';
+import { Button, Label } from '@ebloc/theme';
 
 import { FormInput } from '@/lib/components';
 import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
@@ -10,9 +10,19 @@ import { useStatesForm } from './use-states-form';
 export const StatesForm: FC<Props> = ({ states: defaultStates, closeForm }) => {
   const { states, setStates, isLoading, onSubmit } = useStatesForm(defaultStates, closeForm);
 
+  const hasNewStates = states.filter(s => s.name).length !== defaultStates.length;
+  const someStateHasChanged = states.some(
+    s =>
+      defaultStates.find(d => d.id === s.id) &&
+      defaultStates.find(d => d.id === s.id)?.name !== s.name
+  );
+
+  const isFormDirty = hasNewStates || someStateHasChanged;
+
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col">
+        <Label>Name</Label>
         {states.map((state, i) => (
           <FormInput
             key={state.id}
@@ -39,7 +49,7 @@ export const StatesForm: FC<Props> = ({ states: defaultStates, closeForm }) => {
         ))}
       </div>
       <div className="w-full flex justify-end">
-        <Button isLoading={isLoading} type="submit">
+        <Button isLoading={isLoading} disabled={!isFormDirty} type="submit">
           Save
         </Button>
       </div>

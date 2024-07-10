@@ -4,14 +4,31 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { XIcon } from 'lucide-react';
 
 import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
+import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
+
+import { useCountryDetailsContext } from '../../../context';
+import { CountryKeys, useRemoveStatesFromCountry } from '../../../hooks';
 
 export const StatesTable: FC<Props> = ({ states }) => {
+  const { country } = useCountryDetailsContext();
+  const { removeStatesFromCountry } = useRemoveStatesFromCountry();
+
+  const onRemove = (id: string) => async () => {
+    if (!country) throw new Error('States table must be used inside a country context.');
+
+    await removeStatesFromCountry(country.id, [id]);
+    await queryClient.invalidateQueries({ queryKey: CountryKeys.single(country.id) });
+    notification.success('State removed successfully');
+  };
+
+  if (!states.length) return null;
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Shipments</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
@@ -22,12 +39,12 @@ export const StatesTable: FC<Props> = ({ states }) => {
           <>
             {states.map(state => (
               <TableRow key={state.id}>
-                <TableCell>
-                  <span className="w-full">{state.name}</span>
+                <TableCell className="w-full">
+                  <span>{state.name}</span>
                 </TableCell>
-                <TableCell>{12}</TableCell>
+
                 <TableCell>
-                  <XIcon size={16} className="cursor-pointer" />
+                  <XIcon onClick={onRemove(state.id)} size={16} className="cursor-pointer" />
                 </TableCell>
               </TableRow>
             ))}

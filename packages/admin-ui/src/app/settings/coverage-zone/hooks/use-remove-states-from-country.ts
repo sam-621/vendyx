@@ -2,10 +2,10 @@ import { getCountryErrorMessage } from '@/lib/ebloc/errors';
 import { RemoveStatesFromCountryMutation } from '@/lib/ebloc/mutations';
 import { useGqlMutation } from '@/lib/gql';
 
-export const useRemoveStateToCountry = () => {
+export const useRemoveStatesFromCountry = () => {
   const { mutateAsync } = useGqlMutation(RemoveStatesFromCountryMutation);
 
-  const addStateToCountry = async (id: string, input: string[]) => {
+  const removeStatesFromCountry = async (id: string, input: string[]) => {
     const {
       removeStatesFromCountry: { apiErrors, country }
     } = await mutateAsync({ id, input });
@@ -20,6 +20,6 @@ export const useRemoveStateToCountry = () => {
   };
 
   return {
-    addStateToCountry
+    removeStatesFromCountry
   };
 };
