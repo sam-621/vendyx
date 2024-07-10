@@ -8,7 +8,7 @@ export const useUpdateState = () => {
 
   const updateState = async (id: string, input: UpdateStateInput) => {
     const {
-      updateState: { apiErrors, state }
+      updateState: { apiErrors }
     } = await mutateAsync({ id, input });
 
     const errorMessage = getStateErrorMessage(apiErrors[0]);
@@ -16,8 +16,6 @@ export const useUpdateState = () => {
     if (errorMessage) {
       return errorMessage;
     }
-
-    return state;
   };
 
   return {

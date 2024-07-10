@@ -33,7 +33,11 @@ export const StatesDetails: FC<Props> = ({ states }) => {
       </CardHeader>
 
       <CardContent>
-        {!isEditing ? <StatesTable states={states} /> : <StatesForm states={states} />}
+        {!isEditing ? (
+          <StatesTable states={states} />
+        ) : (
+          <StatesForm closeForm={() => setIsEditing(false)} states={states} />
+        )}
       </CardContent>
     </Card>
   );
