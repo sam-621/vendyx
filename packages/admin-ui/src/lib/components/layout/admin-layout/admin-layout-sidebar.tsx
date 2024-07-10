@@ -13,7 +13,7 @@ import {
 
 import { useConfigContext } from '@/app/config/contexts';
 
-import { LayoutSidebarItem } from './admin-layout-sidebar-item';
+import { LayoutSidebarItem } from '../layout-sidebar-item';
 
 export const AdminSidebar: FC<Props> = ({ closeSidebar }) => {
   const { extraUiModules } = useConfigContext();
@@ -83,7 +83,7 @@ export const AdminSidebar: FC<Props> = ({ closeSidebar }) => {
         className={cn(
           'text-sm font-medium flex items-center gap-3 rounded-lg px-3 py-2 transition-all text-muted-foreground hover:text-primary'
         )}
-        to="#"
+        to="/settings"
       >
         <Settings size={16} />
         Settings

@@ -27,6 +27,6 @@ type Props = {
   isActive: boolean;
   icon: LucideIcon;
   to: string;
-  onClick: () => void;
+  onClick?: () => void;
   children: string;
 };

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { AdminLayout, LogoLoader } from '@/lib/components';
+import { AdminLayout, LogoLoader, SettingLayout } from '@/lib/components';
 
 import { ConfigProvider } from './config/contexts';
 import { useGetAdminUiConfig } from './config/hooks';
@@ -13,6 +13,7 @@ import { ExtraUiModulePage } from './extra-ui-module-page';
 import { LoginPage } from './login';
 import { OrderDetailsPage, OrderPages } from './orders';
 import { CreateProductPage, ProductDetailsPage, ProductsPage } from './products';
+import { SettingsPage } from './settings';
 
 export const AppRouter = () => {
   const { data, isLoading } = useGetAdminUiConfig();
@@ -60,6 +61,9 @@ export const AppRouter = () => {
                   }
                 />
               ))}
+            </Route>
+            <Route path="/settings" element={<SettingLayout />}>
+              <Route path="/settings/shipments" element={<SettingsPage />} />
             </Route>
           </Route>
         </Routes>
