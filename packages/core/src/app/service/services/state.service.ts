@@ -3,8 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { ListInput } from '@/app/api/common';
-import { ID, StateEntity } from '@/app/persistance';
+import { ErrorResult } from '../utils';
+
+import { ListInput, StateErrorCode, UpdateStateInput } from '@/app/api/common';
+import { CountryEntity, ID, StateEntity } from '@/app/persistance';
 
 @Injectable()
 export class StateService {
@@ -28,5 +30,30 @@ export class StateService {
     return this.db.getRepository(StateEntity).findOne({
       where: { id, enabled: onlyEnabled || undefined }
     });
+  }
+
+  async update(id: ID, input: UpdateStateInput) {
+    const country = await this.db
+      .getRepository(CountryEntity)
+      .findOne({ where: { states: { id } } });
+
+    if (!country) {
+      return new ErrorResult(StateErrorCode.STATE_NOT_FOUND, 'State not found');
+    }
+
+    const states = await this.db.getRepository(StateEntity).find({
+      where: { country: { id: country.id } }
+    });
+
+    const duplicatedStateName = states.find(s => s.name === input.name && s.id !== id);
+
+    if (duplicatedStateName) {
+      return new ErrorResult(
+        StateErrorCode.DUPLICATED_STATE_NAME_IN_COUNTRY,
+        `State name already exists in ${country.name}`
+      );
+    }
+
+    return await this.db.getRepository(StateEntity).save({ id, ...clean(input) });
   }
 }

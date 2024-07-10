@@ -57,6 +57,11 @@ export enum ProductErrorCode {
     PRODUCT_HAS_VARIANTS = "PRODUCT_HAS_VARIANTS"
 }
 
+export enum StateErrorCode {
+    DUPLICATED_STATE_NAME_IN_COUNTRY = "DUPLICATED_STATE_NAME_IN_COUNTRY",
+    STATE_NOT_FOUND = "STATE_NOT_FOUND"
+}
+
 export enum VariantErrorCode {
     VARIANT_NOT_FOUND = "VARIANT_NOT_FOUND",
     PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND"
@@ -158,6 +163,10 @@ export class UpdateProductInput {
 
 export class CreateStateInput {
     name: string;
+}
+
+export class UpdateStateInput {
+    name?: Nullable<string>;
 }
 
 export class CreateVariantInput {
@@ -309,6 +318,8 @@ export abstract class IMutation {
     abstract removeProduct(id: string): RemoveProductResult | Promise<RemoveProductResult>;
 
     abstract setCollectionsInProduct(id: string, collectionIds: string[]): ProductResult | Promise<ProductResult>;
+
+    abstract updateState(id: string, input: UpdateStateInput): StateResult | Promise<StateResult>;
 
     abstract createVariant(productId: string, input: CreateVariantInput): CreateVariantResult | Promise<CreateVariantResult>;
 
@@ -469,6 +480,16 @@ export class ProductResult {
 
 export class ProductErrorResult {
     code: ProductErrorCode;
+    message: string;
+}
+
+export class StateResult {
+    state?: Nullable<State>;
+    apiErrors: Nullable<StateErrorResult>[];
+}
+
+export class StateErrorResult {
+    code: StateErrorCode;
     message: string;
 }
 

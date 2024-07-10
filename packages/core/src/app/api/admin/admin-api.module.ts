@@ -11,6 +11,7 @@ import {
   OptionResolver,
   OrderResolver,
   ProductResolver,
+  StateResolver,
   VariantResolver
 } from './resolvers';
 import { COMMON_RESOLVERS } from '../common/common-resolvers';
@@ -51,6 +52,7 @@ export class AdminApiModule {
     CollectionResolver,
     AssetResolver,
     CountryResolver,
+    StateResolver,
     ...getPluginResolvers('admin')
   ]
 })
