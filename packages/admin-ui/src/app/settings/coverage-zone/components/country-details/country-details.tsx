@@ -5,7 +5,7 @@ import { Label, Switch } from '@ebloc/theme';
 import { FormInput } from '@/lib/components';
 import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
 
-import { StatesTable } from './states-table';
+import { StatesDetails } from './states-details/state-details';
 
 export const CountryDetails: FC<Props> = ({ country }) => {
   return (
@@ -20,7 +20,7 @@ export const CountryDetails: FC<Props> = ({ country }) => {
         </div>
       </div>
 
-      <StatesTable states={country?.states.items ?? []} />
+      <StatesDetails states={country?.states.items ?? []} />
     </div>
   );
 };
