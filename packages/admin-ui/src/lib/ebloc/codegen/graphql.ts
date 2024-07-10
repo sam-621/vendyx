@@ -901,6 +901,7 @@ export type UpdateCollectionInput = {
 };
 
 export type UpdateCountryInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
 

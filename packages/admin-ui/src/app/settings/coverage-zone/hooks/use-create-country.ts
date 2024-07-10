@@ -14,10 +14,10 @@ export const useCreateCountry = () => {
     const errorMessage = getCountryErrorMessage(apiErrors[0]);
 
     if (errorMessage) {
-      return errorMessage;
+      return { error: errorMessage };
     }
 
-    return country;
+    return { country };
   };
 
   return {

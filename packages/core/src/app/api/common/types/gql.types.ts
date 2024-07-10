@@ -114,6 +114,7 @@ export class CreateCountryInput {
 
 export class UpdateCountryInput {
     name?: Nullable<string>;
+    enabled?: Nullable<boolean>;
 }
 
 export class UpdateCustomerInput {
