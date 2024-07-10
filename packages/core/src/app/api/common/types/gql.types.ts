@@ -425,12 +425,12 @@ export class CollectionErrorResult {
 
 export class RemoveCountryResult {
     success?: Nullable<boolean>;
-    apiErrors: Nullable<CountryErrorResult>[];
+    apiErrors: CountryErrorResult[];
 }
 
 export class CountryResult {
     country?: Nullable<Country>;
-    apiErrors: Nullable<CountryErrorResult>[];
+    apiErrors: CountryErrorResult[];
 }
 
 export class CountryErrorResult {
@@ -485,7 +485,7 @@ export class ProductErrorResult {
 
 export class StateResult {
     state?: Nullable<State>;
-    apiErrors: Nullable<StateErrorResult>[];
+    apiErrors: StateErrorResult[];
 }
 
 export class StateErrorResult {

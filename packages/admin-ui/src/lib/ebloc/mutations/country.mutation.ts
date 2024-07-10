@@ -8,7 +8,7 @@ export const CreateCountryMutation = graphql(`
         message
       }
       country {
-        ...CommonCountry
+        id
       }
     }
   }
@@ -22,20 +22,63 @@ export const UpdateCountryMutation = graphql(`
         message
       }
       country {
-        ...CommonCountry
+        id
       }
     }
   }
 `);
 
 export const RemoveCountryMutation = graphql(`
-  mutation RemoveCountry($removeCountryId: ID!) {
-    removeCountry(id: $removeCountryId) {
+  mutation RemoveCountry($id: ID!) {
+    removeCountry(id: $id) {
       apiErrors {
         code
         message
       }
       success
+    }
+  }
+`);
+
+export const AddStatesToCountryMutation = graphql(`
+  mutation AddStatesToCountry($id: ID!, $input: [CreateStateInput!]!) {
+    addStatesToCountry(id: $id, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      country {
+        id
+      }
+    }
+  }
+`);
+
+export const RemoveStatesFromCountryMutation = graphql(`
+  mutation RemoveStatesFromCountry($id: ID!, $input: [ID!]!) {
+    removeStatesFromCountry(id: $id, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      country {
+        id
+      }
+    }
+  }
+`);
+
+export const UpdateStateMutation = graphql(`
+  mutation UpdateState($id: ID!, $input: UpdateStateInput!) {
+    updateState(id: $id, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      state {
+        id
+        name
+      }
     }
   }
 `);

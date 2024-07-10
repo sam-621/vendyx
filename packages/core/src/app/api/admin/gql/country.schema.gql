@@ -18,12 +18,12 @@ input UpdateCountryInput {
 " Results "
 type RemoveCountryResult {
   success: Boolean
-  apiErrors: [CountryErrorResult]!
+  apiErrors: [CountryErrorResult!]!
 }
 
 type CountryResult {
   country: Country
-  apiErrors: [CountryErrorResult]!
+  apiErrors: [CountryErrorResult!]!
 }
 
 type CountryErrorResult {

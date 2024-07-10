@@ -12,7 +12,7 @@ input UpdateStateInput {
 
 type StateResult {
   state: State
-  apiErrors: [StateErrorResult]!
+  apiErrors: [StateErrorResult!]!
 }
 
 type StateErrorResult {
