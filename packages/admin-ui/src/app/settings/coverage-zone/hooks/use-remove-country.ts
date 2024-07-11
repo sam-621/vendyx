@@ -5,7 +5,7 @@ import { useGqlMutation } from '@/lib/gql';
 export const useRemoveCountry = () => {
   const { mutateAsync } = useGqlMutation(RemoveCountryMutation);
 
-  const createCountry = async (id: string) => {
+  const removeCountry = async (id: string) => {
     const {
       removeCountry: { apiErrors, success }
     } = await mutateAsync({ id });
@@ -13,13 +13,13 @@ export const useRemoveCountry = () => {
     const errorMessage = getCountryErrorMessage(apiErrors[0]);
 
     if (errorMessage) {
-      return errorMessage;
+      return { error: errorMessage };
     }
 
-    return success;
+    return { success };
   };
 
   return {
-    createCountry
+    removeCountry
   };
 };
