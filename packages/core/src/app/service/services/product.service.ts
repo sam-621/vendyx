@@ -238,7 +238,9 @@ export class ProductService {
     });
 
     const assetsToRemove = productToRemove.assetsInProduct.map(a => a.asset);
-    await this.assetService.remove(assetsToRemove.map(asset => asset.id));
+    if (assetsToRemove.length) {
+      await this.assetService.remove(assetsToRemove.map(asset => asset.id));
+    }
 
     if (hasVariantsSoftDeleted) {
       await this.db.getRepository(ProductEntity).softDelete({ id });
