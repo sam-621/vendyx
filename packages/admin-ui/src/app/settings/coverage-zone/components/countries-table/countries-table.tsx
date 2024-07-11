@@ -29,7 +29,7 @@ export const CountriesTable: FC<Props> = ({ countries }) => {
           <CardDescription>Countries where you can sell</CardDescription>
         </div>
         <div>
-          <Link to="/settings/coverage-zone/new">
+          <Link to="/settings/coverage-zones/new">
             <Button variant="secondary">
               <PlusIcon size={16} />
               Add Country

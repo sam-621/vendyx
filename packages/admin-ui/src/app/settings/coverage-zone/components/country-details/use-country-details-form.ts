@@ -43,7 +43,7 @@ export const useCountryDetailsForm = (country?: CommonCountryFragment) => {
   };
 
   const onCreate = async (input: CountryDetailsFormInput) => {
-    const { country, error } = await createCountry(input);
+    const { country, error } = await createCountry({ name: input.name });
 
     if (error) {
       notification.error(error);

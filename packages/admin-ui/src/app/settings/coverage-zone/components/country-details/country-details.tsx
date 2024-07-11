@@ -17,7 +17,7 @@ export const CountryDetails: FC<Props> = ({ country }) => {
     <CountryDetailsProvider value={{ country }}>
       <div className="flex flex-col gap-6">
         <div className="flex gap-6 items-end">
-          <FormInput {...register('name')} label="Name" />
+          <FormInput {...register('name')} label="Name" placeholder="Mexico" />
           <Controller
             control={control}
             name="enabled"

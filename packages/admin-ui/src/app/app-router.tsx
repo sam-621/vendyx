@@ -13,7 +13,7 @@ import { ExtraUiModulePage } from './extra-ui-module-page';
 import { LoginPage } from './login';
 import { OrderDetailsPage, OrderPages } from './orders';
 import { CreateProductPage, ProductDetailsPage, ProductsPage } from './products';
-import { CountriesPage, CountryDetailsPage } from './settings';
+import { CountriesPage, CountryDetailsPage, CreateCountryPage } from './settings';
 
 export const AppRouter = () => {
   const { data, isLoading } = useGetAdminUiConfig();
@@ -65,6 +65,7 @@ export const AppRouter = () => {
             <Route path="/settings" element={<SettingLayout />}>
               <Route path="/settings/coverage-zones" element={<CountriesPage />} />
               <Route path="/settings/coverage-zones/:id" element={<CountryDetailsPage />} />
+              <Route path="/settings/coverage-zones/new" element={<CreateCountryPage />} />
             </Route>
           </Route>
         </Routes>
