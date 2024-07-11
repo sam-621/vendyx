@@ -14,7 +14,8 @@ We know there are so many other options for e-commerce platform, so why choose u
 
 ## Roadmap
 
-> [!NOTE] > **Ebloc is in development. Check marks indicate completed MVP sections; more features will be added.**
+> [!NOTE]
+> **Ebloc is in development. Check marks indicate completed MVP sections; more features will be added.**
 
 - [x] Products
 - [x] Orders
@@ -44,7 +45,8 @@ We know there are so many other options for e-commerce platform, so why choose u
 
 ## Setup
 
-> [!NOTE] > **Before running anything, you should have a postgresql database instance available.**
+> [!NOTE]
+> **Before running anything, you should have a postgresql database instance available.**
 
 1. Clone this repo
 2. `yarn`
