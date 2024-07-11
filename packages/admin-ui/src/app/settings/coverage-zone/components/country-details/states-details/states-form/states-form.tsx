@@ -8,7 +8,7 @@ import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
 import { useStatesForm } from './use-states-form';
 
 export const StatesForm: FC<Props> = ({ states: defaultStates, closeForm }) => {
-  const { states, setStates, isLoading, onSubmit } = useStatesForm(defaultStates, closeForm);
+  const { states, setStates, isLoading, onSave } = useStatesForm(defaultStates, closeForm);
 
   const hasNewStates = states.filter(s => s.name).length !== defaultStates.length;
   const someStateHasChanged = states.some(
@@ -20,7 +20,7 @@ export const StatesForm: FC<Props> = ({ states: defaultStates, closeForm }) => {
   const isFormDirty = hasNewStates || someStateHasChanged;
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col">
         <Label>Name</Label>
         {states.map((state, i) => (
@@ -49,11 +49,11 @@ export const StatesForm: FC<Props> = ({ states: defaultStates, closeForm }) => {
         ))}
       </div>
       <div className="w-full flex justify-end">
-        <Button isLoading={isLoading} disabled={!isFormDirty} type="submit">
+        <Button onClick={onSave} isLoading={isLoading} disabled={!isFormDirty} type="button">
           Save
         </Button>
       </div>
-    </form>
+    </div>
   );
 };
 

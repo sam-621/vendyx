@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { useCountryDetailsContext } from '@/app/settings/coverage-zone/context';
 import {
@@ -21,8 +21,7 @@ export const useStatesForm = (
   const [isLoading, setIsLoading] = useState(false);
   const [states, setStates] = useState([...defaultStates, { id: crypto.randomUUID(), name: '' }]);
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const onSave = async () => {
     if (!country) throw new Error('States form must be used inside a country context.');
 
     const oldStates = defaultStates.map(s => s.id);
@@ -72,6 +71,6 @@ export const useStatesForm = (
     states,
     setStates,
     isLoading,
-    onSubmit
+    onSave
   };
 };

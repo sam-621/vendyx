@@ -30,7 +30,12 @@ export const StatesDetails: FC<Props> = ({ states }) => {
         </div>
         <div className="flex gap-2 items-center">
           {!isEditing ? (
-            <Button variant="secondary" size="sm" onClick={() => setIsEditing(!isEditing)}>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => setIsEditing(!isEditing)}
+            >
               {hasNoStates ? (
                 <PlusIcon className="mr-2" size={14} />
               ) : (
@@ -39,7 +44,12 @@ export const StatesDetails: FC<Props> = ({ states }) => {
               {hasNoStates ? 'Add' : 'Edit'}
             </Button>
           ) : (
-            <Button variant="secondary" size="sm" onClick={() => setIsEditing(!isEditing)}>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => setIsEditing(!isEditing)}
+            >
               Cancel
             </Button>
           )}
