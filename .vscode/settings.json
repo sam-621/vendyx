@@ -1,9 +1,10 @@
 {
-  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll.format": "explicit"
-  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // This makes editor really slow
+  // "editor.codeActionsOnSave": {
+  //   "source.fixAll.eslint": "explicit",
+  //   "source.fixAll.format": "explicit"
+  // },
   "cSpell.words": [
     "Cloudinary",
     "clsx",
@@ -17,5 +18,6 @@
     "tailwindcss",
     "tanstack",
     "typeorm"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
