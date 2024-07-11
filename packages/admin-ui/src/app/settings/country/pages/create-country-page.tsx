@@ -16,8 +16,12 @@ export const CreateCountryPage = () => {
         <SettingsPageLayout
           title="Create country"
           subtitle="Create a new country and start adding states to it"
-          backUrl="/settings/coverage-zones"
-          actions={<Button>Save</Button>}
+          backUrl="/settings/countries"
+          actions={
+            <Button isLoading={form.formState.isSubmitting} type="submit">
+              Save
+            </Button>
+          }
         >
           <CountryDetails />
         </SettingsPageLayout>

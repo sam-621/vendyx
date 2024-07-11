@@ -8,9 +8,5 @@ export const getCountryErrorMessage = (error?: CountryErrorResult) => {
     return 'Country name already exists';
   }
 
-  if (error.code === CountryErrorCode.DuplicatedStateNameInCountry) {
-    return 'State name already exists in this country';
-  }
-
   return CommonErrorMessages.GenericError;
 };

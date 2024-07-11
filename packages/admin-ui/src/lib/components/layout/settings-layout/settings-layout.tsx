@@ -10,7 +10,7 @@ export const SettingLayout = () => {
 
   const isInShipments = pathname.includes('/settings/shipments');
   const isInPayments = pathname.includes('/settings/payments');
-  const isInCoverageZones = pathname.includes('/settings/coverage-zones');
+  const isInCountries = pathname.includes('/settings/countries');
 
   const SIDEBAR_ITEMS = [
     {
@@ -27,9 +27,9 @@ export const SettingLayout = () => {
     },
     {
       icon: Globe2Icon,
-      to: '/settings/coverage-zones',
-      label: 'Coverage zones',
-      isActive: isInCoverageZones
+      to: '/settings/countries',
+      label: 'Countries',
+      isActive: isInCountries
     }
   ];
 

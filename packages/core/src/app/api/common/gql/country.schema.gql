@@ -4,8 +4,6 @@ type Country implements Node {
   updatedAt: Date!
   name: String!
   enabled: Boolean!
-
-  states(input: ListInput): StateList!
 }
 
 type CountryList {

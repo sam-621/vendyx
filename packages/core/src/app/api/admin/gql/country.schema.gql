@@ -2,13 +2,10 @@ type Mutation {
   createCountry(input: CreateCountryInput!): CountryResult!
   updateCountry(id: ID!, input: UpdateCountryInput!): CountryResult!
   removeCountry(id: ID!): RemoveCountryResult!
-  addStatesToCountry(id: ID!, input: [CreateStateInput!]!): CountryResult!
-  removeStatesFromCountry(id: ID!, input: [ID!]!): CountryResult!
 }
 
 input CreateCountryInput {
   name: String!
-  states: [CreateStateInput]
 }
 
 input UpdateCountryInput {
@@ -35,6 +32,5 @@ type CountryErrorResult {
 " Utils "
 enum CountryErrorCode {
   DUPLICATED_COUNTRY_NAME
-  DUPLICATED_STATE_NAME_IN_COUNTRY
   COUNTRY_NOT_FOUND
 }

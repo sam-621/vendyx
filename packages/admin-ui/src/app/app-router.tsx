@@ -63,9 +63,9 @@ export const AppRouter = () => {
               ))}
             </Route>
             <Route path="/settings" element={<SettingLayout />}>
-              <Route path="/settings/coverage-zones" element={<CountriesPage />} />
-              <Route path="/settings/coverage-zones/:id" element={<CountryDetailsPage />} />
-              <Route path="/settings/coverage-zones/new" element={<CreateCountryPage />} />
+              <Route path="/settings/countries" element={<CountriesPage />} />
+              <Route path="/settings/countries/:id" element={<CountryDetailsPage />} />
+              <Route path="/settings/countries/new" element={<CreateCountryPage />} />
             </Route>
           </Route>
         </Routes>

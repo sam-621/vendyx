@@ -15,7 +15,6 @@ import {
   ProductService,
   ShipmentService,
   ShippingMethodService,
-  StateService,
   VariantService
 } from './services';
 import { ENTITIES } from '../persistance';
@@ -35,8 +34,7 @@ const SERVICES = [
   ShipmentService,
   CustomerService,
   CollectionService,
-  CountryService,
-  StateService
+  CountryService
 ];
 
 @Module({

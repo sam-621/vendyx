@@ -1,7 +1,6 @@
-import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, Entity as TypeOrmEntity } from 'typeorm';
 
 import { EBlocEntity } from './ebloc-entity';
-import { StateEntity } from './state.entity';
 
 @TypeOrmEntity('country')
 export class CountryEntity extends EBlocEntity {
@@ -10,7 +9,4 @@ export class CountryEntity extends EBlocEntity {
 
   @Column('boolean', { default: true })
   enabled: boolean;
-
-  @OneToMany(() => StateEntity, state => state.country, { cascade: ['insert'] })
-  states: StateEntity[];
 }

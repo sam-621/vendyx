@@ -52,7 +52,7 @@ export const useCountryDetailsForm = (country?: CommonCountryFragment) => {
 
     await queryClient.invalidateQueries({ queryKey: CountryKeys.all });
 
-    navigate(`/settings/coverage-zones/${country?.id}`);
+    navigate(`/settings/countries/${country?.id}`);
     notification.success('Country created successfully');
   };
 

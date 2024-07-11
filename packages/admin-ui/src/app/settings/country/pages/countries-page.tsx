@@ -8,8 +8,8 @@ export const CountriesPage = () => {
 
   return (
     <SettingsPageLayout
-      title="Coverage zones"
-      subtitle="Add the regions where your business offers products and services."
+      title="Countries"
+      subtitle="Add the countries where your business offers products and services."
     >
       <CountriesTable countries={countries} />
     </SettingsPageLayout>

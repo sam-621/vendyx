@@ -6,12 +6,6 @@ export const CommonCountry = graphql(`
     createdAt
     name
     enabled
-    states {
-      items {
-        id
-        name
-      }
-    }
   }
 `);
 

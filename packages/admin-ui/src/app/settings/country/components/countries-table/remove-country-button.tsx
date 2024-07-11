@@ -15,7 +15,7 @@ import { Loader2Icon, XIcon } from 'lucide-react';
 
 import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
 
-export const RemoveStateButton: FC<Props> = ({ state, onRemove }) => {
+export const RemoveCountryButton: FC<Props> = ({ country, onRemove }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -30,10 +30,10 @@ export const RemoveStateButton: FC<Props> = ({ state, onRemove }) => {
       <AlertDialogContent className="sm:max-w-[425px]">
         <AlertDialogHeader>
           <AlertDialogTitle className="font-medium">
-            Remove State &quot;{state.name}&quot;
+            Remove Country &quot;{country.name}&quot;
           </AlertDialogTitle>
           <AlertDialogDescription>
-            You will no longer be able to ship products in &quot;{state.name}&quot;. This action
+            You will no longer be able to ship products in &quot;{country.name}&quot;. This action
             cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -56,6 +56,6 @@ export const RemoveStateButton: FC<Props> = ({ state, onRemove }) => {
 };
 
 type Props = {
-  state: CommonCountryFragment['states']['items'][0];
+  country: CommonCountryFragment;
   onRemove: () => Promise<void>;
 };

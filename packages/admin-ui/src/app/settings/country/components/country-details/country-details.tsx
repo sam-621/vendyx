@@ -7,7 +7,6 @@ import { FormInput } from '@/lib/components';
 import { type CommonCountryFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { CountryDetailsProvider } from '../../context';
-import { StatesDetails } from './states-details/state-details';
 import { type CountryDetailsFormInput } from './use-country-details-form';
 
 export const CountryDetails: FC<Props> = ({ country }) => {
@@ -35,8 +34,6 @@ export const CountryDetails: FC<Props> = ({ country }) => {
             )}
           />
         </div>
-
-        {country && <StatesDetails states={country?.states.items ?? []} />}
       </div>
     </CountryDetailsProvider>
   );

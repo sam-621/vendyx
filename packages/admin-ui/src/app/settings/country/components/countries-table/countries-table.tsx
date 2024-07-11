@@ -39,8 +39,8 @@ export const CountriesTable: FC<Props> = ({ countries }) => {
           <CardDescription>Countries where you can sell</CardDescription>
         </div>
         <div>
-          <Link to="/settings/coverage-zones/new">
-            <Button variant="secondary">
+          <Link to="/settings/countries/new">
+            <Button variant="secondary" size="sm" className="gap-2">
               <PlusIcon size={16} />
               Add Country
             </Button>
@@ -54,7 +54,6 @@ export const CountriesTable: FC<Props> = ({ countries }) => {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>States</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead></TableHead>
               </TableRow>
@@ -63,12 +62,9 @@ export const CountriesTable: FC<Props> = ({ countries }) => {
               {countries.map(country => (
                 <TableRow key={country.id}>
                   <TableCell className={cn(countryBeingRemoved === country.id && 'opacity-50')}>
-                    <Link to={`/settings/coverage-zones/${country.id}`} className="hover:underline">
+                    <Link to={`/settings/countries/${country.id}`} className="hover:underline">
                       {country.name}
                     </Link>
-                  </TableCell>
-                  <TableCell className={cn(countryBeingRemoved === country.id && 'opacity-50')}>
-                    {country.states.items.length}
                   </TableCell>
                   <TableCell className={cn(countryBeingRemoved === country.id && 'opacity-50')}>
                     <Badge variant={country.enabled ? 'default' : 'secondary'}>

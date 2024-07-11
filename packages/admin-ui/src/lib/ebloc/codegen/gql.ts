@@ -22,9 +22,6 @@ const documents = {
     "\n  mutation CreateCountry($input: CreateCountryInput!) {\n    createCountry(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n": types.CreateCountryDocument,
     "\n  mutation UpdateCountry($id: ID!, $input: UpdateCountryInput!) {\n    updateCountry(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n": types.UpdateCountryDocument,
     "\n  mutation RemoveCountry($id: ID!) {\n    removeCountry(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveCountryDocument,
-    "\n  mutation AddStatesToCountry($id: ID!, $input: [CreateStateInput!]!) {\n    addStatesToCountry(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n": types.AddStatesToCountryDocument,
-    "\n  mutation RemoveStatesFromCountry($id: ID!, $input: [ID!]!) {\n    removeStatesFromCountry(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n": types.RemoveStatesFromCountryDocument,
-    "\n  mutation UpdateState($id: ID!, $input: UpdateStateInput!) {\n    updateState(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      state {\n        id\n        name\n      }\n    }\n  }\n": types.UpdateStateDocument,
     "\n  mutation UpdateCustomer($id: ID!, $input: UpdateCustomerInput!) {\n    updateCustomer(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      customer {\n        id\n      }\n    }\n  }\n": types.UpdateCustomerDocument,
     "\n  mutation CreateOption($createOptionInput: CreateOptionInput!) {\n    createOption(input: $createOptionInput) {\n      apiErrors {\n        code\n        message\n      }\n      option {\n        id\n        name\n        values {\n          id\n          value\n        }\n      }\n    }\n  }\n": types.CreateOptionDocument,
     "\n  mutation RemoveOption($id: ID!) {\n    removeOption(id: $id) {\n      success\n    }\n  }\n": types.RemoveOptionDocument,
@@ -44,7 +41,7 @@ const documents = {
     "\n  fragment CommonCollection on Collection {\n    id\n    createdAt\n    name\n    slug\n    description\n    published\n    products {\n      count\n      items {\n        id\n        name\n        slug\n        published\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        variants {\n          items {\n            stock\n          }\n        }\n      }\n    }\n  }\n": types.CommonCollectionFragmentDoc,
     "\n  query GetCollections {\n    collections {\n      items {\n        id\n        createdAt\n        name\n        slug\n        published\n        products {\n          count\n        }\n      }\n    }\n  }\n": types.GetCollectionsDocument,
     "\n  query GetCollection($id: ID!) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n": types.GetCollectionDocument,
-    "\n  fragment CommonCountry on Country {\n    id\n    createdAt\n    name\n    enabled\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n": types.CommonCountryFragmentDoc,
+    "\n  fragment CommonCountry on Country {\n    id\n    createdAt\n    name\n    enabled\n  }\n": types.CommonCountryFragmentDoc,
     "\n  query GetCountries {\n    countries {\n      count\n      items {\n        ...CommonCountry\n      }\n    }\n  }\n": types.GetCountriesDocument,
     "\n  query GetCountry($id: ID!) {\n    country(id: $id) {\n      ...CommonCountry\n    }\n  }\n": types.GetCountryDocument,
     "\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    orders {\n      count\n      items {\n        id\n        code\n        placedAt\n        state\n        total\n        shipment {\n          method {\n            id\n            name\n          }\n        }\n      }\n    }\n  }\n": types.CommonCustomerFragmentDoc,
@@ -108,18 +105,6 @@ export function graphql(source: "\n  mutation UpdateCountry($id: ID!, $input: Up
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation RemoveCountry($id: ID!) {\n    removeCountry(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveCountry($id: ID!) {\n    removeCountry(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation AddStatesToCountry($id: ID!, $input: [CreateStateInput!]!) {\n    addStatesToCountry(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation AddStatesToCountry($id: ID!, $input: [CreateStateInput!]!) {\n    addStatesToCountry(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation RemoveStatesFromCountry($id: ID!, $input: [ID!]!) {\n    removeStatesFromCountry(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveStatesFromCountry($id: ID!, $input: [ID!]!) {\n    removeStatesFromCountry(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      country {\n        id\n      }\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation UpdateState($id: ID!, $input: UpdateStateInput!) {\n    updateState(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      state {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateState($id: ID!, $input: UpdateStateInput!) {\n    updateState(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      state {\n        id\n        name\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -199,7 +184,7 @@ export function graphql(source: "\n  query GetCollection($id: ID!) {\n    collec
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment CommonCountry on Country {\n    id\n    createdAt\n    name\n    enabled\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment CommonCountry on Country {\n    id\n    createdAt\n    name\n    enabled\n    states {\n      items {\n        id\n        name\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  fragment CommonCountry on Country {\n    id\n    createdAt\n    name\n    enabled\n  }\n"): (typeof documents)["\n  fragment CommonCountry on Country {\n    id\n    createdAt\n    name\n    enabled\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

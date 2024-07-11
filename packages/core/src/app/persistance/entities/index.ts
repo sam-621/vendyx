@@ -16,4 +16,3 @@ export * from './shipping-method.entity';
 export * from './collection.entity';
 export * from './asset-on-product.entity';
 export * from './country.entity';
-export * from './state.entity';

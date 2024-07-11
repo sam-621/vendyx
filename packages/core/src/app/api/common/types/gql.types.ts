@@ -24,7 +24,6 @@ export enum CollectionErrorCode {
 
 export enum CountryErrorCode {
     DUPLICATED_COUNTRY_NAME = "DUPLICATED_COUNTRY_NAME",
-    DUPLICATED_STATE_NAME_IN_COUNTRY = "DUPLICATED_STATE_NAME_IN_COUNTRY",
     COUNTRY_NOT_FOUND = "COUNTRY_NOT_FOUND"
 }
 
@@ -55,11 +54,6 @@ export enum ProductErrorCode {
     NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
     DUPLICATED_SLUG = "DUPLICATED_SLUG",
     PRODUCT_HAS_VARIANTS = "PRODUCT_HAS_VARIANTS"
-}
-
-export enum StateErrorCode {
-    DUPLICATED_STATE_NAME_IN_COUNTRY = "DUPLICATED_STATE_NAME_IN_COUNTRY",
-    STATE_NOT_FOUND = "STATE_NOT_FOUND"
 }
 
 export enum VariantErrorCode {
@@ -109,7 +103,6 @@ export class UpdateCollectionInput {
 
 export class CreateCountryInput {
     name: string;
-    states?: Nullable<Nullable<CreateStateInput>[]>;
 }
 
 export class UpdateCountryInput {
@@ -160,14 +153,6 @@ export class UpdateProductInput {
     published?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
     assets?: Nullable<AssetInEntityInput[]>;
-}
-
-export class CreateStateInput {
-    name: string;
-}
-
-export class UpdateStateInput {
-    name?: Nullable<string>;
 }
 
 export class CreateVariantInput {
@@ -290,10 +275,6 @@ export abstract class IMutation {
 
     abstract removeCountry(id: string): RemoveCountryResult | Promise<RemoveCountryResult>;
 
-    abstract addStatesToCountry(id: string, input: CreateStateInput[]): CountryResult | Promise<CountryResult>;
-
-    abstract removeStatesFromCountry(id: string, input: string[]): CountryResult | Promise<CountryResult>;
-
     abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOption(input: CreateOptionInput): OptionResult | Promise<OptionResult>;
@@ -319,8 +300,6 @@ export abstract class IMutation {
     abstract removeProduct(id: string): RemoveProductResult | Promise<RemoveProductResult>;
 
     abstract setCollectionsInProduct(id: string, collectionIds: string[]): ProductResult | Promise<ProductResult>;
-
-    abstract updateState(id: string, input: UpdateStateInput): StateResult | Promise<StateResult>;
 
     abstract createVariant(productId: string, input: CreateVariantInput): CreateVariantResult | Promise<CreateVariantResult>;
 
@@ -484,16 +463,6 @@ export class ProductErrorResult {
     message: string;
 }
 
-export class StateResult {
-    state?: Nullable<State>;
-    apiErrors: StateErrorResult[];
-}
-
-export class StateErrorResult {
-    code: StateErrorCode;
-    message: string;
-}
-
 export class CreateVariantResult implements VariantResult {
     variant?: Nullable<Variant>;
     apiErrors: VariantErrorResult[];
@@ -571,7 +540,6 @@ export class Country implements Node {
     updatedAt: Date;
     name: string;
     enabled: boolean;
-    states?: StateList;
 }
 
 export class CountryList {
@@ -742,18 +710,6 @@ export class ShippingMethod implements Node {
     description?: Nullable<string>;
     enabled: boolean;
     price: number;
-}
-
-export class State implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-}
-
-export class StateList {
-    items: State[];
-    count: number;
 }
 
 export class Variant implements Node {

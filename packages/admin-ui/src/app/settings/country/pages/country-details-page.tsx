@@ -25,7 +25,7 @@ export const CountryDetailsPage = () => {
         <SettingsPageLayout
           title={country?.name}
           subtitle={formatDate(new Date(country.createdAt as string))}
-          backUrl="/settings/coverage-zones"
+          backUrl="/settings/countries"
           actions={<CountryDetailsSubmitButton country={country} />}
         >
           <CountryDetails country={country} />

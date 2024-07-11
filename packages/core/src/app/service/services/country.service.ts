@@ -8,11 +8,10 @@ import { ErrorResult } from '../utils';
 import {
   CountryErrorCode,
   CreateCountryInput,
-  CreateStateInput,
   ListInput,
   UpdateCountryInput
 } from '@/app/api/common';
-import { CountryEntity, ID, StateEntity } from '@/app/persistance';
+import { CountryEntity, ID } from '@/app/persistance';
 
 @Injectable()
 export class CountryService {
@@ -51,22 +50,9 @@ export class CountryService {
   }
 
   /**
-   * Find all states of a country by its id.
-   */
-  findStates(id: ID, input?: FindInput) {
-    return this.db.getRepository(StateEntity).find({
-      ...clean(input ?? {}),
-      where: { country: { id }, enabled: input?.onlyEnabled || undefined },
-      order: { createdAt: 'ASC' }
-    });
-  }
-
-  /**
    * Create a new country with states.
    */
   async create(input: CreateCountryInput): MutationResult {
-    const { states } = input;
-
     const countryExists = await this.findUnique({ name: input.name });
 
     if (countryExists) {
@@ -77,8 +63,7 @@ export class CountryService {
     }
 
     return this.db.getRepository(CountryEntity).save({
-      ...clean(input),
-      states: states?.length ? states?.map(state => ({ name: state?.name })) : []
+      ...clean(input)
     });
   }
 
@@ -106,46 +91,6 @@ export class CountryService {
     }
 
     return this.db.getRepository(CountryEntity).remove(countryToRemove);
-  }
-
-  /**
-   * Set states in a country by its id.
-   */
-  async addStates(id: ID, input: CreateStateInput[]) {
-    const countryToUpdate = await this.findUnique({ id, relations: { states: true } });
-
-    const statesAlreadyExists = countryToUpdate?.states?.map(state => state.name) || [];
-
-    if (input.some(state => statesAlreadyExists.includes(state.name))) {
-      return new ErrorResult(
-        CountryErrorCode.DUPLICATED_STATE_NAME_IN_COUNTRY,
-        'State name already exists in this country'
-      );
-    }
-
-    if (!countryToUpdate) {
-      return new ErrorResult(CountryErrorCode.COUNTRY_NOT_FOUND, 'Country not found');
-    }
-
-    return this.db.getRepository(CountryEntity).save({
-      ...countryToUpdate,
-      states: [...countryToUpdate.states, ...input.map(state => ({ name: state.name }))]
-    });
-  }
-
-  /**
-   * Remove states from a country by its id.
-   */
-  async removeStates(id: ID, stateIds: ID[]) {
-    const countryToUpdate = await this.findUnique({ id, relations: { states: true } });
-
-    if (!countryToUpdate) {
-      return new ErrorResult(CountryErrorCode.COUNTRY_NOT_FOUND, 'Country not found');
-    }
-
-    await this.db.getRepository(StateEntity).delete(stateIds);
-
-    return this.findUnique({ id });
   }
 }
 
