@@ -8,22 +8,22 @@ import { LayoutSidebarItem } from '../layout-sidebar-item';
 export const SettingLayout = () => {
   const { pathname } = useLocation();
 
-  const isInShipments = pathname.includes('/settings/shipments');
   const isInPayments = pathname.includes('/settings/payments');
+  const isInShipments = pathname.includes('/settings/shipments');
   const isInCountries = pathname.includes('/settings/countries');
 
   const SIDEBAR_ITEMS = [
-    {
-      icon: TruckIcon,
-      to: '/settings/shipments',
-      label: 'Shipments',
-      isActive: isInShipments
-    },
     {
       icon: CreditCardIcon,
       to: '/settings/payments',
       label: 'Payments',
       isActive: isInPayments
+    },
+    {
+      icon: TruckIcon,
+      to: '/settings/shipments',
+      label: 'Shipments',
+      isActive: isInShipments
     },
     {
       icon: Globe2Icon,
