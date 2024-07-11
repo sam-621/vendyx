@@ -95,18 +95,15 @@ export const useNewOptionForm = () => {
       }
     } else {
       // If not this means that the product has no variants yet, so we only need to create them
-      await Promise.all(
-        optionCreated?.values?.map(
-          async value =>
-            await createVariant(product.id, {
-              price: 0,
-              published: true,
-              sku: '',
-              stock: 0,
-              optionValuesIds: [value.id]
-            })
-        ) ?? []
-      );
+      for (const value of optionCreated?.values ?? []) {
+        await createVariant(product.id, {
+          price: 0,
+          published: true,
+          sku: '',
+          stock: 0,
+          optionValuesIds: [value.id]
+        });
+      }
     }
 
     const variantsWithNoOptionValues = product.variants.items.filter(v => !v.optionValues?.length);
