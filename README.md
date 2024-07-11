@@ -13,14 +13,19 @@ We know there are so many other options for e-commerce platform, so why choose u
 📦 **Your product:** Self host, fork, built on top of it, Ebloc is a open source solution for your next e-commerce platform
 
 ## Roadmap
-> [!NOTE]
-> **Ebloc is in development. Check marks indicate completed MVP sections; more features will be added.**
+
+> [!NOTE] > **Ebloc is in development. Check marks indicate completed MVP sections; more features will be added.**
 
 - [x] Products
 - [x] Orders
 - [x] Customers
+- [x] Collections
 - [x] Storefront API
-- [ ] Collections 🚧
+- [ ] Shipments
+- [ ] Payments
+- [ ] Coupons
+- [ ] Roles
+- [ ] Internationalization
 - [ ] Extensible by code
 
 ## Tech stack
@@ -32,13 +37,14 @@ We know there are so many other options for e-commerce platform, so why choose u
 - [Lerna](https://lerna.js.org/) for monorepo management
 
 ## Theme
+
 - Components: [shadcn](https://ui.shadcn.com/)
 - Icons: [lucide icons](https://lucide.dev/)
 - Guide style: [TailwindCSS](https://tailwindcss.com/)
 
 ## Setup
-> [!NOTE]
-> **Before running anything, you should have a postgresql database instance available.**
+
+> [!NOTE] > **Before running anything, you should have a postgresql database instance available.**
 
 1. Clone this repo
 2. `yarn`
@@ -47,7 +53,9 @@ We know there are so many other options for e-commerce platform, so why choose u
 5. `yarn start`
 
 ### Local development
+
 1. Add your database url in `default.config.ts` in core package
+
 ```ts
 //...
 db: {
@@ -57,6 +65,7 @@ db: {
 ```
 
 2. To populate your database (if needed), you should add your database url in `populate-db.ts` in the core package
+
 ```ts
 const dataSource = await new DataSource({
   type: 'postgres',
@@ -66,16 +75,19 @@ const dataSource = await new DataSource({
 ```
 
 2. Run the following command
+
 ```bash
 yarn db:populate
 ```
 
 3. Run the api locally in the port 3000
+
 ```bash
 yarn dev
 ```
 
 4. Config urls in `constants.ts` file in admin-ui package adding the url for each environment
+
 ```ts
 // This urls are just examples, you should add yours
 const URLS: THashMap = {
@@ -91,16 +103,19 @@ const URLS: THashMap = {
 5. Run the admin-ui in the mode you need
 
 Run in local mode (pointing to localhost url)
+
 ```bash
 yarn local
 ```
 
 Run in development mode (pointing to development url)
+
 ```bash
 yarn dev
 ```
 
 ## Conventions
+
 - File naming: kebab-case
 - Git commit message: Conventional commit
 - Promises or async await: async await
