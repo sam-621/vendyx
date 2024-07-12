@@ -57,6 +57,7 @@ export enum ProductErrorCode {
 }
 
 export enum ShippingMethodErrorCode {
+    ZONE_NOT_FOUND = "ZONE_NOT_FOUND",
     SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND"
 }
 

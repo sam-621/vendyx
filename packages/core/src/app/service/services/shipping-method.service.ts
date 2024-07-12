@@ -11,7 +11,7 @@ import {
   UpdateShippingMethodInput
 } from '@/app/api/common';
 import { getConfig } from '@/app/config';
-import { ID, OrderEntity, ShippingMethodEntity } from '@/app/persistance';
+import { ID, OrderEntity, ShippingMethodEntity, ZoneEntity } from '@/app/persistance';
 
 @Injectable()
 export class ShippingMethodService {
@@ -49,10 +49,19 @@ export class ShippingMethodService {
   }
 
   /**
-   * Create a new shipping method.
+   * Create a new shipping method and assign it to the given zone.
    */
-  async create(input: CreateShippingMethodInput) {
-    return await this.db.getRepository(ShippingMethodEntity).save(clean(input));
+  async create(zoneId: ID, input: CreateShippingMethodInput) {
+    const zone = await this.db.getRepository(ZoneEntity).findOne({ where: { id: zoneId } });
+
+    if (!zone) {
+      return new ErrorResult(ShippingMethodErrorCode.ZONE_NOT_FOUND, 'Zone not found');
+    }
+
+    return await this.db.getRepository(ShippingMethodEntity).save({
+      ...clean(input),
+      zone
+    });
   }
 
   /**
