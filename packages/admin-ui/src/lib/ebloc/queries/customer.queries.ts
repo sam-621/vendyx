@@ -18,10 +18,7 @@ export const CommonCustomer = graphql(`
         state
         total
         shipment {
-          method {
-            id
-            name
-          }
+          method
         }
       }
     }

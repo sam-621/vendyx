@@ -1,7 +1,7 @@
 import { EblocConfig } from './ebloc.config';
 
 import { MercadoPagoIntegration, PaypalIntegration, StripeIntegration } from '@/lib/payments';
-import { CountryPriceCalculator, FedexPriceCalculator } from '@/lib/shipping';
+import { FlatPriceCalculator } from '@/lib/shipping';
 import { CloudinaryStorageProvider } from '@/lib/storage';
 
 /**
@@ -30,7 +30,7 @@ export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
     integrations: [new PaypalIntegration(), new StripeIntegration(), new MercadoPagoIntegration()]
   },
   shipping: {
-    priceCalculators: [new CountryPriceCalculator(), new FedexPriceCalculator()]
+    priceCalculators: [new FlatPriceCalculator()]
   },
   adminUi: {
     branding: {

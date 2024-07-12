@@ -17,6 +17,7 @@ export class ShippingMethodEntity extends EBlocEntity {
   @Column('boolean', { default: true })
   enabled: boolean;
 
-  @ManyToOne(() => ZoneEntity, z => z.shippingMethods, { onDelete: 'CASCADE' }) // If a zone is deleted, all its shipping methods will be deleted
+  // If a zone is deleted, all its shipping methods will be deleted
+  @ManyToOne(() => ZoneEntity, z => z.shippingMethods, { onDelete: 'CASCADE' })
   zone: ZoneEntity;
 }

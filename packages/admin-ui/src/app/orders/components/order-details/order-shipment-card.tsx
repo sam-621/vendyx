@@ -19,7 +19,7 @@ export const OrderShipmentCard: FC<Props> = ({ shipment }) => {
       <CardContent className="flex flex-col gap-6 text-sm">
         <div className="flex flex-col gap-2">
           <p>
-            Method: <span className="font-medium text-distinct">{method.name}</span>
+            Method: <span className="font-medium text-distinct">{method}</span>
           </p>
           <p>
             Amount: <span>{getFormattedPrice(shipment.amount)}</span>

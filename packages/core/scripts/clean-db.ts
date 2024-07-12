@@ -18,6 +18,9 @@ const cleanDb = async () => {
 
   console.log('Cleaning the database 🧹');
   await dataSource.query('DELETE FROM "administrator";');
+  await dataSource.query('DELETE FROM "country_in_zone";');
+  await dataSource.query('DELETE FROM "country";');
+  await dataSource.query('DELETE FROM "zone";');
   await dataSource.query('DELETE FROM "order_line";');
   await dataSource.query('DELETE FROM "orders";');
   await dataSource.query('DELETE FROM "customer";');

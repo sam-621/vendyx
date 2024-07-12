@@ -54,22 +54,14 @@ export const CommonOrder = graphql(`
       id
       amount
       transactionId
-      method {
-        id
-        name
-        description
-        enabled
-      }
+      method
     }
     shipment {
       id
       amount
       trackingCode
       carrier
-      method {
-        id
-        name
-      }
+      method
     }
   }
 `);
@@ -94,10 +86,7 @@ export const GetOrdersQuery = graphql(`
           id
           amount
           trackingCode
-          method {
-            id
-            name
-          }
+          method
         }
       }
     }

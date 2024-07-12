@@ -82,7 +82,7 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
 
             <TableRow className="border-transparent">
               <TableCell>Shipment</TableCell>
-              <TableCell>{shipment?.method.name ?? ''}</TableCell>
+              <TableCell>{shipment?.method ?? ''}</TableCell>
               <TableCell></TableCell>
               <TableCell>{getFormattedPrice(shipment?.amount ?? 0)}</TableCell>
             </TableRow>

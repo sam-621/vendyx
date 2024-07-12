@@ -16,6 +16,6 @@ export class PaymentMethodEntity extends EBlocEntity {
   @Column('varchar', { unique: true, name: 'integration_code' })
   integrationCode: string;
 
-  @Column('boolean')
+  @Column('boolean', { default: true })
   enabled: boolean;
 }
