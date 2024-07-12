@@ -58,6 +58,17 @@ export class ShippingMethodService {
       return new ErrorResult(ShippingMethodErrorCode.ZONE_NOT_FOUND, 'Zone not found');
     }
 
+    const priceCalculatorExists = getConfig().shipping.priceCalculators.find(
+      pc => pc.code === input.priceCalculatorCode
+    );
+
+    if (!priceCalculatorExists) {
+      return new ErrorResult(
+        ShippingMethodErrorCode.SHIPPING_PRICE_CALCULATOR_NOT_FOUND,
+        'Price calculator not found'
+      );
+    }
+
     return await this.db.getRepository(ShippingMethodEntity).save({
       ...clean(input),
       zone
@@ -74,6 +85,17 @@ export class ShippingMethodService {
       return new ErrorResult(
         ShippingMethodErrorCode.SHIPPING_METHOD_NOT_FOUND,
         'Shipping method not found'
+      );
+    }
+
+    const priceCalculatorExists = getConfig().shipping.priceCalculators.find(
+      pc => pc.code === input.priceCalculatorCode
+    );
+
+    if (!priceCalculatorExists && input.priceCalculatorCode) {
+      return new ErrorResult(
+        ShippingMethodErrorCode.SHIPPING_PRICE_CALCULATOR_NOT_FOUND,
+        'Price calculator not found'
       );
     }
 

@@ -6,7 +6,7 @@ import { DataSource, In } from 'typeorm';
 import { ErrorResult } from '../utils';
 
 import { CreateZoneInput, ListInput, UpdateZoneInput, ZoneErrorCode } from '@/app/api/common';
-import { CountryEntity, ID, ZoneEntity } from '@/app/persistance';
+import { CountryEntity, ID, ShippingMethodEntity, ZoneEntity } from '@/app/persistance';
 
 @Injectable()
 export class ZoneService {
@@ -16,11 +16,11 @@ export class ZoneService {
    * Fin unique zone by id.
    */
   findUnique(input: FindUniqueInput) {
-    if (input.id) {
+    if (typeof input.id === 'string') {
       return this.db.getRepository(ZoneEntity).findOne({ where: { id: input.id } });
     }
 
-    if (input.name) {
+    if (typeof input.name === 'string') {
       return this.db.getRepository(ZoneEntity).findOne({ where: { name: input.name } });
     }
 
@@ -39,9 +39,21 @@ export class ZoneService {
   /**
    * Find all countries in a zone.
    */
-  async findCountries(id: ID, input: ListInput) {
+  async findCountries(id: ID, input?: ListInput) {
     const result = await this.db.getRepository(CountryEntity).find({
       where: { zones: { id } },
+      ...clean(input ?? {})
+    });
+
+    return result;
+  }
+
+  /**
+   * Find all shipping methods in a zone.
+   */
+  async findShippingMethods(id: ID, input?: ListInput) {
+    const result = await this.db.getRepository(ShippingMethodEntity).find({
+      where: { zone: { id } },
       ...clean(input ?? {})
     });
 
@@ -83,7 +95,10 @@ export class ZoneService {
       return new ErrorResult(ZoneErrorCode.DUPLICATED_ZONE_NAME, 'Zone name already exists');
     }
 
-    await this.db.getRepository(ZoneEntity).update({ id }, { ...zone, name: input.name ?? '' });
+    return await this.db.getRepository(ZoneEntity).save({
+      ...zone,
+      ...clean(input)
+    });
   }
 
   /**

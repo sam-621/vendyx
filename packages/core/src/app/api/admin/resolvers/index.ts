@@ -8,3 +8,4 @@ export * from './collection.resolver';
 export * from './asset.resolver';
 export * from './country.resolver';
 export * from './zone.resolver';
+export * from './shipping-method.resolver';

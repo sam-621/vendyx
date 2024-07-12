@@ -1,3 +1,7 @@
+extend type ShippingMethod {
+  priceCalculatorCode: String!
+}
+
 type ShippingMethodList implements List {
   items: [ShippingMethod!]!
   count: Int!
@@ -11,8 +15,8 @@ type Mutation {
 
 input CreateShippingMethodInput {
   name: String!
-  description: String
   priceCalculatorCode: String!
+  description: String
   enabled: Boolean
 }
 
@@ -41,4 +45,5 @@ type ShippingMethodErrorResult {
 enum ShippingMethodErrorCode {
   ZONE_NOT_FOUND
   SHIPPING_METHOD_NOT_FOUND
+  SHIPPING_PRICE_CALCULATOR_NOT_FOUND
 }

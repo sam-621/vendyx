@@ -1,6 +1,6 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { CreateZoneInput, ListInput, UpdateZoneInput } from '../../common';
+import { CreateZoneInput, ListInput, ListResponse, UpdateZoneInput } from '../../common';
 
 import { ID, ZoneEntity } from '@/app/persistance';
 import { ZoneService, isErrorResult } from '@/app/service';
@@ -15,8 +15,10 @@ export class ZoneResolver {
   }
 
   @Query('zones')
-  zones(@Args('input') input: ListInput) {
-    return this.zoneService.find(input);
+  async zones(@Args('input') input: ListInput) {
+    const result = await this.zoneService.find(input);
+
+    return new ListResponse(result, result.length);
   }
 
   @Mutation('createZone')
@@ -44,11 +46,20 @@ export class ZoneResolver {
   async setCountriesToZone(@Args('id') id: ID, @Args('countriesIds') countriesIds: ID[]) {
     const result = await this.zoneService.setCountries(id, countriesIds);
 
-    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], success: true };
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], zone: result };
   }
 
   @ResolveField('countries')
-  countries(@Parent() zone: ZoneEntity, @Args('input') input: ListInput) {
-    return this.zoneService.findCountries(zone.id, input);
+  async countries(@Parent() zone: ZoneEntity, @Args('input') input: ListInput) {
+    const result = await this.zoneService.findCountries(zone.id, input);
+
+    return new ListResponse(result, result.length);
+  }
+
+  @ResolveField('shippingMethods')
+  async shippingMethods(@Parent() zone: ZoneEntity, @Args('input') input: ListInput) {
+    const result = await this.zoneService.findShippingMethods(zone.id, input);
+
+    return new ListResponse(result, result.length);
   }
 }

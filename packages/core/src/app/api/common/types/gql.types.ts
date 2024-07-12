@@ -58,7 +58,8 @@ export enum ProductErrorCode {
 
 export enum ShippingMethodErrorCode {
     ZONE_NOT_FOUND = "ZONE_NOT_FOUND",
-    SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND"
+    SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND",
+    SHIPPING_PRICE_CALCULATOR_NOT_FOUND = "SHIPPING_PRICE_CALCULATOR_NOT_FOUND"
 }
 
 export enum VariantErrorCode {
@@ -352,7 +353,7 @@ export abstract class IMutation {
 
     abstract removeZone(id: string): RemoveZoneResult | Promise<RemoveZoneResult>;
 
-    abstract setCountriesToZone(id: string, countriesIds: string[]): Zone | Promise<Zone>;
+    abstract setCountriesToZone(id: string, countriesIds: string[]): ZoneResult | Promise<ZoneResult>;
 
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
@@ -512,6 +513,17 @@ export class ProductResult {
 export class ProductErrorResult {
     code: ProductErrorCode;
     message: string;
+}
+
+export class ShippingMethod implements Node {
+    priceCalculatorCode: string;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    description?: Nullable<string>;
+    enabled: boolean;
+    price: number;
 }
 
 export class ShippingMethodList implements List {
@@ -800,16 +812,6 @@ export class Shipment implements Node {
 export class ShipmentList implements List {
     items: Shipment[];
     count: number;
-}
-
-export class ShippingMethod implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    description?: Nullable<string>;
-    enabled: boolean;
-    price: number;
 }
 
 export class Variant implements Node {

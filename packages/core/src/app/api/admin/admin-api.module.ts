@@ -11,6 +11,7 @@ import {
   OptionResolver,
   OrderResolver,
   ProductResolver,
+  ShippingMethodResolver,
   VariantResolver,
   ZoneResolver
 } from './resolvers';
@@ -53,6 +54,7 @@ export class AdminApiModule {
     AssetResolver,
     CountryResolver,
     ZoneResolver,
+    ShippingMethodResolver,
     ...getPluginResolvers('admin')
   ]
 })
