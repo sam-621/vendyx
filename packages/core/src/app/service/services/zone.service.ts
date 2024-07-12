@@ -1,12 +1,12 @@
 import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 
 import { ErrorResult } from '../utils';
 
 import { CreateZoneInput, ListInput, UpdateZoneInput, ZoneErrorCode } from '@/app/api/common';
-import { ID, ZoneEntity } from '@/app/persistance';
+import { CountryEntity, ID, ZoneEntity } from '@/app/persistance';
 
 @Injectable()
 export class ZoneService {
@@ -59,20 +59,54 @@ export class ZoneService {
    * 2. Update zone
    */
   async update(id: ID, input: UpdateZoneInput) {
+    const zone = await this.findUnique({ id });
+
+    if (!zone) {
+      return new ErrorResult(ZoneErrorCode.ZONE_NOT_FOUND, 'Zone not found');
+    }
+
     const zoneWithSameName = await this.findUnique({ name: input.name ?? '' });
 
     if (zoneWithSameName && zoneWithSameName.id !== id) {
       return new ErrorResult(ZoneErrorCode.DUPLICATED_ZONE_NAME, 'Zone name already exists');
     }
 
-    await this.db.getRepository(ZoneEntity).update({ id }, { name: input.name ?? '' });
+    await this.db.getRepository(ZoneEntity).update({ id }, { ...zone, name: input.name ?? '' });
   }
 
   /**
    * Remove a zone by the given id and its shipping methods.
    */
   async removeZone(id: ID) {
-    await this.db.getRepository(ZoneEntity).delete({ id });
+    const zone = await this.findUnique({ id });
+
+    if (!zone) {
+      return new ErrorResult(ZoneErrorCode.ZONE_NOT_FOUND, 'Zone not found');
+    }
+
+    await this.db.getRepository(ZoneEntity).remove(zone);
+  }
+
+  /**
+   * Set countries to a zone.
+   *
+   * @warning This method will replace all countries that are already in the zone with the new ones.
+   */
+  async setCountries(id: ID, countriesIds: ID[]) {
+    const zone = await this.findUnique({ id });
+
+    if (!zone) {
+      return new ErrorResult(ZoneErrorCode.ZONE_NOT_FOUND, 'Zone not found');
+    }
+
+    const countries = await this.db
+      .getRepository(CountryEntity)
+      .find({ where: { id: In(countriesIds) } });
+
+    return this.db.getRepository(ZoneEntity).save({
+      ...zone,
+      countries
+    });
   }
 }
 
