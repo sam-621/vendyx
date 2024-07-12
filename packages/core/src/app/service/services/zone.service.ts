@@ -37,6 +37,18 @@ export class ZoneService {
   }
 
   /**
+   * Find all countries in a zone.
+   */
+  async findCountries(id: ID, input: ListInput) {
+    const result = await this.db.getRepository(CountryEntity).find({
+      where: { zones: { id } },
+      ...clean(input ?? {})
+    });
+
+    return result;
+  }
+
+  /**
    * Create a new zone.
    *
    * 1. Check if a zone with the same name already exists.
@@ -89,6 +101,9 @@ export class ZoneService {
 
   /**
    * Set countries to a zone.
+   *
+   * 1. If any country is disabled, return an error.
+   * 2. Save zone with the new countries.
    *
    * @warning This method will replace all countries that are already in the zone with the new ones.
    */

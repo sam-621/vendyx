@@ -1,8 +1,8 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { CreateZoneInput, ListInput, UpdateZoneInput } from '../../common';
 
-import { ID } from '@/app/persistance';
+import { ID, ZoneEntity } from '@/app/persistance';
 import { ZoneService, isErrorResult } from '@/app/service';
 
 @Resolver('Zone')
@@ -45,5 +45,10 @@ export class ZoneResolver {
     const result = await this.zoneService.setCountries(id, countriesIds);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], success: true };
+  }
+
+  @ResolveField('countries')
+  countries(@Parent() zone: ZoneEntity, @Args('input') input: ListInput) {
+    return this.zoneService.findCountries(zone.id, input);
   }
 }
