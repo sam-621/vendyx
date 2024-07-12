@@ -1,7 +1,8 @@
-import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, ManyToOne, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
 
 import { EBlocEntity } from './ebloc-entity';
 import { ShipmentEntity } from './shipment.entity';
+import { ZoneEntity } from './zone.entity';
 
 @TypeOrmEntity('shipping_method')
 export class ShippingMethodEntity extends EBlocEntity {
@@ -19,4 +20,7 @@ export class ShippingMethodEntity extends EBlocEntity {
 
   @OneToMany(() => ShipmentEntity, p => p.method)
   shipments: ShipmentEntity[];
+
+  @ManyToOne(() => ZoneEntity, z => z.shippingMethods)
+  zone: ZoneEntity;
 }

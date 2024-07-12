@@ -18,7 +18,8 @@ import {
   ProductEntity,
   ShipmentEntity,
   ShippingMethodEntity,
-  VariantEntity
+  VariantEntity,
+  ZoneEntity
 } from './entities';
 import { getConfig } from '../config';
 
@@ -39,7 +40,8 @@ export const ENTITIES = [
   PaymentMethodEntity,
   ShippingMethodEntity,
   AssetInProductEntity,
-  CountryEntity
+  CountryEntity,
+  ZoneEntity
 ];
 
 @Module({
