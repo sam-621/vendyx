@@ -56,6 +56,10 @@ export enum ProductErrorCode {
     PRODUCT_HAS_VARIANTS = "PRODUCT_HAS_VARIANTS"
 }
 
+export enum ShippingMethodErrorCode {
+    SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND"
+}
+
 export enum VariantErrorCode {
     VARIANT_NOT_FOUND = "VARIANT_NOT_FOUND",
     PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND"
@@ -328,11 +332,11 @@ export abstract class IMutation {
 
     abstract setCollectionsInProduct(id: string, collectionIds: string[]): ProductResult | Promise<ProductResult>;
 
-    abstract createShippingMethod(zoneId: string, input: CreateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
+    abstract createShippingMethod(zoneId: string, input: CreateShippingMethodInput): ShippingMethodResult | Promise<ShippingMethodResult>;
 
-    abstract updateShippingMethod(id: string, input: UpdateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
+    abstract updateShippingMethod(id: string, input: UpdateShippingMethodInput): ShippingMethodResult | Promise<ShippingMethodResult>;
 
-    abstract removeShippingMethod(id: string): ShippingMethod | Promise<ShippingMethod>;
+    abstract removeShippingMethod(id: string): RemoveShippingMethodResult | Promise<RemoveShippingMethodResult>;
 
     abstract createVariant(productId: string, input: CreateVariantInput): CreateVariantResult | Promise<CreateVariantResult>;
 
@@ -511,6 +515,21 @@ export class ProductErrorResult {
 export class ShippingMethodList implements List {
     items: ShippingMethod[];
     count: number;
+}
+
+export class ShippingMethodResult {
+    shippingMethod?: Nullable<ShippingMethod>;
+    apiErrors: ShippingMethodErrorResult[];
+}
+
+export class RemoveShippingMethodResult {
+    success?: Nullable<boolean>;
+    apiErrors: ShippingMethodErrorResult[];
+}
+
+export class ShippingMethodErrorResult {
+    code: ShippingMethodErrorCode;
+    message: string;
 }
 
 export class CreateVariantResult implements VariantResult {

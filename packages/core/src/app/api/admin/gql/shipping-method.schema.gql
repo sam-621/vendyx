@@ -4,9 +4,9 @@ type ShippingMethodList implements List {
 }
 
 type Mutation {
-  createShippingMethod(zoneId: ID!, input: CreateShippingMethodInput!): ShippingMethod!
-  updateShippingMethod(id: ID!, input: UpdateShippingMethodInput!): ShippingMethod!
-  removeShippingMethod(id: ID!): ShippingMethod!
+  createShippingMethod(zoneId: ID!, input: CreateShippingMethodInput!): ShippingMethodResult!
+  updateShippingMethod(id: ID!, input: UpdateShippingMethodInput!): ShippingMethodResult!
+  removeShippingMethod(id: ID!): RemoveShippingMethodResult!
 }
 
 input CreateShippingMethodInput {
@@ -21,4 +21,23 @@ input UpdateShippingMethodInput {
   description: String
   priceCalculatorCode: String
   enabled: Boolean
+}
+
+type ShippingMethodResult {
+  shippingMethod: ShippingMethod
+  apiErrors: [ShippingMethodErrorResult!]!
+}
+
+type RemoveShippingMethodResult {
+  success: Boolean
+  apiErrors: [ShippingMethodErrorResult!]!
+}
+
+type ShippingMethodErrorResult {
+  code: ShippingMethodErrorCode!
+  message: String!
+}
+
+enum ShippingMethodErrorCode {
+  SHIPPING_METHOD_NOT_FOUND
 }

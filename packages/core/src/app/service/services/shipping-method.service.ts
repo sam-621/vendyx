@@ -1,13 +1,28 @@
+import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
+import { ErrorResult } from '../utils';
+
+import {
+  CreateShippingMethodInput,
+  ShippingMethodErrorCode,
+  UpdateShippingMethodInput
+} from '@/app/api/common';
 import { getConfig } from '@/app/config';
 import { ID, OrderEntity, ShippingMethodEntity } from '@/app/persistance';
 
 @Injectable()
 export class ShippingMethodService {
   constructor(@InjectDataSource() private db: DataSource) {}
+
+  /**
+   * Find unique shipping method by id.
+   */
+  async findUnique(id: ID) {
+    return await this.db.getRepository(ShippingMethodEntity).findOne({ where: { id } });
+  }
 
   /**
    * Find all shipping methods.
@@ -31,6 +46,47 @@ export class ShippingMethodService {
     }
 
     return await this.getMethodsWithPrice(order, methods);
+  }
+
+  /**
+   * Create a new shipping method.
+   */
+  async create(input: CreateShippingMethodInput) {
+    return await this.db.getRepository(ShippingMethodEntity).save(clean(input));
+  }
+
+  /**
+   * Update a shipping method.
+   */
+  async update(id: ID, input: UpdateShippingMethodInput) {
+    const method = await this.findUnique(id);
+
+    if (!method) {
+      return new ErrorResult(
+        ShippingMethodErrorCode.SHIPPING_METHOD_NOT_FOUND,
+        'Shipping method not found'
+      );
+    }
+
+    return await this.db.getRepository(ShippingMethodEntity).save({ ...method, ...clean(input) });
+  }
+
+  /**
+   * Remove a shipping method.
+   */
+  async remove(id: ID) {
+    const method = await this.findUnique(id);
+
+    if (!method) {
+      return new ErrorResult(
+        ShippingMethodErrorCode.SHIPPING_METHOD_NOT_FOUND,
+        'Shipping method not found'
+      );
+    }
+
+    await this.db.getRepository(ShippingMethodEntity).remove(method);
+
+    return true;
   }
 
   /**
