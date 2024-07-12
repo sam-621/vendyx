@@ -61,6 +61,11 @@ export enum VariantErrorCode {
     PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND"
 }
 
+export enum ZoneErrorCode {
+    ZONE_NOT_FOUND = "ZONE_NOT_FOUND",
+    DUPLICATED_ZONE_NAME = "DUPLICATED_ZONE_NAME"
+}
+
 export enum AssetType {
     IMAGE = "IMAGE"
 }
@@ -155,6 +160,20 @@ export class UpdateProductInput {
     assets?: Nullable<AssetInEntityInput[]>;
 }
 
+export class CreateShippingMethodInput {
+    name: string;
+    description?: Nullable<string>;
+    priceCalculatorCode: string;
+    enabled?: Nullable<boolean>;
+}
+
+export class UpdateShippingMethodInput {
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    priceCalculatorCode?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+}
+
 export class CreateVariantInput {
     sku: string;
     price: number;
@@ -169,6 +188,14 @@ export class UpdateVariantInput {
     stock?: Nullable<number>;
     published?: Nullable<boolean>;
     optionValuesIds?: Nullable<string[]>;
+}
+
+export class CreateZoneInput {
+    name: string;
+}
+
+export class UpdateZoneInput {
+    name?: Nullable<string>;
 }
 
 export class CreateAddressInput {
@@ -301,11 +328,25 @@ export abstract class IMutation {
 
     abstract setCollectionsInProduct(id: string, collectionIds: string[]): ProductResult | Promise<ProductResult>;
 
+    abstract createShippingMethod(zoneId: string, input: CreateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
+
+    abstract updateShippingMethod(id: string, input: UpdateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
+
+    abstract removeShippingMethod(ids: string): ShippingMethod | Promise<ShippingMethod>;
+
     abstract createVariant(productId: string, input: CreateVariantInput): CreateVariantResult | Promise<CreateVariantResult>;
 
     abstract updateVariant(id: string, input: UpdateVariantInput): UpdateVariantResult | Promise<UpdateVariantResult>;
 
     abstract removeVariant(id: string): RemoveVariantResult | Promise<RemoveVariantResult>;
+
+    abstract createZone(input: CreateZoneInput): ZoneResult | Promise<ZoneResult>;
+
+    abstract updateZone(id: string, input: UpdateZoneInput): ZoneResult | Promise<ZoneResult>;
+
+    abstract removeZone(ids: string): RemoveZoneResult | Promise<RemoveZoneResult>;
+
+    abstract setCountriesToZone(id: string, countriesIds: string[]): Zone | Promise<Zone>;
 
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
@@ -344,6 +385,10 @@ export abstract class IQuery {
     abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
     abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
+
+    abstract zone(id: string): Nullable<Zone> | Promise<Nullable<Zone>>;
+
+    abstract zones(input?: Nullable<ListInput>): Nullable<ZoneList> | Promise<Nullable<ZoneList>>;
 
     abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
 
@@ -463,6 +508,11 @@ export class ProductErrorResult {
     message: string;
 }
 
+export class ShippingMethodList implements List {
+    items: ShippingMethod[];
+    count: number;
+}
+
 export class CreateVariantResult implements VariantResult {
     variant?: Nullable<Variant>;
     apiErrors: VariantErrorResult[];
@@ -480,6 +530,35 @@ export class RemoveVariantResult {
 
 export class VariantErrorResult {
     code: VariantErrorCode;
+    message: string;
+}
+
+export class Zone implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    countries?: CountryList;
+    shippingMethods?: ShippingMethodList;
+}
+
+export class ZoneList implements List {
+    items: Zone[];
+    count: number;
+}
+
+export class ZoneResult {
+    apiErrors: ZoneErrorResult[];
+    zone?: Nullable<Zone>;
+}
+
+export class RemoveZoneResult {
+    apiErrors: ZoneErrorResult[];
+    success?: Nullable<boolean>;
+}
+
+export class ZoneErrorResult {
+    code: ZoneErrorCode;
     message: string;
 }
 

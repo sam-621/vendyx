@@ -1,0 +1,55 @@
+type Zone implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+
+  countries(input: ListInput): CountryList!
+  shippingMethods(input: ListInput): ShippingMethodList!
+}
+
+type ZoneList implements List {
+  items: [Zone!]!
+  count: Int!
+}
+
+type Query {
+  zone(id: ID!): Zone
+  zones(input: ListInput): ZoneList
+}
+
+type Mutation {
+  createZone(input: CreateZoneInput!): ZoneResult!
+  updateZone(id: ID!, input: UpdateZoneInput!): ZoneResult!
+  removeZone(ids: ID!): RemoveZoneResult!
+
+  setCountriesToZone(id: ID!, countriesIds: [ID!]!): Zone!
+}
+
+input CreateZoneInput {
+  name: String!
+}
+
+input UpdateZoneInput {
+  name: String
+}
+
+type ZoneResult {
+  apiErrors: [ZoneErrorResult!]!
+  zone: Zone
+}
+
+type RemoveZoneResult {
+  apiErrors: [ZoneErrorResult!]!
+  success: Boolean
+}
+
+type ZoneErrorResult {
+  code: ZoneErrorCode!
+  message: String!
+}
+
+enum ZoneErrorCode {
+  ZONE_NOT_FOUND
+  DUPLICATED_ZONE_NAME
+}

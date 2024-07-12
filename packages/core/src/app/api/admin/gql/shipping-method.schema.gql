@@ -1,0 +1,24 @@
+type ShippingMethodList implements List {
+  items: [ShippingMethod!]!
+  count: Int!
+}
+
+type Mutation {
+  createShippingMethod(zoneId: ID!, input: CreateShippingMethodInput!): ShippingMethod!
+  updateShippingMethod(id: ID!, input: UpdateShippingMethodInput!): ShippingMethod!
+  removeShippingMethod(ids: ID!): ShippingMethod!
+}
+
+input CreateShippingMethodInput {
+  name: String!
+  description: String
+  priceCalculatorCode: String!
+  enabled: Boolean
+}
+
+input UpdateShippingMethodInput {
+  name: String
+  description: String
+  priceCalculatorCode: String
+  enabled: Boolean
+}
