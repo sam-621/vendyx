@@ -22,7 +22,6 @@ type Mutation {
   createZone(input: CreateZoneInput!): ZoneResult!
   updateZone(id: ID!, input: UpdateZoneInput!): ZoneResult!
   removeZone(id: ID!): RemoveZoneResult!
-
   setCountriesToZone(id: ID!, countriesIds: [ID!]!): Zone!
 }
 

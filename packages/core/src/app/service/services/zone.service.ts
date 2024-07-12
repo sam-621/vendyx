@@ -77,14 +77,14 @@ export class ZoneService {
   /**
    * Remove a zone by the given id and its shipping methods.
    */
-  async removeZone(id: ID) {
+  async remove(id: ID) {
     const zone = await this.findUnique({ id });
 
     if (!zone) {
       return new ErrorResult(ZoneErrorCode.ZONE_NOT_FOUND, 'Zone not found');
     }
 
-    await this.db.getRepository(ZoneEntity).remove(zone);
+    return await this.db.getRepository(ZoneEntity).remove(zone);
   }
 
   /**

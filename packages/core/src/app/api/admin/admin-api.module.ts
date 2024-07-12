@@ -11,7 +11,8 @@ import {
   OptionResolver,
   OrderResolver,
   ProductResolver,
-  VariantResolver
+  VariantResolver,
+  ZoneResolver
 } from './resolvers';
 import { COMMON_RESOLVERS } from '../common/common-resolvers';
 import { GraphqlApiModule } from '../common/graphql-api.module';
@@ -51,6 +52,7 @@ export class AdminApiModule {
     CollectionResolver,
     AssetResolver,
     CountryResolver,
+    ZoneResolver,
     ...getPluginResolvers('admin')
   ]
 })
