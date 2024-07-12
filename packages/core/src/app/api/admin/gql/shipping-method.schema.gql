@@ -6,7 +6,7 @@ type ShippingMethodList implements List {
 type Mutation {
   createShippingMethod(zoneId: ID!, input: CreateShippingMethodInput!): ShippingMethod!
   updateShippingMethod(id: ID!, input: UpdateShippingMethodInput!): ShippingMethod!
-  removeShippingMethod(ids: ID!): ShippingMethod!
+  removeShippingMethod(id: ID!): ShippingMethod!
 }
 
 input CreateShippingMethodInput {

@@ -332,7 +332,7 @@ export abstract class IMutation {
 
     abstract updateShippingMethod(id: string, input: UpdateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
 
-    abstract removeShippingMethod(ids: string): ShippingMethod | Promise<ShippingMethod>;
+    abstract removeShippingMethod(id: string): ShippingMethod | Promise<ShippingMethod>;
 
     abstract createVariant(productId: string, input: CreateVariantInput): CreateVariantResult | Promise<CreateVariantResult>;
 
@@ -344,7 +344,7 @@ export abstract class IMutation {
 
     abstract updateZone(id: string, input: UpdateZoneInput): ZoneResult | Promise<ZoneResult>;
 
-    abstract removeZone(ids: string): RemoveZoneResult | Promise<RemoveZoneResult>;
+    abstract removeZone(id: string): RemoveZoneResult | Promise<RemoveZoneResult>;
 
     abstract setCountriesToZone(id: string, countriesIds: string[]): Zone | Promise<Zone>;
 
@@ -738,7 +738,7 @@ export class Payment implements Node {
     updatedAt: Date;
     transactionId?: Nullable<string>;
     amount: number;
-    method: PaymentMethod;
+    method: string;
 }
 
 export class PaymentList implements List {
@@ -772,8 +772,8 @@ export class Shipment implements Node {
     trackingCode?: Nullable<string>;
     carrier?: Nullable<string>;
     amount: number;
+    method: string;
     order: Order;
-    method: ShippingMethod;
 }
 
 export class ShipmentList implements List {

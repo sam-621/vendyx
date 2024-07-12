@@ -1,7 +1,6 @@
-import { Column, ManyToOne, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, Entity as TypeOrmEntity } from 'typeorm';
 
 import { EBlocEntity } from './ebloc-entity';
-import { PaymentMethodEntity } from './payment-method.entity';
 
 @TypeOrmEntity('payment')
 export class PaymentEntity extends EBlocEntity {
@@ -17,6 +16,9 @@ export class PaymentEntity extends EBlocEntity {
   @Column('int')
   amount: number;
 
-  @ManyToOne(() => PaymentMethodEntity, m => m.payments)
-  method: PaymentMethodEntity;
+  /**
+   * The Payment method name used for the payment
+   */
+  @Column('varchar')
+  method: string;
 }

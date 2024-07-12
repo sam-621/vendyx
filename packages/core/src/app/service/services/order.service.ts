@@ -441,7 +441,7 @@ export class OrderService {
 
     const shipment = await this.db.getRepository(ShipmentEntity).save({
       amount: shippingPrice,
-      method: shippingMethod
+      method: shippingMethod.name
     });
 
     await this.db.getRepository(OrderEntity).save({
@@ -517,7 +517,7 @@ export class OrderService {
     if (paymentIntegrationResult.status === 'created') {
       const payment = await this.db.getRepository(PaymentEntity).save({
         amount: order.total,
-        method: paymentMethod
+        method: paymentMethod.name
       });
 
       orderToReturn = await this.db.getRepository(OrderEntity).save({
@@ -531,7 +531,7 @@ export class OrderService {
     if (paymentIntegrationResult.status === 'authorized') {
       const payment = await this.db.getRepository(PaymentEntity).save({
         amount: paymentIntegrationResult.amount,
-        method: paymentMethod,
+        method: paymentMethod.name,
         transactionId: paymentIntegrationResult.transactionId
       });
 

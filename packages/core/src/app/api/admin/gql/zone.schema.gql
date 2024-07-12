@@ -21,7 +21,7 @@ type Query {
 type Mutation {
   createZone(input: CreateZoneInput!): ZoneResult!
   updateZone(id: ID!, input: UpdateZoneInput!): ZoneResult!
-  removeZone(ids: ID!): RemoveZoneResult!
+  removeZone(id: ID!): RemoveZoneResult!
 
   setCountriesToZone(id: ID!, countriesIds: [ID!]!): Zone!
 }

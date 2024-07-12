@@ -4,7 +4,7 @@ type Payment implements Node {
   updatedAt: Date!
   transactionId: String
   amount: Int!
-  method: PaymentMethod!
+  method: String!
 }
 
 type PaymentList implements List {

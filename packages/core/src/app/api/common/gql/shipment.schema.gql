@@ -5,9 +5,9 @@ type Shipment implements Node {
   trackingCode: String
   carrier: String
   amount: Int!
+  method: String!
 
   order: Order!
-  method: ShippingMethod!
 }
 
 type ShipmentList implements List {

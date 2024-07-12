@@ -1,7 +1,6 @@
-import { Column, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, Entity as TypeOrmEntity } from 'typeorm';
 
 import { EBlocEntity } from './ebloc-entity';
-import { PaymentEntity } from './payment.entity';
 
 @TypeOrmEntity('payment_method')
 export class PaymentMethodEntity extends EBlocEntity {
@@ -19,7 +18,4 @@ export class PaymentMethodEntity extends EBlocEntity {
 
   @Column('boolean')
   enabled: boolean;
-
-  @OneToMany(() => PaymentEntity, p => p.method)
-  payments: PaymentEntity[];
 }

@@ -1,7 +1,6 @@
-import { Column, ManyToOne, OneToMany, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, ManyToOne, Entity as TypeOrmEntity } from 'typeorm';
 
 import { EBlocEntity } from './ebloc-entity';
-import { ShipmentEntity } from './shipment.entity';
 import { ZoneEntity } from './zone.entity';
 
 @TypeOrmEntity('shipping_method')
@@ -18,9 +17,6 @@ export class ShippingMethodEntity extends EBlocEntity {
   @Column('boolean')
   enabled: boolean;
 
-  @OneToMany(() => ShipmentEntity, p => p.method)
-  shipments: ShipmentEntity[];
-
-  @ManyToOne(() => ZoneEntity, z => z.shippingMethods)
+  @ManyToOne(() => ZoneEntity, z => z.shippingMethods, { onDelete: 'CASCADE' }) // If a zone is deleted, all its shipping methods will be deleted
   zone: ZoneEntity;
 }

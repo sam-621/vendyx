@@ -1,7 +1,6 @@
-import { Column, ManyToOne, Entity as TypeOrmEntity } from 'typeorm';
+import { Column, Entity as TypeOrmEntity } from 'typeorm';
 
 import { EBlocEntity } from './ebloc-entity';
-import { ShippingMethodEntity } from './shipping-method.entity';
 
 @TypeOrmEntity('shipment')
 export class ShipmentEntity extends EBlocEntity {
@@ -14,6 +13,9 @@ export class ShipmentEntity extends EBlocEntity {
   @Column('int')
   amount: number;
 
-  @ManyToOne(() => ShippingMethodEntity, s => s.shipments)
-  method: ShippingMethodEntity;
+  /**
+   * The Shipping method name used for the shipment
+   */
+  @Column('varchar')
+  method: string;
 }
