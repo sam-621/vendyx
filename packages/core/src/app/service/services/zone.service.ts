@@ -103,6 +103,15 @@ export class ZoneService {
       .getRepository(CountryEntity)
       .find({ where: { id: In(countriesIds) } });
 
+    const countryDisabled = countries.find(country => !country.enabled);
+
+    if (countryDisabled) {
+      return new ErrorResult(
+        ZoneErrorCode.DISABLED_COUNTRY,
+        `Country with id "${countryDisabled.id}" is disabled`
+      );
+    }
+
     return this.db.getRepository(ZoneEntity).save({
       ...zone,
       countries

@@ -67,7 +67,8 @@ export enum VariantErrorCode {
 
 export enum ZoneErrorCode {
     ZONE_NOT_FOUND = "ZONE_NOT_FOUND",
-    DUPLICATED_ZONE_NAME = "DUPLICATED_ZONE_NAME"
+    DUPLICATED_ZONE_NAME = "DUPLICATED_ZONE_NAME",
+    DISABLED_COUNTRY = "DISABLED_COUNTRY"
 }
 
 export enum AssetType {
