@@ -169,8 +169,8 @@ export class UpdateProductInput {
 
 export class CreateShippingMethodInput {
     name: string;
-    description?: Nullable<string>;
     priceCalculatorCode: string;
+    description?: Nullable<string>;
     enabled?: Nullable<boolean>;
 }
 

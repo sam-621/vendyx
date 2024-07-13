@@ -26,7 +26,10 @@ export const GetZonesQuery = graphql(`
   query GetZones {
     zones {
       items {
-        ...CommonZone
+        id
+        shippingMethods {
+          count
+        }
       }
     }
   }

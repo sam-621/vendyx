@@ -8,7 +8,7 @@ export const CreateShippingMethodMutation = graphql(`
         message
       }
       shippingMethod {
-        ...CommonShippingMethod
+        id
       }
     }
   }
@@ -22,7 +22,7 @@ export const UpdateShippingMethodMutation = graphql(`
         message
       }
       shippingMethod {
-        ...CommonShippingMethod
+        id
       }
     }
   }

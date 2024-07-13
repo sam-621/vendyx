@@ -34,9 +34,16 @@ const documents = {
     "\n  mutation CreateProduct($createProductInput: CreateProductInput!) {\n    createProduct(input: $createProductInput) {\n      apiErrors {\n        message\n        code\n      }\n      product {\n        id\n      }\n    }\n  }\n": types.CreateProductDocument,
     "\n  mutation RemoveProduct($productId: ID!) {\n    removeProduct(id: $productId) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveProductDocument,
     "\n  mutation UpdateProduct($productId: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $productId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      product {\n        id\n      }\n    }\n  }\n": types.UpdateProductDocument,
+    "\n  mutation CreateShippingMethod($zoneId: ID!, $input: CreateShippingMethodInput!) {\n    createShippingMethod(zoneId: $zoneId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n": types.CreateShippingMethodDocument,
+    "\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n": types.UpdateShippingMethodDocument,
+    "\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveShippingMethodDocument,
     "\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n": types.CreateVariantDocument,
     "\n  mutation RemoveVariant($removeVariantId: ID!) {\n    removeVariant(id: $removeVariantId) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveVariantDocument,
     "\n  mutation UpdateVariant($updateVariantId: ID!, $updateVariantInput: UpdateVariantInput!) {\n    updateVariant(id: $updateVariantId, input: $updateVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n        price\n        stock\n        sku\n      }\n    }\n  }\n": types.UpdateVariantDocument,
+    "\n  mutation CreateZone($input: CreateZoneInput!) {\n    createZone(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n": types.CreateZoneDocument,
+    "\n  mutation UpdateZone($id: ID!, $input: UpdateZoneInput!) {\n    updateZone(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n": types.UpdateZoneDocument,
+    "\n  mutation RemoveZone($id: ID!) {\n    removeZone(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n": types.RemoveZoneDocument,
+    "\n  mutation SetCountriesInZone($id: ID!, $countriesIds: [ID!]!) {\n    setCountriesToZone(id: $id, countriesIds: $countriesIds) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n": types.SetCountriesInZoneDocument,
     "\n  query ValidateToken {\n    validateToken\n  }\n": types.ValidateTokenDocument,
     "\n  fragment CommonCollection on Collection {\n    id\n    createdAt\n    name\n    slug\n    description\n    published\n    products {\n      count\n      items {\n        id\n        name\n        slug\n        published\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        variants {\n          items {\n            stock\n          }\n        }\n      }\n    }\n  }\n": types.CommonCollectionFragmentDoc,
     "\n  query GetCollections {\n    collections {\n      items {\n        id\n        createdAt\n        name\n        slug\n        published\n        products {\n          count\n        }\n      }\n    }\n  }\n": types.GetCollectionsDocument,
@@ -53,6 +60,9 @@ const documents = {
     "\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    onlineOnly\n    published\n    options {\n      id\n      name\n      values {\n        id\n        value\n      }\n    }\n    variants {\n      items {\n        id\n        price\n        sku\n        stock\n        published\n        optionValues {\n          id\n          value\n        }\n      }\n    }\n    assets {\n      items {\n        id\n        createdAt\n        name\n        source\n        order\n      }\n    }\n  }\n": types.CommonProductFragmentDoc,
     "\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        name\n        slug\n        onlineOnly\n        published\n        variants {\n          items {\n            id\n            sku\n            stock\n            price\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n": types.GetProductsDocument,
     "\n  query GetProductDetails($slug: String!) {\n    product(slug: $slug) {\n      ...CommonProduct\n    }\n  }\n": types.GetProductDetailsDocument,
+    "\n  fragment CommonZone on Zone {\n    id\n    createdAt\n    name\n    countries {\n      items {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      items {\n        id\n        name\n        description\n        priceCalculatorCode\n      }\n    }\n  }\n": types.CommonZoneFragmentDoc,
+    "\n  query GetZones {\n    zones {\n      items {\n        id\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n": types.GetZonesDocument,
+    "\n  query GetZone($id: ID!) {\n    zone(id: $id) {\n      ...CommonZone\n    }\n  }\n": types.GetZoneDocument,
 };
 
 /**
@@ -156,6 +166,18 @@ export function graphql(source: "\n  mutation UpdateProduct($productId: ID!, $in
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation CreateShippingMethod($zoneId: ID!, $input: CreateShippingMethodInput!) {\n    createShippingMethod(zoneId: $zoneId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateShippingMethod($zoneId: ID!, $input: CreateShippingMethodInput!) {\n    createShippingMethod(zoneId: $zoneId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateVariant($createVariantProductId: ID!, $createVariantInput: CreateVariantInput!) {\n    createVariant(productId: $createVariantProductId, input: $createVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -165,6 +187,22 @@ export function graphql(source: "\n  mutation RemoveVariant($removeVariantId: ID
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation UpdateVariant($updateVariantId: ID!, $updateVariantInput: UpdateVariantInput!) {\n    updateVariant(id: $updateVariantId, input: $updateVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n        price\n        stock\n        sku\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateVariant($updateVariantId: ID!, $updateVariantInput: UpdateVariantInput!) {\n    updateVariant(id: $updateVariantId, input: $updateVariantInput) {\n      apiErrors {\n        message\n        code\n      }\n      variant {\n        id\n        price\n        stock\n        sku\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateZone($input: CreateZoneInput!) {\n    createZone(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateZone($input: CreateZoneInput!) {\n    createZone(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateZone($id: ID!, $input: UpdateZoneInput!) {\n    updateZone(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateZone($id: ID!, $input: UpdateZoneInput!) {\n    updateZone(id: $id, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation RemoveZone($id: ID!) {\n    removeZone(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n"): (typeof documents)["\n  mutation RemoveZone($id: ID!) {\n    removeZone(id: $id) {\n      apiErrors {\n        code\n        message\n      }\n      success\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation SetCountriesInZone($id: ID!, $countriesIds: [ID!]!) {\n    setCountriesToZone(id: $id, countriesIds: $countriesIds) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation SetCountriesInZone($id: ID!, $countriesIds: [ID!]!) {\n    setCountriesToZone(id: $id, countriesIds: $countriesIds) {\n      apiErrors {\n        code\n        message\n      }\n      zone {\n        id\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -229,6 +267,18 @@ export function graphql(source: "\n  query GetProducts($input: ListInput) {\n   
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetProductDetails($slug: String!) {\n    product(slug: $slug) {\n      ...CommonProduct\n    }\n  }\n"): (typeof documents)["\n  query GetProductDetails($slug: String!) {\n    product(slug: $slug) {\n      ...CommonProduct\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment CommonZone on Zone {\n    id\n    createdAt\n    name\n    countries {\n      items {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      items {\n        id\n        name\n        description\n        priceCalculatorCode\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment CommonZone on Zone {\n    id\n    createdAt\n    name\n    countries {\n      items {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      items {\n        id\n        name\n        description\n        priceCalculatorCode\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetZones {\n    zones {\n      items {\n        id\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetZones {\n    zones {\n      items {\n        id\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetZone($id: ID!) {\n    zone(id: $id) {\n      ...CommonZone\n    }\n  }\n"): (typeof documents)["\n  query GetZone($id: ID!) {\n    zone(id: $id) {\n      ...CommonZone\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
