@@ -28,7 +28,7 @@ export const ZonesTable: FC<Props> = ({ zones }) => {
           <CardDescription>Group rates by zones</CardDescription>
         </div>
         <div>
-          <Link to="/settings/countries/new">
+          <Link to="/settings/shipments/new">
             <Button variant="secondary" size="sm" className="gap-2">
               <PlusIcon size={16} />
               Add Zone

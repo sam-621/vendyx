@@ -1,13 +1,20 @@
+import { useEffect } from 'react';
+
 import { type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 import { FormMessages, useForm } from '@/lib/form';
 
-export const useZoneDetailsForm = () => {
+export const useZoneDetailsForm = (zone?: CommonZoneFragment | null | undefined) => {
   const form = useForm<ZoneDetailsFormInput>({
     resolver: zodResolver(schema)
   });
+
+  useEffect(() => {
+    form.reset({ name: zone?.name ?? '' });
+  }, [zone]);
 
   const onSubmit = (input: ZoneDetailsFormInput) => {
     console.log(input);

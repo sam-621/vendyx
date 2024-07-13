@@ -3,8 +3,9 @@ import { FormProvider } from 'react-hook-form';
 import { SettingsPageLayout } from '@/lib/components';
 
 import { useZoneDetailsForm } from '../components/zone-details/use-zone-details-form';
+import { ZoneDetails } from '../components/zone-details/zone-details';
 
-export const ZoneDetailsPage = () => {
+export const CreateZonePage = () => {
   const form = useZoneDetailsForm();
 
   return (
@@ -13,8 +14,10 @@ export const ZoneDetailsPage = () => {
         <SettingsPageLayout
           title="Create Zone"
           subtitle="Create zones to add rates for places you want to deliver."
-          backUrl="/settings/shipment/zones"
-        ></SettingsPageLayout>
+          backUrl="/settings/shipments"
+        >
+          <ZoneDetails />
+        </SettingsPageLayout>
       </form>
     </FormProvider>
   );
