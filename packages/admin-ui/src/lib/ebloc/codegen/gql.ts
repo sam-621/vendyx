@@ -61,7 +61,7 @@ const documents = {
     "\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        name\n        slug\n        onlineOnly\n        published\n        variants {\n          items {\n            id\n            sku\n            stock\n            price\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n": types.GetProductsDocument,
     "\n  query GetProductDetails($slug: String!) {\n    product(slug: $slug) {\n      ...CommonProduct\n    }\n  }\n": types.GetProductDetailsDocument,
     "\n  fragment CommonZone on Zone {\n    id\n    createdAt\n    name\n    countries {\n      items {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      items {\n        id\n        name\n        description\n        priceCalculatorCode\n      }\n    }\n  }\n": types.CommonZoneFragmentDoc,
-    "\n  query GetZones {\n    zones {\n      items {\n        id\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n": types.GetZonesDocument,
+    "\n  query GetZones {\n    zones {\n      items {\n        id\n        name\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n": types.GetZonesDocument,
     "\n  query GetZone($id: ID!) {\n    zone(id: $id) {\n      ...CommonZone\n    }\n  }\n": types.GetZoneDocument,
 };
 
@@ -274,7 +274,7 @@ export function graphql(source: "\n  fragment CommonZone on Zone {\n    id\n    
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetZones {\n    zones {\n      items {\n        id\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetZones {\n    zones {\n      items {\n        id\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetZones {\n    zones {\n      items {\n        id\n        name\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetZones {\n    zones {\n      items {\n        id\n        name\n        shippingMethods {\n          count\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

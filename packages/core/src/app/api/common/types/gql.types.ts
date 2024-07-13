@@ -395,7 +395,7 @@ export abstract class IQuery {
 
     abstract zone(id: string): Nullable<Zone> | Promise<Nullable<Zone>>;
 
-    abstract zones(input?: Nullable<ListInput>): Nullable<ZoneList> | Promise<Nullable<ZoneList>>;
+    abstract zones(input?: Nullable<ListInput>): ZoneList | Promise<ZoneList>;
 
     abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
 

@@ -15,7 +15,7 @@ type ZoneList implements List {
 
 type Query {
   zone(id: ID!): Zone
-  zones(input: ListInput): ZoneList
+  zones(input: ListInput): ZoneList!
 }
 
 type Mutation {
