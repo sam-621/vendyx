@@ -29,7 +29,8 @@ export class ShippingMethodService {
    */
   private async find({ onlyEnabled = false }: { onlyEnabled?: boolean }) {
     return await this.db.getRepository(ShippingMethodEntity).find({
-      where: { enabled: onlyEnabled || undefined }
+      where: { enabled: onlyEnabled || undefined },
+      order: { createdAt: 'ASC' }
     });
   }
 

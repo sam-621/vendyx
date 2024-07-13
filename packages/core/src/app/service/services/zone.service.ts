@@ -32,7 +32,8 @@ export class ZoneService {
    */
   find(input?: ListInput) {
     return this.db.getRepository(ZoneEntity).find({
-      ...clean(input ?? {})
+      ...clean(input ?? {}),
+      order: { createdAt: 'ASC' }
     });
   }
 
