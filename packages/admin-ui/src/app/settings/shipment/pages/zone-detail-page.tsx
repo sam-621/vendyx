@@ -1,10 +1,11 @@
 import { FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { LogoLoader, SettingsPageLayout } from '@/lib/components';
 
 import { useZoneDetailsForm } from '../components/zone-details/use-zone-details-form';
 import { ZoneDetails } from '../components/zone-details/zone-details';
+import { ZoneDetailsSubmitButton } from '../components/zone-details/zone-details-submit-button';
 import { useGetZone } from '../hooks';
 
 export const ZoneDetailsPage = () => {
@@ -17,6 +18,10 @@ export const ZoneDetailsPage = () => {
     return <LogoLoader />;
   }
 
+  if (!zone) {
+    return <Navigate to="/settings/shipments" />;
+  }
+
   return (
     <FormProvider {...form}>
       <form onSubmit={form.onSubmit}>
@@ -24,6 +29,7 @@ export const ZoneDetailsPage = () => {
           title="Create Zone"
           subtitle="Create zones to add rates for places you want to deliver."
           backUrl="/settings/shipments"
+          actions={<ZoneDetailsSubmitButton zone={zone} />}
         >
           <ZoneDetails />
         </SettingsPageLayout>

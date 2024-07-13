@@ -1,5 +1,7 @@
 import { FormProvider } from 'react-hook-form';
 
+import { Button } from '@ebloc/theme';
+
 import { SettingsPageLayout } from '@/lib/components';
 
 import { useZoneDetailsForm } from '../components/zone-details/use-zone-details-form';
@@ -15,6 +17,11 @@ export const CreateZonePage = () => {
           title="Create Zone"
           subtitle="Create zones to add rates for places you want to deliver."
           backUrl="/settings/shipments"
+          actions={
+            <Button type="submit" isLoading={form.formState.isSubmitting}>
+              Save
+            </Button>
+          }
         >
           <ZoneDetails />
         </SettingsPageLayout>
