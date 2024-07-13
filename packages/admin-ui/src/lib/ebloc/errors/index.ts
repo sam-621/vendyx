@@ -5,4 +5,5 @@ export * from './customer.errors';
 export * from './option.errors';
 export * from './order.errors';
 export * from './product.errors';
+export * from './shipping-method.errors';
 export * from './zone.errors';
