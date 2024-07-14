@@ -4,7 +4,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, Not } from 'typeorm';
 
-import { ErrorResult, ValidOrderTransitions, validateEmail } from '../utils';
+import { ErrorResult, ValidOrderTransitions, convertArgsToObject, validateEmail } from '../utils';
 
 import {
   AddCustomerToOrderInput,
@@ -427,7 +427,7 @@ export class OrderService {
 
     // TODO: Do I have to validate if calculator exists?
     const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
-      p => p.code === shippingMethod.priceCalculatorCode
+      p => p.code === shippingMethod.priceCalculator.code
     );
 
     if (!shippingPriceCalculator) {
@@ -437,7 +437,10 @@ export class OrderService {
       );
     }
 
-    const shippingPrice = await shippingPriceCalculator.calculatePrice(order);
+    const shippingPrice = await shippingPriceCalculator.calculatePrice(
+      order,
+      convertArgsToObject(shippingMethod.priceCalculator.args)
+    );
 
     const shipment = await this.db.getRepository(ShipmentEntity).save({
       amount: shippingPrice,

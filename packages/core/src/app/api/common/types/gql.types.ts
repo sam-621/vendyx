@@ -113,6 +113,16 @@ export class UpdateCollectionInput {
     published?: Nullable<boolean>;
 }
 
+export class ConfigurablePropertyInput {
+    code: string;
+    args: ConfigurablePropertyArgInput[];
+}
+
+export class ConfigurablePropertyArgInput {
+    key: string;
+    value: string;
+}
+
 export class CreateCountryInput {
     name: string;
 }
@@ -169,15 +179,15 @@ export class UpdateProductInput {
 
 export class CreateShippingMethodInput {
     name: string;
-    priceCalculatorCode: string;
+    priceCalculator: ConfigurablePropertyInput;
     description?: Nullable<string>;
     enabled?: Nullable<boolean>;
 }
 
 export class UpdateShippingMethodInput {
     name?: Nullable<string>;
+    priceCalculator?: Nullable<ConfigurablePropertyInput>;
     description?: Nullable<string>;
-    priceCalculatorCode?: Nullable<string>;
     enabled?: Nullable<boolean>;
 }
 
@@ -455,6 +465,16 @@ export class CollectionErrorResult {
     message: string;
 }
 
+export class ConfigurableProperty {
+    code: string;
+    args: ConfigurablePropertyArg[];
+}
+
+export class ConfigurablePropertyArg {
+    key: string;
+    value: string;
+}
+
 export class RemoveCountryResult {
     success?: Nullable<boolean>;
     apiErrors: CountryErrorResult[];
@@ -516,7 +536,7 @@ export class ProductErrorResult {
 }
 
 export class ShippingMethod implements Node {
-    priceCalculatorCode: string;
+    priceCalculator: ConfigurableProperty;
     id: string;
     createdAt: Date;
     updatedAt: Date;

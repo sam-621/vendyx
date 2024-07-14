@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { ErrorResult } from '../utils';
+import { ErrorResult, convertArgsToObject } from '../utils';
 
 import {
   CreateShippingMethodInput,
@@ -60,7 +60,7 @@ export class ShippingMethodService {
     }
 
     const priceCalculatorExists = getConfig().shipping.priceCalculators.find(
-      pc => pc.code === input.priceCalculatorCode
+      pc => pc.code === input.priceCalculator.code
     );
 
     if (!priceCalculatorExists) {
@@ -90,10 +90,10 @@ export class ShippingMethodService {
     }
 
     const priceCalculatorExists = getConfig().shipping.priceCalculators.find(
-      pc => pc.code === input.priceCalculatorCode
+      pc => pc.code === input.priceCalculator?.code
     );
 
-    if (!priceCalculatorExists && input.priceCalculatorCode) {
+    if (!priceCalculatorExists && input.priceCalculator?.code) {
       return new ErrorResult(
         ShippingMethodErrorCode.SHIPPING_PRICE_CALCULATOR_NOT_FOUND,
         'Price calculator not found'
@@ -129,10 +129,13 @@ export class ShippingMethodService {
 
     for (const method of methods) {
       const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
-        p => p.code === method.priceCalculatorCode
+        p => p.code === method.priceCalculator.code
       );
 
-      const price = await shippingPriceCalculator?.calculatePrice(order);
+      const price = await shippingPriceCalculator?.calculatePrice(
+        order,
+        convertArgsToObject(method.priceCalculator.args)
+      );
 
       methodsWithPrice.push({ ...method, price: price ?? 0 });
     }

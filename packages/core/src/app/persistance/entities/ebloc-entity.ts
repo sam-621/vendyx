@@ -23,3 +23,10 @@ export abstract class EBlocEntity extends EntitySchema {
 }
 
 export type ID = string;
+export type ConfigurableProperty = {
+  code: string;
+  args: {
+    key: string;
+    value: string;
+  }[];
+};

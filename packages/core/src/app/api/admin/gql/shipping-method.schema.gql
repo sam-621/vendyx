@@ -1,5 +1,5 @@
 extend type ShippingMethod {
-  priceCalculatorCode: String!
+  priceCalculator: ConfigurableProperty!
 }
 
 type ShippingMethodList implements List {
@@ -15,15 +15,15 @@ type Mutation {
 
 input CreateShippingMethodInput {
   name: String!
-  priceCalculatorCode: String!
+  priceCalculator: ConfigurablePropertyInput!
   description: String
   enabled: Boolean
 }
 
 input UpdateShippingMethodInput {
   name: String
+  priceCalculator: ConfigurablePropertyInput
   description: String
-  priceCalculatorCode: String
   enabled: Boolean
 }
 

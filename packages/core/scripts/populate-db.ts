@@ -80,21 +80,25 @@ const cleanDb = async () => {
   console.log();
 
   console.log('Adding shipping and payment methods 🚚 💳');
-  await dataSource.getRepository(ShippingMethodEntity).save([
-    {
-      id: '96f617d5-0e01-4993-97c7-512d2870efd4',
-      name: 'Express',
-      description: 'Deliver on 3 or 5 working days',
-      priceCalculatorCode: 'flat-price-calculator',
-      zone
-    },
-    {
-      name: 'Standard',
-      description: 'Deliver on 5 or 7 working days',
-      priceCalculatorCode: 'flat-price-calculator',
-      zone
-    }
-  ]);
+
+  // await dataSource.getRepository(ShippingMethodEntity).save([
+  //   {
+  //     id: '96f617d5-0e01-4993-97c7-512d2870efd4',
+  //     name: 'Express',
+  //     description: 'Deliver on 3 or 5 working days',
+  //     priceCalculator: {
+  //       code: 'flat-price-calculator',
+  //       args: [
+  //         {
+  //           key: 'price',
+  //           value: '100'
+  //         }
+  //       ]
+  //     },
+  //     zone
+  //   }
+  // ]);
+
   await dataSource.getRepository(PaymentMethodEntity).save([
     {
       id: 'd438933f-7fb3-4c7b-9424-ead4cae81866',
