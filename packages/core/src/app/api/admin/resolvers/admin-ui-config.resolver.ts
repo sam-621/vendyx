@@ -1,12 +1,8 @@
-import { UseGuards } from '@nestjs/common';
 import { Query, Resolver } from '@nestjs/graphql';
-
-import { AdminJwtAuthGuard } from '../../common';
 
 import { getConfig } from '@/app/config';
 import { EBlocPluginMetadataKeys, UiModuleConfig, getPluginMetadata } from '@/app/plugin';
 
-@UseGuards(AdminJwtAuthGuard)
 @Resolver('AdminUiConfig')
 export class AdminUiConfigResolver {
   @Query('adminUiConfig')

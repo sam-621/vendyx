@@ -1,15 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
-
-import { type AdminUiConfig } from '@/lib/ebloc/rest';
-import { restFetcher } from '@/lib/rest';
+import { GetAdminUiConfigQuery } from '@/lib/ebloc/queries';
+import { useGqlQuery } from '@/lib/gql';
 
 import { ConfigKeys } from './config.keys';
 
 export const useGetAdminUiConfig = () => {
-  const result = useQuery({
-    queryKey: ConfigKeys.config,
-    queryFn: async () => await restFetcher<AdminUiConfig>({ url: 'admin-ui-config' })
+  const { data, isLoading } = useGqlQuery({
+    document: GetAdminUiConfigQuery,
+    key: ConfigKeys.config
   });
 
-  return result;
+  return {
+    data: data?.adminUiConfig,
+    isLoading
+  };
 };
