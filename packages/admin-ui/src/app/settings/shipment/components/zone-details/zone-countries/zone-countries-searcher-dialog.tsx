@@ -8,11 +8,12 @@ import { useGetCountries } from '@/app/settings/country';
 import { EntitySearchEmptyState, EntitySearcherDialog } from '@/lib/components';
 import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 
-import { useSetCountriesToZone } from '../../../hooks';
+import { useZoneCountriesForm } from './use-zone-countries-form';
 
 export const ZoneCountriesSearcherDialog: FC<Props> = ({ zone }) => {
+  const { onDone } = useZoneCountriesForm(zone);
+
   const { countries } = useGetCountries();
-  const { setCountriesToZone } = useSetCountriesToZone();
 
   const countriesInZone = zone.countries.items.map(c => c.id) ?? [];
 
@@ -24,9 +25,9 @@ export const ZoneCountriesSearcherDialog: FC<Props> = ({ zone }) => {
       defaultSelectedItems={countriesInZone}
       item={item => <p>{item.name}</p>}
       onDone={async selectedIds => {
-        const { error } = await setCountriesToZone(zone.id, selectedIds);
+        const { success } = await onDone(selectedIds);
 
-        return { closeModal: !error };
+        return { closeModal: success };
       }}
       emptyState={
         <EntitySearchEmptyState
