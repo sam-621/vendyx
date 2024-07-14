@@ -16,7 +16,13 @@ export const CommonZoneFragment = graphql(`
         id
         name
         description
-        priceCalculatorCode
+        priceCalculator {
+          code
+          args {
+            key
+            value
+          }
+        }
       }
     }
   }
