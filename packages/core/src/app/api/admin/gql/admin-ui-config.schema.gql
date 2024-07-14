@@ -1,7 +1,7 @@
 type AdminUiConfig {
   branding: AdminUiConfigBranding!
   extraUiModules: [AdminUiConfigExtraUiModule!]!
-  priceCalculators: [AdminUiConfigPriceCalculatorsArgs!]!
+  priceCalculators: [AdminUiConfigPriceCalculators!]!
 }
 
 type AdminUiConfigBranding {
@@ -19,10 +19,11 @@ type AdminUiConfigExtraUiModule {
 type AdminUiConfigPriceCalculators {
   code: String!
   name: String!
-  args: AdminUiConfigPriceCalculatorsArgs!
+  args: [AdminUiConfigPriceCalculatorsArgs!]!
 }
 
 type AdminUiConfigPriceCalculatorsArgs {
+  key: String!
   type: String!
   label: String
   defaultValue: String

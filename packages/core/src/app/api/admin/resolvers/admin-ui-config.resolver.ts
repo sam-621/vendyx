@@ -29,11 +29,20 @@ export class AdminUiConfigResolver {
     const response = {
       branding: adminUi.branding,
       extraUiModules: extraUiModules,
-      priceCalculators: priceCalculators.map(pc => ({
-        code: pc.code,
-        name: pc.name,
-        args: pc.args
-      }))
+      priceCalculators: priceCalculators.map(pc => {
+        const parsedArgs = Object.entries(pc.args).map(([key, value]) => {
+          return {
+            key,
+            ...value
+          };
+        });
+
+        return {
+          code: pc.code,
+          name: pc.name,
+          args: parsedArgs
+        };
+      })
     };
 
     return response;

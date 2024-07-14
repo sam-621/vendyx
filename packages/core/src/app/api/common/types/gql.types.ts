@@ -295,7 +295,7 @@ export interface List {
 export class AdminUiConfig {
     branding: AdminUiConfigBranding;
     extraUiModules: AdminUiConfigExtraUiModule[];
-    priceCalculators: AdminUiConfigPriceCalculatorsArgs[];
+    priceCalculators: AdminUiConfigPriceCalculators[];
 }
 
 export class AdminUiConfigBranding {
@@ -317,6 +317,7 @@ export class AdminUiConfigPriceCalculators {
 }
 
 export class AdminUiConfigPriceCalculatorsArgs {
+    key: string;
     type: string;
     label?: Nullable<string>;
     defaultValue?: Nullable<string>;

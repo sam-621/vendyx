@@ -5,3 +5,4 @@ export * from './customer.queries';
 export * from './order.queries';
 export * from './product.queries';
 export * from './zone.queries';
+export * from './admin-ui-config.queries';
