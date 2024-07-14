@@ -292,6 +292,81 @@ export interface List {
     count: number;
 }
 
+export class AdminUiConfig {
+    branding: AdminUiConfigBranding;
+    extraUiModules: AdminUiConfigExtraUiModule[];
+    priceCalculators: AdminUiConfigPriceCalculatorsArgs[];
+}
+
+export class AdminUiConfigBranding {
+    name: string;
+    description: string;
+}
+
+export class AdminUiConfigExtraUiModule {
+    slug: string;
+    label: string;
+    icon: string;
+    id: string;
+}
+
+export class AdminUiConfigPriceCalculators {
+    code: string;
+    name: string;
+    args: AdminUiConfigPriceCalculatorsArgs;
+}
+
+export class AdminUiConfigPriceCalculatorsArgs {
+    type: string;
+    label?: Nullable<string>;
+    defaultValue?: Nullable<string>;
+    placeholder?: Nullable<string>;
+    conditions?: Nullable<AdminUiConfigPriceCalculatorsArgsConditions>;
+}
+
+export class AdminUiConfigPriceCalculatorsArgsConditions {
+    min: number;
+    max: number;
+}
+
+export abstract class IQuery {
+    abstract adminUiConfig(): AdminUiConfig | Promise<AdminUiConfig>;
+
+    abstract validateToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract customers(input?: Nullable<ListInput>): CustomerList | Promise<CustomerList>;
+
+    abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
+
+    abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
+
+    abstract zone(id: string): Nullable<Zone> | Promise<Nullable<Zone>>;
+
+    abstract zones(input?: Nullable<ListInput>): ZoneList | Promise<ZoneList>;
+
+    abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
+
+    abstract collection(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
+
+    abstract countries(input?: Nullable<ListInput>): CountryList | Promise<CountryList>;
+
+    abstract country(id: string): Nullable<Country> | Promise<Nullable<Country>>;
+
+    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
+
+    abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
+
+    abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
+
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+
+    abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
+
+    abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
+}
+
 export class Admin implements Node {
     id: string;
     createdAt: Date;
@@ -392,42 +467,6 @@ export abstract class IMutation {
     abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
 
     abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): OrderResult | Promise<OrderResult>;
-}
-
-export abstract class IQuery {
-    abstract validateToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
-
-    abstract customers(input?: Nullable<ListInput>): CustomerList | Promise<CustomerList>;
-
-    abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
-
-    abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
-
-    abstract zone(id: string): Nullable<Zone> | Promise<Nullable<Zone>>;
-
-    abstract zones(input?: Nullable<ListInput>): ZoneList | Promise<ZoneList>;
-
-    abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
-
-    abstract collection(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
-
-    abstract countries(input?: Nullable<ListInput>): CountryList | Promise<CountryList>;
-
-    abstract country(id: string): Nullable<Country> | Promise<Nullable<Country>>;
-
-    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
-
-    abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
-
-    abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
-
-    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
-
-    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
-
-    abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
-
-    abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
 }
 
 export class AuthenticateResult {

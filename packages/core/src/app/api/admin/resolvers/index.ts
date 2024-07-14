@@ -9,3 +9,4 @@ export * from './asset.resolver';
 export * from './country.resolver';
 export * from './zone.resolver';
 export * from './shipping-method.resolver';
+export * from './admin-ui-config.resolver';

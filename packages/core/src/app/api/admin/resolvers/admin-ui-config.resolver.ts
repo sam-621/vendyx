@@ -1,15 +1,21 @@
-import { Controller, Get, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { UseGuards } from '@nestjs/common';
+import { Query, Resolver } from '@nestjs/graphql';
+
+import { AdminJwtAuthGuard } from '../../common';
 
 import { getConfig } from '@/app/config';
 import { EBlocPluginMetadataKeys, UiModuleConfig, getPluginMetadata } from '@/app/plugin';
 
-@Controller('admin-ui-config')
-export class AdminUiConfigController {
-  @Get('')
-  async getAdminUiConfig(@Res() res: Response) {
+@UseGuards(AdminJwtAuthGuard)
+@Resolver('AdminUiConfig')
+export class AdminUiConfigResolver {
+  @Query('adminUiConfig')
+  adminUiConfig() {
     const { adminUi } = getConfig();
     const { plugins } = getConfig();
+    const {
+      shipping: { priceCalculators }
+    } = getConfig();
 
     const extraUiModules = plugins
       .map(p => getPluginMetadata<UiModuleConfig>(EBlocPluginMetadataKeys.UI_MODULES, p))
@@ -22,9 +28,14 @@ export class AdminUiConfigController {
 
     const response = {
       branding: adminUi.branding,
-      extraUiModules: extraUiModules
+      extraUiModules: extraUiModules,
+      priceCalculators: priceCalculators.map(pc => ({
+        code: pc.code,
+        name: pc.name,
+        args: pc.args
+      }))
     };
 
-    return res.status(200).json(response);
+    return response;
   }
 }

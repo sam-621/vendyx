@@ -1,0 +1,40 @@
+type AdminUiConfig {
+  branding: AdminUiConfigBranding!
+  extraUiModules: [AdminUiConfigExtraUiModule!]!
+  priceCalculators: [AdminUiConfigPriceCalculatorsArgs!]!
+}
+
+type AdminUiConfigBranding {
+  name: String!
+  description: String!
+}
+
+type AdminUiConfigExtraUiModule {
+  slug: String!
+  label: String!
+  icon: String!
+  id: String!
+}
+
+type AdminUiConfigPriceCalculators {
+  code: String!
+  name: String!
+  args: AdminUiConfigPriceCalculatorsArgs!
+}
+
+type AdminUiConfigPriceCalculatorsArgs {
+  type: String!
+  label: String
+  defaultValue: String
+  placeholder: String
+  conditions: AdminUiConfigPriceCalculatorsArgsConditions
+}
+
+type AdminUiConfigPriceCalculatorsArgsConditions {
+  min: Int!
+  max: Int!
+}
+
+type Query {
+  adminUiConfig: AdminUiConfig!
+}
