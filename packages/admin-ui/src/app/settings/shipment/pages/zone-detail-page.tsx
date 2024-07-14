@@ -2,6 +2,7 @@ import { FormProvider } from 'react-hook-form';
 import { Navigate, useParams } from 'react-router-dom';
 
 import { LogoLoader, SettingsPageLayout } from '@/lib/components';
+import { formatDate } from '@/lib/utils';
 
 import { useZoneDetailsForm } from '../components/zone-details/use-zone-details-form';
 import { ZoneDetails } from '../components/zone-details/zone-details';
@@ -26,12 +27,12 @@ export const ZoneDetailsPage = () => {
     <FormProvider {...form}>
       <form onSubmit={form.onSubmit}>
         <SettingsPageLayout
-          title="Create Zone"
-          subtitle="Create zones to add rates for places you want to deliver."
+          title={zone.name}
+          subtitle={formatDate(new Date(zone.createdAt as string))}
           backUrl="/settings/shipments"
           actions={<ZoneDetailsSubmitButton zone={zone} />}
         >
-          <ZoneDetails />
+          <ZoneDetails zone={zone} />
         </SettingsPageLayout>
       </form>
     </FormProvider>
