@@ -15,6 +15,42 @@ import {
   Input
 } from '@ebloc/theme';
 
+/**
+ * Displays a dialog that allows the user to search for entities and select them.
+ *
+ * @description
+ * This component is a wrapper around the Dialog component that provides a search input and a list of items to select from.
+ * This items can be any type of entity as long as these entities have an id. The features of this component are:
+ * - Search input to filter the items
+ * - List of items to select from
+ * - Checkbox to select the items
+ * - Done button to close the dialog and return the selected items
+ *
+ * @example
+ * ```tsx
+ * const items = [
+ *   { id: '1', name: 'Item 1' },
+ *   { id: '2', name: 'Item 2' },
+ *   { id: '3', name: 'Item 3' },
+ *   { id: '4', name: 'Item 4' },
+ *   { id: '5', name: 'Item 5' }
+ * ];
+ *
+ * <EntitySearcherDialog
+ *   title="Select items"
+ *   description="Select the items you want to add"
+ *   items={items}
+ *   item={item => <span>{item.name}</span>}
+ *   defaultSelectedItems={['1', '3']}
+ *   onDone={selectedItems => {
+ *     console.log(selectedItems);
+ *     return Promise.resolve({ closeModal: true });
+ *   }}
+ *   trigger={<Button>Select items</Button>}
+ *   emptyState={<span>No items found</span>}
+ * />
+ * ```
+ */
 export const EntitySearcherDialog = <TItem,>({
   title,
   description,
