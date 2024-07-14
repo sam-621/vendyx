@@ -1,4 +1,4 @@
-import { type ReactElement, useState } from 'react';
+import { type ReactElement, useMemo, useState } from 'react';
 
 import {
   Button,
@@ -38,13 +38,18 @@ export const EntitySearcherDialog = <TItem,>({
     }
   };
 
-  const sortedItems = items?.sort(a => {
-    if (selectedIds.includes(a.id)) {
-      return -1;
-    }
+  const sortedItems = useMemo(
+    () =>
+      // We use [...items] to avoid mutating the original array
+      [...items].sort(a => {
+        if (selectedIds.includes(a.id)) {
+          return -1;
+        }
 
-    return 1;
-  });
+        return 0;
+      }),
+    [items, defaultSelectedItems]
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={open => setIsOpen(open)}>
@@ -100,7 +105,13 @@ export const EntitySearcherDialog = <TItem,>({
               <Button
                 onClick={async () => {
                   setIsLoading(true);
-                  await onDone(selectedIds);
+
+                  const { closeModal } = await onDone(selectedIds);
+
+                  if (closeModal) {
+                    setIsOpen(false);
+                  }
+
                   setIsLoading(false);
                 }}
                 isLoading={isLoading}
@@ -121,9 +132,10 @@ type Props<TItem> = {
   items: EntitySearcherItem<TItem>[];
   item: (item: TItem) => ReactElement;
   defaultSelectedItems: string[];
-  onDone: (selectedIds: string[]) => Promise<void>;
+  onDone: (selectedIds: string[]) => EntitySearcherOnDoneResult;
   trigger: ReactElement;
   emptyState: ReactElement;
 };
 
 export type EntitySearcherItem<T> = T & { id: string };
+export type EntitySearcherOnDoneResult = Promise<{ closeModal: boolean }>;

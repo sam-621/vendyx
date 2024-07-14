@@ -8,28 +8,27 @@ export const useSetProductsInCollectionForm = (collection: CommonCollectionFragm
   const productsInCollection = collection.products.items.map(p => p.id) ?? [];
   const { setProductsInCollection } = useSetProductsInCollection();
 
-  const onDone = async (selectedIds: string[], closeModal: () => void) => {
+  const onDone = async (selectedIds: string[]) => {
     if (JSON.stringify(productsInCollection) === JSON.stringify(selectedIds)) {
-      closeModal();
-      return;
+      return { success: true };
     }
 
     const { errorMessage } = await setProductsInCollection(collection.id, selectedIds);
 
     if (errorMessage) {
       notification.error(errorMessage);
-      return;
+      return { success: false };
     }
 
     await queryClient.invalidateQueries({ queryKey: CollectionKeys.single(collection.id) });
-    closeModal();
 
     if (selectedIds.length === 0) {
       notification.success('All products removed from collection');
-      return;
+    } else {
+      notification.success(`Products added to collection`);
     }
 
-    notification.success(`Products added to collection`);
+    return { success: true };
   };
 
   return {
