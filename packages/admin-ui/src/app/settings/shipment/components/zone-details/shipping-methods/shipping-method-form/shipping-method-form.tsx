@@ -27,29 +27,28 @@ export const ShippingMethodForm: FC<Props> = ({
   isUpdate
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+
   return (
     <div className="flex flex-col gap-4">
-      {
-        <div className="flex flex-col gap-2">
-          <Label>Type of shipping method</Label>
-          <Select
-            disabled={isUpdate}
-            defaultValue={selectedPcCode}
-            onValueChange={isUpdate ? () => null : value => setSelectedPcCode(value)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {priceCalculators.map(calculator => (
-                <SelectItem key={calculator.code} value={calculator.code}>
-                  {calculator.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      }
+      <div className="flex flex-col gap-2">
+        <Label>Type of shipping method</Label>
+        <Select
+          disabled={isUpdate}
+          defaultValue={selectedPcCode}
+          onValueChange={isUpdate ? () => null : value => setSelectedPcCode(value)}
+        >
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {priceCalculators.map(calculator => (
+              <SelectItem key={calculator.code} value={calculator.code}>
+                {calculator.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       <FormInput
         label="Name"
         placeholder="Express"

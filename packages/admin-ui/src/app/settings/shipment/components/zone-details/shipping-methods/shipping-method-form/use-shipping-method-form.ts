@@ -3,16 +3,23 @@ import { useEffect, useState } from 'react';
 import { type THashMap } from '@ebloc/common';
 
 import { type PriceCalculator, useConfigContext } from '@/app/config/contexts';
-import { ShipmentKeys, useCreateShippingMethod } from '@/app/settings/shipment/hooks';
+import {
+  ShipmentKeys,
+  useCreateShippingMethod,
+  useUpdateShippingMethod
+} from '@/app/settings/shipment/hooks';
 import { ArgType, type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 export const useShippingMethodForm = (
   zoneId: string,
+  closeModal: () => void,
   initialValue?: CommonZoneFragment['shippingMethods']['items'][0]
 ) => {
   const { createShippingMethod } = useCreateShippingMethod();
+  const { updateShippingMethod } = useUpdateShippingMethod();
+
   const [shippingMethod, setShippingMethod] = useState<AddShippingMethodFormInput>({
     name: initialValue?.name ?? '',
     description: initialValue?.description ?? '',
@@ -49,7 +56,7 @@ export const useShippingMethodForm = (
   );
 
   const onSave = async () => {
-    const { name, description, args } = shippingMethod;
+    const { name, args } = shippingMethod;
 
     if (!name) {
       notification.error('Name is required');
@@ -71,17 +78,49 @@ export const useShippingMethodForm = (
 
     const argsInArray = Object.entries(args).map(([key, value]) => ({ key, value: String(value) }));
 
+    if (initialValue) {
+      await onUpdate(shippingMethod, argsInArray);
+    } else {
+      await onCreate(shippingMethod, argsInArray);
+    }
+
+    closeModal();
+  };
+
+  const onCreate = async (input: AddShippingMethodFormInput, args: Arg) => {
+    const { name, description } = input;
+
     await createShippingMethod(zoneId, {
       name,
       description,
       priceCalculator: {
         code: selectedPcCode,
-        args: argsInArray
+        args
       }
     });
 
     await queryClient.invalidateQueries({ queryKey: ShipmentKeys.single(zoneId) });
     notification.success('Shipping method created');
+  };
+
+  const onUpdate = async (input: AddShippingMethodFormInput, args: Arg) => {
+    const { name, description } = input;
+
+    if (!initialValue?.id) {
+      return;
+    }
+
+    await updateShippingMethod(initialValue?.id, {
+      name,
+      description,
+      priceCalculator: {
+        code: selectedPcCode,
+        args
+      }
+    });
+
+    await queryClient.invalidateQueries({ queryKey: ShipmentKeys.single(zoneId) });
+    notification.success('Shipping method updated');
   };
 
   const applyConditionsToArgs = (args: PriceCalculator['args']) => {
@@ -147,3 +186,8 @@ export type AddShippingMethodFormInput = {
   description: string;
   args: THashMap;
 };
+
+type Arg = {
+  key: string;
+  value: string;
+}[];
