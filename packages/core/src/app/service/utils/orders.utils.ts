@@ -1,4 +1,4 @@
-import { OrderState } from '@/app/persistance';
+import { ConfigurableProperty, OrderState } from '@/app/persistance';
 
 export const ValidOrderTransitions = [
   /**
@@ -22,3 +22,9 @@ export const ValidOrderTransitions = [
    */
   [OrderState.SHIPPED, OrderState.DELIVERED]
 ];
+
+/**
+ * Convert ConfigurableProperty args to object.
+ */
+export const convertArgsToObject = (args: ConfigurableProperty['args']) =>
+  args.reduce((acc, arg) => ({ ...acc, [arg.key]: arg.value }), {});
