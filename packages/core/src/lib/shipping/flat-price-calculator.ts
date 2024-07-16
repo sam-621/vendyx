@@ -18,4 +18,8 @@ export class FlatPriceCalculator implements ShippingPriceCalculatorConfig {
   calculatePrice(_: OrderEntity, args: Record<string, string>): Promise<number> {
     return Promise.resolve(parseFloat(args.price));
   }
+
+  getPricePreview(args: Record<string, string>): number {
+    return parseFloat(args.price);
+  }
 }

@@ -593,6 +593,7 @@ export class ProductErrorResult {
 
 export class ShippingMethod implements Node {
     priceCalculator: ConfigurableProperty;
+    pricePreview: number;
     id: string;
     createdAt: Date;
     updatedAt: Date;

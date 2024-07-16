@@ -15,6 +15,7 @@ import {
 
 import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 
+import { formatShippingMethodPreviewPrice } from '../../../utils';
 import { AddShippingMethod } from './add-shipping-method/add-shipping-method-form';
 
 export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
@@ -44,7 +45,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
                   <TableCell>
                     <span>{method.name}</span>
                   </TableCell>
-                  <TableCell>$100.00</TableCell>
+                  <TableCell>{formatShippingMethodPreviewPrice(method.pricePreview)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

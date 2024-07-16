@@ -1,4 +1,4 @@
-import { clean } from '@ebloc/common';
+import { clean, convertToCent } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
@@ -27,11 +27,28 @@ export class ShippingMethodService {
   /**
    * Find all shipping methods.
    */
-  private async find({ onlyEnabled = false }: { onlyEnabled?: boolean }) {
+  async find({ onlyEnabled = false }: { onlyEnabled?: boolean }) {
     return await this.db.getRepository(ShippingMethodEntity).find({
       where: { enabled: onlyEnabled || undefined },
       order: { createdAt: 'ASC' }
     });
+  }
+
+  getPricePreview(shippingMethod: ShippingMethodEntity) {
+    const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
+      p => p.code === shippingMethod.priceCalculator.code
+    );
+
+    // TODO: This is supposed to be always true, a shipping method should always have a price calculator.
+    // But sometimes the shipping method is created and later in the code the price calculator is removed.
+    // This is a temporary fix, we should refactor the code to avoid this situation.
+    if (!shippingPriceCalculator) return;
+
+    const pricePreview = shippingPriceCalculator.getPricePreview(
+      convertArgsToObject(shippingMethod.priceCalculator.args)
+    );
+
+    return convertToCent(pricePreview);
   }
 
   /**

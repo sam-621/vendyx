@@ -1,5 +1,6 @@
 extend type ShippingMethod {
   priceCalculator: ConfigurableProperty!
+  pricePreview: Int!
 }
 
 type ShippingMethodList implements List {

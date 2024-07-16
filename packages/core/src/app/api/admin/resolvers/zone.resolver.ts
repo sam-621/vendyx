@@ -3,11 +3,14 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 import { CreateZoneInput, ListInput, ListResponse, UpdateZoneInput } from '../../common';
 
 import { ID, ZoneEntity } from '@/app/persistance';
-import { ZoneService, isErrorResult } from '@/app/service';
+import { ShippingMethodService, ZoneService, isErrorResult } from '@/app/service';
 
 @Resolver('Zone')
 export class ZoneResolver {
-  constructor(private readonly zoneService: ZoneService) {}
+  constructor(
+    private readonly zoneService: ZoneService,
+    private readonly shippingMethodService: ShippingMethodService
+  ) {}
 
   @Query('zone')
   zone(@Args('id') id: ID) {
@@ -59,7 +62,11 @@ export class ZoneResolver {
   @ResolveField('shippingMethods')
   async shippingMethods(@Parent() zone: ZoneEntity, @Args('input') input: ListInput) {
     const result = await this.zoneService.findShippingMethods(zone.id, input);
+    const shippingMethodsWithPricePreview = result.map(method => ({
+      ...method,
+      pricePreview: this.shippingMethodService.getPricePreview(method)
+    }));
 
-    return new ListResponse(result, result.length);
+    return new ListResponse(shippingMethodsWithPricePreview, result.length);
   }
 }

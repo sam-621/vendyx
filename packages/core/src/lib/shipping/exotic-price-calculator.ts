@@ -57,4 +57,8 @@ export class ExoticPriceCalculator implements ShippingPriceCalculatorConfig {
 
     return Promise.resolve(Math.random() * 100);
   }
+
+  getPricePreview(): number {
+    return -1;
+  }
 }
