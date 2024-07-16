@@ -17,6 +17,7 @@ export const GetAdminUiConfigQuery = graphql(`
         name
         code
         args {
+          key
           type
           label
           placeholder
@@ -24,6 +25,10 @@ export const GetAdminUiConfigQuery = graphql(`
           conditions {
             min
             max
+          }
+          options {
+            label
+            value
           }
         }
       }

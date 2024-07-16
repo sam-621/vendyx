@@ -8,6 +8,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum Arg {
+    text = "text",
+    number = "number",
+    boolean = "boolean",
+    select = "select",
+    checkbox = "checkbox",
+    price = "price"
+}
+
 export enum AdminErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
 }
@@ -313,21 +322,27 @@ export class AdminUiConfigExtraUiModule {
 export class AdminUiConfigPriceCalculators {
     code: string;
     name: string;
-    args: AdminUiConfigPriceCalculatorsArgs;
+    args: AdminUiConfigPriceCalculatorsArgs[];
 }
 
 export class AdminUiConfigPriceCalculatorsArgs {
     key: string;
-    type: string;
+    type: Arg;
     label?: Nullable<string>;
     defaultValue?: Nullable<string>;
     placeholder?: Nullable<string>;
     conditions?: Nullable<AdminUiConfigPriceCalculatorsArgsConditions>;
+    options?: Nullable<AdminUiConfigPriceCalculatorsArgsOptions[]>;
 }
 
 export class AdminUiConfigPriceCalculatorsArgsConditions {
     min: number;
     max: number;
+}
+
+export class AdminUiConfigPriceCalculatorsArgsOptions {
+    label: string;
+    value: string;
 }
 
 export abstract class IQuery {

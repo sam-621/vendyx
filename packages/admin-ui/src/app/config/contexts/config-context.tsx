@@ -1,16 +1,11 @@
 import { createContext, useContext } from 'react';
 
-import { type AdminUiConfig } from '@/lib/ebloc/rest';
+import { type GetAdminUiConfigQuery } from '@/lib/ebloc/codegen/graphql';
 
-type Context = AdminUiConfig;
+type Context = GetAdminUiConfigQuery['adminUiConfig'];
+export type PriceCalculator = Context['priceCalculators'][0];
 
-const ConfigContext = createContext<Context>({
-  branding: {
-    name: '',
-    description: ''
-  },
-  extraUiModules: []
-});
+const ConfigContext = createContext<Context | null>(null);
 
 export const ConfigProvider = ConfigContext.Provider;
 

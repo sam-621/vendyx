@@ -1,7 +1,6 @@
 import { type FC } from 'react';
 
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -13,9 +12,10 @@ import {
   TableHeader,
   TableRow
 } from '@ebloc/theme';
-import { PlusIcon } from 'lucide-react';
 
 import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
+
+import { AddShippingMethod } from './add-shipping-method/add-shipping-method-form';
 
 export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
   const shippingMethods = zone.shippingMethods.items;
@@ -25,10 +25,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle>Shipping methods</CardTitle>
         <div>
-          <Button variant="secondary" size="sm" className="gap-2">
-            <PlusIcon size={16} />
-            Add Shipping method
-          </Button>
+          <AddShippingMethod />
         </div>
       </CardHeader>
 

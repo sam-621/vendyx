@@ -24,11 +24,12 @@ type AdminUiConfigPriceCalculators {
 
 type AdminUiConfigPriceCalculatorsArgs {
   key: String!
-  type: String!
+  type: Arg!
   label: String
   defaultValue: String
   placeholder: String
   conditions: AdminUiConfigPriceCalculatorsArgsConditions
+  options: [AdminUiConfigPriceCalculatorsArgsOptions!]
 }
 
 type AdminUiConfigPriceCalculatorsArgsConditions {
@@ -36,6 +37,20 @@ type AdminUiConfigPriceCalculatorsArgsConditions {
   max: Int!
 }
 
+type AdminUiConfigPriceCalculatorsArgsOptions {
+  label: String!
+  value: String!
+}
+
 type Query {
   adminUiConfig: AdminUiConfig!
+}
+
+enum Arg {
+  text
+  number
+  boolean
+  select
+  checkbox
+  price
 }

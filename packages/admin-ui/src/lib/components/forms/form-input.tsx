@@ -9,9 +9,10 @@ export const FormInput = forwardRef<HTMLInputElement, Props>(function FormInput(
 ) {
   return (
     <div className={cn('flex flex-col gap-2 w-full', containerClassName)}>
-      <Label>{label}</Label>
+      <Label htmlFor={inputProps.id ?? label}>{label}</Label>
       <Input
         ref={ref}
+        id={inputProps.id ?? label}
         placeholder={placeholder}
         className={cn(
           'bg-background',
