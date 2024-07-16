@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormInput } from '@/lib/components';
 import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 
-import { ShippingMethodsTable } from './shipping-methods/shipping-methods-table';
+import { ShippingMethodsTable } from './shipping-methods/shipping-methods-table/shipping-methods-table';
 import { ZoneCountries } from './zone-countries/zone-countries';
 import { type ZoneDetailsFormInput } from './use-zone-details-form';
 

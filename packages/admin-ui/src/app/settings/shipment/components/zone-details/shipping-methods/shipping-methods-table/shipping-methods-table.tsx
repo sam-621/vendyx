@@ -15,8 +15,9 @@ import {
 
 import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 
-import { formatShippingMethodPreviewPrice } from '../../../utils';
-import { AddShippingMethod } from './add-shipping-method/add-shipping-method-form';
+import { formatShippingMethodPreviewPrice } from '../../../../utils';
+import { AddShippingMethod } from '../add-shipping-method/add-shipping-method-form';
+import { ShippingMethodsTableActions } from './shipping-methods-table-actions';
 
 export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
   const shippingMethods = zone.shippingMethods.items;
@@ -37,6 +38,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
               <TableRow>
                 <TableHead>Zone</TableHead>
                 <TableHead>Price</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -46,6 +48,9 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
                     <span>{method.name}</span>
                   </TableCell>
                   <TableCell>{formatShippingMethodPreviewPrice(method.pricePreview)}</TableCell>
+                  <TableCell className="w-[32px]">
+                    <ShippingMethodsTableActions />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
