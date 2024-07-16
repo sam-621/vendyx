@@ -19,6 +19,7 @@ export const GetAdminUiConfigQuery = graphql(`
         args {
           key
           type
+          required
           label
           placeholder
           defaultValue

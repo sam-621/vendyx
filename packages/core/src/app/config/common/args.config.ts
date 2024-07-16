@@ -3,6 +3,7 @@ export type Args = Record<string, Arg>;
 type Arg =
   | {
       type: 'text';
+      required: boolean;
       label?: string;
       defaultValue?: string;
       placeholder?: string;
@@ -10,6 +11,7 @@ type Arg =
     }
   | {
       type: 'number';
+      required: boolean;
       label?: string;
       defaultValue?: number;
       placeholder?: string;
@@ -17,22 +19,26 @@ type Arg =
     }
   | {
       type: 'boolean';
+      required: boolean;
       label?: string;
       defaultValue?: boolean;
     }
   | {
       type: 'select';
+      required: boolean;
       label?: string;
       defaultValue?: string;
       options: { label: string; value: string }[];
     }
   | {
       type: 'checkbox';
+      required: boolean;
       label?: string;
       defaultValue?: boolean;
     }
   | {
       type: 'price';
+      required: boolean;
       label?: string;
       defaultValue?: number;
       placeholder?: string;

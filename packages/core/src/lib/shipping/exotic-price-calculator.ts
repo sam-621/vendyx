@@ -8,21 +8,25 @@ export class ExoticPriceCalculator implements ShippingPriceCalculatorConfig {
   args: Args = {
     apiKey: {
       type: 'text',
+      required: true,
       label: 'API Key',
       placeholder: 'Introduce your API key',
       conditions: { min: 0, max: 20 }
     },
     isActive: {
       type: 'boolean',
+      required: true,
       label: 'Is enabled',
       defaultValue: true
     },
     canSend: {
       type: 'checkbox',
+      required: true,
       label: 'Type'
     },
     type: {
       type: 'select',
+      required: true,
       label: 'Type',
       defaultValue: '1',
       options: [
@@ -32,12 +36,14 @@ export class ExoticPriceCalculator implements ShippingPriceCalculatorConfig {
     },
     showPrice: {
       type: 'price',
+      required: false,
       label: 'Show price',
       placeholder: '$ 0.00',
       conditions: { min: 0, max: 1000000 }
     },
     importance: {
       type: 'number',
+      required: false,
       label: 'Importance',
       placeholder: '0',
       conditions: { min: 0, max: 12 }

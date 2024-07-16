@@ -8,6 +8,7 @@ export class FlatPriceCalculator implements ShippingPriceCalculatorConfig {
   args: Args = {
     price: {
       type: 'price',
+      required: true,
       label: 'Price',
       placeholder: '$ 0.00',
       conditions: { min: 0, max: 1000000 }

@@ -12,7 +12,7 @@ import {
 } from '@ebloc/theme';
 
 import { type PriceCalculator } from '@/app/config/contexts';
-import { Arg } from '@/lib/ebloc/codegen/graphql';
+import { ArgType } from '@/lib/ebloc/codegen/graphql';
 
 import { FormInput } from './form-input';
 
@@ -27,7 +27,7 @@ export const ArgInput: FC<Props> = ({
   onChange,
   value
 }) => {
-  if (type === Arg.Text) {
+  if (type === ArgType.Text) {
     return (
       <FormInput
         type="text"
@@ -43,7 +43,7 @@ export const ArgInput: FC<Props> = ({
     );
   }
 
-  if (type === Arg.Number) {
+  if (type === ArgType.Number) {
     return (
       <FormInput
         type="number"
@@ -59,7 +59,7 @@ export const ArgInput: FC<Props> = ({
     );
   }
 
-  if (type === Arg.Boolean) {
+  if (type === ArgType.Boolean) {
     return (
       <div className="flex items-center space-x-2 pb-[6px]">
         <Switch id={id} checked={value === 'true'} onCheckedChange={checked => onChange(checked)} />
@@ -70,7 +70,7 @@ export const ArgInput: FC<Props> = ({
     );
   }
 
-  if (type === Arg.Select) {
+  if (type === ArgType.Select) {
     return (
       <div className="flex flex-col gap-2">
         {label && <Label htmlFor={id}>{label}</Label>}
@@ -90,7 +90,7 @@ export const ArgInput: FC<Props> = ({
     );
   }
 
-  if (type === Arg.Checkbox) {
+  if (type === ArgType.Checkbox) {
     return (
       <div className="flex items-center space-x-2">
         <Checkbox
@@ -108,7 +108,7 @@ export const ArgInput: FC<Props> = ({
     );
   }
 
-  if (type === Arg.Price) {
+  if (type === ArgType.Price) {
     return (
       <FormInput
         type="text"

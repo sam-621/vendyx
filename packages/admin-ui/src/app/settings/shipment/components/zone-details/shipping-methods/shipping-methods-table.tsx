@@ -25,7 +25,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle>Shipping methods</CardTitle>
         <div>
-          <AddShippingMethod />
+          <AddShippingMethod zoneId={zone.id} />
         </div>
       </CardHeader>
 

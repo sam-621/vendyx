@@ -8,7 +8,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum Arg {
+export enum ArgType {
     text = "text",
     number = "number",
     boolean = "boolean",
@@ -327,7 +327,8 @@ export class AdminUiConfigPriceCalculators {
 
 export class AdminUiConfigPriceCalculatorsArgs {
     key: string;
-    type: Arg;
+    type: ArgType;
+    required: boolean;
     label?: Nullable<string>;
     defaultValue?: Nullable<string>;
     placeholder?: Nullable<string>;

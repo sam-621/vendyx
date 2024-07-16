@@ -1,3 +1,5 @@
+import { type FC, useState } from 'react';
+
 import { clean } from '@ebloc/common';
 import {
   Button,
@@ -20,9 +22,16 @@ import { ArgInput, FormInput, FormTextarea } from '@/lib/components';
 
 import { useAddShippingMethodForm } from './use-add-shipping-method-form';
 
-export const AddShippingMethod = () => {
-  const { priceCalculators, selectedPcCode, shippingMethod, setSelectedPcCode, setShippingMethod } =
-    useAddShippingMethodForm();
+export const AddShippingMethod: FC<Props> = ({ zoneId }) => {
+  const {
+    priceCalculators,
+    selectedPcCode,
+    shippingMethod,
+    setSelectedPcCode,
+    setShippingMethod,
+    onSave
+  } = useAddShippingMethodForm(zoneId);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Dialog>
@@ -52,8 +61,32 @@ export const AddShippingMethod = () => {
               </SelectContent>
             </Select>
           </div>
-          <FormInput label="Name" placeholder="Express" />
-          <FormTextarea label="Description" placeholder="Deliver up to 3 to 5 work days" />
+          <FormInput
+            label="Name"
+            placeholder="Express"
+            value={shippingMethod.name}
+            onChange={e => {
+              const value = e.target.value;
+
+              setShippingMethod(prevState => ({
+                ...prevState,
+                name: value
+              }));
+            }}
+          />
+          <FormTextarea
+            label="Description"
+            placeholder="Deliver up to 3 to 5 work days"
+            value={shippingMethod.description}
+            onChange={e => {
+              const value = e.target.value;
+
+              setShippingMethod(prevState => ({
+                ...prevState,
+                description: value
+              }));
+            }}
+          />
           {priceCalculators
             .find(pc => pc.code === selectedPcCode)
             ?.args.map(arg => (
@@ -69,7 +102,7 @@ export const AddShippingMethod = () => {
                     }
                   }));
                 }}
-                value={String((shippingMethod.args as any)[arg.key])}
+                value={String(shippingMethod.args[arg.key])}
                 {...clean(arg)}
                 key={arg.key}
               />
@@ -80,10 +113,23 @@ export const AddShippingMethod = () => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button>Save</Button>
+            <Button
+              isLoading={isLoading}
+              onClick={async () => {
+                setIsLoading(true);
+                await onSave();
+                setIsLoading(false);
+              }}
+            >
+              Save
+            </Button>
           </div>
         </div>
       </DialogContent>
     </Dialog>
   );
+};
+
+type Props = {
+  zoneId: string;
 };

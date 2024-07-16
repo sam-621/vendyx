@@ -24,7 +24,8 @@ type AdminUiConfigPriceCalculators {
 
 type AdminUiConfigPriceCalculatorsArgs {
   key: String!
-  type: Arg!
+  type: ArgType!
+  required: Boolean!
   label: String
   defaultValue: String
   placeholder: String
@@ -46,7 +47,7 @@ type Query {
   adminUiConfig: AdminUiConfig!
 }
 
-enum Arg {
+enum ArgType {
   text
   number
   boolean
