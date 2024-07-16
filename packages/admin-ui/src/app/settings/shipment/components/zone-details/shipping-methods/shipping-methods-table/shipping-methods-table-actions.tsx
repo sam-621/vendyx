@@ -1,3 +1,5 @@
+import { type FC } from 'react';
+
 import {
   Button,
   DropdownMenu,
@@ -7,7 +9,11 @@ import {
 } from '@ebloc/theme';
 import { MoreHorizontalIcon } from 'lucide-react';
 
-export const ShippingMethodsTableActions = () => {
+import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
+
+import { UpdateShippingMethodForm } from '../update-shipping-method/update-shipping-method-form';
+
+export const ShippingMethodsTableActions: FC<Props> = ({ zoneId, shippingMethod }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,7 +23,7 @@ export const ShippingMethodsTableActions = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <UpdateShippingMethodForm zoneId={zoneId} shippingMethod={shippingMethod} />
         <DropdownMenuItem asChild className="p-0">
           <Button
             type="submit"
@@ -30,4 +36,9 @@ export const ShippingMethodsTableActions = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+type Props = {
+  zoneId: string;
+  shippingMethod: CommonZoneFragment['shippingMethods']['items'][0];
 };

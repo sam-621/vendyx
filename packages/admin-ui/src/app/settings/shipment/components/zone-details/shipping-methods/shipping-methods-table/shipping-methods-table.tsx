@@ -49,7 +49,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
                   </TableCell>
                   <TableCell>{formatShippingMethodPreviewPrice(method.pricePreview)}</TableCell>
                   <TableCell className="w-[32px]">
-                    <ShippingMethodsTableActions />
+                    <ShippingMethodsTableActions zoneId={zone.id} shippingMethod={method} />
                   </TableCell>
                 </TableRow>
               ))}

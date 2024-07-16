@@ -4,15 +4,18 @@ import { type THashMap } from '@ebloc/common';
 
 import { type PriceCalculator, useConfigContext } from '@/app/config/contexts';
 import { ShipmentKeys, useCreateShippingMethod } from '@/app/settings/shipment/hooks';
-import { ArgType } from '@/lib/ebloc/codegen/graphql';
+import { ArgType, type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
-export const useAddShippingMethodForm = (zoneId: string) => {
+export const useShippingMethodForm = (
+  zoneId: string,
+  initialValue?: CommonZoneFragment['shippingMethods']['items'][0]
+) => {
   const { createShippingMethod } = useCreateShippingMethod();
-  const [shippingMethod, setShippingMethod] = useState<FormInput>({
-    name: '',
-    description: '',
+  const [shippingMethod, setShippingMethod] = useState<AddShippingMethodFormInput>({
+    name: initialValue?.name ?? '',
+    description: initialValue?.description ?? '',
     args: {}
   });
   const [selectedPcCode, setSelectedPcCode] = useState<string>('');
@@ -21,13 +24,18 @@ export const useAddShippingMethodForm = (zoneId: string) => {
   useEffect(
     function setInitialData() {
       if (config) {
-        const _selectedPcCode = selectedPcCode || config.priceCalculators[0].code;
+        const _selectedPcCode =
+          initialValue?.priceCalculator.code ?? (selectedPcCode || config.priceCalculators[0].code);
         const selectedPc = config.priceCalculators.find(pc => pc.code === _selectedPcCode);
 
         setSelectedPcCode(_selectedPcCode);
 
         const pcArgs = selectedPc?.args.reduce((acc, arg) => {
-          (acc as THashMap)[arg.key] = arg.defaultValue ?? '';
+          const argInitialValue = initialValue?.priceCalculator.args.find(
+            initialArg => initialArg.key === arg.key
+          )?.value;
+
+          (acc as THashMap)[arg.key] = argInitialValue ?? arg.defaultValue ?? '';
           return acc;
         }, {});
 
@@ -134,7 +142,7 @@ export const useAddShippingMethodForm = (zoneId: string) => {
   };
 };
 
-type FormInput = {
+export type AddShippingMethodFormInput = {
   name: string;
   description: string;
   args: THashMap;
