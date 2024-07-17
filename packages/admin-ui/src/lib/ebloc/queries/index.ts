@@ -4,5 +4,6 @@ export * from './collection.queries';
 export * from './country.queries';
 export * from './customer.queries';
 export * from './order.queries';
+export * from './payment-method.queries';
 export * from './product.queries';
 export * from './zone.queries';

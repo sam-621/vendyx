@@ -5,6 +5,7 @@ export * from './country.mutation';
 export * from './customer.mutation';
 export * from './option.mutation';
 export * from './order.mutation';
+export * from './payment-methods';
 export * from './product.mutation';
 export * from './shipping-method.mutation';
 export * from './variant.mutation';
