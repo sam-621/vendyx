@@ -12,7 +12,7 @@ import { useGetPaymentMethod } from '../hooks';
 export const PaymentMethodDetailsPage = () => {
   const { id } = useParams();
   const { paymentMethod, isLoading } = useGetPaymentMethod(id ?? '');
-  const form = usePaymentMethodDetailsForm();
+  const form = usePaymentMethodDetailsForm(id);
 
   if (isLoading) {
     return <LogoLoader />;

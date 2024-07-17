@@ -3,14 +3,59 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { FormMessages, useForm } from '@/lib/form';
+import { notification } from '@/lib/notifications';
+import { queryClient } from '@/lib/query-client';
 
-export const usePaymentMethodDetailsForm = () => {
+import { PaymentKeys, useCreatePaymentMethod, useUpdatePaymentMethod } from '../../hooks';
+
+export const usePaymentMethodDetailsForm = (id?: string) => {
+  const { createPaymentMethod } = useCreatePaymentMethod();
+  const { updatePaymentMethod } = useUpdatePaymentMethod();
+
   const form = useForm<PaymentMethodDetailsFormInput>({
     resolver: zodResolver(schema)
   });
 
-  const onSubmit = (input: PaymentMethodDetailsFormInput) => {
-    console.log(input);
+  const onSubmit = async (input: PaymentMethodDetailsFormInput) => {
+    if (id) {
+      await onUpdate(id, input);
+    } else {
+      await onCreate(input);
+    }
+  };
+
+  const onUpdate = async (id: string, input: PaymentMethodDetailsFormInput) => {
+    const { error } = await updatePaymentMethod(id, {
+      name: input.name,
+      description: input.description,
+      handler: { code: input.handler, args: [] },
+      enabled: input.enabled
+    });
+
+    if (error) {
+      notification.error(error);
+      return;
+    }
+
+    await queryClient.invalidateQueries({ queryKey: PaymentKeys.single(id) });
+    notification.success('Payment method updated successfully');
+  };
+
+  const onCreate = async (input: PaymentMethodDetailsFormInput) => {
+    const { error } = await createPaymentMethod({
+      name: input.name,
+      description: input.description,
+      handler: { code: input.handler, args: [] },
+      enabled: input.enabled
+    });
+
+    if (error) {
+      notification.error(error);
+      return;
+    }
+
+    await queryClient.invalidateQueries({ queryKey: PaymentKeys.all });
+    notification.success('Payment method created successfully');
   };
 
   return {

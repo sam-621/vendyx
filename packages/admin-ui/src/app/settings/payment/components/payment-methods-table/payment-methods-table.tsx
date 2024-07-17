@@ -17,9 +17,12 @@ import {
 } from '@ebloc/theme';
 import { PlusIcon } from 'lucide-react';
 
+import { useConfigContext } from '@/app/config/contexts';
 import { type GetAllPaymentMethodsQuery } from '@/lib/ebloc/codegen/graphql';
 
 export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
+  const config = useConfigContext();
+
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
@@ -54,7 +57,9 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
                       <span>{method.name}</span>
                     </Link>
                   </TableCell>
-                  <TableCell>{method.handler.code}</TableCell>
+                  <TableCell>
+                    {config?.paymentHandlers.find(ph => ph.code === method.handler.code)?.name}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

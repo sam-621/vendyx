@@ -32,7 +32,7 @@ export const PaymentMethodDetails: FC<Props> = ({ paymentMethod }) => {
         <Controller
           control={control}
           name="handler"
-          defaultValue={paymentHandlers[0].code}
+          defaultValue={paymentMethod?.handler.code ?? paymentHandlers[0].code}
           render={({ field }) => (
             <div className="flex flex-col gap-2 w-full">
               <Label htmlFor="payment-method-handler">Payment method handler</Label>
@@ -54,6 +54,7 @@ export const PaymentMethodDetails: FC<Props> = ({ paymentMethod }) => {
         <Controller
           control={control}
           name="enabled"
+          defaultValue={paymentMethod?.enabled ?? true}
           render={({ field }) => (
             <div className="flex items-center space-x-2 pb-[6px]">
               <Switch
