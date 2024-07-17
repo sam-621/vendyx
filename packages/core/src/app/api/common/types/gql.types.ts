@@ -103,6 +103,10 @@ export enum OrderState {
     DELIVERED = "DELIVERED"
 }
 
+export enum PaymentMethodErrorCode {
+    PAYMENT_METHOD_NOT_FOUND = "PAYMENT_METHOD_NOT_FOUND"
+}
+
 export class AuthenticateInput {
     username: string;
     password: string;
@@ -252,6 +256,18 @@ export class CreateCustomerInput {
     phoneNumber?: Nullable<string>;
 }
 
+export class CreatePaymentMethodInput {
+    name: string;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+}
+
+export class UpdatePaymentMethodInput {
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+}
+
 export class UpdateCustomerPasswordInput {
     password: string;
     newPassword: string;
@@ -371,6 +387,10 @@ export abstract class IQuery {
 
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
+    abstract paymentMethods(input?: Nullable<ListInput>): PaymentMethodList | Promise<PaymentMethodList>;
+
+    abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
+
     abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
 
     abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
@@ -456,6 +476,12 @@ export abstract class IMutation {
     abstract removeZone(id: string): RemoveZoneResult | Promise<RemoveZoneResult>;
 
     abstract setCountriesToZone(id: string, countriesIds: string[]): ZoneResult | Promise<ZoneResult>;
+
+    abstract createPaymentMethod(input: CreatePaymentMethodInput): PaymentMethodResult | Promise<PaymentMethodResult>;
+
+    abstract updatePaymentMethod(id: string, input: UpdatePaymentMethodInput): PaymentMethodResult | Promise<PaymentMethodResult>;
+
+    abstract removePaymentMethod(id: string): RemovePaymentMethodResult | Promise<RemovePaymentMethodResult>;
 
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
@@ -840,6 +866,26 @@ export class PaymentMethod implements Node {
     name: string;
     description?: Nullable<string>;
     enabled: boolean;
+}
+
+export class PaymentMethodList implements List {
+    items: PaymentMethod[];
+    count: number;
+}
+
+export class PaymentMethodResult {
+    paymentMethod?: Nullable<PaymentMethod>;
+    error: PaymentMethodErrorResult[];
+}
+
+export class RemovePaymentMethodResult {
+    success?: Nullable<boolean>;
+    error: PaymentMethodErrorResult[];
+}
+
+export class PaymentMethodErrorResult {
+    code: PaymentMethodErrorCode;
+    message: string;
 }
 
 export class Payment implements Node {

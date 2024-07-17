@@ -1,0 +1,46 @@
+type PaymentMethodList implements List {
+  items: [PaymentMethod!]!
+  count: Int!
+}
+
+type Query {
+  paymentMethods(input: ListInput): PaymentMethodList!
+  paymentMethod(id: ID!): PaymentMethod
+}
+
+type Mutation {
+  createPaymentMethod(input: CreatePaymentMethodInput!): PaymentMethodResult!
+  updatePaymentMethod(id: ID!, input: UpdatePaymentMethodInput!): PaymentMethodResult!
+  removePaymentMethod(id: ID!): RemovePaymentMethodResult!
+}
+
+input CreatePaymentMethodInput {
+  name: String!
+  description: String
+  enabled: Boolean
+}
+
+input UpdatePaymentMethodInput {
+  name: String
+  description: String
+  enabled: Boolean
+}
+
+type PaymentMethodResult {
+  paymentMethod: PaymentMethod
+  error: [PaymentMethodErrorResult!]!
+}
+
+type RemovePaymentMethodResult {
+  success: Boolean
+  error: [PaymentMethodErrorResult!]!
+}
+
+type PaymentMethodErrorResult {
+  code: PaymentMethodErrorCode!
+  message: String!
+}
+
+enum PaymentMethodErrorCode {
+  PAYMENT_METHOD_NOT_FOUND
+}
