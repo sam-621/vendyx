@@ -2,23 +2,28 @@ import { type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { useConfigContext } from '@/app/config/contexts';
 import { type CommonPaymentMethodFragment } from '@/lib/ebloc/codegen/graphql';
 import { FormMessages, useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 import { PaymentKeys, useCreatePaymentMethod, useUpdatePaymentMethod } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 export const usePaymentMethodDetailsForm = (paymentMethod?: CommonPaymentMethodFragment) => {
+  const navigate = useNavigate();
   const { createPaymentMethod } = useCreatePaymentMethod();
   const { updatePaymentMethod } = useUpdatePaymentMethod();
+
+  const config = useConfigContext();
 
   const form = useForm<PaymentMethodDetailsFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: paymentMethod?.name ?? '',
       description: paymentMethod?.description ?? '',
-      handler: paymentMethod?.handler.code ?? '',
+      handler: paymentMethod?.handler.code ?? config?.paymentHandlers[0].code,
       enabled: paymentMethod?.enabled ?? true
     }
   });
@@ -49,7 +54,7 @@ export const usePaymentMethodDetailsForm = (paymentMethod?: CommonPaymentMethodF
   };
 
   const onCreate = async (input: PaymentMethodDetailsFormInput) => {
-    const { error } = await createPaymentMethod({
+    const { error, paymentMethod } = await createPaymentMethod({
       name: input.name,
       description: input.description,
       handler: { code: input.handler, args: [] },
@@ -62,6 +67,7 @@ export const usePaymentMethodDetailsForm = (paymentMethod?: CommonPaymentMethodF
     }
 
     await queryClient.invalidateQueries({ queryKey: PaymentKeys.all });
+    navigate(`/settings/payments/${paymentMethod?.id}`);
     notification.success('Payment method created successfully');
   };
 
