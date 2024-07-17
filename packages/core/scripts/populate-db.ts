@@ -99,24 +99,24 @@ const cleanDb = async () => {
   //   }
   // ]);
 
-  await dataSource.getRepository(PaymentMethodEntity).save([
-    {
-      id: 'd438933f-7fb3-4c7b-9424-ead4cae81866',
-      name: 'Stripe',
-      description: 'Pay with credit or debit card',
-      integrationCode: 'stripe'
-    },
-    {
-      id: '27333884-a0db-4e37-8056-a6522d459b20',
-      name: 'PayPal',
-      description: 'Pay with your PayPal account',
-      integrationCode: 'paypal'
-    }
-  ]);
-  console.log('Shipping and payment methods added ✨');
-  console.log("Shipping methods: 'Express', 'Standard'");
-  console.log("Payment methods: 'Stripe', 'PayPal'");
-  console.log();
+  // await dataSource.getRepository(PaymentMethodEntity).save([
+  //   {
+  //     id: 'd438933f-7fb3-4c7b-9424-ead4cae81866',
+  //     name: 'Stripe',
+  //     description: 'Pay with credit or debit card',
+  //     integrationCode: 'stripe'
+  //   },
+  //   {
+  //     id: '27333884-a0db-4e37-8056-a6522d459b20',
+  //     name: 'PayPal',
+  //     description: 'Pay with your PayPal account',
+  //     integrationCode: 'paypal'
+  //   }
+  // ]);
+  // console.log('Shipping and payment methods added ✨');
+  // console.log("Shipping methods: 'Express', 'Standard'");
+  // console.log("Payment methods: 'Stripe', 'PayPal'");
+  // console.log();
 
   console.log('Database is populated 🎉');
   await dataSource.destroy();

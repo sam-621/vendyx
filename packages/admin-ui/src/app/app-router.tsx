@@ -6,6 +6,7 @@ import { AdminLayout, LogoLoader, SettingLayout } from '@/lib/components';
 import { ConfigProvider } from './config/contexts';
 import { useGetAdminUiConfig } from './config/hooks';
 import { CustomerDetailsPage } from './customer/pages/customer-details-page';
+import { PaymentsPage } from './settings/payment';
 import { AuthWrapper } from './auth-wrapper';
 import { CollectionDetailsPage, CollectionsPage, CreateCollectionPage } from './collections';
 import { CustomersPage } from './customer';
@@ -73,9 +74,12 @@ export const AppRouter = () => {
               <Route path="/settings/countries" element={<CountriesPage />} />
               <Route path="/settings/countries/:id" element={<CountryDetailsPage />} />
               <Route path="/settings/countries/new" element={<CreateCountryPage />} />
+
               <Route path="/settings/shipments" element={<ShipmentsPage />} />
               <Route path="/settings/shipments/:id" element={<ZoneDetailsPage />} />
               <Route path="/settings/shipments/new" element={<CreateZonePage />} />
+
+              <Route path="/settings/payments" element={<PaymentsPage />} />
             </Route>
           </Route>
         </Routes>

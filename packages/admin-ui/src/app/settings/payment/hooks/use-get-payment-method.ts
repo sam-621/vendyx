@@ -3,10 +3,11 @@ import { CommonPaymentMethodFragment, GetPaymentMethodQuery } from '@/lib/ebloc/
 import { useGqlQuery } from '@/lib/gql';
 
 export const useGetPaymentMethod = () => {
-  const { data } = useGqlQuery({ document: GetPaymentMethodQuery });
+  const { data, isLoading } = useGqlQuery({ document: GetPaymentMethodQuery });
   const paymentMethod = useFragment(CommonPaymentMethodFragment, data?.paymentMethod);
 
   return {
-    paymentMethod
+    paymentMethod,
+    isLoading
   };
 };

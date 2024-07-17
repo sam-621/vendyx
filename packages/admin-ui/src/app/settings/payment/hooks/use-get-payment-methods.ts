@@ -2,9 +2,10 @@ import { GetPaymentMethodsQuery } from '@/lib/ebloc/queries';
 import { useGqlQuery } from '@/lib/gql';
 
 export const useGetPaymentMethods = () => {
-  const { data } = useGqlQuery({ document: GetPaymentMethodsQuery });
+  const { data, isLoading } = useGqlQuery({ document: GetPaymentMethodsQuery });
 
   return {
-    paymentMethods: data?.paymentMethods.items
+    paymentMethods: data?.paymentMethods.items,
+    isLoading
   };
 };
