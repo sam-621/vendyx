@@ -33,6 +33,10 @@ export const GetAdminUiConfigQuery = graphql(`
           }
         }
       }
+      paymentHandlers {
+        name
+        code
+      }
     }
   }
 `);

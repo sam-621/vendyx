@@ -2,6 +2,7 @@ type AdminUiConfig {
   branding: AdminUiConfigBranding!
   extraUiModules: [AdminUiConfigExtraUiModule!]!
   priceCalculators: [AdminUiConfigPriceCalculators!]!
+  paymentHandlers: [PaymentHandlers!]!
 }
 
 type AdminUiConfigBranding {
@@ -20,6 +21,11 @@ type AdminUiConfigPriceCalculators {
   code: String!
   name: String!
   args: [AdminUiConfigPriceCalculatorsArgs!]!
+}
+
+type PaymentHandlers {
+  code: String!
+  name: String!
 }
 
 type AdminUiConfigPriceCalculatorsArgs {

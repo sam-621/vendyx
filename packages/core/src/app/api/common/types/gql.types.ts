@@ -324,6 +324,7 @@ export class AdminUiConfig {
     branding: AdminUiConfigBranding;
     extraUiModules: AdminUiConfigExtraUiModule[];
     priceCalculators: AdminUiConfigPriceCalculators[];
+    paymentHandlers: PaymentHandlers[];
 }
 
 export class AdminUiConfigBranding {
@@ -342,6 +343,11 @@ export class AdminUiConfigPriceCalculators {
     code: string;
     name: string;
     args: AdminUiConfigPriceCalculatorsArgs[];
+}
+
+export class PaymentHandlers {
+    code: string;
+    name: string;
 }
 
 export class AdminUiConfigPriceCalculatorsArgs {
