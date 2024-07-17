@@ -26,6 +26,8 @@ export const useShippingMethodForm = (
     args: {}
   });
   const [selectedPcCode, setSelectedPcCode] = useState<string>('');
+  const [reCalculateInitialValues, setReCalculateInitialValues] = useState(0);
+
   const config = useConfigContext();
 
   useEffect(
@@ -52,7 +54,7 @@ export const useShippingMethodForm = (
         }));
       }
     },
-    [config?.priceCalculators, selectedPcCode]
+    [config?.priceCalculators, selectedPcCode, reCalculateInitialValues]
   );
 
   const onSave = async () => {
@@ -83,7 +85,6 @@ export const useShippingMethodForm = (
     } else {
       await onCreate(shippingMethod, argsInArray);
     }
-
     closeModal();
   };
 
@@ -101,6 +102,13 @@ export const useShippingMethodForm = (
 
     await queryClient.invalidateQueries({ queryKey: ShipmentKeys.single(zoneId) });
     notification.success('Shipping method created');
+
+    setShippingMethod({
+      name: initialValue?.name ?? '',
+      description: initialValue?.description ?? '',
+      args: {}
+    });
+    setReCalculateInitialValues(reCalculateInitialValues + 1);
   };
 
   const onUpdate = async (input: AddShippingMethodFormInput, args: Arg) => {
