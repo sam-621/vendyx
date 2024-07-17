@@ -11,6 +11,7 @@ import {
   CustomerResolver,
   OptionResolver,
   OrderResolver,
+  PaymentMethodResolver,
   ProductResolver,
   ShippingMethodResolver,
   VariantResolver,
@@ -57,6 +58,7 @@ export class AdminApiModule {
     ZoneResolver,
     ShippingMethodResolver,
     AdminUiConfigResolver,
+    PaymentMethodResolver,
     ...getPluginResolvers('admin')
   ]
 })

@@ -34,12 +34,12 @@ input UpdatePaymentMethodInput {
 
 type PaymentMethodResult {
   paymentMethod: PaymentMethod
-  error: [PaymentMethodErrorResult!]!
+  apiErrors: [PaymentMethodErrorResult!]!
 }
 
 type RemovePaymentMethodResult {
   success: Boolean
-  error: [PaymentMethodErrorResult!]!
+  apiErrors: [PaymentMethodErrorResult!]!
 }
 
 type PaymentMethodErrorResult {

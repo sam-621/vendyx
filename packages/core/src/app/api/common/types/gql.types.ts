@@ -622,12 +622,12 @@ export class PaymentMethodList implements List {
 
 export class PaymentMethodResult {
     paymentMethod?: Nullable<PaymentMethod>;
-    error: PaymentMethodErrorResult[];
+    apiErrors: PaymentMethodErrorResult[];
 }
 
 export class RemovePaymentMethodResult {
     success?: Nullable<boolean>;
-    error: PaymentMethodErrorResult[];
+    apiErrors: PaymentMethodErrorResult[];
 }
 
 export class PaymentMethodErrorResult {
