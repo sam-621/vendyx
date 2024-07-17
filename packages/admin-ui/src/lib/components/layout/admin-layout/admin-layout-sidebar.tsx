@@ -16,7 +16,7 @@ import { useConfigContext } from '@/app/config/contexts';
 import { LayoutSidebarItem } from '../layout-sidebar-item';
 
 export const AdminSidebar: FC<Props> = ({ closeSidebar }) => {
-  const { extraUiModules } = useConfigContext();
+  const config = useConfigContext();
   const { pathname } = useLocation();
 
   const isInProducts = pathname.includes('/products');
@@ -65,7 +65,7 @@ export const AdminSidebar: FC<Props> = ({ closeSidebar }) => {
             {label}
           </LayoutSidebarItem>
         ))}
-        {extraUiModules.map(uiModule => (
+        {config?.extraUiModules.map(uiModule => (
           <Link
             key={uiModule.slug}
             to={uiModule.slug}
@@ -83,7 +83,7 @@ export const AdminSidebar: FC<Props> = ({ closeSidebar }) => {
         className={cn(
           'text-sm font-medium flex items-center gap-3 rounded-lg px-3 py-2 transition-all text-muted-foreground hover:text-primary'
         )}
-        to="/settings"
+        to="/settings/payments"
       >
         <Settings size={16} />
         Settings

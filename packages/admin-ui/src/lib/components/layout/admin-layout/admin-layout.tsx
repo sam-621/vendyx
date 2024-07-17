@@ -10,7 +10,7 @@ import { Logo, UserAvatar } from '../../items';
 import { AdminSidebar } from './admin-layout-sidebar';
 
 export const AdminLayout: FC = () => {
-  const { branding } = useConfigContext();
+  const config = useConfigContext();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,7 +24,7 @@ export const AdminLayout: FC = () => {
         <div className="flex justify-between h-16 items-center px-4">
           <div className="flex gap-2">
             <Logo />
-            <h1 className="text-base font-medium">{branding.name}</h1>
+            <h1 className="text-base font-medium">{config?.branding.name}</h1>
           </div>
           <div>
             {/* <Button size="icon" variant="ghost">
