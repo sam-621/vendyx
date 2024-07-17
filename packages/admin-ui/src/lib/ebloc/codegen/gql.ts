@@ -61,9 +61,9 @@ const documents = {
     "\n  fragment CommonOrder on Order {\n    id\n    code\n    createdAt\n    subtotal\n    total\n    totalQuantity\n    state\n    lines {\n      items {\n        id\n        linePrice\n        quantity\n        unitPrice\n        productVariant {\n          id\n          sku\n          optionValues(withDeleted: true) {\n            id\n            value\n          }\n          product {\n            name\n            slug\n            assets {\n              items {\n                id\n                source\n              }\n            }\n          }\n        }\n      }\n    }\n    customer {\n      id\n      firstName\n      lastName\n      email\n      phoneNumber\n    }\n    shippingAddress {\n      country\n      streetLine1\n      streetLine2\n      province\n      city\n      postalCode\n    }\n    payment {\n      id\n      amount\n      transactionId\n      method\n    }\n    shipment {\n      id\n      amount\n      trackingCode\n      carrier\n      method\n    }\n  }\n": types.CommonOrderFragmentDoc,
     "\n  query GetOrdersQuery {\n    orders {\n      count\n      items {\n        id\n        code\n        state\n        total\n        totalQuantity\n        placedAt\n        customer {\n          id\n          firstName\n          lastName\n        }\n        shipment {\n          id\n          amount\n          trackingCode\n          method\n        }\n      }\n    }\n  }\n": types.GetOrdersQueryDocument,
     "\n  query GetOrderDetails($orderId: ID) {\n    order(id: $orderId) {\n      ...CommonOrder\n    }\n  }\n": types.GetOrderDetailsDocument,
-    "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    description\n    enabled\n    handler {\n      code\n    }\n  }\n": types.CommonPaymentMethodFragmentDoc,
+    "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    description\n    enabled\n    handler {\n      code\n    }\n  }\n": types.CommonPaymentMethodFragmentDoc,
     "\n  query GetAllPaymentMethods {\n    paymentMethods {\n      items {\n        id\n        name\n        description\n        enabled\n        handler {\n          code\n        }\n      }\n    }\n  }\n": types.GetAllPaymentMethodsDocument,
-    "\n  query GetPaymentMethod($paymentMethodId: ID!) {\n    paymentMethod(id: $paymentMethodId) {\n      ...CommonPaymentMethod\n    }\n  }\n": types.GetPaymentMethodDocument,
+    "\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n": types.GetPaymentMethodDocument,
     "\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    onlineOnly\n    published\n    options {\n      id\n      name\n      values {\n        id\n        value\n      }\n    }\n    variants {\n      items {\n        id\n        price\n        sku\n        stock\n        published\n        optionValues {\n          id\n          value\n        }\n      }\n    }\n    assets {\n      items {\n        id\n        createdAt\n        name\n        source\n        order\n      }\n    }\n  }\n": types.CommonProductFragmentDoc,
     "\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        name\n        slug\n        onlineOnly\n        published\n        variants {\n          items {\n            id\n            sku\n            stock\n            price\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n": types.GetProductsDocument,
     "\n  query GetProductDetails($slug: String!) {\n    product(slug: $slug) {\n      ...CommonProduct\n    }\n  }\n": types.GetProductDetailsDocument,
@@ -281,7 +281,7 @@ export function graphql(source: "\n  query GetOrderDetails($orderId: ID) {\n    
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    description\n    enabled\n    handler {\n      code\n    }\n  }\n"): (typeof documents)["\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    description\n    enabled\n    handler {\n      code\n    }\n  }\n"];
+export function graphql(source: "\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    description\n    enabled\n    handler {\n      code\n    }\n  }\n"): (typeof documents)["\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    createdAt\n    name\n    description\n    enabled\n    handler {\n      code\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -289,7 +289,7 @@ export function graphql(source: "\n  query GetAllPaymentMethods {\n    paymentMe
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetPaymentMethod($paymentMethodId: ID!) {\n    paymentMethod(id: $paymentMethodId) {\n      ...CommonPaymentMethod\n    }\n  }\n"): (typeof documents)["\n  query GetPaymentMethod($paymentMethodId: ID!) {\n    paymentMethod(id: $paymentMethodId) {\n      ...CommonPaymentMethod\n    }\n  }\n"];
+export function graphql(source: "\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n"): (typeof documents)["\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

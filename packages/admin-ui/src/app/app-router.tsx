@@ -6,7 +6,11 @@ import { AdminLayout, LogoLoader, SettingLayout } from '@/lib/components';
 import { ConfigProvider } from './config/contexts';
 import { useGetAdminUiConfig } from './config/hooks';
 import { CustomerDetailsPage } from './customer/pages/customer-details-page';
-import { PaymentsPage } from './settings/payment';
+import {
+  CreatePaymentMethodPage,
+  PaymentMethodDetailsPage,
+  PaymentsPage
+} from './settings/payment';
 import { AuthWrapper } from './auth-wrapper';
 import { CollectionDetailsPage, CollectionsPage, CreateCollectionPage } from './collections';
 import { CustomersPage } from './customer';
@@ -80,6 +84,8 @@ export const AppRouter = () => {
               <Route path="/settings/shipments/new" element={<CreateZonePage />} />
 
               <Route path="/settings/payments" element={<PaymentsPage />} />
+              <Route path="/settings/payments/new" element={<CreatePaymentMethodPage />} />
+              <Route path="/settings/payments/:id" element={<PaymentMethodDetailsPage />} />
             </Route>
           </Route>
         </Routes>

@@ -11,7 +11,7 @@ export const PaymentsPage = () => {
   }
 
   return (
-    <SettingsPageLayout>
+    <SettingsPageLayout title="Payments" subtitle="Manage your payment methods">
       <PaymentMethodsTable paymentMethods={paymentMethods ?? []} />
     </SettingsPageLayout>
   );
