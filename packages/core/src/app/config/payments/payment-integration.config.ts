@@ -1,6 +1,6 @@
 import { OrderEntity } from '@/app/persistance';
 
-export interface PaymentIntegration {
+export interface PaymentHandler {
   /**
    * @description
    * This is used to display the provider name to the administrator.

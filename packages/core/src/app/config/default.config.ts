@@ -27,7 +27,7 @@ export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
     })
   },
   payments: {
-    integrations: [new PaypalIntegration(), new StripeIntegration(), new MercadoPagoIntegration()]
+    handlers: [new PaypalIntegration(), new StripeIntegration(), new MercadoPagoIntegration()]
   },
   shipping: {
     priceCalculators: [new FlatPriceCalculator(), new ExoticPriceCalculator()]

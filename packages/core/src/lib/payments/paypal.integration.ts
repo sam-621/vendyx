@@ -1,7 +1,7 @@
-import { AuthorizePaymentResult, CreatePaymentResult, PaymentIntegration } from '@/app/config';
+import { AuthorizePaymentResult, CreatePaymentResult, PaymentHandler } from '@/app/config';
 import { OrderEntity } from '@/app/persistance';
 
-export class PaypalIntegration implements PaymentIntegration {
+export class PaypalIntegration implements PaymentHandler {
   name = 'Paypal';
   code = 'paypal';
 

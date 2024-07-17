@@ -1,11 +1,7 @@
-import {
-  AuthorizePaymentResult,
-  CreatePaymentResult,
-  PaymentIntegration,
-} from '@/app/config';
+import { AuthorizePaymentResult, CreatePaymentResult, PaymentHandler } from '@/app/config';
 import { OrderEntity } from '@/app/persistance';
 
-export class StripeIntegration implements PaymentIntegration {
+export class StripeIntegration implements PaymentHandler {
   name = 'Stripe';
   code = 'stripe';
 
@@ -13,13 +9,13 @@ export class StripeIntegration implements PaymentIntegration {
     return {
       status: 'authorized',
       amount: order.total,
-      transactionId: generateTransactionId(16),
+      transactionId: generateTransactionId(16)
     };
   }
 
   async authorizePayment(): Promise<AuthorizePaymentResult> {
     return {
-      success: true,
+      success: true
     };
   }
 }
@@ -28,8 +24,7 @@ export class StripeIntegration implements PaymentIntegration {
  * simulate transactionID.
  */
 function generateTransactionId(length: number) {
-  const charset =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let transactionId = '';
 
   for (let i = 0; i < length; i++) {

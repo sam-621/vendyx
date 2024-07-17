@@ -497,27 +497,27 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.PAYMENT_METHOD_NOT_FOUND, 'Payment method not found');
     }
 
-    const paymentIntegration = getConfig().payments.integrations.find(
-      p => p.code === paymentMethod.integrationCode
+    const paymentHandler = getConfig().payments.handlers.find(
+      p => p.code === paymentMethod.handler.code
     );
 
-    const paymentIntegrationResult = await paymentIntegration?.createPayment(order);
+    const paymentHandlerResult = await paymentHandler?.createPayment(order);
 
-    if (!paymentIntegrationResult) {
+    if (!paymentHandlerResult) {
       return new ErrorResult(
         OrderErrorCode.MISSING_PAYMENT_INTEGRATION,
         'No payment integration found for the given payment method'
       );
     }
 
-    // TODO: do something with paymentIntegrationResult.error
-    if (paymentIntegrationResult.status === 'declined') {
+    // TODO: do something with PaymentHandlerResult.error
+    if (paymentHandlerResult.status === 'declined') {
       return new ErrorResult(OrderErrorCode.PAYMENT_DECLINED, 'Payment declined');
     }
 
     let orderToReturn = order;
 
-    if (paymentIntegrationResult.status === 'created') {
+    if (paymentHandlerResult.status === 'created') {
       const payment = await this.db.getRepository(PaymentEntity).save({
         amount: order.total,
         method: paymentMethod.name
@@ -531,11 +531,11 @@ export class OrderService {
       });
     }
 
-    if (paymentIntegrationResult.status === 'authorized') {
+    if (paymentHandlerResult.status === 'authorized') {
       const payment = await this.db.getRepository(PaymentEntity).save({
-        amount: paymentIntegrationResult.amount,
+        amount: paymentHandlerResult.amount,
         method: paymentMethod.name,
-        transactionId: paymentIntegrationResult.transactionId
+        transactionId: paymentHandlerResult.transactionId
       });
 
       orderToReturn = await this.db.getRepository(OrderEntity).save({

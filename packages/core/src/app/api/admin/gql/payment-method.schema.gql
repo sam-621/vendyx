@@ -1,3 +1,7 @@
+extend type PaymentMethod {
+  handler: ConfigurableProperty!
+}
+
 type PaymentMethodList implements List {
   items: [PaymentMethod!]!
   count: Int!
@@ -16,12 +20,14 @@ type Mutation {
 
 input CreatePaymentMethodInput {
   name: String!
+  handler: ConfigurablePropertyInput!
   description: String
   enabled: Boolean
 }
 
 input UpdatePaymentMethodInput {
   name: String
+  handler: ConfigurablePropertyInput
   description: String
   enabled: Boolean
 }
@@ -43,4 +49,5 @@ type PaymentMethodErrorResult {
 
 enum PaymentMethodErrorCode {
   PAYMENT_METHOD_NOT_FOUND
+  PAYMENT_HANDLER_NOT_FOUND
 }
