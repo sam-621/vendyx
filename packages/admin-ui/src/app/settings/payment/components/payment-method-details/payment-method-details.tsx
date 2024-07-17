@@ -15,6 +15,7 @@ import { useConfigContext } from '@/app/config/contexts';
 import { FormInput, FormTextarea } from '@/lib/components';
 import { type CommonPaymentMethodFragment } from '@/lib/ebloc/codegen/graphql';
 
+import { RemovePaymentMethodButton } from './remove-payment-method-button';
 import { type PaymentMethodDetailsFormInput } from './use-payment-method-details-form';
 
 export const PaymentMethodDetails: FC<Props> = ({ paymentMethod }) => {
@@ -81,6 +82,11 @@ export const PaymentMethodDetails: FC<Props> = ({ paymentMethod }) => {
         defaultValue={paymentMethod?.description ?? ''}
         label="Description"
       />
+      {paymentMethod && (
+        <div className="flex justify-end">
+          <RemovePaymentMethodButton paymentMethod={paymentMethod} />
+        </div>
+      )}
     </div>
   );
 };
