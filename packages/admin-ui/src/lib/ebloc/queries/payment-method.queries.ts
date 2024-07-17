@@ -16,7 +16,13 @@ export const GetPaymentMethodsQuery = graphql(`
   query GetAllPaymentMethods {
     paymentMethods {
       items {
-        ...CommonPaymentMethod
+        id
+        name
+        description
+        enabled
+        handler {
+          code
+        }
       }
     }
   }

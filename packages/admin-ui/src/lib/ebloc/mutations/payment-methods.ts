@@ -28,9 +28,9 @@ export const UpdatePaymentMethodMutation = graphql(`
   }
 `);
 
-export const DeletePaymentMethodMutation = graphql(`
-  mutation RemovePaymentMethod($removePaymentMethodId: ID!) {
-    removePaymentMethod(id: $removePaymentMethodId) {
+export const RemovePaymentMethodMutation = graphql(`
+  mutation RemovePaymentMethod($id: ID!) {
+    removePaymentMethod(id: $id) {
       apiErrors {
         code
         message
