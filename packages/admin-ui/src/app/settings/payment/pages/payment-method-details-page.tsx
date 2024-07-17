@@ -2,6 +2,7 @@ import { FormProvider } from 'react-hook-form';
 import { Navigate, useParams } from 'react-router-dom';
 
 import { LogoLoader, SettingsPageLayout } from '@/lib/components';
+import { type CommonPaymentMethodFragment } from '@/lib/ebloc/codegen/graphql';
 import { formatDate } from '@/lib/utils';
 
 import { PaymentMethodDetails } from '../components/payment-method-details/payment-method-details';
@@ -12,7 +13,6 @@ import { useGetPaymentMethod } from '../hooks';
 export const PaymentMethodDetailsPage = () => {
   const { id } = useParams();
   const { paymentMethod, isLoading } = useGetPaymentMethod(id ?? '');
-  const form = usePaymentMethodDetailsForm(id);
 
   if (isLoading) {
     return <LogoLoader />;
@@ -21,6 +21,12 @@ export const PaymentMethodDetailsPage = () => {
   if (!paymentMethod) {
     return <Navigate to="/settings/payments" />;
   }
+
+  return <Page paymentMethod={paymentMethod} />;
+};
+
+const Page = ({ paymentMethod }: { paymentMethod: CommonPaymentMethodFragment }) => {
+  const form = usePaymentMethodDetailsForm(paymentMethod);
 
   return (
     <FormProvider {...form}>

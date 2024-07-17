@@ -2,23 +2,30 @@ import { type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { type CommonPaymentMethodFragment } from '@/lib/ebloc/codegen/graphql';
 import { FormMessages, useForm } from '@/lib/form';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 import { PaymentKeys, useCreatePaymentMethod, useUpdatePaymentMethod } from '../../hooks';
 
-export const usePaymentMethodDetailsForm = (id?: string) => {
+export const usePaymentMethodDetailsForm = (paymentMethod?: CommonPaymentMethodFragment) => {
   const { createPaymentMethod } = useCreatePaymentMethod();
   const { updatePaymentMethod } = useUpdatePaymentMethod();
 
   const form = useForm<PaymentMethodDetailsFormInput>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: paymentMethod?.name ?? '',
+      description: paymentMethod?.description ?? '',
+      handler: paymentMethod?.handler.code ?? '',
+      enabled: paymentMethod?.enabled ?? true
+    }
   });
 
   const onSubmit = async (input: PaymentMethodDetailsFormInput) => {
-    if (id) {
-      await onUpdate(id, input);
+    if (paymentMethod?.id) {
+      await onUpdate(paymentMethod.id, input);
     } else {
       await onCreate(input);
     }

@@ -2,6 +2,7 @@ import { type FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -47,6 +48,7 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Handler</TableHead>
+                <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -59,6 +61,11 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
                   </TableCell>
                   <TableCell>
                     {config?.paymentHandlers.find(ph => ph.code === method.handler.code)?.name}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={method.enabled ? 'default' : 'secondary'}>
+                      {method.enabled ? 'Active' : 'Inactive'}
+                    </Badge>
                   </TableCell>
                 </TableRow>
               ))}

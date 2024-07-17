@@ -14,10 +14,14 @@ export const CreatePaymentMethodPage = () => {
     <FormProvider {...form}>
       <form onSubmit={form.onSubmit}>
         <SettingsPageLayout
-          title="Add automatic payment method"
+          title="Add payment method"
           subtitle="Add a payment method to start receiving payments."
           backUrl="/settings/payments"
-          actions={<Button type="submit">Save</Button>}
+          actions={
+            <Button type="submit" isLoading={form.formState.isSubmitting}>
+              Save
+            </Button>
+          }
         >
           <PaymentMethodDetails />
         </SettingsPageLayout>

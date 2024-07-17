@@ -25,7 +25,8 @@ export class PaymentMethodService {
     return await this.db.getRepository(PaymentMethodEntity).find({
       take: input?.take ?? undefined,
       skip: input?.skip ?? undefined,
-      where: { enabled: input?.onlyEnabled || undefined }
+      where: { enabled: input?.onlyEnabled || undefined },
+      order: { createdAt: 'ASC' }
     });
   }
 

@@ -25,8 +25,15 @@ const isFormDirty = (
   method: CommonPaymentMethodFragment,
   formInput: PaymentMethodDetailsFormInput
 ) => {
+  const formattedMethod: PaymentMethodDetailsFormInput = {
+    name: method.name,
+    description: method.description ?? '',
+    handler: method.handler.code,
+    enabled: method.enabled
+  };
+
   return Object.keys(formInput).some(key => {
-    return ((method as any)[key] ?? '') !== ((formInput as any)[key] ?? '');
+    return ((formattedMethod as any)[key] ?? '') !== ((formInput as any)[key] ?? '');
   });
 };
 
