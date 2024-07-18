@@ -1,4 +1,5 @@
 import { type UpdateShippingMethodInput } from '@/lib/ebloc/codegen/graphql';
+import { getShippingMethodErrorMessage } from '@/lib/ebloc/errors';
 import { UpdateShippingMethodMutation } from '@/lib/ebloc/mutations';
 import { useGqlMutation } from '@/lib/gql';
 
@@ -10,7 +11,7 @@ export const useUpdateShippingMethod = () => {
       updateShippingMethod: { apiErrors, shippingMethod }
     } = await mutateAsync({ id, input });
 
-    const error = apiErrors[0];
+    const error = getShippingMethodErrorMessage(apiErrors[0]);
 
     if (error) {
       return { error };

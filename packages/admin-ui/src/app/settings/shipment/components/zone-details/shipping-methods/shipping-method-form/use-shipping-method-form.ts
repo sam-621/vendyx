@@ -91,7 +91,7 @@ export const useShippingMethodForm = (
   const onCreate = async (input: AddShippingMethodFormInput, args: Arg) => {
     const { name, description } = input;
 
-    await createShippingMethod(zoneId, {
+    const { error } = await createShippingMethod(zoneId, {
       name,
       description,
       priceCalculator: {
@@ -99,6 +99,11 @@ export const useShippingMethodForm = (
         args
       }
     });
+
+    if (error) {
+      notification.error(error);
+      return;
+    }
 
     await queryClient.invalidateQueries({ queryKey: ShipmentKeys.single(zoneId) });
     notification.success('Shipping method created');
@@ -118,7 +123,7 @@ export const useShippingMethodForm = (
       return;
     }
 
-    await updateShippingMethod(initialValue?.id, {
+    const { error } = await updateShippingMethod(initialValue?.id, {
       name,
       description,
       priceCalculator: {
@@ -126,6 +131,11 @@ export const useShippingMethodForm = (
         args
       }
     });
+
+    if (error) {
+      notification.error(error);
+      return;
+    }
 
     await queryClient.invalidateQueries({ queryKey: ShipmentKeys.single(zoneId) });
     notification.success('Shipping method updated');
