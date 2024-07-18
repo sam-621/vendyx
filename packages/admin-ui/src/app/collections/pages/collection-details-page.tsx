@@ -1,5 +1,5 @@
 import { FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { LogoLoader, PageLayout } from '@/lib/components';
 import { type CommonCollectionFragment } from '@/lib/ebloc/codegen/graphql';
@@ -19,7 +19,7 @@ export const CollectionDetailsPage = () => {
   }
 
   if (!collection) {
-    return <div>Collection not found</div>;
+    return <Navigate to="/collections" />;
   }
 
   return <Page collection={collection} />;
