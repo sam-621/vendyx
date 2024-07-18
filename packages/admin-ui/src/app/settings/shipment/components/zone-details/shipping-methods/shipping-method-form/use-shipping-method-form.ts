@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { type THashMap } from '@ebloc/common';
+import { convertToCent, convertToDollar, type THashMap } from '@ebloc/common';
 
 import { type PriceCalculator, useConfigContext } from '@/app/config/contexts';
 import {
@@ -43,8 +43,11 @@ export const useShippingMethodForm = (
           const argInitialValue = initialValue?.priceCalculator.args.find(
             initialArg => initialArg.key === arg.key
           )?.value;
+          const isPrice = arg.type === ArgType.Price;
 
-          (acc as THashMap)[arg.key] = argInitialValue ?? arg.defaultValue ?? '';
+          (acc as THashMap)[arg.key] = isPrice
+            ? String(convertToDollar(Number(argInitialValue ?? arg.defaultValue ?? '')))
+            : argInitialValue ?? arg.defaultValue ?? '';
           return acc;
         }, {});
 
@@ -78,7 +81,11 @@ export const useShippingMethodForm = (
       return;
     }
 
-    const argsInArray = Object.entries(args).map(([key, value]) => ({ key, value: String(value) }));
+    const argsInArray = Object.entries(args).map(([key, value]) => {
+      const isPrice = selectedPc.args.find(arg => arg.key === key)?.type === ArgType.Price;
+
+      return { key, value: isPrice ? String(convertToCent(Number(value))) : String(value) };
+    });
 
     if (initialValue) {
       await onUpdate(shippingMethod, argsInArray);

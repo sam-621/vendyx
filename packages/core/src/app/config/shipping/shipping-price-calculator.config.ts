@@ -47,7 +47,7 @@ export interface ShippingPriceCalculatorConfig {
    * - If returned number is 0, the preview price will be `Free`.
    * - If returned number is less than 0, the preview price will be `Dynamic`. (This is used for shipping calculators that get the price from an external service).
    *
-   * @warning The price returned should not be formatted should be the raw price.
+   * @warning If any arg is price type it will be received as an integer
    */
   getPricePreview(args: Record<string, string>): number;
 }

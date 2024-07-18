@@ -1,4 +1,4 @@
-import { clean, convertToCent } from '@ebloc/common';
+import { clean, convertToCent, convertToDollar } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
@@ -48,7 +48,7 @@ export class ShippingMethodService {
       convertArgsToObject(shippingMethod.priceCalculator.args)
     );
 
-    return convertToCent(pricePreview);
+    return pricePreview;
   }
 
   /**

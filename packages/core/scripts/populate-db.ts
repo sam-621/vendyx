@@ -70,10 +70,28 @@ const cleanDb = async () => {
   console.log();
 
   console.log('Adding countries and zones 🌎');
-  const country = await dataSource.getRepository(CountryEntity).save({ name: 'Mexico' });
-  const zone = await dataSource
+  const countries = await dataSource
+    .getRepository(CountryEntity)
+    .save([
+      { name: 'Mexico' },
+      { name: 'Colombia' },
+      { name: 'Peru' },
+      { name: 'Argentina' },
+      { name: 'Chile' },
+      { name: 'Venezuela' },
+      { name: 'Brasil' },
+      { name: 'United States' },
+      { name: 'Canada' }
+    ]);
+
+  const localZone = await dataSource
     .getRepository(ZoneEntity)
-    .save({ name: 'Local', countries: [country] });
+    .save({ name: 'Local', countries: countries.filter(c => c.name === 'Mexico') });
+
+  const internationalZone = await dataSource
+    .getRepository(ZoneEntity)
+    .save({ name: 'Local', countries: countries.filter(c => c.name !== 'Mexico') });
+
   console.log('Countries and zones added ✨');
   console.log("countries: 'Mexico'");
   console.log("Zones: 'Local'");
@@ -81,42 +99,87 @@ const cleanDb = async () => {
 
   console.log('Adding shipping and payment methods 🚚 💳');
 
-  // await dataSource.getRepository(ShippingMethodEntity).save([
-  //   {
-  //     id: '96f617d5-0e01-4993-97c7-512d2870efd4',
-  //     name: 'Express',
-  //     description: 'Deliver on 3 or 5 working days',
-  //     priceCalculator: {
-  //       code: 'flat-price-calculator',
-  //       args: [
-  //         {
-  //           key: 'price',
-  //           value: '100'
-  //         }
-  //       ]
-  //     },
-  //     zone
-  //   }
-  // ]);
+  await dataSource.getRepository(ShippingMethodEntity).save([
+    {
+      name: 'Express',
+      description: 'Deliver on 3 or 5 working days',
+      priceCalculator: {
+        code: 'flat-price-calculator',
+        args: [
+          {
+            key: 'price',
+            value: '15000'
+          }
+        ]
+      },
+      zone: localZone
+    },
+    {
+      name: 'Standard',
+      description: 'Deliver on 5 or 7 working days',
+      priceCalculator: {
+        code: 'flat-price-calculator',
+        args: [
+          {
+            key: 'price',
+            value: '10000'
+          }
+        ]
+      },
+      zone: localZone
+    }
+  ]);
 
-  // await dataSource.getRepository(PaymentMethodEntity).save([
-  //   {
-  //     id: 'd438933f-7fb3-4c7b-9424-ead4cae81866',
-  //     name: 'Stripe',
-  //     description: 'Pay with credit or debit card',
-  //     integrationCode: 'stripe'
-  //   },
-  //   {
-  //     id: '27333884-a0db-4e37-8056-a6522d459b20',
-  //     name: 'PayPal',
-  //     description: 'Pay with your PayPal account',
-  //     integrationCode: 'paypal'
-  //   }
-  // ]);
-  // console.log('Shipping and payment methods added ✨');
-  // console.log("Shipping methods: 'Express', 'Standard'");
-  // console.log("Payment methods: 'Stripe', 'PayPal'");
-  // console.log();
+  await dataSource.getRepository(ShippingMethodEntity).save([
+    {
+      name: 'Express',
+      description: 'Deliver on 3 or 5 working days',
+      priceCalculator: {
+        code: 'flat-price-calculator',
+        args: [
+          {
+            key: 'price',
+            value: '25000'
+          }
+        ]
+      },
+      zone: internationalZone
+    },
+    {
+      name: 'Standard',
+      description: 'Deliver on 5 or 7 working days',
+      priceCalculator: {
+        code: 'flat-price-calculator',
+        args: [
+          {
+            key: 'price',
+            value: '15000'
+          }
+        ]
+      },
+      zone: internationalZone
+    }
+  ]);
+
+  await dataSource.getRepository(PaymentMethodEntity).save([
+    {
+      name: 'Card / Credit card',
+      handler: {
+        code: 'stripe',
+        args: []
+      }
+    },
+    {
+      name: 'PayPal',
+      handler: {
+        code: 'paypal',
+        args: []
+      }
+    }
+  ]);
+
+  console.log('Shipping and payment methods added ✨');
+  console.log();
 
   console.log('Database is populated 🎉');
   await dataSource.destroy();
