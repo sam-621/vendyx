@@ -52,7 +52,7 @@ export const CustomerOrdersTable: FC<Props> = ({ orders }) => {
                 <TableCell className="text-nowrap">
                   {formatDate(new Date(order.placedAt as string))}
                 </TableCell>
-                <TableCell>{order.shipment?.method.name}</TableCell>
+                <TableCell>{order.shipment?.method}</TableCell>
                 <TableCell>{getFormattedPrice(order.total)}</TableCell>
                 <TableCell>
                   <OrderStatusBadge status={order.state} />

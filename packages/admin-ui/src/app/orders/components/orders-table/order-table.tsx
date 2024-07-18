@@ -21,7 +21,7 @@ export const OrderTable = () => {
         placedAt: o.placedAt,
         total: o.total,
         items: o.totalQuantity,
-        shipment: o.shipment?.method.name ?? '',
+        shipment: o.shipment?.method ?? '',
         state: o.state
       };
     }) ?? [];

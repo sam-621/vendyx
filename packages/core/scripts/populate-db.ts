@@ -45,7 +45,7 @@ export const ENTITIES = [
 
 const DbUrl = {
   remote:
-    'postgresql://postgres:KEcyblbOCFexrbrsOojSnzyZNUYDZifJ@roundhouse.proxy.rlwy.net:47601/railway',
+    'postgresql://postgres:C635-525g65d6fEecce*eAc6fBDf5F6G@viaduct.proxy.rlwy.net:16696/railway',
   local: 'postgres://postgres:postgres@localhost:5432/ebloc'
 };
 
@@ -55,7 +55,7 @@ const cleanDb = async () => {
 
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: DbUrl.local,
+    url: DbUrl.remote,
     entities: [...ENTITIES],
     synchronize: true
   }).initialize();
@@ -90,7 +90,7 @@ const cleanDb = async () => {
 
   const internationalZone = await dataSource
     .getRepository(ZoneEntity)
-    .save({ name: 'Local', countries: countries.filter(c => c.name !== 'Mexico') });
+    .save({ name: 'International', countries: countries.filter(c => c.name !== 'Mexico') });
 
   console.log('Countries and zones added ✨');
   console.log("countries: 'Mexico'");
