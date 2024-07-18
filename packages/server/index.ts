@@ -1,9 +1,8 @@
 import {
   CloudinaryStorageProvider,
-  CountryPriceCalculator,
-  FedexPriceCalculator,
-  PaypalIntegration,
-  StripeIntegration,
+  FlatPriceCalculator,
+  PaypalPaymentHandler,
+  StripePaymentHandler,
   bootstrap
 } from '@ebloc/core';
 import { config } from 'dotenv';
@@ -29,10 +28,10 @@ bootstrap({
     })
   },
   shipping: {
-    priceCalculators: [new FedexPriceCalculator(), new CountryPriceCalculator()]
+    priceCalculators: [new FlatPriceCalculator()]
   },
   payments: {
-    integrations: [new PaypalIntegration(), new StripeIntegration()]
+    handlers: [new PaypalPaymentHandler(), new StripePaymentHandler()]
   },
   adminUi: {
     branding: {

@@ -1,9 +1,9 @@
 import { AuthorizePaymentResult, CreatePaymentResult, PaymentHandler } from '@/app/config';
 import { OrderEntity } from '@/app/persistance';
 
-export class PaypalIntegration implements PaymentHandler {
-  name = 'Paypal';
-  code = 'paypal';
+export class StripePaymentHandler implements PaymentHandler {
+  name = 'Stripe';
+  code = 'stripe';
 
   async createPayment(order: OrderEntity): Promise<CreatePaymentResult> {
     return {
