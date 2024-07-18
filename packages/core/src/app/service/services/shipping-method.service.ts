@@ -1,4 +1,4 @@
-import { clean, convertToCent, convertToDollar } from '@ebloc/common';
+import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
@@ -11,7 +11,7 @@ import {
   UpdateShippingMethodInput
 } from '@/app/api/common';
 import { getConfig } from '@/app/config';
-import { ID, OrderEntity, ShippingMethodEntity, ZoneEntity } from '@/app/persistance';
+import { ID, ShippingMethodEntity, ZoneEntity } from '@/app/persistance';
 
 @Injectable()
 export class ShippingMethodService {
@@ -49,21 +49,6 @@ export class ShippingMethodService {
     );
 
     return pricePreview;
-  }
-
-  /**
-   * Find available shipping methods for the given order.
-   */
-  async findAvailable(orderId: ID) {
-    const order = await this.db.getRepository(OrderEntity).findOne({ where: { id: orderId } });
-
-    const methods = await this.find({ onlyEnabled: true });
-
-    if (!order) {
-      return methods.map(method => ({ ...method, price: 0 }));
-    }
-
-    return await this.getMethodsWithPrice(order, methods);
   }
 
   /**
@@ -136,27 +121,5 @@ export class ShippingMethodService {
     await this.db.getRepository(ShippingMethodEntity).remove(method);
 
     return true;
-  }
-
-  /**
-   * Get shipping methods with calculated price depending on the given order.
-   */
-  private async getMethodsWithPrice(order: OrderEntity, methods: ShippingMethodEntity[]) {
-    const methodsWithPrice: (ShippingMethodEntity & { price: number })[] = [];
-
-    for (const method of methods) {
-      const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
-        p => p.code === method.priceCalculator.code
-      );
-
-      const price = await shippingPriceCalculator?.calculatePrice(
-        order,
-        convertArgsToObject(method.priceCalculator.args)
-      );
-
-      methodsWithPrice.push({ ...method, price: price ?? 0 });
-    }
-
-    return methodsWithPrice;
   }
 }

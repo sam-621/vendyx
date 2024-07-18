@@ -46,7 +46,7 @@ export class OrderService {
     });
   }
 
-  async findUnique(id: ID, code: string) {
+  async findUnique(id?: ID, code?: string) {
     if (id) {
       return this.findById(id);
     }
@@ -115,6 +115,28 @@ export class OrderService {
     });
 
     return order?.shipment;
+  }
+
+  async findAvailableShippingMethods(id: ID) {
+    const order = await this.findUnique(id);
+
+    if (!order) {
+      return [];
+    }
+
+    if (!order.shippingAddress) {
+      return [];
+    }
+
+    const methods = await this.db.getRepository(ShippingMethodEntity).find({
+      where: { enabled: true, zone: { countries: { name: order.shippingAddress.country } } }
+    });
+
+    if (order.state !== OrderState.MODIFYING) {
+      return [];
+    }
+
+    return await this.getMethodsWithPrice(order, methods);
   }
 
   /**
@@ -689,5 +711,27 @@ export class OrderService {
 
   private async findByCode(code: string) {
     return this.db.getRepository(OrderEntity).findOne({ where: { code } });
+  }
+
+  /**
+   * Get shipping methods with calculated price depending on the given order.
+   */
+  private async getMethodsWithPrice(order: OrderEntity, methods: ShippingMethodEntity[]) {
+    const methodsWithPrice: (ShippingMethodEntity & { price: number })[] = [];
+
+    for (const method of methods) {
+      const shippingPriceCalculator = getConfig().shipping.priceCalculators.find(
+        p => p.code === method.priceCalculator.code
+      );
+
+      const price = await shippingPriceCalculator?.calculatePrice(
+        order,
+        convertArgsToObject(method.priceCalculator.args)
+      );
+
+      methodsWithPrice.push({ ...method, price: price ?? 0 });
+    }
+
+    return methodsWithPrice;
   }
 }

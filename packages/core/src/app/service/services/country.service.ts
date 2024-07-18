@@ -24,7 +24,7 @@ export class CountryService {
     return this.db.getRepository(CountryEntity).find({
       ...clean(input ?? {}),
       where: { enabled: input?.onlyEnabled || undefined },
-      order: { name: 'DESC' }
+      order: { createdAt: 'ASC' }
     });
   }
 

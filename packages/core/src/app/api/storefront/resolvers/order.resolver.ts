@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
   AddPaymentToOrderInput,
@@ -15,6 +15,13 @@ import { OrderService, isErrorResult } from '@/app/service';
 @Resolver('Order')
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
+
+  @Query('availableShippingMethods')
+  async availableShippingMethods(@Args('orderId') orderId: ID) {
+    const shippingMethods = await this.orderService.findAvailableShippingMethods(orderId);
+
+    return shippingMethods;
+  }
 
   @Mutation('createOrder')
   async createOrder(@Args('input') input: CreateOrderInput) {

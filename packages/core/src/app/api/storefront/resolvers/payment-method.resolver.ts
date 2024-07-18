@@ -8,7 +8,7 @@ export class PaymentMethodResolver {
 
   @Query('availablePaymentMethods')
   async availablePaymentMethods() {
-    const paymentMethods = await this.paymentMethodService.find();
+    const paymentMethods = await this.paymentMethodService.find({ onlyEnabled: true });
 
     return paymentMethods;
   }

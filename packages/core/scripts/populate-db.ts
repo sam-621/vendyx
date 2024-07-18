@@ -55,7 +55,7 @@ const cleanDb = async () => {
 
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: DbUrl.remote,
+    url: DbUrl.local,
     entities: [...ENTITIES],
     synchronize: true
   }).initialize();
@@ -70,27 +70,39 @@ const cleanDb = async () => {
   console.log();
 
   console.log('Adding countries and zones 🌎');
-  const countries = await dataSource
+
+  const staticCountries = [
+    { name: 'Mexico' },
+    { name: 'Colombia' },
+    { name: 'Peru' },
+    { name: 'Argentina' },
+    { name: 'Chile' },
+    { name: 'Venezuela' },
+    { name: 'Brazil' },
+    { name: 'United States' },
+    { name: 'Canada' }
+  ];
+
+  const mexico = await dataSource.getRepository(CountryEntity).save({ name: 'Mexico' });
+  const colombia = await dataSource.getRepository(CountryEntity).save({ name: 'Colombia' });
+  const peru = await dataSource.getRepository(CountryEntity).save({ name: 'Peru' });
+  const argentina = await dataSource.getRepository(CountryEntity).save({ name: 'Argentina' });
+  const chile = await dataSource.getRepository(CountryEntity).save({ name: 'Chile' });
+  const venezuela = await dataSource.getRepository(CountryEntity).save({ name: 'Venezuela' });
+  const brazil = await dataSource.getRepository(CountryEntity).save({ name: 'Brazil' });
+  const unitedStates = await dataSource
     .getRepository(CountryEntity)
-    .save([
-      { name: 'Mexico' },
-      { name: 'Colombia' },
-      { name: 'Peru' },
-      { name: 'Argentina' },
-      { name: 'Chile' },
-      { name: 'Venezuela' },
-      { name: 'Brasil' },
-      { name: 'United States' },
-      { name: 'Canada' }
-    ]);
+    .save({ name: 'United States' });
+  const canada = await dataSource.getRepository(CountryEntity).save({ name: 'Canada' });
 
   const localZone = await dataSource
     .getRepository(ZoneEntity)
-    .save({ name: 'Local', countries: countries.filter(c => c.name === 'Mexico') });
+    .save({ name: 'Local', countries: [mexico] });
 
-  const internationalZone = await dataSource
-    .getRepository(ZoneEntity)
-    .save({ name: 'International', countries: countries.filter(c => c.name !== 'Mexico') });
+  const internationalZone = await dataSource.getRepository(ZoneEntity).save({
+    name: 'International',
+    countries: [colombia, peru, argentina, chile, venezuela, brazil, unitedStates, canada]
+  });
 
   console.log('Countries and zones added ✨');
   console.log("countries: 'Mexico'");
@@ -99,84 +111,78 @@ const cleanDb = async () => {
 
   console.log('Adding shipping and payment methods 🚚 💳');
 
-  await dataSource.getRepository(ShippingMethodEntity).save([
-    {
-      name: 'Express',
-      description: 'Deliver on 3 or 5 working days',
-      priceCalculator: {
-        code: 'flat-price-calculator',
-        args: [
-          {
-            key: 'price',
-            value: '15000'
-          }
-        ]
-      },
-      zone: localZone
+  await dataSource.getRepository(ShippingMethodEntity).save({
+    name: 'Express',
+    description: 'Deliver on 3 or 5 working days',
+    priceCalculator: {
+      code: 'flat-price-calculator',
+      args: [
+        {
+          key: 'price',
+          value: '15000'
+        }
+      ]
     },
-    {
-      name: 'Standard',
-      description: 'Deliver on 5 or 7 working days',
-      priceCalculator: {
-        code: 'flat-price-calculator',
-        args: [
-          {
-            key: 'price',
-            value: '10000'
-          }
-        ]
-      },
-      zone: localZone
-    }
-  ]);
+    zone: localZone
+  });
+  await dataSource.getRepository(ShippingMethodEntity).save({
+    name: 'Standard',
+    description: 'Deliver on 5 or 7 working days',
+    priceCalculator: {
+      code: 'flat-price-calculator',
+      args: [
+        {
+          key: 'price',
+          value: '10000'
+        }
+      ]
+    },
+    zone: localZone
+  });
 
-  await dataSource.getRepository(ShippingMethodEntity).save([
-    {
-      name: 'Express',
-      description: 'Deliver on 3 or 5 working days',
-      priceCalculator: {
-        code: 'flat-price-calculator',
-        args: [
-          {
-            key: 'price',
-            value: '25000'
-          }
-        ]
-      },
-      zone: internationalZone
+  await dataSource.getRepository(ShippingMethodEntity).save({
+    name: 'Express',
+    description: 'Deliver on 3 or 5 working days',
+    priceCalculator: {
+      code: 'flat-price-calculator',
+      args: [
+        {
+          key: 'price',
+          value: '25000'
+        }
+      ]
     },
-    {
-      name: 'Standard',
-      description: 'Deliver on 5 or 7 working days',
-      priceCalculator: {
-        code: 'flat-price-calculator',
-        args: [
-          {
-            key: 'price',
-            value: '15000'
-          }
-        ]
-      },
-      zone: internationalZone
-    }
-  ]);
+    zone: internationalZone
+  });
+  await dataSource.getRepository(ShippingMethodEntity).save({
+    name: 'Standard',
+    description: 'Deliver on 5 or 7 working days',
+    priceCalculator: {
+      code: 'flat-price-calculator',
+      args: [
+        {
+          key: 'price',
+          value: '15000'
+        }
+      ]
+    },
+    zone: internationalZone
+  });
 
-  await dataSource.getRepository(PaymentMethodEntity).save([
-    {
-      name: 'Card / Credit card',
-      handler: {
-        code: 'stripe',
-        args: []
-      }
-    },
-    {
-      name: 'PayPal',
-      handler: {
-        code: 'paypal',
-        args: []
-      }
+  await dataSource.getRepository(PaymentMethodEntity).save({
+    name: 'Card / Credit card',
+    handler: {
+      code: 'stripe',
+      args: []
     }
-  ]);
+  });
+  await dataSource.getRepository(PaymentMethodEntity).save({
+    name: 'PayPal',
+    handler: {
+      code: 'paypal',
+      args: []
+    }
+  });
 
   console.log('Shipping and payment methods added ✨');
   console.log();

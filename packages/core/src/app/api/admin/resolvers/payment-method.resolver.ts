@@ -17,6 +17,9 @@ export class PaymentMethodResolver {
   @Query('paymentMethods')
   async paymentMethods(@Args('input') input: ListInput) {
     const paymentMethods = await this.paymentMethodService.find(input);
+    console.log({
+      paymentMethods
+    });
 
     return new ListResponse(paymentMethods, paymentMethods.length);
   }

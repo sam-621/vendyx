@@ -9,7 +9,6 @@ import {
   OrderResolver,
   PaymentMethodResolver,
   ProductResolver,
-  ShippingMethodResolver,
   VariantResolver
 } from './resolvers';
 import { COMMON_RESOLVERS } from '../common/common-resolvers';
@@ -45,7 +44,6 @@ export class StorefrontApiModule {
     ProductResolver,
     VariantResolver,
     PaymentMethodResolver,
-    ShippingMethodResolver,
     CustomerResolver,
     CollectionResolver,
     CountryResolver,
