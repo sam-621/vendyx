@@ -7,7 +7,6 @@ import { DataTableColumnHeader } from '@/lib/components/data-table';
 import { t } from '@/lib/locales';
 
 import { type TableProduct } from './product-table';
-import { ProductTableActions } from './product-table-actions';
 
 export const ProductTableColumns: ColumnDef<TableProduct>[] = [
   {
@@ -78,10 +77,5 @@ export const ProductTableColumns: ColumnDef<TableProduct>[] = [
       );
     },
     enableSorting: false
-  },
-  {
-    id: 'actions',
-    header: () => <div></div>,
-    cell: ({ row }) => <ProductTableActions row={row} />
   }
 ];

@@ -13,6 +13,7 @@ import { AssetDetails } from './asset-details/asset-details';
 import { VariantDetails } from './variant-details/variant-details';
 import { ProductDetailsSlugInput } from './product-details-slug-input';
 import { ProductDetailsSubmitButton } from './product-details-submit-button';
+import { RemoveProductButton } from './remove-product-button';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
@@ -82,13 +83,16 @@ export const ProductDetails: FC<Props> = ({ product }) => {
         </CardContent>
       </Card>
 
-      <div className="flex gap-3 justify-end lg:hidden">
-        <Link to="/products">
+      <div className="flex gap-3 justify-end">
+        {product && <RemoveProductButton product={product} />}
+        <Link to="/products" className="lg:hidden">
           <Button variant="secondary" type="button">
             Cancel
           </Button>
         </Link>
-        <ProductDetailsSubmitButton product={product} />
+        <div className="lg:hidden">
+          <ProductDetailsSubmitButton product={product} />
+        </div>
       </div>
     </ProductDetailsProvider>
   );
