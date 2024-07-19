@@ -1,11 +1,11 @@
-import { cookies, CookiesKeys } from '@/lib/cookies';
+import { cookies, CookiesExpiry, CookiesKeys } from '@/lib/cookies';
+import { type AuthenticateInput } from '@/lib/ebloc/codegen/graphql';
+import { getAdminErrorMessages } from '@/lib/ebloc/errors';
+import { AuthenticateMutation } from '@/lib/ebloc/mutations';
 import { GraphqlError } from '@/lib/errors';
 import { useGqlMutation } from '@/lib/gql';
 import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
-import { type AuthenticateInput } from '@/lib/ebloc/codegen/graphql';
-import { getAdminErrorMessages } from '@/lib/ebloc/errors';
-import { AuthenticateMutation } from '@/lib/ebloc/mutations';
 
 import { AdminKeys } from './admin-keys';
 
@@ -25,7 +25,7 @@ export const useAuthenticate = () => {
       }
 
       // TODO: Add expiry date
-      cookies.set(CookiesKeys.TOKEN, authToken);
+      cookies.set(CookiesKeys.TOKEN, authToken, { expires: CookiesExpiry.WEEK });
 
       await queryClient.invalidateQueries({ queryKey: AdminKeys.validate });
     } catch (error) {
