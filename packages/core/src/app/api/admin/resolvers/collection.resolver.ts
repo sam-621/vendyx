@@ -1,8 +1,8 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { CreateCollectionInput, ListInput, ListResponse } from '../../common';
 
-import { ID } from '@/app/persistance';
+import { CollectionEntity, ID } from '@/app/persistance';
 import { CollectionService, isErrorResult } from '@/app/service';
 
 @Resolver('Collection')
@@ -47,5 +47,14 @@ export class CollectionResolver {
     const result = await this.collectionService.setProducts(id, productIds);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], collection: result };
+  }
+
+  @ResolveField('products')
+  async products(@Parent() collection: CollectionEntity, @Args('input') input: ListInput) {
+    const result = await this.collectionService.findProducts(collection.id, {
+      ...input
+    });
+
+    return new ListResponse(result, result.length);
   }
 }

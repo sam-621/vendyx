@@ -58,10 +58,11 @@ export class CollectionService {
     throw new GraphQLError('You must provide either an ID or a SLUG to find a collection');
   }
 
-  async findProducts(id: ID, input: ListInput) {
-    return this.db
-      .getRepository(ProductEntity)
-      .find({ where: { collections: { id } }, ...clean(input) });
+  async findProducts(id: ID, input?: ListInput & { onlyEnabled?: boolean }) {
+    return this.db.getRepository(ProductEntity).find({
+      where: { collections: { id }, published: input?.onlyEnabled || undefined },
+      ...clean(input ?? {})
+    });
   }
 
   /**

@@ -3,8 +3,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 
-import { GqlLoggingPlugin } from './plugins/gql-logging.plugin';
-
 @Module({})
 export class GraphqlApiModule {
   static register(options: GraphqlApiModuleOptions): DynamicModule {

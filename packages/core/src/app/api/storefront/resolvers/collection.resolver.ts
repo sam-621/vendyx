@@ -1,8 +1,8 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { ListInput, ListResponse } from '../../common';
 
-import { ID } from '@/app/persistance';
+import { CollectionEntity, ID } from '@/app/persistance';
 import { CollectionService } from '@/app/service';
 
 @Resolver('Collection')
@@ -19,5 +19,15 @@ export class CollectionResolver {
   @Query('collection')
   async collection(@Args('id') id: ID, @Args('slug') slug: string) {
     return this.collectionService.findByIdOrdSlug({ id, slug, onlyPublished: true });
+  }
+
+  @ResolveField('products')
+  async products(@Parent() collection: CollectionEntity, @Args('input') input: ListInput) {
+    const result = await this.collectionService.findProducts(collection.id, {
+      ...input,
+      onlyEnabled: true
+    });
+
+    return new ListResponse(result, result.length);
   }
 }
