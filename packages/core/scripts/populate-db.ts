@@ -55,7 +55,7 @@ const cleanDb = async () => {
 
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: DbUrl.remote,
+    url: DbUrl.local,
     entities: [...ENTITIES],
     synchronize: true
   }).initialize();
@@ -70,18 +70,6 @@ const cleanDb = async () => {
   console.log();
 
   console.log('Adding countries and zones 🌎');
-
-  const staticCountries = [
-    { name: 'Mexico' },
-    { name: 'Colombia' },
-    { name: 'Peru' },
-    { name: 'Argentina' },
-    { name: 'Chile' },
-    { name: 'Venezuela' },
-    { name: 'Brazil' },
-    { name: 'United States' },
-    { name: 'Canada' }
-  ];
 
   const mexico = await dataSource.getRepository(CountryEntity).save({ name: 'Mexico' });
   const colombia = await dataSource.getRepository(CountryEntity).save({ name: 'Colombia' });
@@ -171,6 +159,7 @@ const cleanDb = async () => {
 
   await dataSource.getRepository(PaymentMethodEntity).save({
     name: 'Card / Credit card',
+    description: 'Pay with your credit or debit card of any bank',
     handler: {
       code: 'stripe',
       args: []
@@ -178,6 +167,7 @@ const cleanDb = async () => {
   });
   await dataSource.getRepository(PaymentMethodEntity).save({
     name: 'PayPal',
+    description: 'Pay with your PayPal account',
     handler: {
       code: 'paypal',
       args: []
