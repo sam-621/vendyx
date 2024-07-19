@@ -1,6 +1,8 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
+  AdminJwtAuthGuard,
   CreatePaymentMethodInput,
   ListInput,
   ListResponse,
@@ -10,6 +12,7 @@ import {
 import { ID } from '@/app/persistance';
 import { PaymentMethodService, isErrorResult } from '@/app/service';
 
+@UseGuards(AdminJwtAuthGuard)
 @Resolver('PaymentMethod')
 export class PaymentMethodResolver {
   constructor(private readonly paymentMethodService: PaymentMethodService) {}

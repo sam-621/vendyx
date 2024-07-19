@@ -1,10 +1,18 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { CreateZoneInput, ListInput, ListResponse, UpdateZoneInput } from '../../common';
+import {
+  AdminJwtAuthGuard,
+  CreateZoneInput,
+  ListInput,
+  ListResponse,
+  UpdateZoneInput
+} from '../../common';
 
 import { ID, ZoneEntity } from '@/app/persistance';
 import { ShippingMethodService, ZoneService, isErrorResult } from '@/app/service';
 
+@UseGuards(AdminJwtAuthGuard)
 @Resolver('Zone')
 export class ZoneResolver {
   constructor(

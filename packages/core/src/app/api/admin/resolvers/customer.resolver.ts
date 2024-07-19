@@ -1,10 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { ListInput, ListResponse, UpdateCustomerInput } from '../../common';
+import { AdminJwtAuthGuard, ListInput, ListResponse, UpdateCustomerInput } from '../../common';
 
 import { ID } from '@/app/persistance';
 import { CustomerService, isErrorResult } from '@/app/service';
 
+@UseGuards(AdminJwtAuthGuard)
 @Resolver('Customer')
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}

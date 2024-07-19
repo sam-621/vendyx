@@ -1,10 +1,16 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { CreateShippingMethodInput, UpdateShippingMethodInput } from '../../common';
+import {
+  AdminJwtAuthGuard,
+  CreateShippingMethodInput,
+  UpdateShippingMethodInput
+} from '../../common';
 
 import { ID } from '@/app/persistance';
 import { ShippingMethodService, isErrorResult } from '@/app/service';
 
+@UseGuards(AdminJwtAuthGuard)
 @Resolver('ShippingMethod')
 export class ShippingMethodResolver {
   constructor(private readonly shippingMethodService: ShippingMethodService) {}

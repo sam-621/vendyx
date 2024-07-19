@@ -1,10 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreateCountryInput, ListInput, ListResponse } from '../../common';
+import { AdminJwtAuthGuard, CreateCountryInput, ListInput, ListResponse } from '../../common';
 
 import { ID } from '@/app/persistance';
 import { CountryService, isErrorResult } from '@/app/service';
 
+@UseGuards(AdminJwtAuthGuard)
 @Resolver('Country')
 export class CountryResolver {
   constructor(private readonly countryService: CountryService) {}

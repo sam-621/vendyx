@@ -1,10 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { CreateCollectionInput, ListInput, ListResponse } from '../../common';
+import { AdminJwtAuthGuard, CreateCollectionInput, ListInput, ListResponse } from '../../common';
 
 import { CollectionEntity, ID } from '@/app/persistance';
 import { CollectionService, isErrorResult } from '@/app/service';
 
+@UseGuards(AdminJwtAuthGuard)
 @Resolver('Collection')
 export class CollectionResolver {
   constructor(private readonly collectionService: CollectionService) {}
