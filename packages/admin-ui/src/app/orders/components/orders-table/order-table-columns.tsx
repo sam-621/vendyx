@@ -7,6 +7,7 @@ import { User } from 'lucide-react';
 
 import { DataTableColumnHeader } from '@/lib/components/data-table';
 import { OrderStatusBadge } from '@/lib/components/items';
+import { formatDate } from '@/lib/utils';
 
 import { type TableOrder } from './order-table';
 
@@ -95,7 +96,7 @@ export const OrderTableColumns: ColumnDef<TableOrder>[] = [
       return <DataTableColumnHeader column={column} title="Placed at" />;
     },
     cell: ({ row }) => {
-      return <div className="font-medium">{row.original.placedAt}</div>;
+      return <div className="font-medium">{formatDate(new Date(row.original.placedAt))}</div>;
     }
   }
 ];
