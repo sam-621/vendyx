@@ -534,14 +534,14 @@ export class OrderService {
       p => p.code === paymentMethod.handler.code
     );
 
-    const paymentHandlerResult = await paymentHandler?.createPayment(order);
-
-    if (!paymentHandlerResult) {
+    if (!paymentHandler) {
       return new ErrorResult(
-        OrderErrorCode.MISSING_PAYMENT_INTEGRATION,
-        'No payment integration found for the given payment method'
+        OrderErrorCode.MISSING_PAYMENT_HANDLER,
+        'No payment handler found for the given payment method'
       );
     }
+
+    const paymentHandlerResult = await paymentHandler.createPayment(order);
 
     // TODO: do something with PaymentHandlerResult.error
     if (paymentHandlerResult.status === 'declined') {
