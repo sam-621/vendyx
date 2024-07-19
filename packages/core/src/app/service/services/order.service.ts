@@ -129,7 +129,8 @@ export class OrderService {
     }
 
     const methods = await this.db.getRepository(ShippingMethodEntity).find({
-      where: { enabled: true, zone: { countries: { name: order.shippingAddress.country } } }
+      where: { enabled: true, zone: { countries: { name: order.shippingAddress.country } } },
+      order: { createdAt: 'ASC' }
     });
 
     if (order.state !== OrderState.MODIFYING) {
