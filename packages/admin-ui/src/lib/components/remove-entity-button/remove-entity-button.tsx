@@ -14,6 +14,13 @@ import {
 } from '@ebloc/theme';
 import { Loader2Icon, XIcon } from 'lucide-react';
 
+/**
+ * A button to remove an entity that wraps an alert dialog.
+ *
+ * @description
+ * This component should be used when you want to show a button to remove an entity. Show an alert dialog before onRemove action is called.
+ * And also show a loader icon while the action is in progress.
+ */
 export const EntityRemoveButton: FC<Props> = ({
   title,
   description,
