@@ -21,6 +21,7 @@ import { getConfig } from '@/app/config';
 import { OrderEvent } from '@/app/events';
 import {
   AddressEntity,
+  CountryEntity,
   CustomerEntity,
   ID,
   OrderEntity,
@@ -373,6 +374,7 @@ export class OrderService {
    * @description
    * 1. Check if the order exists
    * 2. Check if the order is in the MODIFYING state
+   * 3. Check if the country exists
    * 4. Update order with address in JSON
    * 5. Recalculate order stats
    */
@@ -393,6 +395,14 @@ export class OrderService {
         OrderErrorCode.ORDER_TRANSITION_ERROR,
         `Unable to add shipping address to order in state ${order.state}`
       );
+    }
+
+    const countryExists = await this.db
+      .getRepository(CountryEntity)
+      .findOne({ where: { name: input.country } });
+
+    if (!countryExists) {
+      return new ErrorResult(OrderErrorCode.COUNTRY_NOT_FOUND, 'Country not found');
     }
 
     const address = this.db.getRepository(AddressEntity).create(clean(input));
