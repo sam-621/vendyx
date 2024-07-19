@@ -55,7 +55,7 @@ const cleanDb = async () => {
 
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: DbUrl.local,
+    url: DbUrl.remote,
     entities: [...ENTITIES],
     synchronize: true
   }).initialize();

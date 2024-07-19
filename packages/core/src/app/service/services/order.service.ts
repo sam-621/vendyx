@@ -441,7 +441,7 @@ export class OrderService {
 
     const shippingMethod = await this.db
       .getRepository(ShippingMethodEntity)
-      .findOne({ where: { id: input.methodId } });
+      .findOne({ where: { id: input.methodId, enabled: true } });
 
     if (!shippingMethod) {
       return new ErrorResult(OrderErrorCode.SHIPPING_METHOD_NOT_FOUND, `Shipping method not found`);
@@ -512,7 +512,7 @@ export class OrderService {
     }
 
     const paymentMethod = await this.db.getRepository(PaymentMethodEntity).findOne({
-      where: { id: input.methodId }
+      where: { id: input.methodId, enabled: true }
     });
 
     if (!paymentMethod) {
