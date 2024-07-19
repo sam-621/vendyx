@@ -399,7 +399,7 @@ export class OrderService {
 
     const countryExists = await this.db
       .getRepository(CountryEntity)
-      .findOne({ where: { name: input.country } });
+      .findOne({ where: { name: input.country, enabled: true } });
 
     if (!countryExists) {
       return new ErrorResult(OrderErrorCode.COUNTRY_NOT_FOUND, 'Country not found');
