@@ -1,6 +1,7 @@
 import { type FC } from 'react';
 
 import {
+  Badge,
   Card,
   CardContent,
   CardHeader,
@@ -38,6 +39,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
               <TableRow>
                 <TableHead>Zone</TableHead>
                 <TableHead>Price</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead></TableHead>
               </TableRow>
             </TableHeader>
@@ -48,6 +50,11 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
                     <span>{method.name}</span>
                   </TableCell>
                   <TableCell>{formatShippingMethodPreviewPrice(method.pricePreview)}</TableCell>
+                  <TableCell>
+                    <Badge variant={method.enabled ? 'default' : 'secondary'}>
+                      {method.enabled ? 'Active' : 'Inactive'}
+                    </Badge>
+                  </TableCell>
                   <TableCell className="w-[32px]">
                     <ShippingMethodsTableActions zoneId={zone.id} shippingMethod={method} />
                   </TableCell>

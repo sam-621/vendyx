@@ -9,7 +9,8 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
+  Switch
 } from '@ebloc/theme';
 
 import { type PriceCalculator } from '@/app/config/contexts';
@@ -30,7 +31,7 @@ export const ShippingMethodForm: FC<Props> = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-full">
         <Label>Type of shipping method</Label>
         <Select
           disabled={isUpdate}
@@ -49,19 +50,37 @@ export const ShippingMethodForm: FC<Props> = ({
           </SelectContent>
         </Select>
       </div>
-      <FormInput
-        label="Name"
-        placeholder="Express"
-        value={shippingMethod.name}
-        onChange={e => {
-          const value = e.target.value;
+      <div className="flex items-end gap-6">
+        <FormInput
+          className="w-full"
+          label="Name"
+          placeholder="Express"
+          value={shippingMethod.name}
+          onChange={e => {
+            const value = e.target.value;
 
-          setShippingMethod(prevState => ({
-            ...prevState,
-            name: value
-          }));
-        }}
-      />
+            setShippingMethod(prevState => ({
+              ...prevState,
+              name: value
+            }));
+          }}
+        />
+        <div className="flex items-center space-x-2 pb-[6px]">
+          <Switch
+            id="payment-method-status"
+            checked={shippingMethod.enabled}
+            onCheckedChange={checked => {
+              setShippingMethod(prevState => ({
+                ...prevState,
+                enabled: checked
+              }));
+            }}
+          />
+          <Label htmlFor="payment-method-status" className="cursor-pointer text-base">
+            Active
+          </Label>
+        </div>
+      </div>
       <FormTextarea
         label="Description"
         placeholder="Deliver up to 3 to 5 work days"

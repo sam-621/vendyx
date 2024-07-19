@@ -23,6 +23,7 @@ export const useShippingMethodForm = (
   const [shippingMethod, setShippingMethod] = useState<AddShippingMethodFormInput>({
     name: initialValue?.name ?? '',
     description: initialValue?.description ?? '',
+    enabled: initialValue?.enabled ?? true,
     args: {}
   });
   const [selectedPcCode, setSelectedPcCode] = useState<string>('');
@@ -101,6 +102,7 @@ export const useShippingMethodForm = (
     const { error } = await createShippingMethod(zoneId, {
       name,
       description,
+      enabled: input.enabled,
       priceCalculator: {
         code: selectedPcCode,
         args
@@ -118,8 +120,10 @@ export const useShippingMethodForm = (
     setShippingMethod({
       name: initialValue?.name ?? '',
       description: initialValue?.description ?? '',
+      enabled: initialValue?.enabled ?? true,
       args: {}
     });
+
     setReCalculateInitialValues(reCalculateInitialValues + 1);
   };
 
@@ -133,6 +137,7 @@ export const useShippingMethodForm = (
     const { error } = await updateShippingMethod(initialValue?.id, {
       name,
       description,
+      enabled: input.enabled,
       priceCalculator: {
         code: selectedPcCode,
         args
@@ -209,6 +214,7 @@ export const useShippingMethodForm = (
 export type AddShippingMethodFormInput = {
   name: string;
   description: string;
+  enabled: boolean;
   args: THashMap;
 };
 

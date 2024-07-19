@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { type MakeAny } from '@ebloc/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -9,7 +11,6 @@ import { notification } from '@/lib/notifications';
 import { queryClient } from '@/lib/query-client';
 
 import { PaymentKeys, useCreatePaymentMethod, useUpdatePaymentMethod } from '../../hooks';
-import { useNavigate } from 'react-router-dom';
 
 export const usePaymentMethodDetailsForm = (paymentMethod?: CommonPaymentMethodFragment) => {
   const navigate = useNavigate();
