@@ -56,7 +56,7 @@ export class ZoneService {
     const result = await this.db.getRepository(ShippingMethodEntity).find({
       where: { zone: { id } },
       ...clean(input ?? {}),
-      order: { createdAt: 'DESC' }
+      order: { createdAt: 'ASC' }
     });
 
     return result;

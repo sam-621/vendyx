@@ -13,8 +13,8 @@ export const UpdateShippingMethodForm: FC<Props> = ({ zoneId, shippingMethod }) 
 
   return (
     <Dialog open={isOpen} onOpenChange={open => setIsOpen(open)}>
-      <DialogTrigger className="font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground select-none rounded-sm text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground p-0 h-full w-full flex justify-start px-2 py-[6px]">
-        Edit
+      <DialogTrigger asChild>
+        <span className="hover:underline cursor-pointer">{shippingMethod.name}</span>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

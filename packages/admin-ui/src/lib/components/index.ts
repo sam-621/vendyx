@@ -6,4 +6,5 @@ export * from './forms';
 export * from './items';
 export * from './layout';
 export * from './loaders';
+export * from './remove-entity-button';
 export * from './skeletons';

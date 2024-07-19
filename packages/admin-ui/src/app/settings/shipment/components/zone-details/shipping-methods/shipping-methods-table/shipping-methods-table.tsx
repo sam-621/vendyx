@@ -18,7 +18,8 @@ import { type CommonZoneFragment } from '@/lib/ebloc/codegen/graphql';
 
 import { formatShippingMethodPreviewPrice } from '../../../../utils';
 import { AddShippingMethod } from '../add-shipping-method/add-shipping-method-form';
-import { ShippingMethodsTableActions } from './shipping-methods-table-actions';
+import { RemoveShippingMethodButton } from '../remove-shipping-method/remove-shipping-method-button';
+import { UpdateShippingMethodForm } from '../update-shipping-method/update-shipping-method-form';
 
 export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
   const shippingMethods = zone.shippingMethods.items;
@@ -47,7 +48,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
               {shippingMethods.map(method => (
                 <TableRow key={method.id}>
                   <TableCell>
-                    <span>{method.name}</span>
+                    <UpdateShippingMethodForm zoneId={zone.id} shippingMethod={method} />
                   </TableCell>
                   <TableCell>{formatShippingMethodPreviewPrice(method.pricePreview)}</TableCell>
                   <TableCell>
@@ -56,7 +57,7 @@ export const ShippingMethodsTable: FC<Props> = ({ zone }) => {
                     </Badge>
                   </TableCell>
                   <TableCell className="w-[32px]">
-                    <ShippingMethodsTableActions zoneId={zone.id} shippingMethod={method} />
+                    <RemoveShippingMethodButton zoneId={zone.id} shippingMethod={method} />
                   </TableCell>
                 </TableRow>
               ))}
