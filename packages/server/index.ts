@@ -1,10 +1,11 @@
 import {
   CloudinaryStorageProvider,
   FlatPriceCalculator,
-  PaypalPaymentHandler,
   StripePaymentHandler,
   bootstrap
 } from '@ebloc/core';
+import { PaypalPlugin } from '@ebloc/payments';
+
 import { config } from 'dotenv';
 
 config();
@@ -31,7 +32,7 @@ bootstrap({
     priceCalculators: [new FlatPriceCalculator()]
   },
   payments: {
-    handlers: [new PaypalPaymentHandler(), new StripePaymentHandler()]
+    handlers: [new StripePaymentHandler()]
   },
   adminUi: {
     branding: {
@@ -41,5 +42,5 @@ bootstrap({
     },
     serveUrl: '/admin'
   },
-  plugins: []
+  plugins: [PaypalPlugin]
 });
