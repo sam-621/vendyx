@@ -1,6 +1,6 @@
 {
   "name": "@ebloc/payments",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ready-to-use payment integrations developed by ebloc",
   "main": "index.js",
   "repository": "https://github.com/sam-621/ebloc",

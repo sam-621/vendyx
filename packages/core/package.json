@@ -1,6 +1,6 @@
 {
   "name": "@ebloc/core",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "author": "",
   "main": "dist/index.js",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.10.0",
-    "@ebloc/common": "*",
+    "@ebloc/common": "^0.0.1",
     "@nestjs/apollo": "^12.0.11",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
@@ -51,7 +51,7 @@
   },
   "//": "We add `@ebloc/admin-ui` as a dev dependency only for lerna knows admin-ui package has to be built before core package",
   "devDependencies": {
-    "@ebloc/admin-ui": "*",
+    "@ebloc/admin-ui": "^0.0.1",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
