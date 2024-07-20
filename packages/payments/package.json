@@ -7,6 +7,9 @@
   "author": "Rogelio Samuel Moreno Corrales",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "@ebloc/core": "*"
   }

@@ -1,0 +1,6 @@
+type Mutation {
+  """
+  Create paypal order and return the paypal order id
+  """
+  createPaypalOrder(orderId: ID!): String
+}
