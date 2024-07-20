@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
   AdminService,
@@ -18,7 +17,6 @@ import {
   VariantService,
   ZoneService
 } from './services';
-import { ENTITIES } from '../persistance';
 import { SecurityModule } from '../security';
 
 const SERVICES = [
@@ -40,7 +38,7 @@ const SERVICES = [
 ];
 
 @Module({
-  imports: [SecurityModule, TypeOrmModule.forFeature([...ENTITIES])],
+  imports: [SecurityModule],
   providers: [...SERVICES],
   exports: [...SERVICES]
 })

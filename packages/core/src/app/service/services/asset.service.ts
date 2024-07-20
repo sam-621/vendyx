@@ -7,7 +7,7 @@ import { AssetEntity, AssetInProductEntity } from '@/app/persistance';
 
 @Injectable()
 export class AssetService {
-  constructor(@InjectDataSource() private db: DataSource) {}
+  constructor(private db: DataSource) {}
 
   async create(file: Express.Multer.File) {
     const path = file.path;

@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { InjectRepository } from '@nestjs/typeorm';
 import { GraphQLError } from 'graphql';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import { AdminJwtPayload } from './jwt.types';
 
@@ -12,10 +11,7 @@ import { AdminEntity } from '@/app/persistance';
 
 @Injectable()
 export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
-  constructor(
-    @InjectRepository(AdminEntity)
-    private adminRepository: Repository<AdminEntity>
-  ) {
+  constructor(private db: DataSource) {
     const { jwtSecret } = getConfig().auth;
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -27,7 +23,7 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
   async validate(payload: AdminJwtPayload) {
     const { username } = payload;
 
-    const user = await this.adminRepository.findOne({ where: { username } });
+    const user = await this.db.getRepository(AdminEntity).findOne({ where: { username } });
 
     if (!user) {
       throw new GraphQLError('Invalid token', { extensions: { code: 'UNAUTHORIZED' } });

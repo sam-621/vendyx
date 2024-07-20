@@ -18,10 +18,7 @@ import { CustomerJwtPayload } from '@/app/security/strategies/jwt/jwt.types';
 
 @Injectable()
 export class CustomerService {
-  constructor(
-    @InjectDataSource() private db: DataSource,
-    private readonly securityService: SecurityService
-  ) {}
+  constructor(private db: DataSource, private readonly securityService: SecurityService) {}
 
   /**
    * Find all customers

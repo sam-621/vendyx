@@ -42,7 +42,7 @@ import {
 
 @Injectable()
 export class OrderService {
-  constructor(@InjectDataSource() private db: DataSource, private eventEmitter: EventEmitter2) {}
+  constructor(private db: DataSource, private eventEmitter: EventEmitter2) {}
 
   async find(input: ListInput) {
     return await this.db.getRepository(OrderEntity).find({

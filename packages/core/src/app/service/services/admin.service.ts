@@ -11,10 +11,7 @@ import { AdminJwtPayload } from '@/app/security/strategies/jwt/jwt.types';
 
 @Injectable()
 export class AdminService {
-  constructor(
-    private securityService: SecurityService,
-    @InjectDataSource() private db: DataSource
-  ) {}
+  constructor(private securityService: SecurityService, private db: DataSource) {}
 
   /**
    * Authenticates an admin comparing password and username, returns access token if successful

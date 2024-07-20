@@ -7,6 +7,6 @@ import { PluginModule } from './plugin';
 import { SecurityModule } from './security';
 
 @Module({
-  imports: [PluginModule.register(), PersistanceModule, SecurityModule, ApiModule, EventModule]
+  imports: [PersistanceModule, SecurityModule, ApiModule, EventModule, PluginModule.register()]
 })
 export class AppModule {}

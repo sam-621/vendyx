@@ -1,13 +1,16 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 import { PaypalPluginConfig } from './paypal.plugin';
 import { PAYPAL_PLUGIN_CONFIG } from './paypal.constants';
 import axios from 'axios';
 import {
   CreatePaypalOrderResponse,
   PaypalCapturePaymentResponse,
+  PaypalErrorCode,
   PaypalGenerateAccessTokenResponse
 } from './paypal.types';
-import { ID } from '@ebloc/core';
+import { ErrorResult, ID, OrderEntity } from '@ebloc/core';
+import { convertToDollar } from '@ebloc/common';
 import { CreateOrderRequestBody } from '@paypal/paypal-js';
 
 const PAYPAL_SANDBOX_BASE_URL = 'https://api-m.sandbox.paypal.com';
@@ -15,18 +18,54 @@ const PAYPAL_LIVE_BASE_URL = 'https://api-m.paypal.com';
 
 @Injectable()
 export class PaypalService {
-  constructor(@Inject(PAYPAL_PLUGIN_CONFIG) private config: PaypalPluginConfig) {}
+  constructor(
+    @Inject(PAYPAL_PLUGIN_CONFIG) private config: PaypalPluginConfig,
+    private db: DataSource
+  ) {}
 
   async createOrder(orderId: ID) {
+    const order = await this.db.getRepository(OrderEntity).findOne({
+      where: { id: orderId },
+      relations: {
+        lines: { productVariant: { product: true, optionValues: true } },
+        shipment: true
+      }
+    });
+
+    if (!order) {
+      return new ErrorResult(PaypalErrorCode.ORDER_NOT_FOUND, 'Order not found');
+    }
+
     const accessToken = await this.generateAccessToken();
 
     const payload: CreateOrderRequestBody = {
       intent: 'CAPTURE',
       purchase_units: [
         {
+          description: 'Purchase from Next.js Ecommerce',
+          items: order.lines.map(line => ({
+            name: line.productVariant.product.name,
+            quantity: String(line.quantity),
+            unit_amount: {
+              value: String(convertToDollar(line.unitPrice)),
+              currency_code: 'USD'
+            },
+            category: 'PHYSICAL_GOODS',
+            description: line.productVariant.optionValues?.map(option => option.value).join(', ')
+          })),
           amount: {
-            currency_code: 'MXN',
-            value: '100.00'
+            value: String(convertToDollar(order.total)),
+            currency_code: 'USD',
+            breakdown: {
+              shipping: {
+                currency_code: 'USD',
+                value: String(convertToDollar(order.shipment?.amount ?? 0))
+              },
+              item_total: {
+                value: String(convertToDollar(order.subtotal)),
+                currency_code: 'USD'
+              }
+            }
           }
         }
       ]
@@ -48,7 +87,7 @@ export class PaypalService {
       }
     );
 
-    return data;
+    return data.id;
   }
 
   /**

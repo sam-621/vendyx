@@ -1,4 +1,4 @@
-import { ID } from '@ebloc/core';
+import { ID, isErrorResult } from '@ebloc/core';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { PaypalService } from './paypal.service';
 
@@ -8,7 +8,8 @@ export class PaypalResolver {
 
   @Mutation('createPaypalOrder')
   async createPaypalOrder(@Args('orderId') orderId: ID) {
-    await this.paypalService.createPaypalOrder();
-    return orderId;
+    const result = await this.paypalService.createOrder(orderId);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], orderId: result };
   }
 }

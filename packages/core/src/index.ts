@@ -11,6 +11,7 @@ export { bootstrap } from './main';
  * Business logic
  */
 export * from './app/service/services';
+export * from './app/service/utils';
 export * from './app/persistance/entities';
 export * from './app/security/security.service';
 

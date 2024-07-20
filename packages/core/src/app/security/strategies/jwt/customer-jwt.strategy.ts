@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { InjectRepository } from '@nestjs/typeorm';
 import { GraphQLError } from 'graphql';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import { CustomerJwtPayload } from './jwt.types';
 
@@ -12,10 +11,7 @@ import { CustomerEntity } from '@/app/persistance';
 
 @Injectable()
 export class CustomerJwtStrategy extends PassportStrategy(Strategy, 'customer-jwt') {
-  constructor(
-    @InjectRepository(CustomerEntity)
-    private customerRepository: Repository<CustomerEntity>
-  ) {
+  constructor(private db: DataSource) {
     const { jwtSecret } = getConfig().auth;
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -27,7 +23,7 @@ export class CustomerJwtStrategy extends PassportStrategy(Strategy, 'customer-jw
   async validate(payload: CustomerJwtPayload) {
     const { email } = payload;
 
-    const customer = await this.customerRepository.findOne({ where: { email } });
+    const customer = await this.db.getRepository(CustomerEntity).findOne({ where: { email } });
 
     if (!customer) {
       throw new GraphQLError('Invalid token', { extensions: { code: 'UNAUTHORIZED' } });

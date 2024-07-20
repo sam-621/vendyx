@@ -2,5 +2,19 @@ type Mutation {
   """
   Create paypal order and return the paypal order id
   """
-  createPaypalOrder(orderId: ID!): String
+  createPaypalOrder(orderId: ID!): PaypalResult
+}
+
+type PaypalResult {
+  apiErrors: [PaypalErrorResult!]!
+  orderId: String!
+}
+
+type PaypalErrorResult {
+  message: String
+  code: PaypalErrorCode
+}
+
+enum PaypalErrorCode {
+  ORDER_NOT_FOUND
 }
