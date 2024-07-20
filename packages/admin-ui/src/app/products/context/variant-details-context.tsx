@@ -49,8 +49,8 @@ export const VariantDetailsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const addVariantWithChanges = (input: { id: string; input: Variant }[]) => {
-    const newVariantsWithChanges = variantsWithChanges.filter(v =>
-      input.map(i => i.id).includes(v.id)
+    const newVariantsWithChanges = variantsWithChanges.filter(
+      v => !input.map(i => i.id).includes(v.id)
     );
 
     setVariantsWithChanges([...newVariantsWithChanges, ...input]);

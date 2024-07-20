@@ -55,7 +55,8 @@ export class ProductService {
   async findVariants(id: ID, listInput: ListInput) {
     const variants = await this.db.getRepository(VariantEntity).find({
       where: { product: { id } },
-      ...clean(listInput)
+      ...clean(listInput),
+      order: { createdAt: 'ASC' }
     });
 
     return variants;
