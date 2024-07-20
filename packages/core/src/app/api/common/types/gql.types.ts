@@ -299,6 +299,7 @@ export class AddCustomerToOrderInput {
 
 export class AddPaymentToOrderInput {
     methodId: string;
+    metadata?: Nullable<JSON>;
 }
 
 export class AddShipmentToOrderInput {
@@ -970,4 +971,5 @@ export class GenerateCustomerAccessTokenResult {
     apiErrors: CustomerErrorResult[];
 }
 
+export type JSON = any;
 type Nullable<T> = T | null;

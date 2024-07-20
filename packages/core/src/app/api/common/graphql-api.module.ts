@@ -2,6 +2,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
 @Module({})
 export class GraphqlApiModule {
@@ -11,6 +12,7 @@ export class GraphqlApiModule {
       ...GraphQLModule.forRoot<ApolloDriverConfig>({
         // false to use apollo studio
         playground: false,
+        resolvers: { JSON: GraphQLJSON },
         // TODO: false in production, true in dev
         includeStacktraceInErrorResponses: true,
         // Always true because the graphql playground must be public

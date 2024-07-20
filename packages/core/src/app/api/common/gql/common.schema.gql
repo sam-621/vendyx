@@ -1,6 +1,7 @@
 # Scalars
 scalar Date
 scalar ID
+scalar JSON
 
 # Common interfaces
 """
