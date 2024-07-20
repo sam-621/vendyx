@@ -1,7 +1,7 @@
 import { DynamicModule } from '@nestjs/common';
 
 import { AdminUiConfig } from './admin-ui/admin-ui.config';
-import { PaymentHandler } from './payments/payment-integration.config';
+import { PaymentHandler } from './payments/payment-handler.config';
 import { ShippingPriceCalculatorConfig } from './shipping/shipping-price-calculator.config';
 import { StorageProvider } from './storage/storage-provider.config';
 

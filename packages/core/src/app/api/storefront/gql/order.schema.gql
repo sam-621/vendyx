@@ -65,4 +65,8 @@ enum OrderErrorCode {
   MISSING_PAYMENT_HANDLER
   PAYMENT_METHOD_NOT_FOUND
   PAYMENT_DECLINED
+  """
+  Payment failed due to an unexpected error in the payment handler
+  """
+  PAYMENT_FAILED
 }

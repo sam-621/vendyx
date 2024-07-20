@@ -4,7 +4,13 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, Not } from 'typeorm';
 
-import { ErrorResult, ValidOrderTransitions, convertArgsToObject, validateEmail } from '../utils';
+import {
+  ErrorResult,
+  ValidOrderTransitions,
+  convertArgsToObject,
+  executeInSafe,
+  validateEmail
+} from '../utils';
 
 import {
   AddCustomerToOrderInput,
@@ -541,11 +547,16 @@ export class OrderService {
       );
     }
 
-    const paymentHandlerResult = await paymentHandler.createPayment(
-      order,
-      order.total,
-      input.metadata
+    const paymentHandlerResult = await executeInSafe(() =>
+      paymentHandler.createPayment(order, order.total, input.metadata)
     );
+
+    if (!paymentHandlerResult) {
+      return new ErrorResult(
+        OrderErrorCode.PAYMENT_FAILED,
+        'An unexpected error occurred in the payment handler'
+      );
+    }
 
     // TODO: do something with PaymentHandlerResult.error
     if (paymentHandlerResult.status === 'declined') {

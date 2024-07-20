@@ -22,7 +22,7 @@ export * from './app/api/common/guards';
 /**
  * Config specifications
  */
-export * from './app/config/payments/payment-integration.config';
+export * from './app/config/payments/payment-handler.config';
 export * from './app/config/shipping/shipping-price-calculator.config';
 export * from './app/config/storage/storage-provider.config';
 export * from './app/config/admin-ui/admin-ui.config';
