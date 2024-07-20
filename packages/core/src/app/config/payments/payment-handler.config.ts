@@ -15,12 +15,16 @@ export interface PaymentHandler {
 
   /**
    * @description
-   * This is used to identify the provider and should be unique.
+   * This is used to identify the provider and should be unique. it's mainly used in admin ui but also it can be used in the storefront,
+   * for example, when displaying the payment methods to the customer in the checkout page you may want to know which provider is used by every payment method,
+   * so you can display the provider logo, or know which provider sdk to load, etc.
    *
    * @example
    * ```ts
    * code: 'stripe'
    * ```
+   *
+   * @waring this code is send to your storefront.
    */
   code: string;
 

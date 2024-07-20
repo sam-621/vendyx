@@ -10,6 +10,6 @@ export class PaymentMethodResolver {
   async availablePaymentMethods() {
     const paymentMethods = await this.paymentMethodService.find({ onlyEnabled: true });
 
-    return paymentMethods;
+    return paymentMethods.map(pm => ({ ...pm, handlerCode: pm.handler.code }));
   }
 }

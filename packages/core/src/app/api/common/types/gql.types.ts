@@ -622,6 +622,7 @@ export class PaymentMethod implements Node {
     name: string;
     description?: Nullable<string>;
     enabled: boolean;
+    handlerCode: string;
 }
 
 export class PaymentMethodList implements List {
