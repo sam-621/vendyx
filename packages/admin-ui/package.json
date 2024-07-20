@@ -1,8 +1,9 @@
 {
   "name": "@ebloc/admin-ui",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "vite --mode development",
     "local": "vite --mode localhost",
@@ -68,5 +69,8 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vite-tsconfig-paths": "^4.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

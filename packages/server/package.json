@@ -1,9 +1,10 @@
 {
   "name": "@ebloc/server",
-  "version": "1.0.0",
+  "version": "0.0.0",
+  "private": true,
   "main": "index.js",
   "author": "Rogelio Samuel Moreno Corrales",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "ts-node index.ts",
     "build": "rimraf ./admin-ui && yarn build:hello-world && tsc",

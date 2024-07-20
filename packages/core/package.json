@@ -1,11 +1,11 @@
 {
   "name": "@ebloc/core",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
   "author": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "private": true,
+  "private": false,
   "license": "UNLICENSED",
   "scripts": {
     "dev": "NODE_ENV=development yarn script:generate && nest start --watch",
@@ -95,5 +95,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
