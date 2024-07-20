@@ -9,7 +9,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "rimraf dist && tsc -p ./tsconfig.build.json && yarn script:post-build",
+    "script:post-build": "gulp -f ./scripts/post-build.ts postBuild"
   },
   "dependencies": {
     "@ebloc/core": "*"

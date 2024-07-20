@@ -20,6 +20,9 @@ export const getPluginTypePaths = (type: 'admin' | 'storefront') => {
     .filter(apiExtension => apiExtension);
 
   const extensionsTypePaths = apiExtensions.map(apiExtension => apiExtension.typePaths).flat();
+  console.log({
+    extensionsTypePaths
+  });
 
   return extensionsTypePaths;
 };

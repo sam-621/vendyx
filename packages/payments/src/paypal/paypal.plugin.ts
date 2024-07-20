@@ -4,7 +4,7 @@ import { PaypalResolver } from './paypal.resolver';
 
 @EBlocPlugin({
   storefrontApiExtensions: {
-    typePaths: [path.join(process.cwd(), './src/paypal/paypal.schema.gql')],
+    typePaths: [path.join(__dirname, './paypal.schema.gql')],
     resolvers: [PaypalResolver]
   }
 })
