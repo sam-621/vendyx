@@ -31,6 +31,7 @@ export const RemoveProductButton: FC<Props> = ({ product }) => {
     }
 
     await queryClient.invalidateQueries({ queryKey: ProductKeys.all });
+    notification.success(`Product "${product.name}" has been removed.`);
   };
 
   return (
