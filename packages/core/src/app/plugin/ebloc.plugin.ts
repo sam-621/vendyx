@@ -1,4 +1,4 @@
-import { Module, ModuleMetadata } from '@nestjs/common';
+import { Global, Module, ModuleMetadata } from '@nestjs/common';
 
 /**
  * EBloc plugin decorator
@@ -34,13 +34,14 @@ export function EBlocPlugin(metadata: EBlocPluginMetadata): ClassDecorator {
 
     const moduleInput: ModuleMetadata = {
       controllers: metadata.controllers,
-      exports: metadata.exports,
+      // export all providers to be used in other modules
+      exports: [...(metadata.exports ?? []), ...(metadata.providers ?? [])],
       imports: metadata.imports,
       providers: metadata.providers
     };
 
-    // Only save module metadata, not the plugin metadata
-    Module(moduleInput)(target);
+    Global()(target); // Make the plugin global so it exports can be used in other modules without need to be imported
+    Module(moduleInput)(target); // Only save module metadata, not the plugin metadata
   };
 }
 

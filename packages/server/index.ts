@@ -42,5 +42,5 @@ bootstrap({
     },
     serveUrl: '/admin'
   },
-  plugins: [PaypalPlugin]
+  plugins: [PaypalPlugin.init({ foo: 'bar' })]
 });
