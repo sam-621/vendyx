@@ -133,6 +133,10 @@ export interface GraphqlApiExtension {
   /**
    * Paths to files that contain GraphQL definitions.
    *
+   * @description
+   * In order to extend graphql api by referencing the files that contain the schema definitions,
+   * You need to provide and absolute path where your schema files are located.
+   *
    * @example
    * You should reference your file using an absolute path from the root of the project
    *
