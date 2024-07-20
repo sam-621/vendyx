@@ -13,6 +13,10 @@
     "script:post-build": "gulp -f ./scripts/post-build.ts postBuild"
   },
   "dependencies": {
-    "@ebloc/core": "*"
+    "@ebloc/core": "*",
+    "axios": "^1.7.2"
+  },
+  "devDependencies": {
+    "@paypal/paypal-js": "^8.1.0"
   }
 }
