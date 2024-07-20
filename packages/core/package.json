@@ -32,6 +32,7 @@
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/typeorm": "^10.0.1",
     "@types/gulp": "^4.0.17",
+    "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "cloudinary": "^1.41.3",
     "graphql": "^16.8.1",

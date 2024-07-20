@@ -27,7 +27,15 @@ export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
     })
   },
   payments: {
-    handlers: [new PaypalPaymentHandler(), new StripePaymentHandler()]
+    handlers: [
+      new PaypalPaymentHandler({
+        clientId:
+          'AalvT7sj_ccFI4BrY9VWIv0HZR6N7OwCxepfT0rH3h5fFbMCrOAp-v5R6gPEyvqNYWnxWgjFJ6VvSbHN',
+        secret: 'EA1BrqeCBA2QMZWbIC4VVP1n2vtgTCcOxOI15IqduAiiJ9HkgFFpI0XllXfz_6BdXSWhRclg4fkgulRx',
+        devMode: true
+      }),
+      new StripePaymentHandler()
+    ]
   },
   shipping: {
     priceCalculators: [new FlatPriceCalculator(), new ExoticPriceCalculator()]

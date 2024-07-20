@@ -1,2 +1,2 @@
-export * from './paypal.handler';
+export * from './paypal/paypal.handler';
 export * from './stripe.handler';

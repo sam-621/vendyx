@@ -37,7 +37,11 @@ export interface PaymentHandler {
    *
    * If the status returned is `declined`, that means that the payment has been declined and the order state keeps the same.
    */
-  createPayment(order: OrderEntity): Promise<CreatePaymentResult>;
+  createPayment(
+    order: OrderEntity,
+    totalAmount: number,
+    metadata?: Record<string, any>
+  ): Promise<CreatePaymentResult>;
 
   /**
    * @description

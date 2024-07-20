@@ -541,7 +541,7 @@ export class OrderService {
       );
     }
 
-    const paymentHandlerResult = await paymentHandler.createPayment(order);
+    const paymentHandlerResult = await paymentHandler.createPayment(order, order.total);
 
     // TODO: do something with PaymentHandlerResult.error
     if (paymentHandlerResult.status === 'declined') {
