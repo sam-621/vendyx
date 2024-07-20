@@ -1,6 +1,6 @@
 {
   "name": "@ebloc/server",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": true,
   "main": "index.js",
   "author": "Rogelio Samuel Moreno Corrales",
@@ -12,7 +12,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@ebloc/core": "^0.0.1",
+    "@ebloc/core": "*",
     "dotenv": "^16.4.5",
     "path": "^0.12.7",
     "rimraf": "^5.0.7",
