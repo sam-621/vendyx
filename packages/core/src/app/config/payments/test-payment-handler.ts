@@ -1,22 +1,25 @@
-import { AuthorizePaymentResult, CreatePaymentResult, PaymentHandler } from '@/app/config';
+import {
+  AuthorizePaymentResult,
+  CreatePaymentResult,
+  PaymentHandler
+} from './payment-handler.config';
+
 import { OrderEntity } from '@/app/persistance';
 
-export class StripePaymentHandler implements PaymentHandler {
-  name = 'Stripe';
-  code = 'stripe';
+export class TestPaymentHandler implements PaymentHandler {
+  name = 'Test payment handler';
+  code = 'test-payment-handler';
 
-  async createPayment(order: OrderEntity): Promise<CreatePaymentResult> {
+  async createPayment(order: OrderEntity, totalAmount: number): Promise<CreatePaymentResult> {
     return {
+      amount: totalAmount,
       status: 'authorized',
-      amount: order.total,
-      transactionId: generateTransactionId(16)
+      transactionId: `test-id-${generateTransactionId(8)}`
     };
   }
 
   async authorizePayment(): Promise<AuthorizePaymentResult> {
-    return {
-      success: true
-    };
+    return { success: true };
   }
 }
 
