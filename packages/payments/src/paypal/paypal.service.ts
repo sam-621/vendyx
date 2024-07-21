@@ -31,6 +31,11 @@ export class PaypalService {
     private db: DataSource
   ) {}
 
+  /**
+   * Create a paypal order
+   *
+   * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
+   */
   async createOrder(orderId: ID) {
     const order = await this.db.getRepository(OrderEntity).findOne({
       where: { id: orderId },
