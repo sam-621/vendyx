@@ -7,3 +7,4 @@ export * from './shipping/shipping-price-calculator.config';
 export * from './admin-ui/admin-ui.config';
 export * from './common/args.config';
 export * from './injector';
+export * from './config.module';

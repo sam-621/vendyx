@@ -22,5 +22,5 @@ export interface InjectableOperation {
    * }
    * ```
    */
-  init(injector: Injector): Promise<void>;
+  init?(injector: Injector): Promise<void>;
 }
