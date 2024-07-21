@@ -1,7 +1,6 @@
 import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, Not } from 'typeorm';
 
 import {
@@ -560,7 +559,11 @@ export class OrderService {
 
     // TODO: do something with PaymentHandlerResult.error
     if (paymentHandlerResult.status === 'declined') {
-      return new ErrorResult(OrderErrorCode.PAYMENT_DECLINED, 'Payment declined');
+      return new ErrorResult(
+        OrderErrorCode.PAYMENT_DECLINED,
+        paymentHandlerResult.error,
+        paymentHandlerResult.rawError
+      );
     }
 
     let orderToReturn = order;

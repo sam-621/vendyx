@@ -41,4 +41,3 @@ export * from './app/plugin/ebloc.plugin';
  */
 export * from './lib/storage';
 export * from './lib/shipping';
-export * from './lib/payments';

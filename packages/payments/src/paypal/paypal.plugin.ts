@@ -114,6 +114,12 @@ export class PaypalPlugin {
    * Initialize the paypal plugin
    */
   static init(config: PaypalPluginConfig): typeof PaypalPlugin {
+    if (!config.clientId || !config.secret) {
+      throw new Error(
+        'PaypalPlugin: Missing required configuration, please provide clientId and secret'
+      );
+    }
+
     this.config = config;
 
     return PaypalPlugin;

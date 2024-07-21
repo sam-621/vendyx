@@ -17,4 +17,6 @@ type PaypalErrorResult {
 
 enum PaypalErrorCode {
   ORDER_NOT_FOUND
+  PAYPAL_ERROR
+  UNKNOWN_ERROR
 }

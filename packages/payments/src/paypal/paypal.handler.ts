@@ -29,7 +29,18 @@ export class PaypalPaymentHandler implements PaymentHandler {
       };
     }
 
-    const payment = await this.paypalService.capturePayment(metadata.paypalOrderId);
+    const captureResult = await this.paypalService.capturePayment(metadata.paypalOrderId);
+
+    if (!captureResult.success) {
+      return {
+        status: 'declined',
+        error: 'Failed to capture payment',
+        rawError: captureResult.error
+      };
+    }
+
+    const payment = captureResult.data;
+
     const transaction = payment.purchase_units[0].payments.captures[0];
 
     return {

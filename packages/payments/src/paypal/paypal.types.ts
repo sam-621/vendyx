@@ -144,5 +144,7 @@ export type PaypalError = {
 };
 
 export enum PaypalErrorCode {
-  ORDER_NOT_FOUND
+  ORDER_NOT_FOUND = 'ORDER_NOT_FOUND',
+  PAYPAL_ERROR = 'PAYPAL_ERROR',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR'
 }

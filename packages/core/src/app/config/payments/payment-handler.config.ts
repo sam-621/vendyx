@@ -63,17 +63,59 @@ export interface PaymentHandler extends InjectableOperation {
 
 export type CreatePaymentResult =
   | {
+      /**
+       * @description
+       * The total amount of the transaction, this is the amount that should be authorized
+       */
       amount: number;
+      /**
+       * @description
+       * A created payment is a payment that has been created but the funds are not yet transferred, this is useful for payment methods like bank transfer.
+       * To make the payment authorized you should call the authorizePayment method
+       */
       status: 'created';
     }
   | {
+      /**
+       * @description
+       * The transaction id of the payment, this will show in the order payment, this id should be the id that identifies the payment in your payment provider
+       */
       transactionId: string;
+      /**
+       * @description
+       * The total amount of the transaction, this is the amount that will show in the order payment
+       */
       amount: number;
+      /**
+       * @description
+       * An authorized payment is a payment that has been authorized and the funds are transferred, this is useful for payment methods like credit card.
+       */
       status: 'authorized';
     }
   | {
+      /**
+       * @description
+       * A declined payment is a payment that has not been completed successfully because of a provider error o a internal error of the handler
+       */
       status: 'declined';
+      /**
+       * @description
+       * The error message that will be displayed in the api
+       * ```json
+       * apiErrors: [
+       *   {
+       *     code: 'PAYMENT_DECLINED',
+       *     message: 'error from payment.error'
+       *   }
+       * ]
+       * ```
+       */
       error: string;
+      /**
+       * @description
+       * The raw error that will be logged in the server, useful for debugging purposes
+       */
+      rawError?: any;
     };
 
 export type AuthorizePaymentResult =

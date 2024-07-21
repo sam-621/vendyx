@@ -2,11 +2,12 @@ import { Injectable, Inject } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { PaypalPluginConfig } from './paypal.plugin';
 import { PAYPAL_PLUGIN_CONFIG } from './paypal.constants';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import {
   CreatePaypalOrderResponse,
   PaypalCapturePaymentResponse,
   PaypalErrorCode,
+  PaypalErrorResponse,
   PaypalGenerateAccessTokenResponse
 } from './paypal.types';
 import { ErrorResult, ID, OrderEntity } from '@ebloc/core';
@@ -37,70 +38,84 @@ export class PaypalService {
    * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
    */
   async createOrder(orderId: ID) {
-    const order = await this.db.getRepository(OrderEntity).findOne({
-      where: { id: orderId },
-      relations: {
-        lines: { productVariant: { product: true, optionValues: true } },
-        shipment: true
+    try {
+      const order = await this.db.getRepository(OrderEntity).findOne({
+        where: { id: orderId },
+        relations: {
+          lines: { productVariant: { product: true, optionValues: true } },
+          shipment: true
+        }
+      });
+
+      if (!order) {
+        return new ErrorResult(PaypalErrorCode.ORDER_NOT_FOUND, 'Order not found');
       }
-    });
 
-    if (!order) {
-      return new ErrorResult(PaypalErrorCode.ORDER_NOT_FOUND, 'Order not found');
-    }
+      const accessToken = await this.generateAccessToken();
 
-    const accessToken = await this.generateAccessToken();
-
-    const payload: CreateOrderRequestBody = {
-      intent: 'CAPTURE',
-      purchase_units: [
-        {
-          description: 'Purchase from Next.js Ecommerce',
-          items: order.lines.map(line => ({
-            name: line.productVariant.product.name,
-            quantity: String(line.quantity),
-            unit_amount: {
-              value: String(convertToDollar(line.unitPrice)),
-              currency_code: 'USD'
-            },
-            category: 'PHYSICAL_GOODS',
-            description: line.productVariant.optionValues?.map(option => option.value).join(', ')
-          })),
-          amount: {
-            value: String(convertToDollar(order.total)),
-            currency_code: 'USD',
-            breakdown: {
-              shipping: {
-                currency_code: 'USD',
-                value: String(convertToDollar(order.shipment?.amount ?? 0))
-              },
-              item_total: {
-                value: String(convertToDollar(order.subtotal)),
+      const payload: CreateOrderRequestBody = {
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            description: 'Purchase from Next.js Ecommerce',
+            items: order.lines.map(line => ({
+              name: line.productVariant.product.name,
+              quantity: String(line.quantity),
+              unit_amount: {
+                value: String(convertToDollar(line.unitPrice)),
                 currency_code: 'USD'
+              },
+              category: 'PHYSICAL_GOODS',
+              description: line.productVariant.optionValues?.map(option => option.value).join(', ')
+            })),
+            amount: {
+              value: String(convertToDollar(order.total)),
+              currency_code: 'USD',
+              breakdown: {
+                shipping: {
+                  currency_code: 'USD',
+                  value: String(convertToDollar(order.shipment?.amount ?? 0))
+                },
+                item_total: {
+                  value: String(convertToDollar(order.subtotal)),
+                  currency_code: 'USD'
+                }
               }
             }
           }
-        }
-      ]
-    };
+        ]
+      };
 
-    const { data } = await axios.post<CreatePaypalOrderResponse>(
-      `${this.getBaseUrl()}/v2/checkout/orders`,
-      payload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-          // Uncomment one of these to force an error for negative testing (in sandbox mode only).
-          // Documentation: https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-          // "PayPal-Mock-Response": '{"mock_application_codes": "MISSING_REQUIRED_PARAMETER"}'
-          // "PayPal-Mock-Response": '{"mock_application_codes": "PERMISSION_DENIED"}'
-          // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
+      const { data } = await axios.post<CreatePaypalOrderResponse>(
+        `${this.getBaseUrl()}/v2/checkout/orders`,
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+            // Uncomment one of these to force an error for negative testing (in sandbox mode only).
+            // Documentation: https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
+            // "PayPal-Mock-Response": '{"mock_application_codes": "MISSING_REQUIRED_PARAMETER"}'
+            // "PayPal-Mock-Response": '{"mock_application_codes": "PERMISSION_DENIED"}'
+            // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
+          }
         }
+      );
+
+      return data.id;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const paypalError: PaypalErrorResponse = error.response?.data;
+
+        return new ErrorResult(
+          PaypalErrorCode.PAYPAL_ERROR,
+          "Couldn't create paypal order",
+          paypalError
+        );
       }
-    );
 
-    return data.id;
+      return new ErrorResult(PaypalErrorCode.UNKNOWN_ERROR, "Couldn't create paypal order", error);
+    }
   }
 
   /**
@@ -108,26 +123,36 @@ export class PaypalService {
    *
    * @see https://developer.paypal.com/docs/api/orders/v2/#orders_capture
    */
-  async capturePayment(paypalOrderId: string) {
-    const accessToken = await this.generateAccessToken();
-    const url = `${this.getBaseUrl()}/v2/checkout/orders/${paypalOrderId}/capture`;
-    const { data } = await axios.post<PaypalCapturePaymentResponse>(
-      url,
-      {},
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-          // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
-          // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-          // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
-          // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
-          // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
+  async capturePayment(paypalOrderId: string): Promise<CapturePaymentResult> {
+    try {
+      const accessToken = await this.generateAccessToken();
+      const url = `${this.getBaseUrl()}/v2/checkout/orders/${paypalOrderId}/capture`;
+      const { data } = await axios.post<PaypalCapturePaymentResponse>(
+        url,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+            // Uncomment one of these to force an error for negative testing (in sandbox mode only). Documentation:
+            // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
+            // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
+            // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
+            // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
+          }
         }
-      }
-    );
+      );
 
-    return data;
+      return { success: true, data };
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const paypalError: PaypalErrorResponse = error.response?.data;
+
+        return { success: false, error: paypalError };
+      } else {
+        return { success: false, error: error };
+      }
+    }
   }
 
   /**
@@ -162,3 +187,13 @@ export class PaypalService {
     return this.config.devMode ? PAYPAL_SANDBOX_BASE_URL : PAYPAL_LIVE_BASE_URL;
   }
 }
+
+type CapturePaymentResult =
+  | {
+      success: true;
+      data: PaypalCapturePaymentResponse;
+    }
+  | {
+      success: false;
+      error: any;
+    };
