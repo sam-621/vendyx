@@ -2,12 +2,12 @@ type Mutation {
   """
   Create paypal order and return the paypal order id
   """
-  createPaypalOrder(orderId: ID!): PaypalResult
+  createPaypalOrder(orderId: ID!): PaypalResult!
 }
 
 type PaypalResult {
   apiErrors: [PaypalErrorResult!]!
-  orderId: String!
+  orderId: String
 }
 
 type PaypalErrorResult {
