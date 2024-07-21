@@ -21,7 +21,9 @@ function copySchemaToDistFolder() {
 }
 
 export async function bootstrap(config: EblocConfig) {
-  setConfig(config);
+  const newConfig = applyPluginsConfig(config);
+
+  setConfig(newConfig);
 
   const { port } = getConfig().app;
 
@@ -73,4 +75,25 @@ const copyUiModulesAndAdminUiToDistFolderInServerPackage = (
   src(path.join(__dirname, '../../admin-ui/dist/**/*')).pipe(
     dest(path.join(process.cwd(), 'admin-ui/'))
   );
+};
+
+/**
+ * Applies the plugins config functions to the initial config
+ */
+const applyPluginsConfig = (initialConfig: EblocConfig) => {
+  const plugins = initialConfig.plugins;
+  let newConfig = initialConfig;
+
+  for (const plugin of plugins) {
+    const configFn = getPluginMetadata<EBlocPluginMetadata['config']>(
+      EBlocPluginMetadataKeys.CONFIG_FN,
+      plugin
+    );
+
+    if (configFn) {
+      newConfig = configFn(newConfig);
+    }
+  }
+
+  return newConfig;
 };

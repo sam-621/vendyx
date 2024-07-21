@@ -1,5 +1,7 @@
 import { Global, Module, ModuleMetadata } from '@nestjs/common';
 
+import { EblocConfig } from '../config';
+
 /**
  * EBloc plugin decorator
  *
@@ -98,6 +100,14 @@ export interface EBlocPluginMetadata extends ModuleMetadata {
    * adminApiExtensions is the way you can extend the admin graphql api with new types and resolvers.
    */
   adminApiExtensions?: GraphqlApiExtension;
+
+  /**
+   * Config function
+   *
+   * @description
+   * Function that can modify the ebloc config before application bootstraps.
+   */
+  config?: ConfigFn;
 }
 
 export interface UiModuleConfig {
@@ -152,9 +162,12 @@ export interface GraphqlApiExtension {
   resolvers: any[];
 }
 
+export type ConfigFn = (config: EblocConfig) => EblocConfig;
+
 export enum EBlocPluginMetadataKeys {
   STOREFRONT_API_EXTENSIONS = 'storefrontApiExtensions',
   ADMIN_API_EXTENSIONS = 'adminApiExtensions',
   ENTITIES = 'entities',
-  UI_MODULES = 'uiModules'
+  UI_MODULES = 'uiModules',
+  CONFIG_FN = 'config'
 }
