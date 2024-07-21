@@ -3,6 +3,7 @@ import * as path from 'path';
 import { PaypalResolver } from './paypal.resolver';
 import { PaypalService } from './paypal.service';
 import { PAYPAL_PLUGIN_CONFIG } from './paypal.constants';
+import { PaypalPaymentHandler } from './paypal.handler';
 
 @EBlocPlugin({
   providers: [
@@ -15,6 +16,11 @@ import { PAYPAL_PLUGIN_CONFIG } from './paypal.constants';
   storefrontApiExtensions: {
     typePaths: [path.join(__dirname, './paypal.schema.gql')],
     resolvers: [PaypalResolver]
+  },
+  config: config => {
+    config.payments.handlers.push(new PaypalPaymentHandler());
+
+    return config;
   }
 })
 export class PaypalPlugin {
