@@ -42,5 +42,11 @@ bootstrap({
     },
     serveUrl: '/admin'
   },
-  plugins: [PaypalPlugin.init({ foo: 'bar' })]
+  plugins: [
+    PaypalPlugin.init({
+      clientId: 'AalvT7sj_ccFI4BrY9VWIv0HZR6N7OwCxepfT0rH3h5fFbMCrOAp-v5R6gPEyvqNYWnxWgjFJ6VvSbHN',
+      secret: 'EA1BrqeCBA2QMZWbIC4VVP1n2vtgTCcOxOI15IqduAiiJ9HkgFFpI0XllXfz_6BdXSWhRclg4fkgulRx',
+      devMode: true
+    })
+  ]
 });
