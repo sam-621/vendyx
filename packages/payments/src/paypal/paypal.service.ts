@@ -15,7 +15,15 @@ import { CreateOrderRequestBody } from '@paypal/paypal-js';
 
 const PAYPAL_SANDBOX_BASE_URL = 'https://api-m.sandbox.paypal.com';
 const PAYPAL_LIVE_BASE_URL = 'https://api-m.paypal.com';
-
+/**
+ *
+ *
+ *
+ * @see https://docs.nestjs.com/fundamentals/module-ref
+ *
+ *
+ *
+ */
 @Injectable()
 export class PaypalService {
   constructor(

@@ -1,6 +1,8 @@
+import { InjectableOperation } from '../injector';
+
 import { OrderEntity } from '@/app/persistance';
 
-export interface PaymentHandler {
+export interface PaymentHandler extends InjectableOperation {
   /**
    * @description
    * This is used to display the provider name to the administrator.

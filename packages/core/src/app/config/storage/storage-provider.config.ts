@@ -1,4 +1,6 @@
-export interface StorageProvider {
+import { InjectableOperation } from '../injector';
+
+export interface StorageProvider extends InjectableOperation {
   /**
    * The provider name. This is used to display the provider name to the user.
    *

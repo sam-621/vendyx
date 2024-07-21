@@ -29,6 +29,7 @@ export * from './app/config/storage/storage-provider.config';
 export * from './app/config/admin-ui/admin-ui.config';
 export * from './app/config/ebloc.config';
 export * from './app/config/common';
+export * from './app/config/injector';
 
 /**
  * Plugin module

@@ -1,8 +1,9 @@
 import { Args } from '../common/args.config';
+import { InjectableOperation } from '../injector';
 
 import { OrderEntity } from '@/app/persistance';
 
-export interface ShippingPriceCalculatorConfig {
+export interface ShippingPriceCalculatorConfig extends InjectableOperation {
   /**
    * @description
    * This is used to display the calculator name to the administrator.

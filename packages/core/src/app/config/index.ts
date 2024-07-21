@@ -6,3 +6,4 @@ export * from './payments/payment-handler.config';
 export * from './shipping/shipping-price-calculator.config';
 export * from './admin-ui/admin-ui.config';
 export * from './common/args.config';
+export * from './injector';
