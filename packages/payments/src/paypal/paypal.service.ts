@@ -42,7 +42,7 @@ export class PaypalService {
       const order = await this.db.getRepository(OrderEntity).findOne({
         where: { id: orderId },
         relations: {
-          lines: { productVariant: { product: true, optionValues: true } },
+          lines: { productVariant: { product: true, optionValues: { option: true } } },
           shipment: true
         }
       });
@@ -57,7 +57,6 @@ export class PaypalService {
         intent: 'CAPTURE',
         purchase_units: [
           {
-            description: 'Purchase from Next.js Ecommerce',
             items: order.lines.map(line => ({
               name: line.productVariant.product.name,
               quantity: String(line.quantity),
@@ -66,7 +65,9 @@ export class PaypalService {
                 currency_code: 'USD'
               },
               category: 'PHYSICAL_GOODS',
-              description: line.productVariant.optionValues?.map(option => option.value).join(', ')
+              description: line.productVariant.optionValues
+                ?.map(option => `${option.option.name}: ${option.value}`)
+                .join(', ')
             })),
             amount: {
               value: String(convertToDollar(order.total)),
