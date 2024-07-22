@@ -11,7 +11,7 @@ import { CollectionEntity, ID, ProductEntity } from '@/app/persistance';
 
 @Injectable()
 export class CollectionService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   /**
    * Get all collections.

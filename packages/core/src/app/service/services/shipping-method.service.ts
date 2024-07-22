@@ -15,7 +15,7 @@ import { ID, ShippingMethodEntity, ZoneEntity } from '@/app/persistance';
 
 @Injectable()
 export class ShippingMethodService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   /**
    * Find unique shipping method by id.

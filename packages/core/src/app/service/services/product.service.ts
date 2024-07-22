@@ -19,7 +19,10 @@ import { AssetInProductEntity } from '@/app/persistance/entities/asset-on-produc
 
 @Injectable()
 export class ProductService {
-  constructor(private db: DataSource, private readonly assetService: AssetService) {}
+  constructor(
+    @InjectDataSource() private db: DataSource,
+    private readonly assetService: AssetService
+  ) {}
 
   async find(input: ListInput & { where?: FindOptionsWhere<ProductEntity> }) {
     return this.db.getRepository(ProductEntity).find({

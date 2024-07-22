@@ -6,7 +6,7 @@ import { ID, OptionValueEntity } from '@/app/persistance';
 
 @Injectable()
 export class OptionValueService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   async findOption(id: ID) {
     const option = await this.db

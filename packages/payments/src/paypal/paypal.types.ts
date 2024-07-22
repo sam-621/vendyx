@@ -131,8 +131,8 @@ export type PaypalErrorResponse = {
   }[];
   links: {
     'https://error_documentation_link': string;
-    rel: 'information_link';
-    encType: 'application/json';
+    rel: string;
+    encType: string;
   }[];
 };
 

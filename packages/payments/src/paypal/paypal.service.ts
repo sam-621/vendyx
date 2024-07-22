@@ -1,4 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { PaypalPluginConfig } from './paypal.plugin';
 import { PAYPAL_PLUGIN_CONFIG } from './paypal.constants';
@@ -10,9 +11,9 @@ import {
   PaypalErrorResponse,
   PaypalGenerateAccessTokenResponse
 } from './paypal.types';
-import { ErrorResult, ID, OrderEntity } from '@ebloc/core';
+import { ErrorResult, generateReadableId, ID, OrderEntity } from '@ebloc/core';
 import { convertToDollar } from '@ebloc/common';
-import { CreateOrderRequestBody } from '@paypal/paypal-js';
+import { CreateOrderRequestBody, OrderResponseBody } from '@paypal/paypal-js';
 
 const PAYPAL_SANDBOX_BASE_URL = 'https://api-m.sandbox.paypal.com';
 const PAYPAL_LIVE_BASE_URL = 'https://api-m.paypal.com';
@@ -29,7 +30,7 @@ const PAYPAL_LIVE_BASE_URL = 'https://api-m.paypal.com';
 export class PaypalService {
   constructor(
     @Inject(PAYPAL_PLUGIN_CONFIG) private config: PaypalPluginConfig,
-    private db: DataSource
+    @InjectDataSource() private db: DataSource
   ) {}
 
   /**
@@ -57,6 +58,7 @@ export class PaypalService {
         intent: 'CAPTURE',
         purchase_units: [
           {
+            invoice_id: this.generateInvoiceId(),
             items: order.lines.map(line => ({
               name: line.productVariant.product.name,
               quantity: String(line.quantity),
@@ -144,7 +146,13 @@ export class PaypalService {
         }
       );
 
-      return { success: true, data };
+      const orderDetails = await this.getOrderDetails(paypalOrderId);
+
+      return {
+        success: true,
+        data,
+        invoiceId: orderDetails.purchase_units?.[0].invoice_id ?? ''
+      };
     } catch (error) {
       if (isAxiosError(error)) {
         const paypalError: PaypalErrorResponse = error.response?.data;
@@ -154,6 +162,28 @@ export class PaypalService {
         return { success: false, error: error };
       }
     }
+  }
+
+  /**
+   * Get paypal order details
+   */
+  private async getOrderDetails(orderId: string) {
+    const accessToken = await this.generateAccessToken();
+
+    const { data } = await axios.get<OrderResponseBody>(
+      `${this.getBaseUrl()}/v2/checkout/orders/${orderId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    );
+
+    console.log({
+      data
+    });
+
+    return data;
   }
 
   /**
@@ -184,6 +214,16 @@ export class PaypalService {
     return data.access_token;
   }
 
+  /**
+   * @description
+   * Generates an invoice id for the paypal order. This is needed to have a common identifier between ebloc and paypal.
+   */
+  private generateInvoiceId() {
+    const id = generateReadableId();
+
+    return `PPAL-${id}`;
+  }
+
   private getBaseUrl() {
     return this.config.devMode ? PAYPAL_SANDBOX_BASE_URL : PAYPAL_LIVE_BASE_URL;
   }
@@ -193,6 +233,13 @@ type CapturePaymentResult =
   | {
       success: true;
       data: PaypalCapturePaymentResponse;
+      /**
+       * @description
+       * The invoice id which the paypal order was created with.
+       * Paypal does not return the actual transaction id that is shared between the buyer and the seller,
+       * so to have a common id between ebloc and paypal, we generate an invoice id and use it as the transaction id.
+       */
+      invoiceId: string;
     }
   | {
       success: false;

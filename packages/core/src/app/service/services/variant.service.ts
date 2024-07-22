@@ -22,7 +22,7 @@ import {
 
 @Injectable()
 export class VariantService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   async find(input: ListInput) {
     return this.db.getRepository(VariantEntity).find(clean(input));

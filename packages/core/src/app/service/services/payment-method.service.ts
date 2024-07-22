@@ -16,7 +16,7 @@ import { ID, PaymentMethodEntity } from '@/app/persistance';
 
 @Injectable()
 export class PaymentMethodService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   /**
    * Find all payment methods

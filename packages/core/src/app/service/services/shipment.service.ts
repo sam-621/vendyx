@@ -4,5 +4,5 @@ import { DataSource } from 'typeorm';
 
 @Injectable()
 export class ShipmentService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 }

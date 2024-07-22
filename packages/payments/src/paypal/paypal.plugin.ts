@@ -37,12 +37,14 @@ import { PaypalPaymentHandler } from './paypal.handler';
  *
  * 1. Add `createPaypalOrder` mutation to your storefront schema. This mutation will create a new paypal order.
  * ```graphql
- * createPaypalOrder(orderId: ID!) {
- *   apiErrors {
- *     message
- *     code
+ * mutation CreatePaypalOrder($cartId: ID!) {
+ *   createPaypalOrder(orderId: $cartId) {
+ *     apiErrors {
+ *       code
+ *       message
+ *     }
+ *     orderId
  *   }
- *   orderId
  * }
  * ```
  *
@@ -56,7 +58,7 @@ import { PaypalPaymentHandler } from './paypal.handler';
  * // paypal-button.tsx
  * import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
  *
- * export const PaypalButton = ({orderId, methodId}: {orderId: string, methodId: string}) => {
+ * export const PaypalButton = ({orderId}: {orderId: string}) => {
  *   return (
  *     <PayPalScriptProvider
  *       options={{

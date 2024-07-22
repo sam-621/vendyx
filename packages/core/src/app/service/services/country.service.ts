@@ -15,7 +15,7 @@ import { CountryEntity, ID } from '@/app/persistance';
 
 @Injectable()
 export class CountryService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   /**
    * Find all countries. By default, it returns all countries.

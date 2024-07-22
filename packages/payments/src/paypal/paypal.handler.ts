@@ -39,14 +39,12 @@ export class PaypalPaymentHandler implements PaymentHandler {
       };
     }
 
-    const payment = captureResult.data;
-
-    const transaction = payment.purchase_units[0].payments.captures[0];
+    const transactionId = captureResult.invoiceId;
 
     return {
       status: 'authorized',
       amount: totalAmount,
-      transactionId: transaction.id
+      transactionId: transactionId
     };
   }
 

@@ -10,7 +10,7 @@ import { CountryEntity, ID, ShippingMethodEntity, ZoneEntity } from '@/app/persi
 
 @Injectable()
 export class ZoneService {
-  constructor(private db: DataSource) {}
+  constructor(@InjectDataSource() private db: DataSource) {}
 
   /**
    * Fin unique zone by id.

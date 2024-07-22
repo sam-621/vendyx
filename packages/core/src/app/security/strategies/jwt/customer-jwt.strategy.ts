@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { GraphQLError } from 'graphql';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { DataSource } from 'typeorm';
@@ -11,7 +12,7 @@ import { CustomerEntity } from '@/app/persistance';
 
 @Injectable()
 export class CustomerJwtStrategy extends PassportStrategy(Strategy, 'customer-jwt') {
-  constructor(private db: DataSource) {
+  constructor(@InjectDataSource() private db: DataSource) {
     const { jwtSecret } = getConfig().auth;
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

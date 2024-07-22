@@ -1,6 +1,7 @@
 import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, Not } from 'typeorm';
 
 import {
@@ -41,7 +42,7 @@ import {
 
 @Injectable()
 export class OrderService {
-  constructor(private db: DataSource, private eventEmitter: EventEmitter2) {}
+  constructor(@InjectDataSource() private db: DataSource, private eventEmitter: EventEmitter2) {}
 
   async find(input: ListInput) {
     return await this.db.getRepository(OrderEntity).find({
