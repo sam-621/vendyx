@@ -11,7 +11,6 @@ import {
   OrderPaymentCard,
   OrderShipmentCard
 } from '../components/order-details';
-import { OrderActions } from '../components/order-more-actions/order-more-actions';
 import { OrderTransitionOrderStateButton } from '../components/order-transition-state-button/order-transition-state-button';
 
 export const OrderDetailsPage = () => {
@@ -33,7 +32,7 @@ export const OrderDetailsPage = () => {
       actions={
         <div className="flex gap-2 lg:gap-4 items-center">
           <OrderTransitionOrderStateButton order={order} />
-          <OrderActions />
+          {/* <OrderActions /> */}
         </div>
       }
       backUrl="/orders"
