@@ -1,7 +1,7 @@
 import { EblocConfig } from './ebloc.config';
-import { TestPaymentHandler } from './payments/test-payment-handler';
+import { TestPaymentHandler } from './payments';
+import { FlatPriceCalculator } from './shipping';
 
-import { ExoticPriceCalculator, FlatPriceCalculator } from '@/lib/shipping';
 import { CloudinaryStorageProvider } from '@/lib/storage';
 
 /**
@@ -30,7 +30,7 @@ export const DEFAULT_EBLOC_CONFIG: EblocConfig = {
     handlers: [new TestPaymentHandler()]
   },
   shipping: {
-    priceCalculators: [new FlatPriceCalculator(), new ExoticPriceCalculator()]
+    priceCalculators: [new FlatPriceCalculator()]
   },
   adminUi: {
     branding: {

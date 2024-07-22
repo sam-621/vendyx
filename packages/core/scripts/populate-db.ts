@@ -55,7 +55,7 @@ const cleanDb = async () => {
 
   const dataSource = await new DataSource({
     type: 'postgres',
-    url: DbUrl.local,
+    url: DbUrl.remote,
     entities: [...ENTITIES],
     synchronize: true
   }).initialize();
@@ -158,18 +158,10 @@ const cleanDb = async () => {
   });
 
   await dataSource.getRepository(PaymentMethodEntity).save({
-    name: 'Card / Credit card',
-    description: 'Pay with your credit or debit card of any bank',
+    name: 'Test payment method',
+    description: 'Make test payments',
     handler: {
-      code: 'stripe',
-      args: []
-    }
-  });
-  await dataSource.getRepository(PaymentMethodEntity).save({
-    name: 'PayPal',
-    description: 'Pay with your PayPal account',
-    handler: {
-      code: 'paypal',
+      code: 'test-payment-handler',
       args: []
     }
   });

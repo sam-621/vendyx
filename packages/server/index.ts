@@ -1,5 +1,9 @@
-import { CloudinaryStorageProvider, FlatPriceCalculator, bootstrap } from '@ebloc/core';
-import { PaypalPlugin } from '@ebloc/payments';
+import {
+  CloudinaryStorageProvider,
+  FlatPriceCalculator,
+  TestPaymentHandler,
+  bootstrap
+} from '@ebloc/core';
 
 import { config } from 'dotenv';
 
@@ -27,7 +31,7 @@ bootstrap({
     priceCalculators: [new FlatPriceCalculator()]
   },
   payments: {
-    handlers: []
+    handlers: [new TestPaymentHandler()]
   },
   adminUi: {
     branding: {
@@ -37,11 +41,5 @@ bootstrap({
     },
     serveUrl: '/admin'
   },
-  plugins: [
-    PaypalPlugin.init({
-      clientId: process.env.PAYPAL_CLIENT_ID,
-      secret: process.env.PAYPAL_SECRET,
-      devMode: process.env.PAYPAL_SANDOX_MODE
-    })
-  ]
+  plugins: []
 });

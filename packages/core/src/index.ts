@@ -23,8 +23,8 @@ export * from './app/api/common/guards';
 /**
  * Config specifications
  */
-export * from './app/config/payments/payment-handler.config';
-export * from './app/config/shipping/shipping-price-calculator.config';
+export * from './app/config/payments';
+export * from './app/config/shipping';
 export * from './app/config/storage/storage-provider.config';
 export * from './app/config/admin-ui/admin-ui.config';
 export * from './app/config/ebloc.config';
@@ -40,4 +40,3 @@ export * from './app/plugin/ebloc.plugin';
  * Integrations
  */
 export * from './lib/storage';
-export * from './lib/shipping';
