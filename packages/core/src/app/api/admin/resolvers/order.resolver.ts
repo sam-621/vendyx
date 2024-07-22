@@ -35,4 +35,11 @@ export class OrderResolver {
 
     return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
   }
+
+  @Mutation('cancelOrder')
+  async cancelOrder(@Args('id') id: ID) {
+    const result = await this.orderService.cancelOrder(id);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+  }
 }

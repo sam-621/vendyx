@@ -705,9 +705,9 @@ export class OrderService {
   /**
    * Validate if the order can transition to the new state
    */
-  private async validateOrderTransitionState(order: OrderEntity, state: OrderState) {
+  private async validateOrderTransitionState(order: OrderEntity, newState: OrderState) {
     const prevState = order.state;
-    const nextState = state;
+    const nextState = newState;
 
     const transitionStateAllowed = ValidOrderTransitions.some(
       t => t[0] === prevState && t[1] === nextState
@@ -752,14 +752,6 @@ export class OrderService {
     });
   }
 
-  private async findById(id: ID) {
-    return this.db.getRepository(OrderEntity).findOne({ where: { id } });
-  }
-
-  private async findByCode(code: string) {
-    return this.db.getRepository(OrderEntity).findOne({ where: { code } });
-  }
-
   /**
    * Get shipping methods with calculated price depending on the given order.
    */
@@ -780,5 +772,13 @@ export class OrderService {
     }
 
     return methodsWithPrice;
+  }
+
+  private async findById(id: ID) {
+    return this.db.getRepository(OrderEntity).findOne({ where: { id } });
+  }
+
+  private async findByCode(code: string) {
+    return this.db.getRepository(OrderEntity).findOne({ where: { code } });
   }
 }
