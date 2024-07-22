@@ -184,11 +184,8 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found with the given id');
     }
 
-    if (order.state !== OrderState.MODIFYING) {
-      return new ErrorResult(
-        OrderErrorCode.ORDER_TRANSITION_ERROR,
-        `Unable to add line to order in state ${order.state}`
-      );
+    if (!this.canPerformAction(order, 'modify')) {
+      return new ErrorResult(OrderErrorCode.FORBIDDEN_ORDER_ACTION, 'Cannot modify order');
     }
 
     const variant = await this.db.getRepository(VariantEntity).findOne({
@@ -251,11 +248,8 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.LINE_NOT_FOUND, 'line not found');
     }
 
-    if (lineToUpdate.order.state !== OrderState.MODIFYING) {
-      return new ErrorResult(
-        OrderErrorCode.ORDER_TRANSITION_ERROR,
-        `Unable to update line to order in state ${lineToUpdate.order.state}`
-      );
+    if (!this.canPerformAction(lineToUpdate.order, 'modify')) {
+      return new ErrorResult(OrderErrorCode.FORBIDDEN_ORDER_ACTION, 'Cannot modify order');
     }
 
     const variant = lineToUpdate.productVariant;
@@ -300,11 +294,8 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.LINE_NOT_FOUND, 'Line not found');
     }
 
-    if (orderLine.order.state !== OrderState.MODIFYING) {
-      return new ErrorResult(
-        OrderErrorCode.ORDER_TRANSITION_ERROR,
-        `Unable to remove line to order in state ${orderLine.order.state}`
-      );
+    if (!this.canPerformAction(orderLine.order, 'modify')) {
+      return new ErrorResult(OrderErrorCode.FORBIDDEN_ORDER_ACTION, 'Cannot modify order');
     }
 
     await this.db.getRepository(OrderLineEntity).delete(orderLine.id);
@@ -340,10 +331,10 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
-    if (order.state !== OrderState.MODIFYING) {
+    if (!this.canPerformAction(order, 'add_customer')) {
       return new ErrorResult(
-        OrderErrorCode.ORDER_TRANSITION_ERROR,
-        `Unable to add customer to order in state ${order.state}`
+        OrderErrorCode.FORBIDDEN_ORDER_ACTION,
+        'Cannot add customer to the order'
       );
     }
 
@@ -396,10 +387,10 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
-    if (order.state !== OrderState.MODIFYING) {
+    if (!this.canPerformAction(order, 'add_shipping_address')) {
       return new ErrorResult(
-        OrderErrorCode.ORDER_TRANSITION_ERROR,
-        `Unable to add shipping address to order in state ${order.state}`
+        OrderErrorCode.FORBIDDEN_ORDER_ACTION,
+        'Cannot add shipping address to order'
       );
     }
 
@@ -449,13 +440,9 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.MISSING_SHIPPING_ADDRESS, 'Missing shipping address');
     }
 
-    if (order.state !== OrderState.MODIFYING) {
-      return new ErrorResult(
-        OrderErrorCode.ORDER_TRANSITION_ERROR,
-        `Unable to add shipment to order in state ${order.state}`
-      );
+    if (!this.canPerformAction(order, 'add_shipment')) {
+      return new ErrorResult(OrderErrorCode.FORBIDDEN_ORDER_ACTION, 'Cannot add shipment to order');
     }
-
     const shippingMethod = await this.db
       .getRepository(ShippingMethodEntity)
       .findOne({ where: { id: input.methodId, enabled: true } });
@@ -521,6 +508,13 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
+    if (!this.canPerformAction(order, 'add_payment')) {
+      return new ErrorResult(
+        OrderErrorCode.FORBIDDEN_ORDER_ACTION,
+        'Cannot add payment to the order'
+      );
+    }
+
     if (!(await this.validateOrderTransitionState(order, OrderState.PAYMENT_ADDED))) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
@@ -558,7 +552,6 @@ export class OrderService {
       );
     }
 
-    // TODO: do something with PaymentHandlerResult.error
     if (paymentHandlerResult.status === 'declined') {
       return new ErrorResult(
         OrderErrorCode.PAYMENT_DECLINED,
@@ -631,6 +624,13 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
+    if (!this.canPerformAction(order, 'mark_as_shipped')) {
+      return new ErrorResult(
+        OrderErrorCode.FORBIDDEN_ORDER_ACTION,
+        'Cannot mark as shipped the order'
+      );
+    }
+
     if (!(await this.validateOrderTransitionState(order, OrderState.SHIPPED))) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
@@ -670,6 +670,13 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
+    if (!this.canPerformAction(order, 'mark_as_delivered')) {
+      return new ErrorResult(
+        OrderErrorCode.FORBIDDEN_ORDER_ACTION,
+        'Cannot mark as delivered the order'
+      );
+    }
+
     if (!(await this.validateOrderTransitionState(order, OrderState.DELIVERED))) {
       return new ErrorResult(
         OrderErrorCode.ORDER_TRANSITION_ERROR,
@@ -685,6 +692,9 @@ export class OrderService {
     });
   }
 
+  /**
+   * Mark an order as canceled.
+   */
   async cancelOrder(orderId: ID) {
     const order = await this.findUnique(orderId);
 
@@ -692,8 +702,8 @@ export class OrderService {
       return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
     }
 
-    if (order.state === OrderState.CANCELED) {
-      return new ErrorResult(OrderErrorCode.ORDER_TRANSITION_ERROR, 'Order already canceled');
+    if (!this.canPerformAction(order, 'cancel')) {
+      return new ErrorResult(OrderErrorCode.FORBIDDEN_ORDER_ACTION, 'Cannot cancel the order');
     }
 
     return await this.db.getRepository(OrderEntity).save({
@@ -774,6 +784,36 @@ export class OrderService {
     return methodsWithPrice;
   }
 
+  /**
+   * Validates if the order can perform the given action
+   */
+  private async canPerformAction(order: OrderEntity, action: OrderAction) {
+    if (action === 'modify') return order.state === OrderState.MODIFYING;
+
+    if (action === 'add_customer') return order.state === OrderState.MODIFYING;
+
+    if (action === 'add_shipping_address') return order.state === OrderState.MODIFYING;
+
+    if (action === 'add_shipment') {
+      const hasShippingAddress = Boolean(order.shippingAddress);
+
+      return hasShippingAddress && order.state === OrderState.MODIFYING;
+    }
+
+    if (action === 'add_payment') {
+      const hasCustomer = Boolean(order.customer);
+      const hasShipment = Boolean(order.shipment);
+
+      return hasCustomer && hasShipment && order.state === OrderState.MODIFYING;
+    }
+
+    if (action === 'mark_as_shipped') return order.state === OrderState.PAYMENT_AUTHORIZED;
+
+    if (action === 'mark_as_delivered') return order.state === OrderState.SHIPPED;
+
+    if (action === 'cancel') return order.state !== OrderState.CANCELED;
+  }
+
   private async findById(id: ID) {
     return this.db.getRepository(OrderEntity).findOne({ where: { id } });
   }
@@ -782,3 +822,13 @@ export class OrderService {
     return this.db.getRepository(OrderEntity).findOne({ where: { code } });
   }
 }
+
+type OrderAction =
+  | 'modify'
+  | 'add_customer'
+  | 'add_shipping_address'
+  | 'add_shipment'
+  | 'add_payment'
+  | 'mark_as_shipped'
+  | 'mark_as_delivered'
+  | 'cancel';

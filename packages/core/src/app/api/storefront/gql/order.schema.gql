@@ -51,10 +51,8 @@ type OrderErrorResult {
 
 " Utils "
 enum OrderErrorCode {
-  ORDER_NOT_FOUND
   LINE_NOT_FOUND
   VARIANT_NOT_FOUND
-  ORDER_TRANSITION_ERROR
   NOT_ENOUGH_STOCK
   CUSTOMER_INVALID_EMAIL
   CUSTOMER_DISABLED
@@ -69,4 +67,5 @@ enum OrderErrorCode {
   Payment failed due to an unexpected error in the payment handler
   """
   PAYMENT_FAILED
+  FORBIDDEN_ORDER_ACTION
 }
