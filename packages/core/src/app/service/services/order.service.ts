@@ -685,6 +685,23 @@ export class OrderService {
     });
   }
 
+  async cancelOrder(orderId: ID) {
+    const order = await this.findUnique(orderId);
+
+    if (!order) {
+      return new ErrorResult(OrderErrorCode.ORDER_NOT_FOUND, 'Order not found');
+    }
+
+    if (order.state === OrderState.CANCELED) {
+      return new ErrorResult(OrderErrorCode.ORDER_TRANSITION_ERROR, 'Order already canceled');
+    }
+
+    return await this.db.getRepository(OrderEntity).save({
+      ...order,
+      state: OrderState.CANCELED
+    });
+  }
+
   /**
    * Validate if the order can transition to the new state
    */

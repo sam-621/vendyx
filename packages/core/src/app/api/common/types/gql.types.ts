@@ -107,7 +107,8 @@ export enum OrderState {
     PAYMENT_ADDED = "PAYMENT_ADDED",
     PAYMENT_AUTHORIZED = "PAYMENT_AUTHORIZED",
     SHIPPED = "SHIPPED",
-    DELIVERED = "DELIVERED"
+    DELIVERED = "DELIVERED",
+    CANCELED = "CANCELED"
 }
 
 export class AuthenticateInput {
@@ -460,6 +461,8 @@ export abstract class IMutation {
     abstract markOrderAsShipped(id: string, input: MarkOrderAsShippedInput): OrderResult | Promise<OrderResult>;
 
     abstract markOrderAsDelivered(id: string): OrderResult | Promise<OrderResult>;
+
+    abstract cancelOrder(id: string): OrderResult | Promise<OrderResult>;
 
     abstract createPaymentMethod(input: CreatePaymentMethodInput): PaymentMethodResult | Promise<PaymentMethodResult>;
 

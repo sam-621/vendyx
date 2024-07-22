@@ -4,6 +4,7 @@ enum OrderState {
   PAYMENT_AUTHORIZED
   SHIPPED
   DELIVERED
+  CANCELED
 }
 
 type Order implements Node {
@@ -12,7 +13,7 @@ type Order implements Node {
   updatedAt: Date!
   code: String!
   state: OrderState!
-  
+
   """
   The price that will be sent to the payment provider. subtotal plus shipping price
   """
@@ -58,4 +59,3 @@ type OrderList implements List {
 type Query {
   order(id: ID, code: String): Order
 }
-

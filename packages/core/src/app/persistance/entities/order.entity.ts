@@ -34,7 +34,11 @@ export enum OrderState {
   /**
    * The order has been delivered and is completes
    */
-  DELIVERED = 'DELIVERED'
+  DELIVERED = 'DELIVERED',
+  /**
+   * The order has been canceled by the admin
+   */
+  CANCELED = 'CANCELED'
 }
 
 @TypeOrmEntity('orders')

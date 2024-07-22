@@ -5,6 +5,7 @@ type Query {
 type Mutation {
   markOrderAsShipped(id: ID!, input: MarkOrderAsShippedInput!): OrderResult!
   markOrderAsDelivered(id: ID!): OrderResult!
+  cancelOrder(id: ID!): OrderResult!
 }
 
 input MarkOrderAsShippedInput {
