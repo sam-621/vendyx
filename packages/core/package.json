@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.10.0",
-    "@ebloc/common": "^0.0.1",
+    "@ebloc/common": "^0.0.3",
     "@nestjs/apollo": "^12.0.11",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",

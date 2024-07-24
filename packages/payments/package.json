@@ -18,7 +18,7 @@
     "script:post-build": "gulp -f ./scripts/post-build.ts postBuild"
   },
   "dependencies": {
-    "@ebloc/common": "^0.0.1",
+    "@ebloc/common": "^0.0.3",
     "@ebloc/core": "^0.0.3",
     "axios": "^1.7.2"
   },
