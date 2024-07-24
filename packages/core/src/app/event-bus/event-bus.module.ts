@@ -7,4 +7,4 @@ import { EventService } from './event.service';
   imports: [EventEmitterModule.forRoot()],
   providers: [EventService]
 })
-export class EventModule {}
+export class EventBusModule {}

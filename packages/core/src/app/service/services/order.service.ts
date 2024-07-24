@@ -1,6 +1,5 @@
 import { clean } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, Not } from 'typeorm';
 
@@ -24,7 +23,13 @@ import {
   UpdateOrderLineInput
 } from '@/app/api/common';
 import { getConfig } from '@/app/config';
-import { OrderEvent } from '@/app/events';
+import {
+  EventBusService,
+  OrderCancelledEvent,
+  OrderDeliveredEvent,
+  OrderPaidEvent,
+  OrderShippedEvent
+} from '@/app/event-bus';
 import {
   AddressEntity,
   CountryEntity,
@@ -42,7 +47,7 @@ import {
 
 @Injectable()
 export class OrderService {
-  constructor(@InjectDataSource() private db: DataSource, private eventEmitter: EventEmitter2) {}
+  constructor(@InjectDataSource() private db: DataSource, private eventBus: EventBusService) {}
 
   async find(input: ListInput) {
     return await this.db.getRepository(OrderEntity).find({
@@ -598,7 +603,7 @@ export class OrderService {
       }))
     );
 
-    this.eventEmitter.emit(OrderEvent.PAID, { orderId: order.id });
+    this.eventBus.emit(new OrderPaidEvent(order.id));
 
     return orderToReturn;
   }
@@ -644,7 +649,7 @@ export class OrderService {
       carrier: input.carrier
     });
 
-    this.eventEmitter.emit(OrderEvent.SHIPPED, { orderId: order.id });
+    this.eventBus.emit(new OrderShippedEvent(order.id));
 
     return await this.db.getRepository(OrderEntity).save({
       ...order,
@@ -684,7 +689,7 @@ export class OrderService {
       );
     }
 
-    this.eventEmitter.emit(OrderEvent.DELIVERED, { orderId: order.id });
+    this.eventBus.emit(new OrderDeliveredEvent(order.id));
 
     return await this.db.getRepository(OrderEntity).save({
       ...order,
@@ -705,6 +710,8 @@ export class OrderService {
     if (!this.canPerformAction(order, 'cancel')) {
       return new ErrorResult(OrderErrorCode.FORBIDDEN_ORDER_ACTION, 'Cannot cancel the order');
     }
+
+    this.eventBus.emit(new OrderCancelledEvent(order.id));
 
     return await this.db.getRepository(OrderEntity).save({
       ...order,

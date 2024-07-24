@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { ApiModule } from './api/api.module';
 import { ConfigModule } from './config';
-import { EventModule } from './events';
+import { EventBusModule } from './event-bus';
 import { PersistanceModule } from './persistance';
 import { PluginModule } from './plugin';
 import { SecurityModule } from './security';
@@ -13,7 +13,7 @@ import { SecurityModule } from './security';
     PersistanceModule,
     SecurityModule,
     ApiModule,
-    EventModule,
+    EventBusModule,
     PluginModule.register()
   ]
 })
