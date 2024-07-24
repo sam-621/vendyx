@@ -57,7 +57,7 @@
   },
   "//": "We add `@ebloc/admin-ui` as a dev dependency only for lerna knows admin-ui package has to be built before core package",
   "devDependencies": {
-    "@ebloc/admin-ui": "^0.0.3",
+    "@ebloc/admin-ui": "^0.0.4",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

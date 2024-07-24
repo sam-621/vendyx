@@ -998,47 +998,6 @@
   dependencies:
     tslib "^2.0.0"
 
-"@ebloc/common@^0.0.1":
-  version "0.0.3"
-  dependencies:
-    zod "^3.22.4"
-
-"@ebloc/core@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@ebloc/core/-/core-0.0.3.tgz#54608578832f21b57469f164fc03f3297bbf3326"
-  integrity sha512-bRNz1KjhDMVgQB/PWl8P3Z3ZccefJbsfhYSKvj8SQvM1r0f7wJjb2J4lm6+KwZVMZSxIaBBjVcFl47b099PlgQ==
-  dependencies:
-    "@apollo/server" "^4.10.0"
-    "@ebloc/common" "^0.0.1"
-    "@nestjs/apollo" "^12.0.11"
-    "@nestjs/common" "^9.0.0"
-    "@nestjs/core" "^9.0.0"
-    "@nestjs/event-emitter" "^2.0.4"
-    "@nestjs/graphql" "^12.0.11"
-    "@nestjs/jwt" "^10.2.0"
-    "@nestjs/passport" "^10.0.3"
-    "@nestjs/platform-express" "^9.0.0"
-    "@nestjs/serve-static" "^4.0.0"
-    "@nestjs/typeorm" "^10.0.1"
-    "@types/gulp" "^4.0.17"
-    axios "^1.7.2"
-    bcrypt "^5.1.1"
-    cloudinary "^1.41.3"
-    graphql "^16.8.1"
-    graphql-parse-resolve-info "^4.13.0"
-    graphql-type-json "^0.3.2"
-    gulp "4.0.2"
-    multer "^1.4.5-lts.1"
-    mysql2 "^3.8.0"
-    nanoid "3.3.4"
-    passport "^0.7.0"
-    passport-jwt "^4.0.1"
-    pg "^8.11.3"
-    reflect-metadata "^0.2.2"
-    ts-morph "^21.0.1"
-    typeorm "^0.3.19"
-    zod "^3.23.7"
-
 "@emnapi/core@^1.1.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@emnapi/core/-/core-1.2.0.tgz#7b738e5033738132bf6af0b8fae7b05249bdcbd7"
