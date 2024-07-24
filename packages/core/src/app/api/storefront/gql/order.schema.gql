@@ -51,6 +51,7 @@ type OrderErrorResult {
 
 " Utils "
 enum OrderErrorCode {
+  ORDER_NOT_FOUND
   LINE_NOT_FOUND
   VARIANT_NOT_FOUND
   NOT_ENOUGH_STOCK
@@ -63,6 +64,7 @@ enum OrderErrorCode {
   MISSING_PAYMENT_HANDLER
   PAYMENT_METHOD_NOT_FOUND
   PAYMENT_DECLINED
+  ORDER_TRANSITION_ERROR
   """
   Payment failed due to an unexpected error in the payment handler
   """
