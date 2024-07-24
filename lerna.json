@@ -1,7 +1,9 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "0.0.1",
-  "packages": ["packages/*"],
+  "version": "0.0.2",
+  "packages": [
+    "packages/*"
+  ],
   "command": {
     "version": {
       "push": false

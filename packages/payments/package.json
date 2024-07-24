@@ -1,6 +1,6 @@
 {
   "name": "@ebloc/payments",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ready-to-use payment integrations developed by ebloc",
   "keywords": [
     "ebloc",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@ebloc/common": "^0.0.1",
-    "@ebloc/core": "^0.0.1",
+    "@ebloc/core": "^0.0.2",
     "axios": "^1.7.2"
   },
   "devDependencies": {

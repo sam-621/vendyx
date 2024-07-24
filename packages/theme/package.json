@@ -6,7 +6,7 @@
     "theme",
     "react-components"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "private": false,
   "license": "GPL-3.0-only",
