@@ -2,7 +2,7 @@
   "name": "@ebloc/common",
   "description": "ebloc common package",
   "type": "commonjs",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Rogelio Samuel Moreno Corrales",
@@ -19,5 +19,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "889456553852b8e43a4e97eb1bec753fa72f7633"
 }

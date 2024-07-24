@@ -6,7 +6,7 @@
     "theme",
     "react-components"
   ],
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "private": false,
   "license": "GPL-3.0-only",
@@ -69,5 +69,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "889456553852b8e43a4e97eb1bec753fa72f7633"
 }
