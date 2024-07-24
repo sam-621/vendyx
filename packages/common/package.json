@@ -1,6 +1,10 @@
 {
   "name": "@ebloc/common",
   "description": "ebloc common package",
+  "keywords": [
+    "ebloc",
+    "common"
+  ],
   "type": "commonjs",
   "version": "0.0.2",
   "main": "dist/index.js",

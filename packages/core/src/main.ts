@@ -1,16 +1,10 @@
-import * as path from 'path';
-
 import { NestFactory } from '@nestjs/core';
 import { dest, series, src } from 'gulp';
 
 import { GlobalExceptionFilter } from './app/api/common';
 import { EblocConfig, getConfig, setConfig } from './app/config';
 import { getPluginMetadata } from './app/plugin';
-import {
-  EBlocPluginMetadata,
-  EBlocPluginMetadataKeys,
-  UiModuleConfig
-} from './app/plugin/ebloc.plugin';
+import { EBlocPluginMetadata, EBlocPluginMetadataKeys } from './app/plugin/ebloc.plugin';
 
 /**
  * Copy gql schema files to dist folder
@@ -29,14 +23,14 @@ export async function bootstrap(config: EblocConfig) {
 
   series(copySchemaToDistFolder)(() => console.log('Schema copied to dist folder'));
 
-  const { plugins } = getConfig();
+  // const { plugins } = getConfig();
 
-  copyUiModulesAndAdminUiToDistFolderInServerPackage(
-    plugins
-      .map(plugin => getPluginMetadata<UiModuleConfig>(EBlocPluginMetadataKeys.UI_MODULES, plugin))
-      .filter(uiModules => uiModules)
-      .flat()
-  );
+  // copyUiModulesAndAdminUiToDistFolderInServerPackage(
+  //   plugins
+  //     .map(plugin => getPluginMetadata<UiModuleConfig>(EBlocPluginMetadataKeys.UI_MODULES, plugin))
+  //     .filter(uiModules => uiModules)
+  //     .flat()
+  // );
 
   /**
    * We need to import the app module dynamically
@@ -61,21 +55,21 @@ export async function bootstrap(config: EblocConfig) {
  * Copy the compiled ui modules to the admin-ui folder of the server package
  * Also copy the admin-ui dist folder to the admin-ui folder of the server package
  */
-const copyUiModulesAndAdminUiToDistFolderInServerPackage = (
-  uiModules: EBlocPluginMetadata['uiModules']
-) => {
-  uiModules?.forEach(uiModule => {
-    const { compiledUiModule } = uiModule ?? {};
+// const copyUiModulesAndAdminUiToDistFolderInServerPackage = (
+//   uiModules: EBlocPluginMetadata['uiModules']
+// ) => {
+//   uiModules?.forEach(uiModule => {
+//     const { compiledUiModule } = uiModule ?? {};
 
-    src(path.join(compiledUiModule.path, '/**/*')).pipe(
-      dest(path.join(process.cwd(), `admin-ui/${compiledUiModule.rename}`))
-    );
-  });
+//     src(path.join(compiledUiModule.path, '/**/*')).pipe(
+//       dest(path.join(process.cwd(), `admin-ui/${compiledUiModule.rename}`))
+//     );
+//   });
 
-  src(path.join(__dirname, '../../admin-ui/dist/**/*')).pipe(
-    dest(path.join(process.cwd(), 'admin-ui/'))
-  );
-};
+//   src(path.join(__dirname, '../../admin-ui/dist/**/*')).pipe(
+//     dest(path.join(process.cwd(), 'admin-ui/'))
+//   );
+// };
 
 /**
  * Applies the plugins config functions to the initial config

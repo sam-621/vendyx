@@ -1029,6 +1029,11 @@
   dependencies:
     tslib "^2.0.0"
 
+"@ebloc/common@^0.0.1":
+  version "0.0.2"
+  dependencies:
+    zod "^3.22.4"
+
 "@esbuild/aix-ppc64@0.19.12":
   version "0.19.12"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.19.12.tgz#d1bc06aedb6936b3b6d313bf809a5a40387d2b7f"

@@ -3,6 +3,7 @@ import { GqlExceptionFilter } from '@nestjs/graphql';
 import { Response } from 'express';
 import { GraphQLError } from 'graphql';
 
+// TODO: ONLY THROW GRAPHQL ERRORS IN GRAPHQL CONTEXTS
 @Catch()
 export class GlobalExceptionFilter implements GqlExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
