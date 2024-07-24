@@ -12,6 +12,7 @@ import {
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
 } from '@/app/api/common';
+import { CustomerRegisteredEvent, EventBusService } from '@/app/event-bus';
 import { AddressEntity, CustomerEntity, ID, OrderEntity, OrderState } from '@/app/persistance';
 import { SecurityService } from '@/app/security';
 import { CustomerJwtPayload } from '@/app/security/strategies/jwt/jwt.types';
@@ -20,7 +21,8 @@ import { CustomerJwtPayload } from '@/app/security/strategies/jwt/jwt.types';
 export class CustomerService {
   constructor(
     @InjectDataSource() private db: DataSource,
-    private readonly securityService: SecurityService
+    private readonly securityService: SecurityService,
+    private readonly eventBus: EventBusService
   ) {}
 
   /**
@@ -118,11 +120,15 @@ export class CustomerService {
 
     const hashedPassword = await this.securityService.hash(input.password);
 
-    return this.db.getRepository(CustomerEntity).save({
+    const customer = await this.db.getRepository(CustomerEntity).save({
       ...customerExists,
       ...clean(input),
       password: hashedPassword
     });
+
+    this.eventBus.emit(new CustomerRegisteredEvent(customer.id));
+
+    return customer;
   }
 
   /**
