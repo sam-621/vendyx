@@ -1,6 +1,6 @@
 {
   "name": "@ebloc/core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ebloc core package",
   "keywords": [
     "ebloc",
@@ -16,7 +16,7 @@
     "dev": "NODE_ENV=development yarn script:generate && nest start --watch",
     "build": "yarn script:generate && nest build && yarn script:post-build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node dist/main",
+    "start": "node dist/local",
     "script:generate": "ts-node ./scripts/generate-gql-types.ts",
     "script:post-build": "gulp -f ./scripts/post-build.ts postBuild",
     "db:seed": "ts-node ./scripts/seed.ts",

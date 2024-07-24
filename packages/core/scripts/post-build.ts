@@ -12,4 +12,10 @@ export const copySchemaToDistFolder = () => {
   return stream.pipe(dest('../dist'));
 };
 
-export const postBuild = parallel(copySchemaToDistFolder);
+export const copyAdminUiToDistFolder = () => {
+  const stream = src('../../admin-ui/dist/**/*');
+
+  return stream.pipe(dest('../dist/admin-ui'));
+};
+
+export const postBuild = parallel(copySchemaToDistFolder, copyAdminUiToDistFolder);

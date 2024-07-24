@@ -16,7 +16,7 @@ import { UploadModule } from './upload';
       useFactory: () => {
         return [
           {
-            rootPath: path.join(process.cwd(), '/admin-ui'),
+            rootPath: path.join(__dirname, '../../', '/admin-ui'),
             serveRoot: '/admin',
             exclude: ['/api/(.*)']
           }
