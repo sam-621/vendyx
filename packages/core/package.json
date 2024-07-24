@@ -1,12 +1,17 @@
 {
   "name": "@ebloc/core",
   "version": "0.0.0",
-  "description": "",
-  "author": "",
+  "description": "ebloc core package",
+  "keywords": [
+    "ebloc",
+    "core",
+    "nestjs"
+  ],
+  "author": "Rogelio Samuel Moreno Corrales",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "private": false,
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "scripts": {
     "dev": "NODE_ENV=development yarn script:generate && nest start --watch",
     "build": "yarn script:generate && nest build && yarn script:post-build",
@@ -97,6 +102,9 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   }

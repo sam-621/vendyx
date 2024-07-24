@@ -2,11 +2,16 @@
   "name": "@ebloc/payments",
   "version": "0.0.0",
   "description": "ready-to-use payment integrations developed by ebloc",
+  "keywords": [
+    "ebloc",
+    "payments",
+    "paypal"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/sam-621/ebloc",
   "author": "Rogelio Samuel Moreno Corrales",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "private": false,
   "scripts": {
     "build": "rimraf dist && tsc -p ./tsconfig.build.json && yarn script:post-build",
@@ -19,5 +24,11 @@
   },
   "devDependencies": {
     "@paypal/paypal-js": "^8.1.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
   }
 }

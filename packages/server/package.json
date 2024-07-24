@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "author": "Rogelio Samuel Moreno Corrales",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "scripts": {
     "dev": "ts-node index.ts",
     "build": "rimraf ./admin-ui && yarn build:hello-world && tsc",

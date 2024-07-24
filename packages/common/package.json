@@ -1,11 +1,12 @@
 {
   "name": "@ebloc/common",
+  "description": "ebloc common package",
   "type": "commonjs",
   "version": "0.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Rogelio Samuel Moreno Corrales",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "private": false,
   "scripts": {
     "build": "tsc"
@@ -13,6 +14,9 @@
   "dependencies": {
     "zod": "^3.22.4"
   },
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   }

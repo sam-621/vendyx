@@ -1,9 +1,15 @@
 {
   "name": "@ebloc/theme",
+  "description": "ebloc theme package",
+  "keywords": [
+    "ebloc",
+    "theme",
+    "react-components"
+  ],
   "version": "0.0.0",
   "type": "module",
   "private": false,
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "main": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "scripts": {

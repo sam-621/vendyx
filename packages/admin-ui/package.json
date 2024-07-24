@@ -1,9 +1,15 @@
 {
   "name": "@ebloc/admin-ui",
+  "description": "ebloc admin ui package",
+  "keywords": [
+    "ebloc",
+    "admin",
+    "react"
+  ],
   "private": false,
   "version": "0.0.0",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "scripts": {
     "dev": "vite --mode development",
     "local": "vite --mode localhost",
@@ -70,6 +76,9 @@
     "vite": "^5.0.8",
     "vite-tsconfig-paths": "^4.3.1"
   },
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   }
