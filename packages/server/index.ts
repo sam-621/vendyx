@@ -42,5 +42,5 @@ bootstrap({
     },
     serveUrl: '/admin'
   },
-  plugins: [HelloWorldPlugin]
+  plugins: []
 });
