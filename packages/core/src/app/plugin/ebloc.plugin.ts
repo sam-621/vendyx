@@ -128,10 +128,30 @@ export interface UiModuleConfig {
   compiledUiModule: {
     /**
      * This is the URL to the folder that contains the compiled app index.html.
+     *
+     * Should be an absolute path.
      */
     path: string;
     /**
-     * rename your dist folder to a custom name, this name is used to reference the compiled ui module in the ebloc admin server.
+     * this name is used to reference the compiled ui module in the ebloc admin server.
+     * Should be unique for each ui module and should be different from the slug you defined in the sidebarNavLink.
+     * this path should be your base path in you ui extension project
+     *
+     * @example
+     * ```ts
+     * // ui-module.config.ts
+     * compiledUiModule: {
+     *   path: path.join(process.cwd(), 'path/to/your/compiled/module'),
+     *   rename: 'hello-world-module'
+     * }
+     * ```
+     * ```ts
+     * // vite.config.ts
+     * export default defineConfig({
+     *   plugins: [react()],
+     *   base: 'hello-world-module'
+     * });
+     * ```
      *
      * @warning
      * This name should be unique for each ui module and should be different from the slug you defined in the sidebarNavLink.
