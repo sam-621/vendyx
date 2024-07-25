@@ -13,7 +13,8 @@
     "prepare": "husky install && yarn executable",
     "build": "lerna run build",
     "start": "lerna run start --scope @ebloc/server",
-    "executable": "chmod ug+x .husky/*"
+    "executable": "chmod ug+x .husky/*",
+    "publish-release": "yarn build && lerna publish --no-private --no-push"
   },
   "dependencies": {},
   "devDependencies": {
