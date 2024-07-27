@@ -5,8 +5,9 @@ import { DataSource } from 'typeorm';
 
 import { ProductEntityService } from './product-entity.service';
 import { ProductNotFoundError } from './product.errors';
+import { ErrorResult } from '../utils';
 
-import { CreateProductInput, UpdateProductInput } from '@/app/api/common';
+import { CreateProductInput, ProductErrorCode, UpdateProductInput } from '@/app/api/common';
 import { ID, ProductEntity } from '@/app/persistance';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class ProductService extends ProductEntityService {
    * @description
    * Create a product and parse its slug
    */
-  async create(input: CreateProductInput) {
+  async create(input: CreateProductInput): Promise<MutationResult> {
     const slug = await this.validateAndParseSlug(input.name);
 
     return this.db.getRepository(ProductEntity).save({
@@ -32,7 +33,7 @@ export class ProductService extends ProductEntityService {
    * @description
    * Update a product and parse its slug if the name has changed
    */
-  async update(id: ID, input: UpdateProductInput) {
+  async update(id: ID, input: UpdateProductInput): Promise<MutationResult> {
     const product = await this.findUnique({ id });
 
     if (!product) return new ProductNotFoundError();
@@ -53,7 +54,7 @@ export class ProductService extends ProductEntityService {
    * - Append the product id to the slug to avoid duplication
    * - Soft remove the product
    */
-  async softRemove(id: ID) {
+  async softRemove(id: ID): Promise<MutationResult> {
     const product = await this.findUnique({ id });
 
     if (!product) return new ProductNotFoundError();
@@ -86,3 +87,5 @@ export class ProductService extends ProductEntityService {
       .replace(/[\u0300-\u036f]/g, '');
   }
 }
+
+type MutationResult = ErrorResult<ProductErrorCode> | ProductEntity;

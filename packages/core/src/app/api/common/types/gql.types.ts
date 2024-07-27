@@ -67,10 +67,7 @@ export enum PaymentMethodErrorCode {
 }
 
 export enum ProductErrorCode {
-    PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND",
-    NO_ID_OR_SLUG_PROVIDED = "NO_ID_OR_SLUG_PROVIDED",
-    DUPLICATED_SLUG = "DUPLICATED_SLUG",
-    PRODUCT_HAS_VARIANTS = "PRODUCT_HAS_VARIANTS"
+    PRODUCT_NOT_FOUND = "PRODUCT_NOT_FOUND"
 }
 
 export enum ShippingMethodErrorCode {
@@ -195,7 +192,6 @@ export class CreateProductInput {
     name: string;
     slug: string;
     description?: Nullable<string>;
-    published?: Nullable<boolean>;
     enabled?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
 }
@@ -204,7 +200,6 @@ export class UpdateProductInput {
     name?: Nullable<string>;
     slug?: Nullable<string>;
     description?: Nullable<string>;
-    published?: Nullable<boolean>;
     enabled?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
 }
@@ -927,7 +922,6 @@ export class Product implements Node {
     name: string;
     slug: string;
     description?: Nullable<string>;
-    published: boolean;
     enabled: boolean;
     onlineOnly: boolean;
     variants?: VariantList;
