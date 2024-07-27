@@ -9,7 +9,7 @@ import {
   UpdateVariantInput
 } from '@/app/api/common';
 import { ID } from '@/app/persistance';
-import { VariantService, isErrorResult } from '@/app/service';
+import { VariantService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Variant')

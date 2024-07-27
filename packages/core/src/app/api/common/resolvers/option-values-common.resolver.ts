@@ -1,7 +1,7 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { OptionValueEntity } from '@/app/persistance';
-import { OptionValueService } from '@/app/service';
+import { OptionValueService } from '@/app/business';
 
 @Resolver('OptionValue')
 export class OptionValueCommonResolver {

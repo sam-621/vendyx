@@ -4,7 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AdminJwtAuthGuard, CreateCountryInput, ListInput, ListResponse } from '../../common';
 
 import { ID } from '@/app/persistance';
-import { CountryService, isErrorResult } from '@/app/service';
+import { CountryService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Country')

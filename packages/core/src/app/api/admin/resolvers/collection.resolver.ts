@@ -4,7 +4,7 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 import { AdminJwtAuthGuard, CreateCollectionInput, ListInput, ListResponse } from '../../common';
 
 import { CollectionEntity, ID } from '@/app/persistance';
-import { CollectionService, isErrorResult } from '@/app/service';
+import { CollectionService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Collection')

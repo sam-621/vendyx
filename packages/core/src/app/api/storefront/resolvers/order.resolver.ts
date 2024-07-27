@@ -10,7 +10,7 @@ import {
   UpdateOrderLineInput
 } from '@/app/api/common';
 import { ID } from '@/app/persistance';
-import { OrderService, isErrorResult } from '@/app/service';
+import { OrderService, isErrorResult } from '@/app/business';
 
 @Resolver('Order')
 export class OrderResolver {

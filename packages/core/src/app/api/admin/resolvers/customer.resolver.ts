@@ -4,7 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AdminJwtAuthGuard, ListInput, ListResponse, UpdateCustomerInput } from '../../common';
 
 import { ID } from '@/app/persistance';
-import { CustomerService, isErrorResult } from '@/app/service';
+import { CustomerService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Customer')

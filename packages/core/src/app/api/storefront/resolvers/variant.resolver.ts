@@ -3,7 +3,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { ListInput, ListResponse } from '../../common';
 
 import { ID } from '@/app/persistance';
-import { VariantService } from '@/app/service';
+import { VariantService } from '@/app/business';
 
 @Resolver('Variant')
 export class VariantResolver {

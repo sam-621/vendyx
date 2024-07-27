@@ -3,7 +3,7 @@ import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ListResponse } from '../utils';
 
 import { ID, OrderEntity } from '@/app/persistance';
-import { OrderService } from '@/app/service';
+import { OrderService } from '@/app/business';
 
 @Resolver('Order')
 export class OrderCommonResolver {

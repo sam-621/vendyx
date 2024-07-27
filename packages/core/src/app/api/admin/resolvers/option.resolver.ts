@@ -8,7 +8,7 @@ import {
   UpdateOptionValueInput
 } from '@/app/api/common';
 import { ID } from '@/app/persistance';
-import { OptionService, isErrorResult } from '@/app/service';
+import { OptionService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Option')

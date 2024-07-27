@@ -1,7 +1,7 @@
 import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { VariantEntity } from '@/app/persistance';
-import { VariantService } from '@/app/service';
+import { VariantService } from '@/app/business';
 
 @Resolver('Variant')
 export class VariantCommonResolver {

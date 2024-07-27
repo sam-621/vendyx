@@ -6,7 +6,7 @@ import {
   UpdateCustomerPasswordInput
 } from '../../common';
 
-import { CustomerService, isErrorResult } from '@/app/service';
+import { CustomerService, isErrorResult } from '@/app/business';
 
 @Resolver('Customer')
 export class CustomerResolver {

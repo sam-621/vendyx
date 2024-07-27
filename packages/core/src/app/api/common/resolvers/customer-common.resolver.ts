@@ -4,7 +4,7 @@ import { ListInput } from '../types';
 import { ListResponse } from '../utils';
 
 import { CustomerEntity } from '@/app/persistance';
-import { CustomerService } from '@/app/service';
+import { CustomerService } from '@/app/business';
 
 @Resolver('Customer')
 export class CustomerCommonResolver {

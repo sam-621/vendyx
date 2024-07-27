@@ -7,7 +7,7 @@ import { diskStorage } from 'multer';
 
 import { uploadController } from './upload.controller';
 
-import { ServiceModule } from '@/app/service';
+import { ServiceModule } from '@/app/business';
 
 @Module({
   imports: [
@@ -17,12 +17,12 @@ import { ServiceModule } from '@/app/service';
           destination: join(__dirname, './uploads'),
           filename(_, file, callback) {
             callback(null, `${randomUUID()}${extname(file.originalname)}`);
-          },
-        }),
-      }),
+          }
+        })
+      })
     }),
-    ServiceModule,
+    ServiceModule
   ],
-  controllers: [uploadController],
+  controllers: [uploadController]
 })
 export class UploadModule {}

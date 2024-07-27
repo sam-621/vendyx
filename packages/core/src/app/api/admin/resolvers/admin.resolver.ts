@@ -3,8 +3,8 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { AdminJwtAuthGuard, AuthenticateInput, AuthenticateResult } from '../../common';
 
-import { AdminService } from '@/app/service';
-import { isErrorResult } from '@/app/service/utils';
+import { AdminService } from '@/app/business';
+import { isErrorResult } from '@/app/business/utils';
 
 @Resolver()
 export class AdminResolver {

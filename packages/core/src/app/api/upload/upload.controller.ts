@@ -4,7 +4,7 @@ import { Controller, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/c
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 
-import { AssetService } from '@/app/service';
+import { AssetService } from '@/app/business';
 
 @Controller('upload')
 export class uploadController {

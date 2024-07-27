@@ -21,7 +21,7 @@ import { COMMON_RESOLVERS } from '../common/common-resolvers';
 import { GraphqlApiModule } from '../common/graphql-api.module';
 
 import { getPluginResolvers, getPluginTypePaths } from '@/app/plugin';
-import { ServiceModule } from '@/app/service';
+import { ServiceModule } from '@/app/business';
 
 const ADMIN_API_SCHEMA_PATH = './gql/**/*.schema.gql';
 const COMMON_SCHEMA_PATH = '../common/**/*.schema.gql';

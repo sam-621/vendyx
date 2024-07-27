@@ -3,7 +3,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { ListInput, ListResponse } from '../../common';
 
 import { ID } from '@/app/persistance';
-import { CountryService } from '@/app/service';
+import { CountryService } from '@/app/business';
 
 @Resolver()
 export class CountryResolver {

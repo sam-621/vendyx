@@ -8,7 +8,7 @@ import {
 } from '../../common';
 
 import { ID } from '@/app/persistance';
-import { ShippingMethodService, isErrorResult } from '@/app/service';
+import { ShippingMethodService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('ShippingMethod')

@@ -1,7 +1,7 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { OrderLineEntity } from '@/app/persistance';
-import { OrderService } from '@/app/service';
+import { OrderService } from '@/app/business';
 
 @Resolver('OrderLine')
 export class OrderLineCommonResolver {

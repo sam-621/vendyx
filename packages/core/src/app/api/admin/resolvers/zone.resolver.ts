@@ -10,7 +10,7 @@ import {
 } from '../../common';
 
 import { ID, ZoneEntity } from '@/app/persistance';
-import { ShippingMethodService, ZoneService, isErrorResult } from '@/app/service';
+import { ShippingMethodService, ZoneService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Zone')

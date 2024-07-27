@@ -9,7 +9,7 @@ import {
   UpdateProductInput
 } from '@/app/api/common';
 import { ID } from '@/app/persistance';
-import { ProductService, isErrorResult } from '@/app/service';
+import { ProductService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Product')

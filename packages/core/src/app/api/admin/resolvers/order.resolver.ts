@@ -8,7 +8,7 @@ import {
   MarkOrderAsShippedInput
 } from '@/app/api/common';
 import { ID } from '@/app/persistance';
-import { OrderService, isErrorResult } from '@/app/service';
+import { OrderService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Order')

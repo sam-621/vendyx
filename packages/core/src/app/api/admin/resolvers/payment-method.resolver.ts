@@ -10,7 +10,7 @@ import {
 } from '../../common';
 
 import { ID } from '@/app/persistance';
-import { PaymentMethodService, isErrorResult } from '@/app/service';
+import { PaymentMethodService, isErrorResult } from '@/app/business';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('PaymentMethod')
