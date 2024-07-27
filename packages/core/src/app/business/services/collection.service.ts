@@ -60,7 +60,7 @@ export class CollectionService {
 
   async findProducts(id: ID, input?: ListInput & { onlyEnabled?: boolean }) {
     return this.db.getRepository(ProductEntity).find({
-      where: { collections: { id }, published: input?.onlyEnabled || undefined },
+      where: { collections: { id }, enabled: input?.onlyEnabled || undefined },
       ...clean(input ?? {})
     });
   }

@@ -18,14 +18,6 @@ export class ProductEntity extends EBlocEntity {
   description: string;
 
   /**
-   * TODO: REMOVE THIS
-   *
-   * @deprecated
-   */
-  @Column('boolean', { default: true })
-  published: boolean;
-
-  /**
    * Determines if the product is exposed to storefront API or not
    */
   @Column('boolean', { default: true })
