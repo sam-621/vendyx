@@ -24,7 +24,9 @@ export class VariantEntity extends EBlocEntity {
   stock: number;
 
   /**
-   * Determines if the variant is exposes to storefront API or not
+   * TODO: REMOVE THIS
+   *
+   * @deprecated
    */
   @Column('boolean', { default: true })
   published: boolean;

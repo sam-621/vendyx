@@ -3,6 +3,7 @@ import { Column, JoinTable, ManyToMany, OneToMany, Entity as TypeOrmEntity } fro
 import { AssetInProductEntity } from './asset-on-product.entity';
 import { CollectionEntity } from './collection.entity';
 import { EBlocEntity } from './ebloc-entity';
+import { OptionEntity } from './option.entity';
 import { VariantEntity } from './variant.entity';
 
 @TypeOrmEntity('product')
@@ -17,10 +18,24 @@ export class ProductEntity extends EBlocEntity {
   description: string;
 
   /**
-   * Determines if the product is exposes to storefront API or not
+   * TODO: REMOVE THIS
+   *
+   * @deprecated
    */
   @Column('boolean', { default: true })
   published: boolean;
+
+  /**
+   * Determines if the product is exposed to storefront API or not
+   */
+  @Column('boolean', { default: true })
+  enabled: boolean;
+
+  /**
+   * A product archived is a product that by default is not shown in the admin ui and storefront
+   */
+  @Column('boolean', { default: true })
+  archived: boolean;
 
   /**
    * Determines if the product requires shipping or not
@@ -30,6 +45,9 @@ export class ProductEntity extends EBlocEntity {
 
   @OneToMany(() => VariantEntity, v => v.product)
   variants: VariantEntity[];
+
+  @OneToMany(() => OptionEntity, o => o.product)
+  options: OptionEntity[];
 
   @ManyToMany(() => CollectionEntity, c => c.products)
   @JoinTable({ name: 'product_on_collection' })

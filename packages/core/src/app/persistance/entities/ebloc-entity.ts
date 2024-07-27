@@ -1,12 +1,11 @@
 import {
   CreateDateColumn,
   DeleteDateColumn,
-  EntitySchema,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 
-export abstract class EBlocEntity extends EntitySchema {
+export abstract class EBlocEntity {
   @PrimaryGeneratedColumn('uuid')
   id: ID;
 
