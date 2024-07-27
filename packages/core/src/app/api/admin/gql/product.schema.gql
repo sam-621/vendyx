@@ -1,4 +1,3 @@
-
 type Mutation {
   createProduct(input: CreateProductInput!): ProductResult!
   updateProduct(id: ID!, input: UpdateProductInput!): ProductResult!
@@ -11,20 +10,24 @@ input CreateProductInput {
   name: String!
   slug: String!
   description: String
+  """
+  deprecated
+  """
   published: Boolean
+  enabled: Boolean
   onlineOnly: Boolean
-
-  assets: [AssetInEntityInput!]
 }
 
 input UpdateProductInput {
   name: String
   slug: String
   description: String
+  """
+  deprecated
+  """
   published: Boolean
+  enabled: Boolean
   onlineOnly: Boolean
-
-  assets: [AssetInEntityInput!]
 }
 
 " Results "

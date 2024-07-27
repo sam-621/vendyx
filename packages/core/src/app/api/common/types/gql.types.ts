@@ -196,8 +196,8 @@ export class CreateProductInput {
     slug: string;
     description?: Nullable<string>;
     published?: Nullable<boolean>;
+    enabled?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
-    assets?: Nullable<AssetInEntityInput[]>;
 }
 
 export class UpdateProductInput {
@@ -205,8 +205,8 @@ export class UpdateProductInput {
     slug?: Nullable<string>;
     description?: Nullable<string>;
     published?: Nullable<boolean>;
+    enabled?: Nullable<boolean>;
     onlineOnly?: Nullable<boolean>;
-    assets?: Nullable<AssetInEntityInput[]>;
 }
 
 export class CreateShippingMethodInput {
@@ -928,6 +928,7 @@ export class Product implements Node {
     slug: string;
     description?: Nullable<string>;
     published: boolean;
+    enabled: boolean;
     onlineOnly: boolean;
     variants?: VariantList;
     assets?: AssetList;

@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { clean, getParsedSlug } from '@ebloc/common';
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, In, Not } from 'typeorm';
+import { DataSource, FindOptionsWhere, Not } from 'typeorm';
 
 import { AssetService } from './asset.service';
 import { ErrorResult } from '../utils';
@@ -14,7 +14,7 @@ import {
   ProductErrorCode,
   UpdateProductInput
 } from '@/app/api/common';
-import { AssetEntity, ID, ProductEntity, VariantEntity } from '@/app/persistance';
+import { ID, ProductEntity, VariantEntity } from '@/app/persistance';
 import { AssetInProductEntity } from '@/app/persistance/entities/asset-on-product.entity';
 
 @Injectable()
@@ -109,28 +109,11 @@ export class ProductService {
       );
     }
 
-    const assets = input.assets?.length
-      ? await this.db.getRepository(AssetEntity).find({
-          where: { id: In(input.assets.map(a => a.id)) }
-        })
-      : undefined;
-
     const productToSave = this.db.getRepository(ProductEntity).create({
       ...clean(data)
     });
 
     const productCreated = await this.db.getRepository(ProductEntity).save(productToSave);
-
-    if (assets?.length) {
-      await this.db.getRepository(AssetInProductEntity).save(
-        assets.map(asset => ({
-          asset_in_product: asset.id + productCreated.id,
-          asset: asset,
-          product: productCreated,
-          order: input.assets?.find(a => a.id === asset.id)?.order ?? 1
-        }))
-      );
-    }
 
     return productCreated;
   }
@@ -165,24 +148,6 @@ export class ProductService {
           `A product with slug "${input.slug}" already exists`
         );
       }
-    }
-
-    const newAssets =
-      input.assets?.length !== undefined
-        ? await this.db.getRepository(AssetEntity).find({
-            where: { id: In(input.assets.map(a => a.id)) }
-          })
-        : undefined;
-
-    if (newAssets?.length) {
-      await this.db.getRepository(AssetInProductEntity).save(
-        newAssets.map(asset => ({
-          asset_in_product: asset.id + productToUpdate.id,
-          asset: asset,
-          product: productToUpdate,
-          order: input.assets?.find(a => a.id === asset.id)?.order ?? 1
-        }))
-      );
     }
 
     return await this.db.getRepository(ProductEntity).save({

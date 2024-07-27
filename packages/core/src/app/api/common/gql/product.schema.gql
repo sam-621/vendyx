@@ -5,7 +5,11 @@ type Product implements Node {
   name: String!
   slug: String!
   description: String
+  """
+  deprecated
+  """
   published: Boolean!
+  enabled: Boolean!
   onlineOnly: Boolean!
 
   variants(input: ListInput): VariantList!
