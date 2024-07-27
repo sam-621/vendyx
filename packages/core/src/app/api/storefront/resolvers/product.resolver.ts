@@ -2,8 +2,8 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { ListInput, ListResponse } from '../../common';
 
-import { ID } from '@/app/persistance';
 import { ProductService } from '@/app/business';
+import { ID } from '@/app/persistance';
 
 @Resolver('Product')
 export class ProductResolver {
@@ -13,7 +13,7 @@ export class ProductResolver {
   async products(@Args('input') input: ListInput) {
     const product = await this.productService.find({
       ...input,
-      where: { published: true }
+      onlyEnabled: true
     });
 
     return new ListResponse(product, product.length);
@@ -24,7 +24,7 @@ export class ProductResolver {
     const product = await this.productService.findUnique({
       id,
       slug,
-      where: { published: true }
+      onlyEnabled: true
     });
 
     return product;

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AdminService } from './admin';
+import { ProductService } from './product';
 import {
   AssetService,
   CollectionService,
@@ -11,7 +12,6 @@ import {
   OrderService,
   PaymentMethodService,
   PaymentService,
-  ProductService,
   ShipmentService,
   ShippingMethodService,
   VariantService,

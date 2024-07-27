@@ -1,8 +1,8 @@
 import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { ListInput, ListResponse } from '@/app/api/common';
-import { AssetEntity, ProductEntity, VariantEntity } from '@/app/persistance';
 import { ProductService } from '@/app/business';
+import { AssetEntity, ProductEntity, VariantEntity } from '@/app/persistance';
 
 @Resolver('Product')
 export class ProductCommonResolver {

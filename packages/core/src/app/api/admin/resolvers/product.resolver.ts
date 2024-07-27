@@ -8,8 +8,8 @@ import {
   ListResponse,
   UpdateProductInput
 } from '@/app/api/common';
-import { ID } from '@/app/persistance';
 import { ProductService, isErrorResult } from '@/app/business';
+import { ID } from '@/app/persistance';
 
 @UseGuards(AdminJwtAuthGuard)
 @Resolver('Product')
@@ -46,7 +46,7 @@ export class ProductResolver {
 
   @Mutation('removeProduct')
   async removeProduct(@Args('id') id: ID) {
-    const result = await this.productService.remove(id);
+    const result = await this.productService.softRemove(id);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { success: result, apiErrors: [] };
   }
