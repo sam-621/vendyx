@@ -18,21 +18,19 @@ export class AdminService {
   ) {}
 
   async findUnique(input: FindUnique) {
-    if (input.id) {
-      return this.db.getRepository(AdminEntity).findOne({ where: { id: input.id } });
-    }
-
-    if (input.username) {
-      return this.db.getRepository(AdminEntity).findOne({ where: { username: input.username } });
-    }
-
-    throw new Error('AdminService.findUnique: Should provide either id or username');
+    return this.db.getRepository(AdminEntity).findOne({
+      where: {
+        ...(input.id && { id: input.id }),
+        ...(input.username && { username: input.username })
+      }
+    });
   }
 
   /**
+   * @description
    * Authenticate an admin comparing password and username, returns access token if successful
    */
-  async authenticate(username: string, password: string): Promise<Mutation> {
+  async authenticate(username: string, password: string): Promise<MutationResult> {
     const { admin, error } = await this.validateAdmin(username, password);
 
     if (error) {
@@ -73,5 +71,5 @@ export class AdminService {
 }
 
 type AdminJwtPayloadInput = Pick<AdminJwtPayload, 'sub' | 'username'>;
-type Mutation = ErrorResult<AdminErrorCode> | string;
+type MutationResult = ErrorResult<AdminErrorCode> | string;
 type FindUnique = { username?: string; id?: string };
