@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
+import { AdminService } from './admin';
 import {
-  AdminService,
   AssetService,
   CollectionService,
   CountryService,
