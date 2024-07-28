@@ -1,12 +1,15 @@
 import {
   Column,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   Entity as TypeOrmEntity
 } from 'typeorm';
 
+import { AssetEntity } from './asset.entity';
 import { EBlocEntity } from './ebloc-entity';
 import { OptionValueEntity } from './option-value.entity';
 import { OrderLineEntity } from './order-line.entity';
@@ -30,6 +33,10 @@ export class VariantEntity extends EBlocEntity {
    */
   @Column('boolean', { default: true })
   published: boolean;
+
+  @JoinColumn()
+  @OneToOne(() => AssetEntity, { nullable: true })
+  asset: AssetEntity;
 
   @ManyToOne(() => ProductEntity, p => p.variants)
   product: ProductEntity;

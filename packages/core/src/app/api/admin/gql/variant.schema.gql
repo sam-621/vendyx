@@ -1,5 +1,5 @@
 type Mutation {
-  createVariant(productId: ID! input: CreateVariantInput!): CreateVariantResult!
+  createVariant(productId: ID!, input: CreateVariantInput!): CreateVariantResult!
   updateVariant(id: ID!, input: UpdateVariantInput!): UpdateVariantResult!
   removeVariant(id: ID!): RemoveVariantResult!
 }
@@ -10,6 +10,7 @@ input CreateVariantInput {
   stock: Int!
   published: Boolean!
 
+  assetId: ID
   optionValuesIds: [ID!]
 }
 
@@ -18,7 +19,8 @@ input UpdateVariantInput {
   price: Float
   stock: Int
   published: Boolean
-  
+
+  assetId: ID
   optionValuesIds: [ID!]
 }
 
@@ -41,7 +43,6 @@ type VariantErrorResult {
   code: VariantErrorCode!
   message: String!
 }
-
 
 " Utils "
 enum VariantErrorCode {

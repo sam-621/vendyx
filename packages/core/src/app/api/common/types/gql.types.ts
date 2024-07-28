@@ -223,6 +223,7 @@ export class CreateVariantInput {
     price: number;
     stock: number;
     published: boolean;
+    assetId?: Nullable<string>;
     optionValuesIds?: Nullable<string[]>;
 }
 
@@ -231,6 +232,7 @@ export class UpdateVariantInput {
     price?: Nullable<number>;
     stock?: Nullable<number>;
     published?: Nullable<boolean>;
+    assetId?: Nullable<string>;
     optionValuesIds?: Nullable<string[]>;
 }
 
@@ -957,6 +959,7 @@ export class Variant implements Node {
     sku: string;
     price: number;
     stock: number;
+    asset?: Nullable<Asset>;
     published: boolean;
     optionValues?: Nullable<OptionValue[]>;
     product: Product;
