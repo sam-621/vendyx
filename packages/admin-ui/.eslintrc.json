@@ -4,12 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": [
-    "plugin:react/recommended",
-    "next/core-web-vitals",
-    "standard-with-typescript",
-    "prettier"
-  ],
+  "extends": ["plugin:react/recommended", "standard-with-typescript", "prettier"],
   "plugins": ["react", "prettier", "simple-import-sort", "import"],
   "rules": {
     "prettier/prettier": ["error"],
