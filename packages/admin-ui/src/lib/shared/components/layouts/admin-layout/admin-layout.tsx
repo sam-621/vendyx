@@ -23,7 +23,7 @@ export const AdminLayout = () => {
         </header>
         <AdminLayoutNav />
       </aside>
-      <main>
+      <main className="flex flex-col">
         <Outlet />
       </main>
     </div>

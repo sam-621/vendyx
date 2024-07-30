@@ -1,4 +1,9 @@
-import { DataTable, DataTableSkeleton, DEFAULT_PRODUCT_IMAGE } from '@/lib/shared';
+import {
+  DataTable,
+  DataTableEmptyState,
+  DataTableSkeleton,
+  DEFAULT_PRODUCT_IMAGE
+} from '@/lib/shared';
 
 import { useGetProducts } from '../../hooks';
 import { ProductTableColumns } from './products-table-columns';
@@ -8,6 +13,16 @@ export const ProductTable = () => {
 
   if (isLoading) {
     return <DataTableSkeleton />;
+  }
+
+  if (!products?.length) {
+    return (
+      <DataTableEmptyState
+        title="You have no products"
+        description="You can start selling as soon as you add a product."
+        action={{ label: 'Add product', to: '/product/create' }}
+      />
+    );
   }
 
   const data: ProductTableRow[] =

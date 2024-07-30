@@ -14,14 +14,16 @@ import { isLast } from '@/lib/shared/utils';
 import { UserAvatar } from '../../user-avatar';
 
 export const AdminPageLayout: FC<Props> = ({ breadcrumbs, children }) => {
+  const breadcrumbItems = [{ label: 'Dashboard', to: '/' }, ...breadcrumbs];
+
   return (
     <>
       <header className="flex justify-between items-center h-16 px-6 border-b">
         <div>
           <Breadcrumb>
             <BreadcrumbList>
-              {[{ label: 'Dashboard', to: '/' }, ...breadcrumbs]?.map(({ label, to }, i) =>
-                isLast(i, breadcrumbs) ? (
+              {breadcrumbItems.map(({ label, to }, i) =>
+                isLast(i, breadcrumbItems) ? (
                   <BreadcrumbItem key={to}>
                     <BreadcrumbPage>{label}</BreadcrumbPage>
                   </BreadcrumbItem>
@@ -41,7 +43,7 @@ export const AdminPageLayout: FC<Props> = ({ breadcrumbs, children }) => {
           <UserAvatar />
         </div>
       </header>
-      <section className="p-6">{children}</section>
+      <section className="p-6 flex-1">{children}</section>
     </>
   );
 };
