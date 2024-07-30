@@ -4,9 +4,15 @@ const config: CodegenConfig = {
   schema: 'http://localhost:3000/admin-api',
   documents: ['./src/**/*.ts'],
   ignoreNoDocuments: true, // for better experience with the watcher
+  config: {
+    operationResultSuffix: 'RAndom'
+  },
   generates: {
-    './src/lib/ebloc/codegen/': {
-      preset: 'client'
+    './src/lib/shared/ebloc/codegen/': {
+      preset: 'client',
+      config: {
+        skipTypename: true
+      }
     }
   }
 };
