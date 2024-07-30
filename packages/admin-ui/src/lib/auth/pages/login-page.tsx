@@ -4,8 +4,8 @@ import { LoginForm } from '../components/login-form';
 
 export const LoginPage = () => {
   return (
-    <div className="h-screen grid grid-cols-2">
-      <section className="flex flex-col justify-between bg-black p-10">
+    <div className="h-screen grid grid-cols-2 md:flex md:items-center md:mx-4">
+      <section className="flex flex-col justify-between bg-black p-10 md:hidden">
         <header>
           <Logo />
         </header>
