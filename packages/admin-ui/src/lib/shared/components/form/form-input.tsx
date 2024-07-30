@@ -1,4 +1,4 @@
-import { type ComponentProps } from 'react';
+import { type ComponentProps, type HTMLInputTypeAttribute } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
 import { Input } from '@ebloc/theme';
@@ -13,6 +13,7 @@ export const FormInput = <
   label,
   description,
   placeholder,
+  type = 'text',
   ...rest
 }: Props<TFieldValues, TName>) => {
   return (
@@ -23,7 +24,7 @@ export const FormInput = <
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input placeholder={placeholder} {...field} />
+            <Input type={type} placeholder={placeholder} {...field} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
@@ -43,4 +44,5 @@ type Props<
   label?: string;
   description?: string;
   placeholder?: string;
+  type?: HTMLInputTypeAttribute;
 };
