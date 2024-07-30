@@ -29,12 +29,6 @@ export class ProductEntity extends EBlocEntity {
   @Column('boolean', { default: true })
   archived: boolean;
 
-  /**
-   * Determines if the product requires shipping or not
-   */
-  @Column('boolean', { default: false })
-  onlineOnly: boolean;
-
   @OneToMany(() => VariantEntity, v => v.product)
   variants: VariantEntity[];
 
@@ -42,7 +36,7 @@ export class ProductEntity extends EBlocEntity {
   options: OptionEntity[];
 
   @ManyToMany(() => CollectionEntity, c => c.products)
-  @JoinTable({ name: 'product_on_collection' })
+  @JoinTable({ name: 'product_in_collection' })
   collections: CollectionEntity[];
 
   @OneToMany(() => AssetInProductEntity, a => a.product)

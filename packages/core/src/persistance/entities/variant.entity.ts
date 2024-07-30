@@ -17,22 +17,23 @@ import { ProductEntity } from './product.entity';
 
 @TypeOrmEntity('variant')
 export class VariantEntity extends EBlocEntity {
-  @Column('varchar')
-  sku: string;
-
   @Column('int')
   price: number;
+
+  @Column('int', { name: 'comparison_price', nullable: true })
+  comparisonPrice: number;
+
+  @Column('int', { name: 'cost_per_unit', nullable: true })
+  costPerUnit: number;
 
   @Column('int')
   stock: number;
 
-  /**
-   * TODO: REMOVE THIS
-   *
-   * @deprecated
-   */
-  @Column('boolean', { default: true })
-  published: boolean;
+  @Column('varchar')
+  sku: string;
+
+  @Column('int')
+  weight: number;
 
   @JoinColumn()
   @OneToOne(() => AssetEntity, { nullable: true })

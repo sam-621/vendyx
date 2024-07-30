@@ -11,7 +11,7 @@ input CreateProductInput {
   slug: String!
   description: String
   enabled: Boolean
-  onlineOnly: Boolean
+  archived: Boolean
 }
 
 input UpdateProductInput {
@@ -19,7 +19,7 @@ input UpdateProductInput {
   slug: String
   description: String
   enabled: Boolean
-  onlineOnly: Boolean
+  archived: Boolean
 }
 
 " Results "

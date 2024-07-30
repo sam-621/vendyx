@@ -5,11 +5,19 @@ type Variant implements Node {
   sku: String!
   price: Int!
   stock: Int!
+  """
+  Denotes a price reduction by introducing a price higher than the sale price. It is usually shown crossed out.
+  """
+  comparisonPrice: Int
+  """
+  Cost per unit for the variant. Used for calculating the cost of goods sold.
+  """
+  costPerUnit: Int
+  """
+  Weight of the variant in grams. Used for shipping rate calculations.
+  """
+  weight: Float
   asset: Asset
-  """
-  deprecated
-  """
-  published: Boolean!
 
   optionValues(withDeleted: Boolean): [OptionValue!]
   product: Product!

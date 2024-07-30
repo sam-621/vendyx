@@ -6,7 +6,7 @@ type Product implements Node {
   slug: String!
   description: String
   enabled: Boolean!
-  onlineOnly: Boolean!
+  archived: Boolean!
 
   variants(input: ListInput): VariantList!
   assets(input: ListInput): AssetList!
