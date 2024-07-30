@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@ebloc/theme';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import { Notification, queryClient } from '@/lib/shared';
@@ -10,8 +11,10 @@ import '@ebloc/theme/dist/style.css';
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Notification />
-      <AppRouter />
+      <ThemeProvider>
+        <Notification />
+        <AppRouter />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

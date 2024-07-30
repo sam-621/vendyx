@@ -42,7 +42,7 @@ export const AdminLayoutNav = () => {
 
   return (
     <nav className="px-4 mt-2 flex flex-1 flex-col justify-between">
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1">
         {SIDEBAR_ITEMS.map(item => (
           <AdminLayoutNavItem
             key={item.to}
