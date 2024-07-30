@@ -1,4 +1,4 @@
-import { DEFAULT_EBLOC_CONFIG } from './app/config';
+import { DEFAULT_EBLOC_CONFIG } from './config';
 import { bootstrap } from './main';
 
 bootstrap({ ...DEFAULT_EBLOC_CONFIG });

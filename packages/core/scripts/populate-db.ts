@@ -20,7 +20,7 @@ import {
   ShippingMethodEntity,
   VariantEntity,
   ZoneEntity
-} from '../src/app/persistance/entities';
+} from '../src/persistance/entities';
 
 export const ENTITIES = [
   AdminEntity,

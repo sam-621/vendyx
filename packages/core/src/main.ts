@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { dest, series, src } from 'gulp';
 
-import { GlobalExceptionFilter } from './app/api/common';
-import { EblocConfig, getConfig, setConfig } from './app/config';
-import { getPluginMetadata } from './app/plugin';
-import { EBlocPluginMetadata, EBlocPluginMetadataKeys } from './app/plugin/ebloc.plugin';
+import { GlobalExceptionFilter } from './api/common';
+import { EblocConfig, getConfig, setConfig } from './config';
+import { getPluginMetadata } from './plugin';
+import { EBlocPluginMetadata, EBlocPluginMetadataKeys } from './plugin/ebloc.plugin';
 
 /**
  * Copy gql schema files to dist folder
@@ -39,7 +39,7 @@ export async function bootstrap(config: EblocConfig) {
    *
    * This avoid having a undefined config in the AppModule
    */
-  const appModule = await import('./app/app.module.js');
+  const appModule = await import('./app.module.js');
 
   const app = await NestFactory.create(appModule.AppModule, {
     // TODO: Check this to do it the right way
