@@ -23,12 +23,8 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Paths */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@/lib/*": ["src/lib/*"],
-      "@/components/*": ["src/lib/components/*"],
-      "@/core/*": ["src/app/core/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"],

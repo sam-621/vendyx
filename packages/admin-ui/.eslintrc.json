@@ -4,20 +4,26 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["plugin:react/recommended", "standard-with-typescript", "prettier"],
-  "plugins": ["react", "prettier", "simple-import-sort", "import", "@tanstack/query"],
+  "extends": [
+    "plugin:react/recommended",
+    "next/core-web-vitals",
+    "standard-with-typescript",
+    "prettier"
+  ],
+  "plugins": ["react", "prettier", "simple-import-sort", "import"],
   "rules": {
     "prettier/prettier": ["error"],
-    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ],
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    // "@typescript-eslint/consistent-type-definitions": "off",
-    // "@typescript-eslint/no-unnecessary-type-constraint": "off",
-    "@typescript-eslint/prefer-nullish-coalescing": "off",
-    "@typescript-eslint/array-type": "off",
+    "@typescript-eslint/array-type": ["error", { "default": "array" }],
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-confusing-void-expression": ["error", { "ignoreArrowShorthand": true }],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
