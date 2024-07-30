@@ -3,6 +3,17 @@ import * as TabsPrimitive from '@radix-ui/react-tabs';
 
 import { cn } from '../utils';
 
+/**
+ * @example
+ * <Tabs defaultValue="account" className="w-[400px]">
+ *   <TabsList>
+ *     <TabsTrigger value="account">Account</TabsTrigger>
+ *     <TabsTrigger value="password">Password</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="account">Make changes to your account here.</TabsContent>
+ *   <TabsContent value="password">Change your password here.</TabsContent>
+ * </Tabs>
+ */
 const Tabs = TabsPrimitive.Root;
 
 const TabsList = React.forwardRef<
