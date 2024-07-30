@@ -20,7 +20,7 @@ export const AdminPageLayout: FC<Props> = ({ breadcrumbs, children }) => {
         <div>
           <Breadcrumb>
             <BreadcrumbList>
-              {breadcrumbs?.map(({ label, to }, i) =>
+              {[{ label: 'Dashboard', to: '/' }, ...breadcrumbs]?.map(({ label, to }, i) =>
                 isLast(i, breadcrumbs) ? (
                   <BreadcrumbItem key={to}>
                     <BreadcrumbPage>{label}</BreadcrumbPage>
