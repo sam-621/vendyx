@@ -7,8 +7,7 @@ import { ErrorResult } from '../utils';
 
 import { AdminErrorCode } from '@/api/common';
 import { AdminEntity } from '@/persistance';
-import { SecurityService } from '@/security';
-import { AdminJwtPayload } from '@/security/strategies/jwt/jwt.types';
+import { AdminJwtPayload, SecurityService } from '@/security';
 
 @Injectable()
 export class AdminService {
@@ -28,7 +27,8 @@ export class AdminService {
 
   /**
    * @description
-   * Authenticate an admin comparing password and username, returns access token if successful
+   * Authenticate an administrator comparing password and username,
+   * returns access token if successful
    */
   async authenticate(username: string, password: string): Promise<MutationResult> {
     const { admin, error } = await this.validateAdmin(username, password);

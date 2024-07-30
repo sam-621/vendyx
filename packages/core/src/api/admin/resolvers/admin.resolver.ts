@@ -4,7 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AdminJwtAuthGuard, AuthenticateInput, AuthenticateResult } from '../../common';
 
 import { AdminService } from '@/business';
-import { isErrorResult } from '@/business/utils';
+import { isErrorResult } from '@/business/common';
 
 @Resolver()
 export class AdminResolver {

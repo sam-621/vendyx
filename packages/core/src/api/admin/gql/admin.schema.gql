@@ -12,10 +12,16 @@ input AuthenticateInput {
 }
 
 type Mutation {
+  """
+  Authenticate an admin user into ebloc
+  """
   authenticate(input: AuthenticateInput!): AuthenticateResult!
 }
 
 type Query {
+  """
+  Validate admin token
+  """
   validateToken: Boolean
 }
 

@@ -1,4 +1,4 @@
-import { ErrorResult } from '../utils';
+import { ErrorResult } from '../common';
 
 import { AdminErrorCode } from '@/api/common';
 
