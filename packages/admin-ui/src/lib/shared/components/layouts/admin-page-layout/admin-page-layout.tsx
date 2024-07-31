@@ -1,4 +1,4 @@
-import { type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, type ReactElement } from 'react';
 
 import {
   Breadcrumb,
@@ -13,7 +13,7 @@ import { isLast } from '@/lib/shared/utils';
 
 import { UserAvatar } from '../../user-avatar';
 
-export const AdminPageLayout: FC<Props> = ({ title, breadcrumbs, children }) => {
+export const AdminPageLayout: FC<Props> = ({ title, breadcrumbs, actions, children }) => {
   const breadcrumbItems = [{ label: 'Dashboard', to: '/' }, ...breadcrumbs];
 
   return (
@@ -44,7 +44,10 @@ export const AdminPageLayout: FC<Props> = ({ title, breadcrumbs, children }) => 
         </div>
       </header>
       <section className="p-6 flex-1 flex flex-col gap-6">
-        <h1 className="h3">{title}</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="h3">{title}</h1>
+          <div className="flex gap-2">{actions}</div>
+        </div>
         {children}
       </section>
     </>
@@ -54,4 +57,5 @@ export const AdminPageLayout: FC<Props> = ({ title, breadcrumbs, children }) => 
 type Props = PropsWithChildren & {
   title: string;
   breadcrumbs: { label: string; to?: string }[];
+  actions?: ReactElement;
 };
