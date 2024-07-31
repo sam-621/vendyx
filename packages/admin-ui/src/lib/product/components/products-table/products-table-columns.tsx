@@ -34,7 +34,7 @@ export const ProductTableColumns: ColumnDef<ProductTableRow>[] = [
     },
     cell: ({ row }) => {
       return (
-        <Link to={`/products/${row.original.slug ?? ''}`} className="flex items-center gap-2 w-max">
+        <Link to={`/products/${row.original.id ?? ''}`} className="flex items-center gap-2 w-max">
           {row.original.image && (
             <img
               src={row.original.image}

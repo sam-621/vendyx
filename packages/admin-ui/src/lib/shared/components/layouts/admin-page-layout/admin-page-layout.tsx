@@ -13,7 +13,7 @@ import { isLast } from '@/lib/shared/utils';
 
 import { UserAvatar } from '../../user-avatar';
 
-export const AdminPageLayout: FC<Props> = ({ breadcrumbs, children }) => {
+export const AdminPageLayout: FC<Props> = ({ title, breadcrumbs, children }) => {
   const breadcrumbItems = [{ label: 'Dashboard', to: '/' }, ...breadcrumbs];
 
   return (
@@ -43,11 +43,15 @@ export const AdminPageLayout: FC<Props> = ({ breadcrumbs, children }) => {
           <UserAvatar />
         </div>
       </header>
-      <section className="p-6 flex-1">{children}</section>
+      <section className="p-6 flex-1 flex flex-col gap-6">
+        <h1 className="h3">{title}</h1>
+        {children}
+      </section>
     </>
   );
 };
 
 type Props = PropsWithChildren & {
+  title: string;
   breadcrumbs: { label: string; to?: string }[];
 };
