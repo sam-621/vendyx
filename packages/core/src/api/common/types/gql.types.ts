@@ -193,7 +193,7 @@ export class CreateProductInput {
     slug: string;
     description?: Nullable<string>;
     enabled?: Nullable<boolean>;
-    onlineOnly?: Nullable<boolean>;
+    archived?: Nullable<boolean>;
 }
 
 export class UpdateProductInput {
@@ -201,7 +201,7 @@ export class UpdateProductInput {
     slug?: Nullable<string>;
     description?: Nullable<string>;
     enabled?: Nullable<boolean>;
-    onlineOnly?: Nullable<boolean>;
+    archived?: Nullable<boolean>;
 }
 
 export class CreateShippingMethodInput {
@@ -919,7 +919,7 @@ export class Product implements Node {
     slug: string;
     description?: Nullable<string>;
     enabled: boolean;
-    onlineOnly: boolean;
+    archived: boolean;
     variants?: VariantList;
     assets?: AssetList;
     options: Option[];
@@ -953,8 +953,10 @@ export class Variant implements Node {
     sku: string;
     price: number;
     stock: number;
+    comparisonPrice?: Nullable<number>;
+    costPerUnit?: Nullable<number>;
+    weight?: Nullable<number>;
     asset?: Nullable<Asset>;
-    published: boolean;
     optionValues?: Nullable<OptionValue[]>;
     product: Product;
 }

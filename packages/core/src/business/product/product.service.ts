@@ -3,17 +3,23 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
-import { ProductEntityService } from './product-entity.service';
 import { ProductNotFoundError } from './product.errors';
+import { CommonService } from '../common';
 import { ErrorResult } from '../utils';
 
-import { CreateProductInput, ProductErrorCode, UpdateProductInput } from '@/api/common';
-import { ID, ProductEntity } from '@/persistance';
+import { CreateProductInput, ListInput, ProductErrorCode, UpdateProductInput } from '@/api/common';
+import {
+  AssetInProductEntity,
+  ID,
+  OptionEntity,
+  ProductEntity,
+  VariantEntity
+} from '@/persistance';
 
 @Injectable()
-export class ProductService extends ProductEntityService {
+export class ProductService extends CommonService<ProductEntity> {
   constructor(@InjectDataSource() private readonly db: DataSource) {
-    super(db);
+    super(db, ProductEntity);
   }
 
   /**
@@ -23,10 +29,12 @@ export class ProductService extends ProductEntityService {
   async create(input: CreateProductInput): Promise<MutationResult> {
     const slug = await this.validateAndParseSlug(input.name);
 
-    return this.db.getRepository(ProductEntity).save({
+    const product = await this._create({
       ...clean(input),
       slug
     });
+
+    return product;
   }
 
   /**
@@ -34,17 +42,17 @@ export class ProductService extends ProductEntityService {
    * Update a product and parse its slug if the name has changed
    */
   async update(id: ID, input: UpdateProductInput): Promise<MutationResult> {
-    const product = await this.findUnique({ id });
+    const productToUpdate = await this.findUnique({ id });
 
-    if (!product) return new ProductNotFoundError();
+    if (!productToUpdate) return new ProductNotFoundError();
 
-    const slug = input.name ? await this.validateAndParseSlug(input.name) : undefined;
-
-    return this.db.getRepository(ProductEntity).save({
-      ...product,
+    const product = await this._update(id, {
+      ...productToUpdate,
       ...clean(input),
-      slug
+      slug: input.name ? await this.validateAndParseSlug(input.name) : undefined
     });
+
+    return product;
   }
 
   /**
@@ -59,9 +67,7 @@ export class ProductService extends ProductEntityService {
 
     if (!product) return new ProductNotFoundError();
 
-    return this.db
-      .getRepository(ProductEntity)
-      .softRemove({ ...product, assetsInProduct: [], slug: `${product.slug}-${product.id}` });
+    return this._softRemove(id);
   }
 
   /**
@@ -72,7 +78,7 @@ export class ProductService extends ProductEntityService {
   private async validateAndParseSlug(name: string) {
     const slug = this.parseSlug(name);
 
-    const productNameCount = await this.db.getRepository(ProductEntity).count({ where: { name } });
+    const productNameCount = await this.count({ name });
 
     if (!productNameCount) return slug;
 
@@ -85,6 +91,31 @@ export class ProductService extends ProductEntityService {
       .replaceAll(' ', '-')
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
+  }
+
+  async findVariants(id: ID, input: ListInput) {
+    return await this.db.getRepository(VariantEntity).find({
+      where: { product: { id } },
+      ...clean(input),
+      order: { createdAt: 'ASC' }
+    });
+  }
+
+  async findAssets(id: ID, listInput: ListInput) {
+    const assets = await this.db.getRepository(AssetInProductEntity).find({
+      where: { product: { id } },
+      ...clean(listInput),
+      order: { order: 'ASC' },
+      relations: { asset: true }
+    });
+
+    return assets.map(a => ({ ...a.asset, order: a.order }));
+  }
+
+  async findOptions(id: ID) {
+    return this.db
+      .getRepository(OptionEntity)
+      .find({ where: { product: { id } }, order: { createdAt: 'ASC' } });
   }
 }
 

@@ -3,6 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 import { InvalidCredentialError } from './admin.errors';
+import { CommonService } from '../common';
 import { ErrorResult } from '../utils';
 
 import { AdminErrorCode } from '@/api/common';
@@ -10,19 +11,12 @@ import { AdminEntity } from '@/persistance';
 import { AdminJwtPayload, SecurityService } from '@/security';
 
 @Injectable()
-export class AdminService {
+export class AdminService extends CommonService<AdminEntity> {
   constructor(
     private securityService: SecurityService,
     @InjectDataSource() private db: DataSource
-  ) {}
-
-  async findUnique(input: FindUnique) {
-    return this.db.getRepository(AdminEntity).findOne({
-      where: {
-        ...(input.id && { id: input.id }),
-        ...(input.username && { username: input.username })
-      }
-    });
+  ) {
+    super(db, AdminEntity);
   }
 
   /**
@@ -71,5 +65,5 @@ export class AdminService {
 }
 
 type AdminJwtPayloadInput = Pick<AdminJwtPayload, 'sub' | 'username'>;
+
 type MutationResult = ErrorResult<AdminErrorCode> | string;
-type FindUnique = { username?: string; id?: string };

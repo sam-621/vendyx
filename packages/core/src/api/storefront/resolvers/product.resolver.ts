@@ -13,7 +13,7 @@ export class ProductResolver {
   async products(@Args('input') input: ListInput) {
     const product = await this.productService.find({
       ...input,
-      onlyEnabled: true
+      enabled: true
     });
 
     return new ListResponse(product, product.length);
@@ -24,7 +24,7 @@ export class ProductResolver {
     const product = await this.productService.findUnique({
       id,
       slug,
-      onlyEnabled: true
+      enabled: true
     });
 
     return product;

@@ -8,7 +8,6 @@ type Mutation {
 " Inputs "
 input CreateProductInput {
   name: String!
-  slug: String!
   description: String
   enabled: Boolean
   archived: Boolean
@@ -16,7 +15,6 @@ input CreateProductInput {
 
 input UpdateProductInput {
   name: String
-  slug: String
   description: String
   enabled: Boolean
   archived: Boolean

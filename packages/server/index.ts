@@ -34,13 +34,5 @@ bootstrap({
   payments: {
     handlers: [new TestPaymentHandler()]
   },
-  adminUi: {
-    branding: {
-      name: 'EBloc',
-      description:
-        "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement."
-    },
-    serveUrl: '/admin'
-  },
   plugins: []
 });
