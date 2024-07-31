@@ -7,7 +7,6 @@ export const CommonProductFragment = graphql(`
     name
     slug
     description
-    onlineOnly
     enabled
     options {
       id
@@ -50,7 +49,6 @@ export const GetProductsQuery = graphql(`
         createdAt
         name
         slug
-        onlineOnly
         enabled
         variants {
           items {

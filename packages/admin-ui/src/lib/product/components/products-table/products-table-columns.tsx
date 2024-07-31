@@ -45,7 +45,8 @@ export const ProductTableColumns: ColumnDef<ProductTableRow>[] = [
           <span className="text-nowrap">{row.original.name}</span>
         </Link>
       );
-    }
+    },
+    enableSorting: false
   },
   {
     accessorKey: 'stock',
@@ -61,7 +62,8 @@ export const ProductTableColumns: ColumnDef<ProductTableRow>[] = [
           {row.original.totalVariants > 1 ? `for ${row.original.totalVariants} variants` : ''}
         </p>
       );
-    }
+    },
+    enableSorting: false
   },
   {
     accessorKey: 'status',

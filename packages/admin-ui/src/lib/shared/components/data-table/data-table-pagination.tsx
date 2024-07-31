@@ -21,13 +21,13 @@ type DataTablePaginationProps<TData> = {
 export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<TData>) => {
   return (
     <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground hidden lg:block">
+      <div className="flex-1 text-sm text-muted-foreground block">
         {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} Column(s) selected.
       </div>
-      <div className="flex items-center justify-between lg:justify-normal w-full lg:w-fit gap-6">
-        <div className="flex items-center lg:space-x-2">
-          <p className="hidden text-sm font-medium lg:block">rows per page</p>
+      <div className="flex items-center w-fit gap-6">
+        <div className="flex items-center space-x-2">
+          <p className="text-sm font-medium block">rows per page</p>
 
           <Select
             value={`${table.getState().pagination.pageSize}`}
@@ -47,13 +47,13 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
             </SelectContent>
           </Select>
         </div>
-        <div className="w-[100px] items-center justify-center text-sm font-medium hidden lg:flex">
+        <div className="w-[100px] items-center justify-center text-sm font-medium flex">
           page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="h-8 w-8 p-0 flex"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
@@ -81,7 +81,7 @@ export const DataTablePagination = <TData,>({ table }: DataTablePaginationProps<
           </Button>
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="h-8 w-8 p-0 flex"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
