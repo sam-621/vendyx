@@ -1,7 +1,7 @@
-import { type HTMLInputTypeAttribute, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
-import { Input } from '@ebloc/theme';
+import { Textarea } from '@ebloc/theme';
 
 import {
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormMessage
 } from './form';
 
-export const FormInput = <
+export const FormTextarea = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
@@ -21,18 +21,17 @@ export const FormInput = <
   label,
   description,
   placeholder,
-  type = 'text',
   ...rest
 }: Props<TFieldValues, TName>) => {
   return (
     <FormField
-      {...rest}
       name={name}
+      {...rest}
       render={({ field }) => (
-        <FormItem className="w-full">
+        <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+            <Textarea placeholder={placeholder} className="resize-none" {...field} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
@@ -49,5 +48,4 @@ type Props<
   label?: string;
   description?: ReactNode;
   placeholder?: string;
-  type?: HTMLInputTypeAttribute;
 };

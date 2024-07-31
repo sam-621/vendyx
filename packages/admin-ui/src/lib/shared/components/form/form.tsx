@@ -39,6 +39,13 @@ const FormField = <
     </FormFieldContext.Provider>
   );
 };
+export type FormFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = Pick<
+  React.ComponentProps<typeof FormField<TFieldValues, TName>>,
+  'control' | 'defaultValue' | 'disabled' | 'name'
+>;
 
 /**
  * A wrapper around `react-hook-form`'s `useFormContext` that provides form field state.

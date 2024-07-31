@@ -1,4 +1,5 @@
 import { type FC, type PropsWithChildren, type ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   Breadcrumb,
@@ -30,7 +31,9 @@ export const AdminPageLayout: FC<Props> = ({ title, breadcrumbs, actions, childr
                 ) : (
                   <>
                     <BreadcrumbItem key={to}>
-                      <BreadcrumbLink href={to}>{label}</BreadcrumbLink>
+                      <BreadcrumbLink asChild>
+                        <Link to={to ?? ''}>{label}</Link>
+                      </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                   </>
@@ -43,7 +46,7 @@ export const AdminPageLayout: FC<Props> = ({ title, breadcrumbs, actions, childr
           <UserAvatar />
         </div>
       </header>
-      <section className="p-6 flex-1 flex flex-col gap-6">
+      <section className="p-6 flex-1 flex flex-col gap-6 max-w-6xl w-full mx-auto">
         <div className="flex justify-between items-center">
           <h1 className="h3">{title}</h1>
           <div className="flex gap-2">{actions}</div>
