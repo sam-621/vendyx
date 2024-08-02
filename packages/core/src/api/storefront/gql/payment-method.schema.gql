@@ -1,7 +1,0 @@
-extend type PaymentMethod {
-  handlerCode: String!
-}
-
-type Query {
-  availablePaymentMethods: [PaymentMethod!]!
-}
