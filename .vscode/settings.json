@@ -9,14 +9,15 @@
     "Cloudinary",
     "clsx",
     "codegen",
-    "vendyx",
     "fontsource",
     "hookform",
     "lucide",
+    "nestjs",
     "sonner",
     "tailwindcss",
     "tanstack",
-    "typeorm"
+    "typeorm",
+    "vendyx"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
