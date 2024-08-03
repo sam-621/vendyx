@@ -1,0 +1,34 @@
+/// A vendyx customer
+model User {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The user's email (unique)
+  email    String @unique
+  /// The user's hashed password
+  password String
+
+  /// The user's shops
+  shops Shop[]
+
+  @@map("users")
+}
+
+/// A vendyx shop
+model Shop {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The shop's name
+  name String
+
+  /// The shop's owner
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
+
+  @@map("shop")
+}

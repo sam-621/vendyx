@@ -1,0 +1,136 @@
+/// A product is a good or service that you want to sell.
+model Product {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The product's name
+  name String @db.VarChar(255)
+
+  /// A human-friendly unique string for the Product automatically generated from its name
+  slug String @unique @db.VarChar(255)
+
+  /// The product's description
+  description String?
+
+  /// Whether the products is enabled or not.
+  /// Not enabled products are not exposed to the storefront API but are visible in the admin ui.
+  /// Useful for products that are not published by now but they planned to be published in the future.
+  enabled Boolean @default(true)
+
+  /// Whether the product is archived or not.
+  /// Archived products are not exposed to the storefront API and are not visible in the admin ui by default.
+  /// Useful for products that are not available anymore but you don't want to lose their data.
+  archived Boolean @default(false)
+
+  /// The product's variants
+  variants      Variant[]
+  /// The product's options
+  productOption ProductOption[]
+
+  @@map("product")
+}
+
+/// A variant is a specific version of a product.
+/// For example, a product can have a variant with a specific color, size, or material.
+model Variant {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The variant's sale price
+  salePrice Int @map("sale_price")
+
+  /// The variant's comparison price.
+  /// Useful when you want to mark a variant as on sale. Comparison price should be higher than the sale price.
+  comparisonPrice Int? @map("comparison_price")
+
+  /// The variant's cost per unit.
+  /// Useful when you want to calculate the profit of a variant.
+  costPerUnit Int? @map("cost_per_unit")
+
+  /// The variant's stock
+  stock Int @default(0)
+
+  /// The variant's SKU
+  sku String
+
+  /// Indicates whether this variant requires shipping.
+  /// Set to true if the variant is a physical product that needs to be shipped.
+  /// Set to false if the variant is a digital product or a service.
+  requiresShipping Boolean @default(false) @map("requires_shipping")
+
+  /// The variant's option values
+  variantOptionValue VariantOptionValue[]
+
+  /// The product that this variant belongs to
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  @@map("variant")
+}
+
+/// An option represents a group of values which generates the variants of a product.
+/// For example, some typical options are color, size, or material.
+model Option {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The option's name
+  name String
+
+  /// the option's values
+  values OptionValue[]
+
+  /// the option's products
+  productOption ProductOption[]
+
+  @@map("option")
+}
+
+/// An option value represents a specific value of an option and are used differentiates the variants of a product.
+/// For example, if the option is color, the option value can be red, blue, or green.
+model OptionValue {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The option value's name
+  name String
+
+  /// Variants that this option value belongs to
+  variantOptionValue VariantOptionValue[]
+
+  /// The option that this option value belongs to
+  option   Option @relation(fields: [optionId], references: [id])
+  optionId String
+
+  @@map("option_value")
+}
+
+model VariantOptionValue {
+  variant   Variant @relation(fields: [variantId], references: [id])
+  variantId String
+
+  optionValue   OptionValue @relation(fields: [optionValueId], references: [id])
+  optionValueId String
+
+  @@id([variantId, optionValueId])
+  @@map("variant_option_value")
+}
+
+model ProductOption {
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  option   Option @relation(fields: [optionId], references: [id])
+  optionId String
+
+  @@id([productId, optionId])
+  @@map("product_option")
+}
