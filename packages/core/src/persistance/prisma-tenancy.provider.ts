@@ -1,6 +1,6 @@
 // prisma-tenancy.provider.ts
-import { PrismaModule, PrismaService } from 'nestjs-prisma';
 import { ClsService } from 'nestjs-cls';
+import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
 const useFactory = (prisma: PrismaService, store: ClsService) => {
   return prisma.$extends({
@@ -23,12 +23,12 @@ const useFactory = (prisma: PrismaService, store: ClsService) => {
   });
 };
 
-export type ExtendedTenantClient = ReturnType<typeof useFactory>;
+export type PrismaForShop = ReturnType<typeof useFactory>;
 
-export const TENANCY_CLIENT_TOKEN = Symbol('TENANCY_CLIENT_TOKEN');
+export const PRISMA_FOR_SHOP = Symbol('PRISMA_FOR_SHOP');
 
-export const PrismaTenancyClientProvider = {
-  provide: TENANCY_CLIENT_TOKEN,
+export const PrismaForShopClientProvider = {
+  provide: PRISMA_FOR_SHOP,
   imports: [PrismaModule],
   inject: [PrismaService, ClsService],
   useFactory

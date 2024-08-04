@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ExtendedTenantClient, TENANCY_CLIENT_TOKEN } from './persistance/prisma-tenancy.provider';
+
+import { PRISMA_FOR_SHOP, PrismaForShop } from './persistance/prisma-tenancy.provider';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject(TENANCY_CLIENT_TOKEN) private readonly prisma: ExtendedTenantClient) {}
+  constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
   async getHello() {
     const result = await this.prisma.user.findMany({
