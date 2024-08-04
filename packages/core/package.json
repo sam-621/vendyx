@@ -14,10 +14,15 @@
     "db:push": "dotenv -e .env.migration prisma db push"
   },
   "dependencies": {
+    "@apollo/server": "^4.10.5",
+    "@nestjs/apollo": "^12.2.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/graphql": "^12.2.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^5.17.0",
+    "graphql": "^16.9.0",
+    "graphql-type-json": "^0.3.2",
     "nestjs-cls": "^4.4.0",
     "nestjs-prisma": "^0.23.0",
     "reflect-metadata": "^0.1.13",

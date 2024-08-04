@@ -5,6 +5,24 @@
   //   "source.fixAll.eslint": "explicit",
   //   "source.fixAll.format": "explicit"
   // },
+  "symbols.folders.associations": {
+    "sql": "folder-database",
+    "common": "folder-shared",
+    "api": "folder-yellow",
+    "business": "folder-red",
+    "persistance": "folder-blue",
+    "test": "folder-green",
+    "gql": "folder-purple",
+    "graphql": "folder-purple-outline",
+    "resolvers": "folder-router",
+    "node_modules": "",
+    "dist": "folder-red"
+  },
+  "symbols.files.associations": {
+    "*.module.ts": "nest",
+    "*.service.ts": "nest-service",
+    "*.resolver.ts": "nest-controller"
+  },
   "cSpell.words": [
     "Cloudinary",
     "clsx",
