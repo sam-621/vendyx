@@ -18,7 +18,7 @@ export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
   async validate(payload: any) {
     const { email } = payload;
 
-    const user = this.userRepository.findByEmail(email);
+    const user = this.userRepository.findUnique({ email });
 
     if (!user) {
       throw new GraphQLError('Invalid token', { extensions: { code: 'UNAUTHORIZED' } });

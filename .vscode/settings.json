@@ -15,6 +15,7 @@
     "gql": "folder-purple",
     "graphql": "folder-purple-outline",
     "resolvers": "folder-router",
+    "scripts": "folder-gray-code",
     "node_modules": "",
     "dist": "folder-red"
   },

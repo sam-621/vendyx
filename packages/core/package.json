@@ -11,6 +11,7 @@
     "start:dev": "dotenv -e .env -- nest start --watch",
     "start:debug": "DEBUG=* dotenv -e .env -- nest start --debug --watch",
     "start:prod": "node dist/main",
+    "script:gql": "ts-node ./scripts/generate-gql-types.script.ts",
     "db:push": "dotenv -e .env.migration prisma db push"
   },
   "dependencies": {
@@ -30,7 +31,8 @@
     "nestjs-prisma": "^0.23.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "ts-morph": "^23.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
