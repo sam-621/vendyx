@@ -1,0 +1,60 @@
+type Shop {
+  id: String!
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String!
+  """
+  The shop's name
+  """
+  name: String!
+  """
+  The shop's owner
+  """
+  owner: User!
+}
+
+type ShopList implements List {
+  items: [Shop!]!
+  count: Int!
+}
+
+type Query {
+  """
+  Get a shop by id
+  """
+  shop(id: String!): Shop
+  """
+  Get a list of shops
+  """
+  shops(input: ListInput): ShopList!
+}
+
+"TODO: Do not create a shop if name is empty"
+type Mutation {
+  """
+  Create a shop
+  """
+  createShop(ownerId: ID, input: CreateShopInput!): Shop!
+  """
+  Update a shop
+  """
+  updateShop(shopId: ID!, input: UpdateShopInput!): Shop!
+  """
+  Delete a shop
+  """
+  deleteShop(shopId: ID!): Shop!
+}
+
+input CreateShopInput {
+  """
+  The shop's name
+  """
+  name: String!
+}
+
+input UpdateShopInput {
+  """
+  The shop's name
+  """
+  name: String
+}

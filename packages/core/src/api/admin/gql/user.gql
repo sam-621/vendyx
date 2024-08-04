@@ -1,0 +1,31 @@
+type User {
+  id: String!
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String!
+  """
+  The user's email (unique)
+  """
+  email: String!
+
+  """
+  The user's shops
+  """
+  shops: ShopList!
+}
+
+type UserList implements List {
+  items: [User!]!
+  count: Int!
+}
+
+type Query {
+  """
+  Get a user by id
+  """
+  user(id: String!): User
+  """
+  Get a list of users
+  """
+  users(input: ListInput): UserList!
+}
