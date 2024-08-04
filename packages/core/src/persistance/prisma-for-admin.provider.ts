@@ -18,6 +18,8 @@ const useFactory = (prisma: PrismaService) => {
              * the policy is expecting a valid UUID in the current_shop_id and current_owner_id, not an empty string
              *
              * And for this reason, we are setting the current_shop_id and current_owner_id to a valid but dummy UUID in the PrismaForAdmin queries
+             *
+             * More info: https://github.com/prisma/prisma/issues/20407
              */
             prisma.$executeRaw`SELECT set_config('app.current_shop_id', '00000000-0000-0000-0000-000000000000', TRUE)`,
             prisma.$executeRaw`SELECT set_config('app.current_owner_id', '00000000-0000-0000-0000-000000000000', TRUE)`,
