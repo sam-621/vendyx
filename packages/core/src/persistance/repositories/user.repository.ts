@@ -1,23 +1,39 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { clean } from '@vendyx/common';
 
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '../prisma-clients';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients/prisma-for-shop.provider';
+
+import { CreateUserInput, UpdateUserInput } from '@/api/shared';
 
 @Injectable()
 export class UserRepository {
-  constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
+  constructor(
+    @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
+    @Inject(PRISMA_FOR_SHOP) private readonly prismaForShop: PrismaForShop
+  ) {}
 
-  async findUnique({ email, id }: FindUniqueInput) {
-    if (email) return this.prisma.user.findUnique({ where: { email } });
+  async findByEmail(email: string, forAdmin = false) {
+    if (forAdmin) {
+      return this.prismaForAdmin.user.findUnique({ where: { email } });
+    }
 
-    if (id) return this.prisma.user.findUnique({ where: { id } });
+    return this.prismaForShop.user.findUnique({ where: { email } });
+  }
 
-    throw new Error('UserRepository.findUnique: email or id must be provided');
+  async findById(id: string, forAdmin = false) {
+    if (forAdmin) {
+      return this.prismaForAdmin.user.findUnique({ where: { id } });
+    }
+
+    return this.prismaForShop.user.findUnique({ where: { id } });
+  }
+
+  async insert(input: CreateUserInput) {
+    return this.prismaForAdmin.user.create({ data: clean(input) });
+  }
+
+  async update(id: string, input: UpdateUserInput) {
+    return this.prismaForShop.user.update({ where: { id }, data: clean(input) });
   }
 }
-
-export type UserId = string;
-
-type FindUniqueInput = {
-  email?: string;
-  id?: UserId;
-};

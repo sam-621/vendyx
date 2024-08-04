@@ -4,6 +4,8 @@ import { DynamicModule, Module } from '@nestjs/common';
 
 import { GraphqlApiModule } from '../shared';
 
+import { BusinessModule } from '@/business/business.module';
+
 const ADMIN_API_SCHEMA_PATH = './gql/**/*.gql';
 const SHARED_SCHEMA_PATH = '../shared/**/*.gql';
 
@@ -22,5 +24,7 @@ export class AdminApiModule {
   }
 }
 
-@Module({})
+@Module({
+  imports: [BusinessModule]
+})
 class AdminModule {}

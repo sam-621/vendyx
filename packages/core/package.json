@@ -15,6 +15,7 @@
     "db:push": "dotenv -e .env.migration prisma db push"
   },
   "dependencies": {
+    "@vendyx/common": "*",
     "@apollo/server": "^4.10.5",
     "@nestjs/apollo": "^12.2.0",
     "@nestjs/common": "^9.0.0",

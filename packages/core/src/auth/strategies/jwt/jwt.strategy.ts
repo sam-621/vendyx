@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { GraphQLError } from 'graphql';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { UserRepository } from '@/persistance';
+import { UserRepository } from '@/persistance/repositories';
 
 @Injectable()
 export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
@@ -18,7 +18,7 @@ export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
   async validate(payload: any) {
     const { email } = payload;
 
-    const user = this.userRepository.findUnique({ email });
+    const user = this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new GraphQLError('Invalid token', { extensions: { code: 'UNAUTHORIZED' } });

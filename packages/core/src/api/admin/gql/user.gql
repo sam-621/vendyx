@@ -24,8 +24,41 @@ type Query {
   Get a user by id
   """
   user(id: String!): User
+}
+
+type Mutation {
   """
-  Get a list of users
+  Create a new user
   """
-  users(input: ListInput): UserList!
+  createUser(input: CreateUserInput!): UserResult!
+
+  """
+  Update a user
+  """
+  updateUser(userId: ID!, input: UpdateUserInput!): UserResult!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+}
+
+type UserResult {
+  user: User
+  authToken: String
+  apiErrors: [UserErrorResult!]!
+}
+
+type UserErrorResult {
+  code: UserErrorCode!
+  message: String!
+}
+
+enum UserErrorCode {
+  INVALID_CREDENTIALS
+  EMAIL_ALREADY_EXISTS
 }

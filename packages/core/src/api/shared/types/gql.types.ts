@@ -8,12 +8,26 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum UserErrorCode {
+    INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
+    EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
+}
+
 export class CreateShopInput {
     name: string;
 }
 
 export class UpdateShopInput {
     name?: Nullable<string>;
+}
+
+export class CreateUserInput {
+    email: string;
+    password: string;
+}
+
+export class UpdateUserInput {
+    email?: Nullable<string>;
 }
 
 export class ListInput {
@@ -52,8 +66,6 @@ export abstract class IQuery {
     abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
 
     abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract users(input?: Nullable<ListInput>): UserList | Promise<UserList>;
 }
 
 export abstract class IMutation {
@@ -62,6 +74,10 @@ export abstract class IMutation {
     abstract updateShop(shopId: string, input: UpdateShopInput): Shop | Promise<Shop>;
 
     abstract deleteShop(shopId: string): Shop | Promise<Shop>;
+
+    abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
+
+    abstract updateUser(userId: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
 }
 
 export class User {
@@ -76,6 +92,17 @@ export class User {
 export class UserList implements List {
     items: User[];
     count: number;
+}
+
+export class UserResult {
+    user?: Nullable<User>;
+    authToken?: Nullable<string>;
+    apiErrors: UserErrorResult[];
+}
+
+export class UserErrorResult {
+    code: UserErrorCode;
+    message: string;
 }
 
 export type JSON = any;

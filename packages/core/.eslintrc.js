@@ -3,23 +3,23 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json',
     tsconfigRootDir: __dirname,
-    sourceType: 'module',
+    sourceType: 'module'
   },
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:import/recommended',
-    'plugin:import/typescript',
+    'plugin:import/typescript'
   ],
   plugins: ['@typescript-eslint/eslint-plugin', 'prettier', 'import'],
   root: true,
   env: {
     node: true,
-    jest: true,
+    jest: true
   },
   settings: {
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
+      '@typescript-eslint/parser': ['.ts', '.tsx']
     },
     'import/resolver': {
       typescript: {
@@ -28,9 +28,9 @@ module.exports = {
         // Choose from one of the "project" configs below or omit to use <root>/tsconfig.json by default
 
         // use <root>/path/to/folder/tsconfig.json
-        project: './tsconfig.json',
-      },
-    },
+        project: './tsconfig.json'
+      }
+    }
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
@@ -45,8 +45,8 @@ module.exports = {
         ignoreDeclarationSort: true, // don"t want to sort import lines, use eslint-plugin-import instead
         ignoreMemberSort: false,
         memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
-        allowSeparatedGroups: true,
-      },
+        allowSeparatedGroups: true
+      }
     ],
     'import/no-unresolved': 'off',
     // 'import/no-named-as-default-member': 'off',
@@ -59,16 +59,16 @@ module.exports = {
           'internal', // <- Absolute imports
           ['sibling', 'parent'], // <- Relative imports, the sibling and parent types they can be mingled together
           'index', // <- index imports
-          'unknown', // <- unknown
+          'unknown' // <- unknown
         ],
         'newlines-between': 'always',
         alphabetize: {
           /* sort in ascending order. Options: ["ignore", "asc", "desc"] */
           order: 'asc',
           /* ignore case. Options: [true, false] */
-          caseInsensitive: true,
-        },
-      },
-    ],
-  },
+          caseInsensitive: true
+        }
+      }
+    ]
+  }
 };
