@@ -11,13 +11,15 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "db:push": "prisma db push"
+    "db:push": "dotenv -e .env.migration prisma db push"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^5.17.0",
+    "nestjs-cls": "^4.4.0",
+    "nestjs-prisma": "^0.23.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
@@ -31,6 +33,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

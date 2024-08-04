@@ -1,8 +1,8 @@
 /// A product is a good or service that you want to sell.
 model Product {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   /// The product's name
@@ -31,7 +31,7 @@ model Product {
   options ProductOption[]
 
   shop   Shop   @relation(fields: [shopId], references: [id])
-  shopId String @default(dbgenerated("(current_setting('app.current_company_id'::text))::uuid")) @map("shop_id") @db.Uuid
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("product")
 }
@@ -39,9 +39,9 @@ model Product {
 /// A variant is a specific version of a product.
 /// For example, a product can have a variant with a specific color, size, or material.
 model Variant {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   /// The variant's sale price
@@ -73,7 +73,7 @@ model Variant {
   product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id") @db.Uuid
   shop      Shop    @relation(fields: [shopId], references: [id])
-  shopId    String  @default(dbgenerated("(current_setting('app.current_company_id'::text))::uuid")) @map("shop_id") @db.Uuid
+  shopId    String  @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("variant")
 }
@@ -81,9 +81,9 @@ model Variant {
 /// An option represents a group of values which generates the variants of a product.
 /// For example, some typical options are color, size, or material.
 model Option {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   /// The option's name
@@ -96,7 +96,7 @@ model Option {
   options ProductOption[]
 
   shop   Shop   @relation(fields: [shopId], references: [id])
-  shopId String @default(dbgenerated("(current_setting('app.current_company_id'::text))::uuid")) @map("shop_id") @db.Uuid
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("option")
 }
@@ -104,9 +104,9 @@ model Option {
 /// An option value represents a specific value of an option and are used differentiates the variants of a product.
 /// For example, if the option is color, the option value can be red, blue, or green.
 model OptionValue {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   /// The option value's name
@@ -119,7 +119,7 @@ model OptionValue {
   option   Option @relation(fields: [optionId], references: [id])
   optionId String @map("option_id") @db.Uuid
   shop     Shop   @relation(fields: [shopId], references: [id])
-  shopId   String @default(dbgenerated("(current_setting('app.current_company_id'::text))::uuid")) @map("shop_id") @db.Uuid
+  shopId   String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("option_value")
 }
