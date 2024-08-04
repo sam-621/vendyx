@@ -8,7 +8,7 @@ const useFactory = (prisma: PrismaService) => {
         async $allOperations({ args, query }) {
           const [, , , result] = await prisma.$transaction([
             /**
-             * This is a workarount to always have a valid uuid in the current_shop_id and current_owner_id since the empty string is not a valid UUID
+             * This is a workaround to always have a valid uuid in the current_shop_id and current_owner_id since the empty string is not a valid UUID
              * The empty string occurs when this flow happens:
              *
              * 1. A PrismaForShop query is executed and the shop_id and owner_id are set

@@ -3,10 +3,10 @@ import { ClsModule } from 'nestjs-cls';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaVendyxModule } from './persistance/prisma-vendyx.module';
+import { PersistanceModule } from './persistance/persistance.module';
 
 @Module({
-  imports: [PrismaVendyxModule, ClsModule.forRoot({ global: true, middleware: { mount: true } })],
+  imports: [PersistanceModule, ClsModule.forRoot({ global: true, middleware: { mount: true } })],
   controllers: [AppController],
   providers: [AppService]
 })

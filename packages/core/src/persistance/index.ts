@@ -1,3 +1,3 @@
-export * from './prisma-for-admin.provider';
-export * from './prisma-for-shop.provider';
-export * from './prisma-vendyx.module';
+export * from './prisma-clients';
+export * from './repositories';
+export * from './persistance.module';
