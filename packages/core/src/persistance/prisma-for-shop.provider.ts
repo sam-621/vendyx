@@ -1,6 +1,5 @@
-// prisma-tenancy.provider.ts
 import { ClsService } from 'nestjs-cls';
-import { PrismaModule, PrismaService } from 'nestjs-prisma';
+import { PrismaService } from 'nestjs-prisma';
 
 const useFactory = (prisma: PrismaService, store: ClsService) => {
   return prisma.$extends({
@@ -29,7 +28,6 @@ export const PRISMA_FOR_SHOP = Symbol('PRISMA_FOR_SHOP');
 
 export const PrismaForShopClientProvider = {
   provide: PRISMA_FOR_SHOP,
-  imports: [PrismaModule],
   inject: [PrismaService, ClsService],
   useFactory
 };
