@@ -48,9 +48,8 @@ export interface List {
 
 export class Shop {
     id: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
     name: string;
     owner: User;
 }
@@ -69,22 +68,21 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createShop(ownerId?: Nullable<string>, input: CreateShopInput): Shop | Promise<Shop>;
+    abstract createShop(ownerId: string, input: CreateShopInput): Shop | Promise<Shop>;
 
-    abstract updateShop(shopId: string, input: UpdateShopInput): Shop | Promise<Shop>;
+    abstract updateShop(id: string, input: UpdateShopInput): Shop | Promise<Shop>;
 
-    abstract deleteShop(shopId: string): Shop | Promise<Shop>;
+    abstract deleteShop(id: string): Shop | Promise<Shop>;
 
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
 
-    abstract updateUser(userId: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
+    abstract updateUser(id: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
 }
 
 export class User {
     id: string;
-    createdAt: string;
-    updatedAt: string;
-    deletedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
     email: string;
     shops: ShopList;
 }

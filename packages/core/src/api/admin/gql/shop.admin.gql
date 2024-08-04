@@ -1,8 +1,7 @@
-type Shop {
-  id: String!
-  createdAt: String!
-  updatedAt: String!
-  deletedAt: String!
+type Shop implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
   """
   The shop's name
   """
@@ -34,15 +33,15 @@ type Mutation {
   """
   Create a shop
   """
-  createShop(ownerId: ID, input: CreateShopInput!): Shop!
+  createShop(ownerId: ID!, input: CreateShopInput!): Shop!
   """
   Update a shop
   """
-  updateShop(shopId: ID!, input: UpdateShopInput!): Shop!
+  updateShop(id: ID!, input: UpdateShopInput!): Shop!
   """
   Delete a shop
   """
-  deleteShop(shopId: ID!): Shop!
+  deleteShop(id: ID!): Shop!
 }
 
 input CreateShopInput {

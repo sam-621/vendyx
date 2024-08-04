@@ -15,6 +15,6 @@ const REPOSITORIES = [UserRepository];
 @Module({
   imports: [PrismaModule],
   providers: [PrismaForShopClientProvider, PrismaForAdminClientProvider, ...REPOSITORIES],
-  exports: [PRISMA_FOR_SHOP, PRISMA_FOR_ADMIN]
+  exports: [PRISMA_FOR_SHOP, PRISMA_FOR_ADMIN, ...REPOSITORIES]
 })
 export class PersistanceModule {}

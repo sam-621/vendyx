@@ -1,8 +1,7 @@
-type User {
-  id: String!
-  createdAt: String!
-  updatedAt: String!
-  deletedAt: String!
+type User implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
   """
   The user's email (unique)
   """
@@ -35,7 +34,7 @@ type Mutation {
   """
   Update a user
   """
-  updateUser(userId: ID!, input: UpdateUserInput!): UserResult!
+  updateUser(id: ID!, input: UpdateUserInput!): UserResult!
 }
 
 input CreateUserInput {

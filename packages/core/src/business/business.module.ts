@@ -6,6 +6,7 @@ import { AuthModule } from '@/auth';
 
 @Module({
   imports: [AuthModule],
-  providers: [UserService]
+  providers: [UserService],
+  exports: [UserService]
 })
 export class BusinessModule {}

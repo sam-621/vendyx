@@ -8,14 +8,13 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start:dev": "dotenv -e .env -- nest start --watch",
-    "start:debug": "DEBUG=* dotenv -e .env -- nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "dev": "dotenv -e .env -- nest start --watch",
+    "dev:debug": "DEBUG=* dotenv -e .env -- nest start --debug --watch",
+    "start": "node dist/main",
     "script:gql": "ts-node ./scripts/generate-gql-types.script.ts",
     "db:push": "dotenv -e .env.migration prisma db push"
   },
   "dependencies": {
-    "@vendyx/common": "*",
     "@apollo/server": "^4.10.5",
     "@nestjs/apollo": "^12.2.0",
     "@nestjs/common": "^9.0.0",
@@ -30,6 +29,7 @@
     "graphql-type-json": "^0.3.2",
     "nestjs-cls": "^4.4.0",
     "nestjs-prisma": "^0.23.0",
+    "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
