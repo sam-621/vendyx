@@ -2,10 +2,10 @@ import * as path from 'path';
 
 import { DynamicModule, Module } from '@nestjs/common';
 
-import { UserResolver } from './resolvers';
-import { GraphqlApiModule } from '../shared';
+import { BusinessModule } from '@/business';
 
-import { BusinessModule } from '@/business/business.module';
+import { ShopResolver, UserResolver } from './resolvers';
+import { GraphqlApiModule } from '../shared';
 
 const ADMIN_API_SCHEMA_PATH = './src/api/admin/gql/**/*.gql';
 const SHARED_SCHEMA_PATH = './src/api/shared/**/*.gql';
@@ -27,6 +27,6 @@ export class AdminApiModule {
 
 @Module({
   imports: [BusinessModule],
-  providers: [UserResolver]
+  providers: [UserResolver, ShopResolver]
 })
 class AdminModule {}

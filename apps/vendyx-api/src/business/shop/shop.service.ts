@@ -13,7 +13,7 @@ export class ShopService {
     return this.shopRepository.findBySlug(slug);
   }
 
-  async find(input: ListInput) {
+  async find(input?: ListInput) {
     return this.shopRepository.findMany(input);
   }
 
