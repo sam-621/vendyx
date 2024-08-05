@@ -1,18 +1,24 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Inject, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { User } from '@prisma/client';
 
 import {
   CreateUserInput,
   GenerateUserAccessTokenInput,
+  ListResponse,
   UpdateUserInput,
   UserJwtAuthGuard
 } from '@/api/shared';
 import { isErrorResult } from '@/business/shared';
 import { UserService } from '@/business/user';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
 @Resolver('User')
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
+  ) {}
 
   @UseGuards(UserJwtAuthGuard)
   @Query('user')
@@ -40,5 +46,12 @@ export class UserResolver {
     const result = await this.userService.generateAccessToken(input.email, input.password);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { accessToken: result, apiErrors: [] };
+  }
+
+  @ResolveField('shops')
+  async owner(@Parent() user: User) {
+    const result = (await this.prisma.user.findUnique({ where: { id: user.id } }).shops()) ?? [];
+
+    return new ListResponse(result, result?.length);
   }
 }
