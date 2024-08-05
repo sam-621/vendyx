@@ -1,4 +1,4 @@
--- 1. Create the user
+-- 1. Create the user (If is already created, omit this step)
 CREATE USER app_user WITH PASSWORD 'app_secure_password';
 
 -- 2. Grant all privileges on the database

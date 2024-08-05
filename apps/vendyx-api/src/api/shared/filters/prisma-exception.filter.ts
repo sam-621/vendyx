@@ -9,7 +9,9 @@ import { Prisma } from '@prisma/client';
 @Catch(
   Prisma.PrismaClientKnownRequestError,
   Prisma.PrismaClientUnknownRequestError,
-  Prisma.PrismaClientValidationError
+  Prisma.PrismaClientValidationError,
+  Prisma.PrismaClientInitializationError,
+  Prisma.PrismaClientRustPanicError
 )
 export class PrismaClientExceptionFilter implements GqlExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError): any {

@@ -8,8 +8,8 @@ const useFactory = (prisma: PrismaService, store: ClsService) => {
     query: {
       $allModels: {
         async $allOperations({ args, query }) {
-          const shopId = String(store.get(CLS_SHOP_ID) ?? '');
-          const ownerId = String(store.get(CLS_OWNER_ID) ?? '');
+          const shopId = String(store.get(CLS_SHOP_ID) ?? '00000000-0000-0000-0000-000000000000');
+          const ownerId = String(store.get(CLS_OWNER_ID) ?? '00000000-0000-0000-0000-000000000000');
 
           const [, , result] = await prisma.$transaction([
             prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${`${shopId}`}, TRUE)`,

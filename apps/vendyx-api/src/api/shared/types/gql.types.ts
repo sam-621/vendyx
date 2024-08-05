@@ -15,12 +15,10 @@ export enum UserErrorCode {
 
 export class CreateShopInput {
     name: string;
-    slug: string;
 }
 
 export class UpdateShopInput {
     name?: Nullable<string>;
-    slug?: Nullable<string>;
 }
 
 export class CreateUserInput {

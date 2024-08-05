@@ -32,10 +32,8 @@ type Mutation {
 
 input CreateShopInput {
   name: String!
-  slug: String!
 }
 
 input UpdateShopInput {
   name: String
-  slug: String
 }
