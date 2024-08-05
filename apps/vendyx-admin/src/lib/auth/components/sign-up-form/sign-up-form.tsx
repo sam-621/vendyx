@@ -49,7 +49,7 @@ export const SignUpForm = () => {
                 type="password"
               />
               <Button isLoading={isLoading} type="submit" className="w-full">
-                Login
+                Sign up
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
