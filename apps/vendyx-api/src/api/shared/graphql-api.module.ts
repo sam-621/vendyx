@@ -21,14 +21,32 @@ export class GraphqlApiModule {
         playground: false,
         resolvers: { JSON: GraphQLJSON },
         // TODO: false in production, true in dev
-        includeStacktraceInErrorResponses: true,
+        includeStacktraceInErrorResponses: false,
         // Always true because the graphql playground must be public
         introspection: true,
         driver: ApolloDriver,
         plugins: [ApolloServerPluginLandingPageLocalDefault()],
         path: options.path,
         typePaths: options.typePaths,
-        include: options.include
+        include: options.include,
+        // Al unhandled http error comes here
+        formatError: error => {
+          const originalError = error.extensions?.originalError as OriginalError;
+
+          // Http exception throw by nestjs
+          if (!originalError) {
+            return {
+              message: error.message,
+              code: error.extensions?.code
+            };
+          }
+
+          // Http exception throw by us
+          return {
+            message: originalError.message,
+            code: originalError.statusCode
+          };
+        }
       })
     };
   }
@@ -38,4 +56,10 @@ type GraphqlApiModuleOptions = {
   include: any[];
   typePaths: string[];
   path: string;
+};
+
+type OriginalError = {
+  statusCode: number;
+  message: string;
+  error: string;
 };

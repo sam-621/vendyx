@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '../prisma-clients';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients/prisma-for-shop.provider';
-
 import { CreateUserInput, UpdateUserInput } from '@/api/shared';
 import { clean } from '@/business/shared';
+
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '../prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients/prisma-for-shop.provider';
 
 @Injectable()
 export class UserRepository {

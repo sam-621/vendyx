@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { EmailAlreadyExists } from './user.errors';
-
 import { CreateUserInput, UpdateUserInput } from '@/api/shared';
 import { AuthService } from '@/auth';
 import { UserRepository } from '@/persistance/repositories';
+
+import { EmailAlreadyExists } from './user.errors';
 
 @Injectable()
 export class UserService {
