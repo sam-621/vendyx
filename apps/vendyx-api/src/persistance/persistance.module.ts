@@ -11,6 +11,9 @@ import { UserRepository } from './repositories';
 
 const REPOSITORIES = [UserRepository];
 
+export const CLS_SHOP_ID = 'shop_id';
+export const CLS_OWNER_ID = 'owner_id';
+
 @Global()
 @Module({
   imports: [PrismaModule],
