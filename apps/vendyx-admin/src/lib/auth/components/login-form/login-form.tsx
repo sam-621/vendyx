@@ -12,27 +12,21 @@ import {
 } from '@/lib/shared/components';
 import { Form, FormInput } from '@/lib/shared/form';
 
-import { useSignUpForm } from './use-sign-up-form';
+import { useLoginForm } from './use-login-form';
 
-export const SignUpForm = () => {
-  const form = useSignUpForm();
+export const LoginForm = () => {
+  const form = useLoginForm();
 
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Sign Up</CardTitle>
-        <CardDescription>Enter your information to create an account</CardDescription>
+        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardDescription>Enter your email below to login to your account</CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.onSubmit}>
           <CardContent>
             <div className="grid gap-4">
-              <FormInput
-                control={form.control}
-                name="store"
-                placeholder="Your store name"
-                label="Store"
-              />
               <FormInput
                 control={form.control}
                 name="email"
@@ -52,9 +46,9 @@ export const SignUpForm = () => {
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Already have an account?{' '}
-              <Link href="/login" className="underline">
-                Log in
+              Don&apos;t have an account?{' '}
+              <Link href="/signup" className="underline">
+                Sign up
               </Link>
             </div>
           </CardContent>
