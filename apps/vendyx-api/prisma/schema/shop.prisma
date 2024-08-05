@@ -26,6 +26,9 @@ model Shop {
   /// The shop's name
   name String
 
+  /// The shop's slug
+  slug String @unique
+
   product     Product[]
   variant     Variant[]
   option      Option[]

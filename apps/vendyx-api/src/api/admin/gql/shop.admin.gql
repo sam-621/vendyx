@@ -7,6 +7,10 @@ type Shop implements Node {
   """
   name: String!
   """
+  The shop's slug
+  """
+  slug: String!
+  """
   The shop's owner
   """
   owner: User!
@@ -18,42 +22,20 @@ type ShopList implements List {
 }
 
 type Query {
-  """
-  Get a shop by id
-  """
-  shop(id: String!): Shop
-  """
-  Get a list of shops
-  """
+  shop(slug: String!): Shop
   shops(input: ListInput): ShopList!
 }
 
-"TODO: Do not create a shop if name is empty"
 type Mutation {
-  """
-  Create a shop
-  """
   createShop(ownerId: ID!, input: CreateShopInput!): Shop!
-  """
-  Update a shop
-  """
-  updateShop(id: ID!, input: UpdateShopInput!): Shop!
-  """
-  Delete a shop
-  """
-  deleteShop(id: ID!): Shop!
 }
 
 input CreateShopInput {
-  """
-  The shop's name
-  """
   name: String!
+  slug: String!
 }
 
 input UpdateShopInput {
-  """
-  The shop's name
-  """
   name: String
+  slug: String
 }

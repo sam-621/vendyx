@@ -15,10 +15,12 @@ export enum UserErrorCode {
 
 export class CreateShopInput {
     name: string;
+    slug: string;
 }
 
 export class UpdateShopInput {
     name?: Nullable<string>;
+    slug?: Nullable<string>;
 }
 
 export class CreateUserInput {
@@ -56,6 +58,7 @@ export class Shop implements Node {
     createdAt: Date;
     updatedAt: Date;
     name: string;
+    slug: string;
     owner: User;
 }
 
@@ -65,19 +68,15 @@ export class ShopList implements List {
 }
 
 export abstract class IQuery {
-    abstract shop(id: string): Nullable<Shop> | Promise<Nullable<Shop>>;
+    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
 
     abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
 
-    abstract user(id: string): Nullable<User> | Promise<Nullable<User>>;
+    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export abstract class IMutation {
     abstract createShop(ownerId: string, input: CreateShopInput): Shop | Promise<Shop>;
-
-    abstract updateShop(id: string, input: UpdateShopInput): Shop | Promise<Shop>;
-
-    abstract deleteShop(id: string): Shop | Promise<Shop>;
 
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
 
