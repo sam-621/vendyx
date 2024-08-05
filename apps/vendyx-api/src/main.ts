@@ -12,6 +12,6 @@ async function bootstrap() {
   app.use(clsMiddleware(authService));
   app.useGlobalFilters(new PrismaClientExceptionFilter());
 
-  await app.listen(3000);
+  await app.listen(5000);
 }
 bootstrap();
