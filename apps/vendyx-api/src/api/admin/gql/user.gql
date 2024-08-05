@@ -20,7 +20,7 @@ type UserList implements List {
 
 type Query {
   user(accessToken: String!): User
-  validateToken: Boolean
+  validateAccessToken: Boolean
 }
 
 type Mutation {

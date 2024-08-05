@@ -27,8 +27,8 @@ export class UserResolver {
   }
 
   @UseGuards(UserJwtAuthGuard)
-  @Query('validateToken')
-  async validateToken() {
+  @Query('validateAccessToken')
+  async validateAccessToken() {
     return true;
   }
 

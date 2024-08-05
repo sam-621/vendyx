@@ -33,3 +33,9 @@ export const GENERATE_ACCESS_TOKEN_MUTATION = graphql(`
     }
   }
 `);
+
+export const VALIDATE_ACCESS_TOKEN_QUERY = graphql(`
+  query ValidateAccessToken {
+    validateToken
+  }
+`);
