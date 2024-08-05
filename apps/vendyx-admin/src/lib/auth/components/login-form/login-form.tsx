@@ -16,6 +16,7 @@ import { useLoginForm } from './use-login-form';
 
 export const LoginForm = () => {
   const form = useLoginForm();
+  const { isLoading } = form;
 
   return (
     <Card className="mx-auto max-w-sm">
@@ -41,7 +42,7 @@ export const LoginForm = () => {
                 label="Password"
                 type="password"
               />
-              <Button type="submit" className="w-full">
+              <Button disabled={isLoading} isLoading={isLoading} type="submit" className="w-full">
                 Login
               </Button>
             </div>

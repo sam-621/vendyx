@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { type CreateUserInput, type GenerateUserAccessTokenInput } from '../codegen/graphql';
+import {
+  type CreateUserInput,
+  type GenerateUserAccessTokenInput,
+  type UserErrorCode
+} from '../codegen/graphql';
 import { getUserError } from '../errors';
 import {
   CREATE_USER_MUTATION,
@@ -12,9 +16,9 @@ const get = async (accessToken: string) => {
   return await fetcher(GET_USER_QUERY, { accessToken });
 };
 
-const create = async (input: CreateUserInput) => {
+const create = async (input: CreateUserInput): Promise<UserResult> => {
   const {
-    createUser: { apiErrors, user }
+    createUser: { apiErrors }
   } = await fetcher(CREATE_USER_MUTATION, { input });
 
   const error = getUserError(apiErrors[0]);
@@ -23,10 +27,12 @@ const create = async (input: CreateUserInput) => {
     return { success: false, error, errorCode: apiErrors[0].code };
   }
 
-  return { success: true, user: user! };
+  return { success: true };
 };
 
-const generateAccessToken = async (input: GenerateUserAccessTokenInput) => {
+const generateAccessToken = async (
+  input: GenerateUserAccessTokenInput
+): Promise<GenerateAccessTokenResult> => {
   const {
     generateUserAccessToken: { apiErrors, accessToken }
   } = await fetcher(GENERATE_ACCESS_TOKEN_MUTATION, { input });
@@ -45,3 +51,24 @@ export const userService = {
   create,
   generateAccessToken
 };
+
+type GenerateAccessTokenResult =
+  | {
+      success: true;
+      accessToken: string;
+    }
+  | {
+      success: false;
+      error: string;
+      errorCode: UserErrorCode;
+    };
+
+type UserResult =
+  | {
+      success: true;
+    }
+  | {
+      success: false;
+      error: string;
+      errorCode: UserErrorCode;
+    };
