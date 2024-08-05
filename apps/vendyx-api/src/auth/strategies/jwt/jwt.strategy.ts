@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { GraphQLError } from 'graphql';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { UserRepository } from '@/persistance/repositories';
@@ -15,15 +14,20 @@ export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
     });
   }
 
+  /**
+   * Receives the payload from the token and validate if its data contains a valid user.
+   * Is executed after the token is decoded and before the guard.handleRequest method.
+   */
   async validate(payload: any) {
     const { email } = payload;
 
-    const user = this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new GraphQLError('Invalid token', { extensions: { code: 'UNAUTHORIZED' } });
+      // handled by the guard.handleRequest method
+      return null;
     }
 
-    return user;
+    return { email: user.email, id: user.id };
   }
 }

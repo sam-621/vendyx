@@ -1,6 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreateUserInput, GenerateUserAccessTokenInput, UpdateUserInput } from '@/api/shared';
+import {
+  CreateUserInput,
+  GenerateUserAccessTokenInput,
+  UpdateUserInput,
+  UserJwtAuthGuard
+} from '@/api/shared';
 import { isErrorResult } from '@/business/shared';
 import { UserService } from '@/business/user';
 
@@ -8,6 +14,7 @@ import { UserService } from '@/business/user';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(UserJwtAuthGuard)
   @Query('user')
   async user(@Args('accessToken') accessToken: string) {
     return this.userService.findByAccessToken(accessToken);
@@ -20,6 +27,7 @@ export class UserResolver {
     return isErrorResult(result) ? { apiErrors: [result] } : { user: result, apiErrors: [] };
   }
 
+  @UseGuards(UserJwtAuthGuard)
   @Mutation('updateUser')
   async updateUser(@Args('id') id: string, @Args('input') input: UpdateUserInput) {
     const result = await this.userService.update(id, input);
