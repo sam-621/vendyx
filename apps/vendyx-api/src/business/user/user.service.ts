@@ -14,8 +14,10 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) {}
 
-  findById(id: string) {
-    return this.userRepository.findById(id);
+  async findByAccessToken(accessToken: string) {
+    const payload = await this.authService.decodeAccessToken<UserJwtPayload>(accessToken);
+
+    return this.userRepository.findById(payload.sub);
   }
 
   async create(input: CreateUserInput) {

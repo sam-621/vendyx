@@ -19,7 +19,7 @@ type UserList implements List {
 }
 
 type Query {
-  user(id: String!): User
+  user(accessToken: String!): User
 }
 
 type Mutation {

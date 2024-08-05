@@ -9,8 +9,8 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query('user')
-  async user(@Args('id') id: string) {
-    return this.userService.findById(id);
+  async user(@Args('accessToken') accessToken: string) {
+    return this.userService.findByAccessToken(accessToken);
   }
 
   @Mutation('createUser')
