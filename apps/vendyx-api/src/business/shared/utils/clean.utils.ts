@@ -1,4 +1,4 @@
-import { NullToUndefined } from './types';
+import { NullToUndefined } from '../types';
 
 /**
  * Replace null values with undefined for the given object
