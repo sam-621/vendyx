@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -168,6 +169,77 @@ export type UserResult = {
   user?: Maybe<User>;
 };
 
+export type GetShopsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetShopsQuery = {
+  __typename?: 'Query';
+  shops: {
+    __typename?: 'ShopList';
+    count: number;
+    items: Array<{
+      __typename?: 'Shop';
+      id: string;
+      name: string;
+      slug: string;
+      owner: { __typename?: 'User'; id: string; email: string };
+    }>;
+  };
+};
+
+export type ShopQueryVariables = Exact<{
+  slug: Scalars['String']['input'];
+}>;
+
+export type ShopQuery = {
+  __typename?: 'Query';
+  shop?: { __typename?: 'Shop'; id: string; name: string; slug: string } | null;
+};
+
+export type CreateShopMutationVariables = Exact<{
+  ownerId: Scalars['ID']['input'];
+  input: CreateShopInput;
+}>;
+
+export type CreateShopMutation = {
+  __typename?: 'Mutation';
+  createShop: { __typename?: 'Shop'; id: string; name: string; slug: string };
+};
+
+export type GetUserQueryVariables = Exact<{
+  accessToken: Scalars['String']['input'];
+}>;
+
+export type GetUserQuery = {
+  __typename?: 'Query';
+  user?: { __typename?: 'User'; id: string } | null;
+};
+
+export type CreateUserMutationVariables = Exact<{
+  input: CreateUserInput;
+}>;
+
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: {
+    __typename?: 'UserResult';
+    apiErrors: Array<{ __typename?: 'UserErrorResult'; code: UserErrorCode; message: string }>;
+    user?: { __typename?: 'User'; id: string } | null;
+  };
+};
+
+export type GenerateAccessTokenMutationVariables = Exact<{
+  input: GenerateUserAccessTokenInput;
+}>;
+
+export type GenerateAccessTokenMutation = {
+  __typename?: 'Mutation';
+  generateUserAccessToken: {
+    __typename?: 'UserAccessTokenResult';
+    accessToken?: string | null;
+    apiErrors: Array<{ __typename?: 'UserErrorResult'; code: UserErrorCode; message: string }>;
+  };
+};
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -185,3 +257,72 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+
+export const GetShopsDocument = new TypedDocumentString(`
+    query getShops {
+  shops {
+    count
+    items {
+      id
+      name
+      slug
+      owner {
+        id
+        email
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetShopsQuery, GetShopsQueryVariables>;
+export const ShopDocument = new TypedDocumentString(`
+    query Shop($slug: String!) {
+  shop(slug: $slug) {
+    id
+    name
+    slug
+  }
+}
+    `) as unknown as TypedDocumentString<ShopQuery, ShopQueryVariables>;
+export const CreateShopDocument = new TypedDocumentString(`
+    mutation CreateShop($ownerId: ID!, $input: CreateShopInput!) {
+  createShop(ownerId: $ownerId, input: $input) {
+    id
+    name
+    slug
+  }
+}
+    `) as unknown as TypedDocumentString<CreateShopMutation, CreateShopMutationVariables>;
+export const GetUserDocument = new TypedDocumentString(`
+    query GetUser($accessToken: String!) {
+  user(accessToken: $accessToken) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<GetUserQuery, GetUserQueryVariables>;
+export const CreateUserDocument = new TypedDocumentString(`
+    mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    apiErrors {
+      code
+      message
+    }
+    user {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<CreateUserMutation, CreateUserMutationVariables>;
+export const GenerateAccessTokenDocument = new TypedDocumentString(`
+    mutation GenerateAccessToken($input: GenerateUserAccessTokenInput!) {
+  generateUserAccessToken(input: $input) {
+    apiErrors {
+      code
+      message
+    }
+    accessToken
+  }
+}
+    `) as unknown as TypedDocumentString<
+  GenerateAccessTokenMutation,
+  GenerateAccessTokenMutationVariables
+>;
