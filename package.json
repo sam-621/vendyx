@@ -2,9 +2,6 @@
   "name": "vendyx",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "description": "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.",
   "repository": "https://github.com/sam-621/vendyx",
   "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
@@ -17,8 +14,7 @@
   "devDependencies": {
     "@commitlint/cli": "^18.5.0",
     "@commitlint/config-conventional": "^18.5.0",
-    "husky": "^8.0.0",
-    "lerna": "^8.0.2"
+    "husky": "^8.0.0"
   },
   "gacp": {
     "push": false
