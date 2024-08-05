@@ -16,6 +16,7 @@ import { useSignUpForm } from './use-sign-up-form';
 
 export const SignUpForm = () => {
   const form = useSignUpForm();
+  const { isLoading } = form;
 
   return (
     <Card className="mx-auto max-w-sm">
@@ -47,7 +48,7 @@ export const SignUpForm = () => {
                 label="Password"
                 type="password"
               />
-              <Button type="submit" className="w-full">
+              <Button isLoading={isLoading} type="submit" className="w-full">
                 Login
               </Button>
             </div>

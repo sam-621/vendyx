@@ -49,7 +49,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Icon = propIcon ?? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />;
 
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+      <Comp
+        disabled={isLoading}
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      >
         {isLoading ? Icon : null}
         {children}
       </Comp>

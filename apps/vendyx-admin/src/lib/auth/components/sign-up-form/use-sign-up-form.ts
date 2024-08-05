@@ -1,11 +1,17 @@
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { FormMessages } from '@/lib/shared/form';
+import { notification } from '@/lib/shared/notifications';
+
+import { signup } from '../../actions';
 
 export const useSignUpForm = () => {
+  const [isLoading, startTransition] = useTransition();
+
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -16,14 +22,24 @@ export const useSignUpForm = () => {
   });
 
   async function onSubmit(values: FormInput) {
-    const { email, password } = values;
+    startTransition(async () => {
+      const { error, field } = await signup(values);
 
-    console.log({ email, password });
+      if (error) {
+        if (field === 'email') {
+          form.setError(field, { message: error });
+          return;
+        }
+
+        notification.error(error);
+      }
+    });
   }
 
   return {
-    ...form,
-    onSubmit: form.handleSubmit(onSubmit)
+    isLoading,
+    onSubmit: form.handleSubmit(onSubmit),
+    ...form
   };
 };
 

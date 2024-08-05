@@ -24,7 +24,7 @@ export const useLoginForm = () => {
     const { email, password } = values;
 
     startTransition(async () => {
-      const error = await login(email, password);
+      const { error } = await login(email, password);
 
       if (error) {
         notification.error(error);

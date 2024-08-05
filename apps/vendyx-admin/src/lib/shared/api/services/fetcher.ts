@@ -1,3 +1,4 @@
+import { getToken } from '../../cookies';
 import { type TypedDocumentString } from '../codegen/graphql';
 
 /**
@@ -12,7 +13,8 @@ export const fetcher = async <R, V>(
     const result = await fetch(process.env.VENDYX_ADMIN_API_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getToken()}`
       },
       body: JSON.stringify({
         query: query.toString(),

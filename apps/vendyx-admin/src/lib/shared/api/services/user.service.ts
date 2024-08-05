@@ -18,7 +18,7 @@ const get = async (accessToken: string) => {
 
 const create = async (input: CreateUserInput): Promise<UserResult> => {
   const {
-    createUser: { apiErrors }
+    createUser: { apiErrors, user }
   } = await fetcher(CREATE_USER_MUTATION, { input });
 
   const error = getUserError(apiErrors[0]);
@@ -27,7 +27,7 @@ const create = async (input: CreateUserInput): Promise<UserResult> => {
     return { success: false, error, errorCode: apiErrors[0].code };
   }
 
-  return { success: true };
+  return { success: true, userId: user?.id ?? '' };
 };
 
 const generateAccessToken = async (
@@ -66,6 +66,7 @@ type GenerateAccessTokenResult =
 type UserResult =
   | {
       success: true;
+      userId: string;
     }
   | {
       success: false;

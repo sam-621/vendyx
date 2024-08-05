@@ -9,7 +9,7 @@ export const login = async (email: string, password: string) => {
   const result = await userService.generateAccessToken({ email, password });
 
   if (!result.success) {
-    return result.error;
+    return { error: result.error };
   }
 
   setToken(result.accessToken);
