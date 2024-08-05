@@ -11,12 +11,5 @@
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
-  "cSpell.words": [
-    "clsx",
-    "codegen",
-    "especifictly",
-    "gacp",
-    "sonner",
-    "tailwindcss"
-  ]
+  "cSpell.words": ["clsx", "codegen", "especifictly", "gacp", "sonner", "tailwindcss", "VENDYX"]
 }
