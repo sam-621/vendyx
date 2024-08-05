@@ -19,22 +19,13 @@ type UserList implements List {
 }
 
 type Query {
-  """
-  Get a user by id
-  """
   user(id: String!): User
 }
 
 type Mutation {
-  """
-  Create a new user
-  """
   createUser(input: CreateUserInput!): UserResult!
-
-  """
-  Update a user
-  """
   updateUser(id: ID!, input: UpdateUserInput!): UserResult!
+  generateUserAccessToken(input: GenerateUserAccessTokenInput!): UserAccessTokenResult!
 }
 
 input CreateUserInput {
@@ -46,9 +37,18 @@ input UpdateUserInput {
   email: String
 }
 
+input GenerateUserAccessTokenInput {
+  email: String!
+  password: String!
+}
+
+type UserAccessTokenResult {
+  apiErrors: [UserErrorResult!]!
+  accessToken: String
+}
+
 type UserResult {
   user: User
-  authToken: String
   apiErrors: [UserErrorResult!]!
 }
 

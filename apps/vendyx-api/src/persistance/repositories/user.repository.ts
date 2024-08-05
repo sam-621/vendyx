@@ -13,20 +13,20 @@ export class UserRepository {
     @Inject(PRISMA_FOR_SHOP) private readonly prismaForShop: PrismaForShop
   ) {}
 
-  async findByEmail(email: string, forAdmin = false) {
-    if (forAdmin) {
-      return this.prismaForAdmin.user.findUnique({ where: { email } });
-    }
-
+  async findByEmail(email: string) {
     return this.prismaForShop.user.findUnique({ where: { email } });
   }
 
-  async findById(id: string, forAdmin = false) {
-    if (forAdmin) {
-      return this.prismaForAdmin.user.findUnique({ where: { id } });
-    }
+  async findByEmailForAdmin(email: string) {
+    return this.prismaForAdmin.user.findUnique({ where: { email } });
+  }
 
+  async findById(id: string) {
     return this.prismaForShop.user.findUnique({ where: { id } });
+  }
+
+  async findByIdForAdmin(id: string) {
+    return this.prismaForAdmin.user.findUnique({ where: { id } });
   }
 
   async insert(input: CreateUserInput) {

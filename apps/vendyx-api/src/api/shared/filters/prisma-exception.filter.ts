@@ -6,7 +6,11 @@ import { Prisma } from '@prisma/client';
  * Catch any unhandled prisma error, log it and throw an InternalServerErrorException
  * We don't want to expose any prisma error to the client
  */
-@Catch(Prisma.PrismaClientKnownRequestError, Prisma.PrismaClientUnknownRequestError)
+@Catch(
+  Prisma.PrismaClientKnownRequestError,
+  Prisma.PrismaClientUnknownRequestError,
+  Prisma.PrismaClientValidationError
+)
 export class PrismaClientExceptionFilter implements GqlExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError): any {
     Logger.error({
@@ -14,7 +18,8 @@ export class PrismaClientExceptionFilter implements GqlExceptionFilter {
       name: exception.name,
       code: exception.code,
       message: exception.message,
-      meta: exception.meta
+      meta: exception.meta,
+      raw: exception
     });
 
     if (exception.code === 'P2025') {

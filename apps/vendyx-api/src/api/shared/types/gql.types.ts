@@ -30,6 +30,11 @@ export class UpdateUserInput {
     email?: Nullable<string>;
 }
 
+export class GenerateUserAccessTokenInput {
+    email: string;
+    password: string;
+}
+
 export class ListInput {
     skip?: Nullable<number>;
     take?: Nullable<number>;
@@ -46,7 +51,7 @@ export interface List {
     count: number;
 }
 
-export class Shop {
+export class Shop implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
@@ -77,9 +82,11 @@ export abstract class IMutation {
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
 
     abstract updateUser(id: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
+
+    abstract generateUserAccessToken(input: GenerateUserAccessTokenInput): UserAccessTokenResult | Promise<UserAccessTokenResult>;
 }
 
-export class User {
+export class User implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
@@ -92,9 +99,13 @@ export class UserList implements List {
     count: number;
 }
 
+export class UserAccessTokenResult {
+    apiErrors: UserErrorResult[];
+    accessToken?: Nullable<string>;
+}
+
 export class UserResult {
     user?: Nullable<User>;
-    authToken?: Nullable<string>;
     apiErrors: UserErrorResult[];
 }
 

@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 
 import { CreateUserInput, UpdateUserInput } from '@/api/shared';
 import { AuthService } from '@/auth';
+import { UserJwtPayload } from '@/auth/strategies';
 import { UserRepository } from '@/persistance/repositories';
 
-import { EmailAlreadyExists } from './user.errors';
+import { EmailAlreadyExists, InvalidCredentials } from './user.errors';
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
   }
 
   async create(input: CreateUserInput) {
-    const emailExists = await this.userRepository.findByEmail(input.email, true);
+    const emailExists = await this.userRepository.findByEmailForAdmin(input.email);
 
     if (emailExists) {
       return new EmailAlreadyExists();
@@ -31,7 +32,7 @@ export class UserService {
 
   async update(id: string, input: UpdateUserInput) {
     if (input.email) {
-      const userWithEmailExists = await this.userRepository.findByEmail(input.email, true);
+      const userWithEmailExists = await this.userRepository.findByEmailForAdmin(input.email);
 
       if (userWithEmailExists && userWithEmailExists.id !== id) {
         return new EmailAlreadyExists();
@@ -40,4 +41,27 @@ export class UserService {
 
     return await this.userRepository.update(id, input);
   }
+
+  async generateAccessToken(email: string, password: string) {
+    const user = await this.userRepository.findByEmailForAdmin(email);
+
+    if (!user) {
+      return new InvalidCredentials();
+    }
+
+    const passwordMatch = await this.authService.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return new InvalidCredentials();
+    }
+
+    const { accessToken } = await this.authService.generateToken<UserJwtInput>({
+      email: user.email,
+      sub: user.id
+    });
+
+    return accessToken;
+  }
 }
+
+type UserJwtInput = Pick<UserJwtPayload, 'email' | 'sub'>;
