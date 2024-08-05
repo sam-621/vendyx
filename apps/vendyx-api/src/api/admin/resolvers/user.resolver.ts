@@ -26,6 +26,12 @@ export class UserResolver {
     return this.userService.findByAccessToken(accessToken);
   }
 
+  @UseGuards(UserJwtAuthGuard)
+  @Query('validateToken')
+  async validateToken() {
+    return true;
+  }
+
   @Mutation('createUser')
   async createUser(@Args('input') input: CreateUserInput) {
     const result = await this.userService.create(input);
