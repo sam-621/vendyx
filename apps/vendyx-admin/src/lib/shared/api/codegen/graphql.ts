@@ -88,6 +88,7 @@ export type Query = {
   shop?: Maybe<Shop>;
   shops: ShopList;
   user?: Maybe<User>;
+  validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type QueryShopArgs = {
@@ -240,6 +241,13 @@ export type GenerateAccessTokenMutation = {
   };
 };
 
+export type ValidateAccessTokenQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ValidateAccessTokenQuery = {
+  __typename?: 'Query';
+  validateAccessToken?: boolean | null;
+};
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -325,4 +333,12 @@ export const GenerateAccessTokenDocument = new TypedDocumentString(`
     `) as unknown as TypedDocumentString<
   GenerateAccessTokenMutation,
   GenerateAccessTokenMutationVariables
+>;
+export const ValidateAccessTokenDocument = new TypedDocumentString(`
+    query ValidateAccessToken {
+  validateAccessToken
+}
+    `) as unknown as TypedDocumentString<
+  ValidateAccessTokenQuery,
+  ValidateAccessTokenQueryVariables
 >;

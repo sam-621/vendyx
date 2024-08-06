@@ -8,7 +8,8 @@ import { getUserError } from '../errors';
 import {
   CREATE_USER_MUTATION,
   GENERATE_ACCESS_TOKEN_MUTATION,
-  GET_USER_QUERY
+  GET_USER_QUERY,
+  VALIDATE_ACCESS_TOKEN_QUERY
 } from '../operations';
 import { fetcher } from './fetcher';
 
@@ -46,10 +47,17 @@ const generateAccessToken = async (
   return { success: true, accessToken: accessToken! };
 };
 
+const validateAccessToken = async () => {
+  const result = await fetcher(VALIDATE_ACCESS_TOKEN_QUERY);
+
+  return result.validateAccessToken;
+};
+
 export const userService = {
   get,
   create,
-  generateAccessToken
+  generateAccessToken,
+  validateAccessToken
 };
 
 type GenerateAccessTokenResult =

@@ -23,7 +23,9 @@ const documents = {
   '\n  mutation CreateUser($input: CreateUserInput!) {\n    createUser(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      user {\n        id\n      }\n    }\n  }\n':
     types.CreateUserDocument,
   '\n  mutation GenerateAccessToken($input: GenerateUserAccessTokenInput!) {\n    generateUserAccessToken(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      accessToken\n    }\n  }\n':
-    types.GenerateAccessTokenDocument
+    types.GenerateAccessTokenDocument,
+  '\n  query ValidateAccessToken {\n    validateAccessToken\n  }\n':
+    types.ValidateAccessTokenDocument
 };
 
 /**
@@ -62,6 +64,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation GenerateAccessToken($input: GenerateUserAccessTokenInput!) {\n    generateUserAccessToken(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      accessToken\n    }\n  }\n'
 ): typeof import('./graphql').GenerateAccessTokenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query ValidateAccessToken {\n    validateAccessToken\n  }\n'
+): typeof import('./graphql').ValidateAccessTokenDocument;
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
