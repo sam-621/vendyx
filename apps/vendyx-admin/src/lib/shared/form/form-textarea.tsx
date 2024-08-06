@@ -1,10 +1,18 @@
-import { type ComponentProps, type HTMLInputTypeAttribute } from 'react';
+import { type ReactNode } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
-import { Input } from '../components/ui';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
+import { Textarea } from '../components/ui';
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  type FormFieldProps,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from './form';
 
-export const FormInput = <
+export const FormTextarea = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
@@ -12,18 +20,17 @@ export const FormInput = <
   label,
   description,
   placeholder,
-  type,
   ...rest
 }: Props<TFieldValues, TName>) => {
   return (
     <FormField
-      {...rest}
       name={name}
+      {...rest}
       render={({ field }) => (
-        <FormItem className="w-full">
+        <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+            <Textarea placeholder={placeholder} className="resize-none" {...field} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
@@ -36,12 +43,8 @@ export const FormInput = <
 type Props<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = Pick<
-  ComponentProps<typeof FormField<TFieldValues, TName>>,
-  'control' | 'defaultValue' | 'disabled' | 'name'
-> & {
+> = FormFieldProps<TFieldValues, TName> & {
   label?: string;
-  description?: string;
+  description?: ReactNode;
   placeholder?: string;
-  type?: HTMLInputTypeAttribute;
 };

@@ -6,7 +6,7 @@ import { Button } from '../ui';
 
 export const DataTableEmptyState: FC<Props> = ({ title, description, action }) => {
   return (
-    <div className="w-full h-full border border-dashed rounded flex flex-col justify-center items-center gap-6 bg-background">
+    <div className="w-full h-full border border-dashed rounded-lg flex flex-col justify-center items-center gap-6 bg-background">
       <div className="flex flex-col gap-1">
         <h3 className="h3 text-center">{title}</h3>
         {description && <p className="muted text-center text-muted-foreground">{description}</p>}

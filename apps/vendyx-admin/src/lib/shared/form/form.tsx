@@ -74,6 +74,14 @@ type FormItemContextValue = {
   id: string;
 };
 
+export type FormFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = Pick<
+  React.ComponentProps<typeof FormField<TFieldValues, TName>>,
+  'control' | 'defaultValue' | 'disabled' | 'name'
+>;
+
 const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
 
 const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

@@ -33,8 +33,10 @@ export const AdminBreadcrumb = () => {
             <>
               <BreadcrumbItem key={href}>
                 <BreadcrumbLink asChild>
-                  {isFirst(i) && <BarChart2 className="h-4 w-4 mr-1" />}
-                  <Link href={href ?? ''}>{label}</Link>
+                  <Link href={href ?? ''} className="flex items-center">
+                    {isFirst(i) && <BarChart2 className="h-4 w-4 mr-1" />}
+                    {label}
+                  </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
@@ -49,7 +51,7 @@ export const AdminBreadcrumb = () => {
 const BRADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/': [],
   '/products': [{ href: '/products', label: 'Products' }, { label: 'All products' }],
-  '/new': [{ href: '/products', label: 'Products' }, { label: 'Create product' }]
+  '/products/new': [{ href: '/products', label: 'Products' }, { label: 'Create product' }]
 };
 
 type TBreadcrumbItem = {
