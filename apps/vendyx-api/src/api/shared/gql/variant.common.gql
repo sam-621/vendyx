@@ -9,11 +9,11 @@ type Variant implements Node {
   """
   The variant's SKU
   """
-  sku: String!
+  sku: String
   """
   The variant's sale price
   """
-  price: Int!
+  salePrice: Int!
   """
   The variant's stock
   """
@@ -32,7 +32,7 @@ type Variant implements Node {
   The variant's weight
   Useful when you want to indicate that the variant needs shipping.
   """
-  weight: Float
+  requiresShipping: Boolean!
 
   optionValues: [OptionValue!]
   product: Product!

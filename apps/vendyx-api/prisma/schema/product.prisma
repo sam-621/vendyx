@@ -59,7 +59,7 @@ model Variant {
   stock Int @default(0)
 
   /// The variant's SKU
-  sku String
+  sku String?
 
   /// Indicates whether this variant requires shipping.
   /// Set to true if the variant is a physical product that needs to be shipped.

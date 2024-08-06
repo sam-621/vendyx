@@ -49,6 +49,24 @@ export class GenerateUserAccessTokenInput {
     password: string;
 }
 
+export class CreateVariantInput {
+    salePrice: number;
+    stock: number;
+    sku?: Nullable<string>;
+    comparisonPrice?: Nullable<number>;
+    costPerUnit?: Nullable<number>;
+    requiresShipping?: Nullable<boolean>;
+}
+
+export class UpdateVariantInput {
+    salePrice?: Nullable<number>;
+    stock?: Nullable<number>;
+    sku?: Nullable<string>;
+    comparisonPrice?: Nullable<number>;
+    costPerUnit?: Nullable<number>;
+    requiresShipping?: Nullable<boolean>;
+}
+
 export class ListInput {
     skip?: Nullable<number>;
     take?: Nullable<number>;
@@ -70,7 +88,7 @@ export abstract class IMutation {
 
     abstract updateProduct(id: string, input: UpdateProductInput): Product | Promise<Product>;
 
-    abstract softRemove(id: string): Product | Promise<Product>;
+    abstract softRemoveProduct(id: string): Product | Promise<Product>;
 
     abstract createShop(ownerId: string, input: CreateShopInput): Shop | Promise<Shop>;
 
@@ -79,6 +97,12 @@ export abstract class IMutation {
     abstract updateUser(id: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
 
     abstract generateUserAccessToken(input: GenerateUserAccessTokenInput): UserAccessTokenResult | Promise<UserAccessTokenResult>;
+
+    abstract createVariant(productId: string, input: CreateVariantInput): Variant | Promise<Variant>;
+
+    abstract updateVariant(id: string, input: UpdateVariantInput): Variant | Promise<Variant>;
+
+    abstract softRemoveVariant(id: string): Variant | Promise<Variant>;
 }
 
 export class Shop implements Node {
@@ -106,7 +130,7 @@ export abstract class IQuery {
 
     abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
 
-    abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
 
     abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
 
@@ -185,11 +209,11 @@ export class Variant implements Node {
     createdAt: Date;
     updatedAt: Date;
     sku: string;
-    price: number;
+    salePrice: number;
     stock: number;
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
-    weight?: Nullable<number>;
+    requiresShipping: boolean;
     optionValues?: Nullable<OptionValue[]>;
     product: Product;
 }

@@ -1,7 +1,7 @@
 type Mutation {
   createProduct(input: CreateProductInput!): Product!
   updateProduct(id: ID!, input: UpdateProductInput!): Product!
-  softRemove(id: ID!): Product!
+  softRemoveProduct(id: ID!): Product!
 }
 
 input CreateProductInput {
