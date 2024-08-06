@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </header>
         <AdminLayoutNav />
       </aside>
-      <main className="flex flex-col gap-2">{children}</main>
+      <main className="bg-muted/40 flex flex-col gap-2">{children}</main>
     </div>
   );
 }
