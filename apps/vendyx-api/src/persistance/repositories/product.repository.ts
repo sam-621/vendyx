@@ -10,16 +10,26 @@ import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
 export class ProductRepository {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  findMany(input?: ListInput) {
-    return this.prisma.product.findMany({ ...clean(input ?? {}) });
+  findMany(input?: ListInput & FindOptions) {
+    return this.prisma.product.findMany({
+      ...clean(input ?? {}),
+      where: {
+        archived: input?.archived ?? undefined,
+        enabled: input?.enabled ?? undefined
+      }
+    });
   }
 
-  findBySlug(slug: string) {
-    return this.prisma.product.findUnique({ where: { slug } });
+  findBySlug(slug: string, options?: FindOptions) {
+    return this.prisma.product.findUnique({ where: { slug, ...options } });
   }
 
-  findById(id: string) {
-    return this.prisma.product.findUnique({ where: { id } });
+  findById(id: string, options?: FindOptions) {
+    return this.prisma.product.findUnique({ where: { id, ...options } });
+  }
+
+  count() {
+    return this.prisma.product.count();
   }
 
   insert(input: Prisma.ProductCreateInput) {
@@ -34,3 +44,5 @@ export class ProductRepository {
     return this.prisma.product.update({ where: { id }, data: { deletedAt: new Date() } });
   }
 }
+
+type FindOptions = { archived?: boolean; enabled?: boolean };

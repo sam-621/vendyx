@@ -1,10 +1,9 @@
 type Mutation {
-  createProduct(input: CreateProductInput!): ProductResult!
-  updateProduct(id: ID!, input: UpdateProductInput!): ProductResult!
-  softRemove(id: ID!): ProductResult!
+  createProduct(input: CreateProductInput!): Product!
+  updateProduct(id: ID!, input: UpdateProductInput!): Product!
+  softRemove(id: ID!): Product!
 }
 
-" Inputs "
 input CreateProductInput {
   name: String!
   description: String
@@ -17,18 +16,4 @@ input UpdateProductInput {
   description: String
   enabled: Boolean
   archived: Boolean
-}
-
-type ProductResult {
-  product: Product
-  apiErrors: [ProductErrorResult!]!
-}
-
-type ProductErrorResult {
-  code: ProductErrorCode!
-  message: String!
-}
-
-enum ProductErrorCode {
-  PRODUCT_NOT_FOUND
 }

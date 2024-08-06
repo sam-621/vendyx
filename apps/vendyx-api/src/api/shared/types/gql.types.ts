@@ -13,6 +13,20 @@ export enum UserErrorCode {
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
 }
 
+export class CreateProductInput {
+    name: string;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+    archived?: Nullable<boolean>;
+}
+
+export class UpdateProductInput {
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+    archived?: Nullable<boolean>;
+}
+
 export class CreateShopInput {
     name: string;
 }
@@ -51,40 +65,20 @@ export interface List {
     count: number;
 }
 
-export class Product implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    slug: string;
-    description?: Nullable<string>;
-    enabled: boolean;
-    archived: boolean;
-    variants?: VariantList;
-    options: Option[];
-}
+export abstract class IMutation {
+    abstract createProduct(input: CreateProductInput): Product | Promise<Product>;
 
-export class ProductList implements List {
-    items: Product[];
-    count: number;
-}
+    abstract updateProduct(id: string, input: UpdateProductInput): Product | Promise<Product>;
 
-export abstract class IQuery {
-    abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
+    abstract softRemove(id: string): Product | Promise<Product>;
 
-    abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+    abstract createShop(ownerId: string, input: CreateShopInput): Shop | Promise<Shop>;
 
-    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
+    abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
 
-    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
+    abstract updateUser(id: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
 
-    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
-
-    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
-
-    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+    abstract generateUserAccessToken(input: GenerateUserAccessTokenInput): UserAccessTokenResult | Promise<UserAccessTokenResult>;
 }
 
 export class Shop implements Node {
@@ -101,14 +95,22 @@ export class ShopList implements List {
     count: number;
 }
 
-export abstract class IMutation {
-    abstract createShop(ownerId: string, input: CreateShopInput): Shop | Promise<Shop>;
+export abstract class IQuery {
+    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
 
-    abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
+    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
 
-    abstract updateUser(id: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
+    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
 
-    abstract generateUserAccessToken(input: GenerateUserAccessTokenInput): UserAccessTokenResult | Promise<UserAccessTokenResult>;
+    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
+
+    abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
+
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
 }
 
 export class User implements Node {
@@ -157,6 +159,24 @@ export class Option implements Node {
 
 export class OptionList implements List {
     items: Option[];
+    count: number;
+}
+
+export class Product implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    slug: string;
+    description?: Nullable<string>;
+    enabled: boolean;
+    archived: boolean;
+    variants?: VariantList;
+    options: Option[];
+}
+
+export class ProductList implements List {
+    items: Product[];
     count: number;
 }
 
