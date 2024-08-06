@@ -1,5 +1,7 @@
 'use client';
 
+import { Fragment } from 'react';
+
 import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,13 +27,13 @@ export const AdminBreadcrumb = () => {
       <BreadcrumbList>
         {breadcrumbItems.map(({ label, href }, i) =>
           isLast(i, breadcrumbItems) ? (
-            <BreadcrumbItem key={href}>
+            <BreadcrumbItem key={label}>
               {isFirst(i) && <BarChart2 className="h-4 w-4 mr-1" />}
               <BreadcrumbPage>{label}</BreadcrumbPage>
             </BreadcrumbItem>
           ) : (
-            <>
-              <BreadcrumbItem key={href}>
+            <Fragment key={label}>
+              <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link href={href ?? ''} className="flex items-center">
                     {isFirst(i) && <BarChart2 className="h-4 w-4 mr-1" />}
@@ -40,7 +42,7 @@ export const AdminBreadcrumb = () => {
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
-            </>
+            </Fragment>
           )
         )}
       </BreadcrumbList>

@@ -1,19 +1,23 @@
 'use client';
 
 import { ProductDetails, useProductDetailsForm } from '@/lib/product';
-import { AdminPageLayout } from '@/lib/shared/components';
+import { AdminPageLayout, Button } from '@/lib/shared/components';
 import { Form } from '@/lib/shared/form';
 
 export default function CreateProductPage() {
   const form = useProductDetailsForm();
 
   return (
-    <AdminPageLayout title="Create Product" maxWidth>
-      <Form {...form}>
-        <form onSubmit={form.onSubmit} className="flex flex-col gap-6">
+    <Form {...form}>
+      <form onSubmit={form.onSubmit}>
+        <AdminPageLayout
+          title="Create Product"
+          maxWidth
+          actions={<Button type="submit">Save</Button>}
+        >
           <ProductDetails />
-        </form>
-      </Form>
-    </AdminPageLayout>
+        </AdminPageLayout>
+      </form>
+    </Form>
   );
 }

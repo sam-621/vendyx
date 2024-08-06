@@ -16,7 +16,8 @@ export const useProductDetailsForm = () => {
       costPerUnit: '',
       stock: 0,
       sku: '',
-      weight: 0
+      requiresShipping: false,
+      enabled: true
     }
   });
 
@@ -38,7 +39,7 @@ const schema = z.object({
   costPerUnit: z.string().optional(),
   stock: z.number().int().min(0).default(0),
   sku: z.string().optional(),
-  weight: z.number().optional(),
+  requiresShipping: z.boolean(),
   enabled: z.boolean().default(true)
 });
 

@@ -63,8 +63,11 @@ export const ProductDetails = () => {
             <CardTitle>Shipping</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
-            <FormCheckbox name="requiresShipping" label="This product requires shipping" />
-            <FormInput control={control} name="weight" label="Weigh" placeholder="0.0 kg" />
+            <FormCheckbox
+              control={control}
+              name="requiresShipping"
+              label="This product requires shipping"
+            />
           </CardContent>
         </Card>
       </div>
@@ -72,7 +75,7 @@ export const ProductDetails = () => {
         <Card>
           <CardContent className="flex flex-col gap-4 mt-6">
             <Label className="text-base">Product status</Label>
-            <FormSwitch control={control} name="enabled" label="Active" />
+            <FormSwitch control={control} name="enabled" label="Published" />
           </CardContent>
         </Card>
       </div>
