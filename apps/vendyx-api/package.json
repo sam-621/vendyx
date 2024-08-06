@@ -11,7 +11,7 @@
     "dev": "dotenv -e .env -- nest start --watch",
     "dev:debug": "DEBUG=prisma* dotenv -e .env -- nest start --debug --watch",
     "start": "node dist/main",
-    "script:gql": "ts-node ./scripts/generate-gql-types.script.ts",
+    "generate": "ts-node ./scripts/generate-gql-types.script.ts",
     "db:push": "dotenv -e .env.migration prisma db push"
   },
   "dependencies": {

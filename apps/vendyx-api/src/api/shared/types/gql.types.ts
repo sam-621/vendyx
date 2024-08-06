@@ -51,6 +51,42 @@ export interface List {
     count: number;
 }
 
+export class Product implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    slug: string;
+    description?: Nullable<string>;
+    enabled: boolean;
+    archived: boolean;
+    variants?: VariantList;
+    options: Option[];
+}
+
+export class ProductList implements List {
+    items: Product[];
+    count: number;
+}
+
+export abstract class IQuery {
+    abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
+
+    abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
+
+    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
+
+    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
+
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+}
+
 export class Shop implements Node {
     id: string;
     createdAt: Date;
@@ -63,14 +99,6 @@ export class Shop implements Node {
 export class ShopList implements List {
     items: Shop[];
     count: number;
-}
-
-export abstract class IQuery {
-    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
-
-    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
-
-    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export abstract class IMutation {
@@ -109,6 +137,46 @@ export class UserResult {
 export class UserErrorResult {
     code: UserErrorCode;
     message: string;
+}
+
+export class OptionValue implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    option: Option;
+}
+
+export class Option implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    values?: Nullable<OptionValue[]>;
+}
+
+export class OptionList implements List {
+    items: Option[];
+    count: number;
+}
+
+export class Variant implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    sku: string;
+    price: number;
+    stock: number;
+    comparisonPrice?: Nullable<number>;
+    costPerUnit?: Nullable<number>;
+    weight?: Nullable<number>;
+    optionValues?: Nullable<OptionValue[]>;
+    product: Product;
+}
+
+export class VariantList implements List {
+    items: Variant[];
+    count: number;
 }
 
 export type JSON = any;
