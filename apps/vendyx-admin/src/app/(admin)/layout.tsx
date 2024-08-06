@@ -1,6 +1,6 @@
 import { BellIcon } from 'lucide-react';
 
-import { AdminLayoutNav, Button, Logo } from '@/lib/shared/components';
+import { AdminBreadcrumb, AdminLayoutNav, Button, Logo, UserAvatar } from '@/lib/shared/components';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,7 +19,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </header>
         <AdminLayoutNav />
       </aside>
-      <main className="flex flex-col">{children}</main>
+      <main className="flex flex-col">
+        <header className="flex justify-between items-center h-16 px-6">
+          <div>
+            <AdminBreadcrumb />
+          </div>
+          <div>
+            <UserAvatar />
+          </div>
+        </header>
+        {children}
+      </main>
     </div>
   );
 }
