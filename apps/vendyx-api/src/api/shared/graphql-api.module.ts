@@ -4,14 +4,10 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
 
-import { DateScalar, IDScalar } from './scalars';
-
 /**
  * Module to create a GraphQL API used for /admin-api and /storefront-api
  */
-@Module({
-  providers: [IDScalar, DateScalar]
-})
+@Module({})
 export class GraphqlApiModule {
   static register(options: GraphqlApiModuleOptions): DynamicModule {
     return {

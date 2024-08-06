@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreateProductInput, ListInput, UpdateProductInput } from '@/api/shared';
+import { CreateProductInput, ListInput, ListResponse, UpdateProductInput } from '@/api/shared';
 import { ProductService } from '@/business/product';
 
 @Resolver('Product')
@@ -9,7 +9,9 @@ export class ProductResolver {
 
   @Query('products')
   async products(@Args('input') input: ListInput) {
-    return this.productService.find(input);
+    const result = await this.productService.find(input);
+
+    return new ListResponse(result, result.length);
   }
 
   @Query('product')

@@ -38,5 +38,5 @@ type ProductList implements List {
 
 type Query {
   products(input: ListInput): ProductList!
-  product(id: ID, slug: String): Product
+  product(id: ID): Product
 }

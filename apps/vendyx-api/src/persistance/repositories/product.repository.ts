@@ -12,7 +12,7 @@ export class ProductRepository {
 
   findMany(input?: ListInput & FindOptions) {
     return this.prisma.product.findMany({
-      ...clean(input ?? {}),
+      ...clean({ skip: input?.skip, take: input?.take }),
       where: {
         archived: input?.archived ?? undefined,
         enabled: input?.enabled ?? undefined

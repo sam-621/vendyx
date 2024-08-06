@@ -7,9 +7,14 @@ import {
   PrismaForAdminClientProvider,
   PrismaForShopClientProvider
 } from './prisma-clients';
-import { ShopRepository, UserRepository } from './repositories';
+import {
+  ProductRepository,
+  ShopRepository,
+  UserRepository,
+  VariantRepository
+} from './repositories';
 
-const REPOSITORIES = [UserRepository, ShopRepository];
+const REPOSITORIES = [UserRepository, ShopRepository, ProductRepository, VariantRepository];
 
 export const CLS_SHOP_ID = 'shop_id';
 export const CLS_OWNER_ID = 'owner_id';
