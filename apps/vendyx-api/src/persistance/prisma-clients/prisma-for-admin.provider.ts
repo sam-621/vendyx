@@ -5,7 +5,11 @@ const useFactory = (prisma: PrismaService) => {
   return prisma.$extends({
     query: {
       $allModels: {
-        async $allOperations({ args, query }) {
+        async $allOperations({ args, query, operation }) {
+          if (operation === 'findUnique' || operation === 'findFirst' || operation === 'findMany') {
+            args.where = { deletedAt: null, ...args.where };
+          }
+
           const [, , , result] = await prisma.$transaction([
             /**
              * This is a workaround to always have a valid uuid in the current_shop_id and current_owner_id since the empty string is not a valid UUID
