@@ -56,10 +56,6 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
                         newState.push({ id: Math.random().toString(), name: '' });
                       }
 
-                      if (isTheLastOption && !content) {
-                        newState.pop();
-                      }
-
                       setValues(newState);
                     }}
                   />

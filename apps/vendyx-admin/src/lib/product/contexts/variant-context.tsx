@@ -14,7 +14,10 @@ export type VariantContext = {
     values: { name: string; id: string }[];
     price: number;
     stock: number;
+    selected: boolean;
   }[];
+  updateVariants: (variants: VariantContext['variants']) => void;
+  removeVariants: (ids: string[]) => void;
   appendOption: (option?: VariantContext['options'][0]) => void;
   updateOption: (id: string, input: VariantContext['options'][0]) => void;
   removeOption: (id: string) => void;
@@ -23,6 +26,8 @@ export type VariantContext = {
 const Context = createContext<VariantContext>({
   options: [],
   variants: [],
+  updateVariants: () => {},
+  removeVariants: () => {},
   appendOption: () => {},
   updateOption: () => {},
   removeOption: () => {}
@@ -38,6 +43,16 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
 
     setVariants(generatedVariants);
   }, [options]);
+
+  const updateVariants = (variants: VariantContext['variants']) => {
+    setVariants(variants);
+  };
+
+  const removeVariants = (ids: string[]) => {
+    const updatedVariants = variants.filter(v => !ids.includes(v.id));
+
+    setVariants(updatedVariants);
+  };
 
   const appendOption = (option?: VariantContext['options'][0]) => {
     if (options.length === MAX_OPTIONS_ALLOWED) return;
@@ -72,7 +87,17 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
   };
 
   return (
-    <Context.Provider value={{ options, appendOption, updateOption, removeOption, variants }}>
+    <Context.Provider
+      value={{
+        options,
+        appendOption,
+        updateOption,
+        removeOption,
+        variants,
+        updateVariants,
+        removeVariants
+      }}
+    >
       {children}
     </Context.Provider>
   );

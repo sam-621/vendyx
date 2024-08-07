@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import { UploadIcon } from 'lucide-react';
 
-import { type VariantContext } from '@/lib/product/contexts';
+import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import {
   Accordion,
   AccordionContent,
@@ -15,15 +15,27 @@ import {
 import { VariantItem } from '../variant-item';
 
 export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
+  const { variants: AllVariants, updateVariants } = useVariantContext();
+
   return (
     <Accordion type="single" collapsible className="w-full pt-3">
       <AccordionItem value="item-1">
         <div className="flex items-center pb-4 px-6">
           <div className="w-full flex items-center gap-4">
-            <Checkbox />
-            {/* <div className="w-[60px] h-[60px] rounded-md border border-dashed flex items-center justify-center">
-              <UploadIcon size={16} />
-            </div> */}
+            <Checkbox
+              checked={variants.every(v => v.selected)}
+              onCheckedChange={checked =>
+                updateVariants(
+                  AllVariants.map(v => {
+                    if (variants.some(variant => variant.id === v.id)) {
+                      return { ...v, selected: Boolean(checked) };
+                    }
+
+                    return v;
+                  })
+                )
+              }
+            />
             <div className="flex flex-col gap-2 items-start">
               <p className="w-fit">{groupName}</p>
               <AccordionTrigger className="py-0">

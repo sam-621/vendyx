@@ -2,15 +2,25 @@ import { type FC } from 'react';
 
 import { UploadIcon } from 'lucide-react';
 
-import { type VariantContext } from '@/lib/product/contexts';
+import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { Checkbox, Input } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
 export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
+  const { variants, updateVariants } = useVariantContext();
+
   return (
     <div className="flex items-center px-6 py-4 hover:bg-muted/50">
       <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
-        <Checkbox id="variant-1" />
+        <Checkbox
+          checked={variant.selected}
+          onCheckedChange={checked =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, selected: Boolean(checked) } : v))
+            )
+          }
+          id="variant-1"
+        />
         <div
           className={cn(
             'w-[60px] h-[60px] rounded-md border border-dashed flex items-center justify-center',

@@ -30,7 +30,9 @@ export const generateVariants = (options: VariantContext['options']): GenerateVa
     firstOption.values
       .flatMap(value => {
         if (!restOptions.length)
-          return [{ id: Math.random().toString(), values: [value], price: 0, stock: 0 }];
+          return [
+            { id: Math.random().toString(), values: [value], price: 0, stock: 0, selected: false }
+          ];
 
         const variants = generateVariants(restOptions);
 
@@ -38,7 +40,8 @@ export const generateVariants = (options: VariantContext['options']): GenerateVa
           id: Math.random().toString(),
           values: [value, ...variant.values],
           price: 0,
-          stock: 0
+          stock: 0,
+          selected: false
         }));
       })
       // Filter out variants with empty values (this is not allowed)
