@@ -1,3 +1,4 @@
+export * from './dropzone';
 export * from './empty-states';
 export * from './layout';
 export * from './logo';

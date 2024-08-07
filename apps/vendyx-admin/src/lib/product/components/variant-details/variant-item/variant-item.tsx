@@ -1,9 +1,7 @@
 import { type FC } from 'react';
 
-import { UploadIcon } from 'lucide-react';
-
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
-import { Checkbox, Input } from '@/lib/shared/components';
+import { Checkbox, Dropzone, Input } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
 export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
@@ -21,14 +19,7 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
           }
           id="variant-1"
         />
-        <div
-          className={cn(
-            'w-[60px] h-[60px] rounded-md border border-dashed flex items-center justify-center',
-            inGroup && 'w-[48px] h-[48px]'
-          )}
-        >
-          <UploadIcon size={16} />
-        </div>
+        <Dropzone size={inGroup ? 'sm' : 'md'} />
         <span>{variant.values.map(v => v.name).join(' / ')}</span>
       </div>
       <div className="flex items-center gap-2 w-full">

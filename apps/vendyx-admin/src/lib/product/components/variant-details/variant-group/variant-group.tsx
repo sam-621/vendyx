@@ -1,7 +1,5 @@
 import { type FC } from 'react';
 
-import { UploadIcon } from 'lucide-react';
-
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import {
   Accordion,
