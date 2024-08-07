@@ -90,7 +90,7 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
             Cancel
           </Button>
           <Button
-            disabled={Boolean(valueRepeated) || isOptionNameRepeated || hasNoValues}
+            disabled={Boolean(valueRepeated) || isOptionNameRepeated || hasNoValues || !name}
             type="button"
             size="sm"
             onClick={onDone}
