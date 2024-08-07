@@ -62,7 +62,7 @@ const getValueRepeated = (values: { name: string; id: string }[]) =>
     .filter((currentValue, i) => {
       return values.some((value, j) => {
         const isNotTheSameIndex = i !== j;
-        const isTheSameName = value.name === currentValue.name;
+        const isTheSameName = value.name.toLowerCase() === currentValue.name.toLowerCase();
 
         return isNotTheSameIndex && isTheSameName;
       });
