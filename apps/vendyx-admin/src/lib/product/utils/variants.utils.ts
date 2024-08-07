@@ -1,3 +1,4 @@
+import { isFirst } from '@/lib/shared/utils';
 import { type VariantContext } from '../contexts';
 
 /**
@@ -21,7 +22,10 @@ import { type VariantContext } from '../contexts';
  * //   { values: ['Blue', 'L'], price: 0, stock: 0 }
  * // ]
  */
-export const generateVariants = (options: VariantContext['options']): GenerateVariantsReturn => {
+export const generateVariants = (
+  options: VariantContext['options'],
+  existingVariants: VariantContext['variants']
+): GenerateVariantsReturn => {
   if (!options.length) return [];
 
   const [firstOption, ...restOptions] = options;
@@ -31,18 +35,28 @@ export const generateVariants = (options: VariantContext['options']): GenerateVa
       .flatMap(value => {
         if (!restOptions.length)
           return [
-            { id: Math.random().toString(), values: [value], price: 0, stock: 0, selected: false }
+            {
+              id: Math.random().toString(),
+              values: [value],
+              price: 0,
+              stock: 0,
+              selected: false,
+              action: 'create'
+            }
           ];
 
-        const variants = generateVariants(restOptions);
+        const variants = generateVariants(restOptions, existingVariants);
 
-        return variants.map(variant => ({
-          id: Math.random().toString(),
-          values: [value, ...variant.values],
-          price: 0,
-          stock: 0,
-          selected: false
-        }));
+        return variants.map((variant, i) => {
+          return {
+            id: Math.random().toString(),
+            values: [value, ...variant.values],
+            price: 0,
+            stock: 0,
+            selected: false,
+            action: isFirst(i) ? 'update' : 'create'
+          };
+        });
       })
       // Filter out variants with empty values (this is not allowed)
       .filter(variant => variant.values.filter(v => v.name).length > 0)

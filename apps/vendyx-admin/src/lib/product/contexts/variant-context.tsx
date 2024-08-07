@@ -39,7 +39,10 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
 
   useEffect(() => {
     const optionsWithValues = options.filter(o => o.values.filter(v => v.name).length);
-    const generatedVariants = generateVariants(optionsWithValues);
+    const generatedVariants = generateVariants(optionsWithValues, variants);
+    console.log({
+      generatedVariants
+    });
 
     setVariants(generatedVariants);
   }, [options]);
