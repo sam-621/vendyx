@@ -11,7 +11,13 @@ export const OptionDetailsPreview: FC<Props> = ({ option }) => {
     <button
       type="button"
       className="hover:bg-muted/50 w-full flex flex-col gap-4 p-4 "
-      onClick={() => updateOption(option.id, { ...option, isEditing: true })}
+      onClick={() =>
+        updateOption(option.id, {
+          ...option,
+          isEditing: true,
+          values: [...option.values, { id: Math.random().toString(), name: '' }]
+        })
+      }
     >
       <Label>{option.name}</Label>
       <div className="flex items-center gap-2">

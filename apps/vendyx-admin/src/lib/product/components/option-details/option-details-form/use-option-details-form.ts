@@ -48,7 +48,11 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       return;
     }
 
-    updateOption(option.id, { ...option, isEditing: false });
+    updateOption(option.id, {
+      ...option,
+      values: option.values.filter(v => v.name),
+      isEditing: false
+    });
   };
 
   const onRemove = () => {
