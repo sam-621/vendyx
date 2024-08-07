@@ -1,4 +1,6 @@
-import { createContext, type ReactNode, useContext, useState } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+
+import { generateVariants } from '../utils';
 
 export type VariantContext = {
   options: {
@@ -27,6 +29,13 @@ const Context = createContext<VariantContext>({
 
 export const VariantContextProvider = ({ children }: { children: ReactNode }) => {
   const [options, setOptions] = useState<VariantContext['options']>([]);
+  const [variants, setVariants] = useState<VariantContext['variants']>([]);
+
+  useEffect(() => {
+    const generatedVariants = generateVariants(options);
+
+    setVariants(generatedVariants);
+  }, [options]);
 
   const appendOption = (option?: VariantContext['options'][0]) => {
     if (options.length === MAX_OPTIONS_ALLOWED) return;
@@ -61,7 +70,7 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
   };
 
   return (
-    <Context.Provider value={{ options, appendOption, updateOption, removeOption, variants: [] }}>
+    <Context.Provider value={{ options, appendOption, updateOption, removeOption, variants }}>
       {children}
     </Context.Provider>
   );
