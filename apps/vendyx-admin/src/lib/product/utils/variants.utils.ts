@@ -26,13 +26,40 @@ export const generateVariants = (options: VariantContext['options']): GenerateVa
 
   const [firstOption, ...restOptions] = options;
 
-  return firstOption.values.flatMap(value => {
-    if (!restOptions.length) return [{ values: [value], price: 0, stock: 0 }];
+  return (
+    firstOption.values
+      .flatMap(value => {
+        if (!restOptions.length)
+          return [{ id: Math.random().toString(), values: [value], price: 0, stock: 0 }];
 
-    const variants = generateVariants(restOptions);
+        const variants = generateVariants(restOptions);
 
-    return variants.map(variant => ({ values: [value, ...variant.values], price: 0, stock: 0 }));
-  });
+        return variants.map(variant => ({
+          id: Math.random().toString(),
+          values: [value, ...variant.values],
+          price: 0,
+          stock: 0
+        }));
+      })
+      // Filter out variants with empty values (this is not allowed)
+      .filter(variant => variant.values.filter(v => v.name).length > 0)
+  );
 };
+type GenerateVariantsReturn = VariantContext['variants'];
 
-type GenerateVariantsReturn = { values: string[]; price: number; stock: number }[];
+export const getVariantsGroupedByOption = (
+  option: VariantContext['options'][0],
+  variants: VariantContext['variants']
+) => {
+  const groups: Record<string, VariantContext['variants'][0][]> = {};
+
+  option?.values?.forEach(v => {
+    const variantsWithCurrentValue = variants.filter(variant =>
+      variant.values?.map(v => v.id).includes(v.id)
+    );
+
+    groups[v.name] = variantsWithCurrentValue;
+  });
+
+  return groups;
+};

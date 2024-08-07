@@ -7,10 +7,11 @@ export type VariantContext = {
     id: string;
     isEditing: boolean;
     name: string;
-    values: string[];
+    values: { name: string; id: string }[];
   }[];
   variants: {
-    values: string[];
+    id: string;
+    values: { name: string; id: string }[];
     price: number;
     stock: number;
   }[];
@@ -32,7 +33,8 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
   const [variants, setVariants] = useState<VariantContext['variants']>([]);
 
   useEffect(() => {
-    const generatedVariants = generateVariants(options);
+    const optionsWithValues = options.filter(o => o.values.filter(v => v.name).length);
+    const generatedVariants = generateVariants(optionsWithValues);
 
     setVariants(generatedVariants);
   }, [options]);
@@ -47,7 +49,7 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
           id: Math.random().toString(),
           isEditing: true,
           name: '',
-          values: ['']
+          values: [{ id: Math.random().toString(), name: '' }]
         }
       ]);
 

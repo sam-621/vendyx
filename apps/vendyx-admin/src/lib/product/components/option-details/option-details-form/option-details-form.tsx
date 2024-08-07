@@ -31,10 +31,10 @@ export const OptionDetailsForm: FC<Props> = ({ option }) => {
           <p className="text-sm text-red-500">Already exists an option called &quot;{name}&quot;</p>
         )}
       </div>
-      <div>
+      <div className="">
         <Label>Values</Label>
 
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full mt-1">
           {values.map((value, i) => {
             const isRepeated = valueRepeated?.id === value.id;
 

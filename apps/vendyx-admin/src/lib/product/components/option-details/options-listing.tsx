@@ -12,7 +12,7 @@ export const OptionsListing = () => {
     return (
       <Button
         onClick={() => appendOption()}
-        className="text-distinct p-0"
+        className="text-distinct p-0 h-fit"
         variant="link"
         type="button"
       >

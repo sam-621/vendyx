@@ -5,9 +5,7 @@ import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const { updateOption, removeOption, options } = useVariantContext();
   const [name, setName] = useState(option.name);
-  const [values, setValues] = useState<{ name: string; id: string }[]>(
-    option.values.map(v => ({ name: v, id: Math.random().toString() }))
-  );
+  const [values, setValues] = useState<{ name: string; id: string }[]>(option.values);
 
   const isOptionNameRepeated = useMemo(
     () => getOptionNameIsRepeated(options, name, option),
@@ -22,7 +20,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     updateOption(option.id, {
       ...option,
       name,
-      values: values.filter(v => v.name).map(v => v.name),
+      values: values.filter(v => v.name),
       isEditing: false
     });
   };
