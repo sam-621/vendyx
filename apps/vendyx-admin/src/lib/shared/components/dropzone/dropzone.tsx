@@ -1,24 +1,36 @@
-import { type FC } from 'react';
+'use client';
+
+import { type FC, useEffect } from 'react';
+import { useDropzone } from 'react-dropzone';
 
 import { UploadIcon } from 'lucide-react';
 
 import { cn } from '../../utils';
 
-export const Dropzone: FC<Props> = ({ size }) => {
+export const Dropzone: FC<Props> = ({ size, onAcceptFiles }) => {
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+
+  useEffect(() => {
+    onAcceptFiles(acceptedFiles);
+  }, [acceptedFiles, onAcceptFiles]);
+
   return (
-    <div
+    <label
       className={cn(
-        'w-[60px] h-[60px] rounded-md border border-dashed flex items-center justify-center',
+        'w-[60px] h-[60px] rounded-md border border-dashed flex items-center justify-center hover:bg-muted/50 cursor-pointer',
         getSize(size)
       )}
+      {...getRootProps()}
     >
+      <input {...getInputProps()} type="file" className="hidden" />
       <UploadIcon size={16} />
-    </div>
+    </label>
   );
 };
 
 type Props = {
   size: 'sm' | 'md' | 'lg';
+  onAcceptFiles: (files: File[]) => void;
 };
 
 const getSize = (size: Props['size']) => {

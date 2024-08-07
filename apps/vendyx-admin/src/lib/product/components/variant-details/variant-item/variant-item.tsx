@@ -19,7 +19,7 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
           }
           id="variant-1"
         />
-        <Dropzone size={inGroup ? 'sm' : 'md'} />
+        <Dropzone size={inGroup ? 'sm' : 'md'} onAcceptFiles={files => console.log(files)} />
         <span>{variant.values.map(v => v.name).join(' / ')}</span>
       </div>
       <div className="flex items-center gap-2 w-full">
