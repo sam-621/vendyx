@@ -1,6 +1,6 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 
-import { generateVariants } from '../utils';
+import { generateVariants, getUnusedOptionValues } from '../utils';
 
 export type VariantContext = {
   options: {
@@ -51,7 +51,16 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
   const removeVariants = (ids: string[]) => {
     const updatedVariants = variants.filter(v => !ids.includes(v.id));
 
+    const unusedValues = getUnusedOptionValues(options, updatedVariants);
+    const newOptions = options
+      .map(o => ({
+        ...o,
+        values: o.values.filter(v => !unusedValues.map(uv => uv.id).includes(v.id))
+      }))
+      .filter(o => o.values.length);
+
     setVariants(updatedVariants);
+    setOptions(newOptions);
   };
 
   const appendOption = (option?: VariantContext['options'][0]) => {

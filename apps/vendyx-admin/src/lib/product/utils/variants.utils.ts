@@ -50,6 +50,9 @@ export const generateVariants = (options: VariantContext['options']): GenerateVa
 };
 type GenerateVariantsReturn = VariantContext['variants'];
 
+/**
+ * Get all variants grouped by the provided option.
+ */
 export const getVariantsGroupedByOption = (
   option: VariantContext['options'][0],
   variants: VariantContext['variants']
@@ -65,4 +68,17 @@ export const getVariantsGroupedByOption = (
   });
 
   return groups;
+};
+
+/**
+ * Get all option values that are not used in any variant.
+ */
+export const getUnusedOptionValues = (
+  option: VariantContext['options'],
+  variants: VariantContext['variants']
+) => {
+  const usedValues = variants.flatMap(v => v.values.map(v => v.id));
+  const unusedValues = option.flatMap(o => o.values).filter(v => !usedValues.includes(v.id));
+
+  return unusedValues;
 };
