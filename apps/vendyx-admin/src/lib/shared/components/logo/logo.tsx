@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared/utils';
 
 export const Logo: FC<Props> = ({ className }) => {
   return (
