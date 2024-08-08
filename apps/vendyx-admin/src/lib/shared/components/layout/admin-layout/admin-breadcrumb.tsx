@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 
 import { BarChart2 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 
 import { isFirst, isLast } from '@/lib/shared/utils';
 
@@ -19,8 +19,14 @@ import {
 
 export const AdminBreadcrumb = () => {
   const pathname = usePathname();
+  const params = useParams();
 
-  const breadcrumbItems = [{ label: 'Dashboard', href: '/' }, ...getBreadcrumbItems(pathname)];
+  const shop = Array.isArray(params.shop) ? params.shop[0] : params.shop;
+
+  const breadcrumbItems = [
+    { label: 'Dashboard', href: '/' },
+    ...getBreadcrumbItems(pathname.replace(`/shops/${shop}`, ''))
+  ];
 
   return (
     <Breadcrumb>
@@ -50,7 +56,7 @@ export const AdminBreadcrumb = () => {
   );
 };
 
-const BRADCRUMBS: Record<string, TBreadcrumbItem[]> = {
+const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/': [],
   '/products': [{ href: '/products', label: 'Products' }, { label: 'All products' }],
   '/products/new': [{ href: '/products', label: 'Products' }, { label: 'Create product' }]
@@ -62,5 +68,5 @@ type TBreadcrumbItem = {
 };
 
 const getBreadcrumbItems = (pathname: string) => {
-  return BRADCRUMBS[pathname] ?? [];
+  return BREADCRUMBS[pathname] ?? [];
 };
