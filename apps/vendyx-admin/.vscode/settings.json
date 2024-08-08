@@ -21,8 +21,10 @@
     "gacp",
     "hookform",
     "lucide",
+    "nprogress",
     "sonner",
     "tailwindcss",
+    "tanstack",
     "VENDYX"
   ]
 }

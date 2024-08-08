@@ -1,3 +1,4 @@
+export * from './data-table';
 export * from './dropzone';
 export * from './empty-states';
 export * from './file-uploader';
