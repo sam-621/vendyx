@@ -6,6 +6,10 @@ export const setToken = (token: string) => {
   cookies().set(CookiesNames.AdminToken, token, { maxAge: CookiesDurations.days_7 });
 };
 
+export const removeToken = () => {
+  cookies().delete(CookiesNames.AdminToken);
+};
+
 export const getToken = () => {
   return cookies().get(CookiesNames.AdminToken)?.value;
 };
@@ -16,4 +20,8 @@ export const setShopId = (shopId: string) => {
 
 export const getShopId = () => {
   return cookies().get(CookiesNames.ShopId)?.value;
+};
+
+export const removeShopId = () => {
+  cookies().delete(CookiesNames.ShopId);
 };

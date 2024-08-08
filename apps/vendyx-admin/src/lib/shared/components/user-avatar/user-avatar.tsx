@@ -3,6 +3,8 @@
 import { LaptopIcon, MoonIcon, SunIcon, SunMoonIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
+import { logout } from '@/lib/auth';
+
 import {
   Button,
   DropdownMenu,
@@ -56,6 +58,7 @@ export const UserAvatar = () => {
             type="submit"
             variant={'ghost'}
             className="h-full w-full flex justify-start px-2 py-[6px]"
+            onClick={() => logout()}
           >
             <span className="text-red-500 hover:text-red-500">Logout</span>
           </Button>

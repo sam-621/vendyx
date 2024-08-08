@@ -26,7 +26,7 @@ const onCreate = async (input: SaveProductInput) => {
   const product = await createProduct(input);
   await createVariants(product.id, variants);
 
-  redirect(`/products/${product.id}`);
+  redirect(`${product.id}`);
 };
 
 const onUpdate = async (input: SaveProductInput) => {
