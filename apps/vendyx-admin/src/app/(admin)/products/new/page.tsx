@@ -10,7 +10,11 @@ export default function CreateProductPage() {
   return (
     <Form {...form}>
       <form onSubmit={form.onSubmit}>
-        <AdminPageLayout title="Create Product" maxWidth actions={<ProductSubmitButton />}>
+        <AdminPageLayout
+          title="Create Product"
+          maxWidth
+          actions={<ProductSubmitButton isLoading={form.isLoading} />}
+        >
           <ProductDetails />
         </AdminPageLayout>
       </form>

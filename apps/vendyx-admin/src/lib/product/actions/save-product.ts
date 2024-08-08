@@ -1,5 +1,7 @@
 'use server';
 
+import { redirect } from 'next/navigation';
+
 import { productService, variantService } from '@/lib/shared/api';
 
 export const saveProduct = async (input: SaveProductInput) => {
@@ -10,8 +12,9 @@ export const saveProduct = async (input: SaveProductInput) => {
   }
 
   const product = await createProduct(input);
-
   await createVariants(product.id, variants);
+
+  redirect(`/products/${product.id}`);
 };
 
 const createProduct = async (input: SaveProductInput) => {

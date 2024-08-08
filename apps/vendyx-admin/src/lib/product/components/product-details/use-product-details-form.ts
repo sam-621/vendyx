@@ -1,11 +1,18 @@
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { FormMessages } from '@/lib/shared/form';
+import { notification } from '@/lib/shared/notifications';
+import { parsePrice } from '@/lib/shared/utils';
+
+import { saveProduct } from '../../actions';
 
 export const useProductDetailsForm = () => {
+  const [isLoading, startTransition] = useTransition();
+
   const form = useForm<ProductDetailsFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -22,11 +29,30 @@ export const useProductDetailsForm = () => {
   });
 
   async function onSubmit(values: ProductDetailsFormInput) {
-    console.log(values);
+    startTransition(async () => {
+      await saveProduct({
+        name: values.name,
+        description: values.description,
+        enabled: values.enabled,
+        variants: [
+          {
+            salePrice: values.price ? parsePrice(values.price) : 0,
+            comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
+            costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
+            stock: values.stock,
+            sku: values.sku,
+            requiresShipping: values.requiresShipping
+          }
+        ]
+      });
+
+      notification.success('Product saved');
+    });
   }
 
   return {
     onSubmit: form.handleSubmit(onSubmit),
+    isLoading,
     ...form
   };
 };
