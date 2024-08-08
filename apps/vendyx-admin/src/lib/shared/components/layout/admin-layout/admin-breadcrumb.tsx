@@ -22,10 +22,13 @@ export const AdminBreadcrumb = () => {
   const params = useParams();
 
   const shop = Array.isArray(params.shop) ? params.shop[0] : params.shop;
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
+  const pathnameWithoutBase = pathname.replace(`/shops/${shop}`, '').replace(id, '');
 
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/' },
-    ...getBreadcrumbItems(pathname.replace(`/shops/${shop}`, ''))
+    ...getBreadcrumbItems(pathnameWithoutBase)
   ];
 
   return (
@@ -41,7 +44,7 @@ export const AdminBreadcrumb = () => {
             <Fragment key={label}>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link href={href ?? ''} className="flex items-center">
+                  <Link href={`/shops/${shop}${href ?? ''}`} className="flex items-center">
                     {isFirst(i) && <BarChart2 className="h-4 w-4 mr-1" />}
                     {label}
                   </Link>
@@ -59,6 +62,7 @@ export const AdminBreadcrumb = () => {
 const BREADCRUMBS: Record<string, TBreadcrumbItem[]> = {
   '/': [],
   '/products': [{ href: '/products', label: 'Products' }, { label: 'All products' }],
+  '/products/': [{ href: '/products', label: 'Products' }, { label: 'Product details' }],
   '/products/new': [{ href: '/products', label: 'Products' }, { label: 'Create product' }]
 };
 

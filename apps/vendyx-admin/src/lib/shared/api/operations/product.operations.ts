@@ -14,6 +14,9 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
         salePrice
         sku
         stock
+        comparisonPrice
+        costPerUnit
+        requiresShipping
         # optionValues {
         #   id
         #   value

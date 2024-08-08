@@ -21,7 +21,7 @@ import { type VariantContext } from '../contexts';
  *
  * const variants = generateVariants(options);
  *
- * console.log
+ * // values:
  * // [
  * //   { values: ['Red', 'S'], price: 0, stock: 0 },
  * //   { values: ['Red', 'M'], price: 0, stock: 0 },

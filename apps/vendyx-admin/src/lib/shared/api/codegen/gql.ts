@@ -12,7 +12,7 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        # optionValues {\n        #   id\n        #   value\n        # }\n      }\n    }\n    # assets {\n    #   items {\n    #     id\n    #     createdAt\n    #     name\n    #     source\n    #     order\n    #   }\n    # }\n  }\n':
+  '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        # optionValues {\n        #   id\n        #   value\n        # }\n      }\n    }\n    # assets {\n    #   items {\n    #     id\n    #     createdAt\n    #     name\n    #     source\n    #     order\n    #   }\n    # }\n  }\n':
     types.CommonProductFragmentDoc,
   '\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        # assets(input: { take: 1 }) {\n        #   items {\n        #     id\n        #     source\n        #   }\n        # }\n      }\n    }\n  }\n':
     types.GetProductsDocument,
@@ -50,7 +50,7 @@ const documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        # optionValues {\n        #   id\n        #   value\n        # }\n      }\n    }\n    # assets {\n    #   items {\n    #     id\n    #     createdAt\n    #     name\n    #     source\n    #     order\n    #   }\n    # }\n  }\n'
+  source: '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        # optionValues {\n        #   id\n        #   value\n        # }\n      }\n    }\n    # assets {\n    #   items {\n    #     id\n    #     createdAt\n    #     name\n    #     source\n    #     order\n    #   }\n    # }\n  }\n'
 ): typeof import('./graphql').CommonProductFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

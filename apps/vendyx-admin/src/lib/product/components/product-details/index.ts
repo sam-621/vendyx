@@ -1,2 +1,1 @@
-export * from './product-details';
-export * from './use-product-details-form';
+export * from './product-details-form';

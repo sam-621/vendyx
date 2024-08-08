@@ -26,7 +26,9 @@ export class VariantService {
   update(id: string, input: UpdateVariantInput) {
     return this.variantRepository.update(id, {
       ...clean(input),
-      salePrice: input.salePrice ? convertToCent(input.salePrice) : undefined
+      salePrice: input.salePrice ? convertToCent(input.salePrice) : undefined,
+      comparisonPrice: input.comparisonPrice ? convertToCent(input.comparisonPrice) : undefined,
+      costPerUnit: input.costPerUnit ? convertToCent(input.costPerUnit) : undefined
     });
   }
 

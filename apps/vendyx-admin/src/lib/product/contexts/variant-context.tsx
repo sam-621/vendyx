@@ -37,16 +37,6 @@ export const VariantContextProvider = ({ children }: { children: ReactNode }) =>
   const [options, setOptions] = useState<VariantContext['options']>([]);
   const [variants, setVariants] = useState<VariantContext['variants']>([]);
 
-  // useEffect(() => {
-  //   const optionsWithValues = options.filter(o => o.values.filter(v => v.name).length);
-  //   const generatedVariants = generateVariants(optionsWithValues, variants);
-  //   console.log({
-  //     generatedVariants
-  //   });
-
-  //   setVariants(generatedVariants);
-  // }, [options]);
-
   const updateVariants = (variants: VariantContext['variants']) => {
     setVariants(variants);
   };

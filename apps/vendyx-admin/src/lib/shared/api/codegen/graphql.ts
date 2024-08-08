@@ -372,6 +372,9 @@ export type CommonProductFragment = {
       salePrice: number;
       sku?: string | null;
       stock: number;
+      comparisonPrice?: number | null;
+      costPerUnit?: number | null;
+      requiresShipping: boolean;
     }>;
   };
 } & { ' $fragmentName'?: 'CommonProductFragment' };
@@ -580,6 +583,9 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
       salePrice
       sku
       stock
+      comparisonPrice
+      costPerUnit
+      requiresShipping
     }
   }
 }
@@ -627,6 +633,9 @@ export const GetProductDocument = new TypedDocumentString(`
       salePrice
       sku
       stock
+      comparisonPrice
+      costPerUnit
+      requiresShipping
     }
   }
 }`) as unknown as TypedDocumentString<GetProductQuery, GetProductQueryVariables>;

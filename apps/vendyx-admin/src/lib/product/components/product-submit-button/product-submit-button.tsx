@@ -1,9 +1,11 @@
+'use client';
+
 import { type FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { Button } from '@/lib/shared/components';
 
-import { type ProductDetailsFormInput } from '../product-details';
+import { type ProductDetailsFormInput } from '../product-details/use-product-details-form';
 
 export const ProductSubmitButton: FC<Props> = ({ isLoading }) => {
   const form = useFormContext<ProductDetailsFormInput>();
@@ -12,7 +14,7 @@ export const ProductSubmitButton: FC<Props> = ({ isLoading }) => {
   const withValues = Boolean(values.name?.length);
 
   return (
-    <Button disabled={!withValues || isLoading} type="submit">
+    <Button isLoading={isLoading} disabled={!withValues || isLoading} type="submit">
       Save
     </Button>
   );

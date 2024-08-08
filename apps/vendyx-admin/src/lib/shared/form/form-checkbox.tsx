@@ -15,10 +15,10 @@ export const FormCheckbox = <
     <FormField
       name={name}
       {...rest}
-      render={() => (
+      render={({ field }) => (
         <FormItem className="flex items-center gap-2 space-y-0">
           <FormControl>
-            <Checkbox />
+            <Checkbox onCheckedChange={field.onChange} checked={field.value} />
           </FormControl>
           {label && (
             <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

@@ -4,38 +4,45 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { type CommonProductFragment } from '@/lib/shared/api';
 import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
-import { parsePrice } from '@/lib/shared/utils';
+import { formatPrice, parsePrice } from '@/lib/shared/utils';
 
 import { saveProduct } from '../../actions';
 
-export const useProductDetailsForm = () => {
+export const useProductDetailsForm = (product?: CommonProductFragment) => {
   const [isLoading, startTransition] = useTransition();
+
+  const defaultVariant = product?.variants.items[0];
 
   const form = useForm<ProductDetailsFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
-      description: '',
-      price: '',
-      comparisonPrice: '',
-      costPerUnit: '',
-      stock: 0,
-      sku: '',
-      requiresShipping: false,
-      enabled: true
+      name: product?.name ?? '',
+      description: product?.description ?? '',
+      price: defaultVariant?.salePrice ? formatPrice(defaultVariant.salePrice) : '',
+      comparisonPrice: defaultVariant?.comparisonPrice
+        ? formatPrice(defaultVariant.comparisonPrice)
+        : '',
+      costPerUnit: defaultVariant?.costPerUnit ? formatPrice(defaultVariant.costPerUnit) : '',
+      stock: defaultVariant?.stock ?? 0,
+      sku: defaultVariant?.sku ?? '',
+      requiresShipping: defaultVariant?.requiresShipping ?? false,
+      enabled: product?.enabled ?? true
     }
   });
 
   async function onSubmit(values: ProductDetailsFormInput) {
     startTransition(async () => {
       await saveProduct({
+        productId: product?.id,
         name: values.name,
         description: values.description,
         enabled: values.enabled,
         variants: [
           {
+            id: defaultVariant?.id,
             salePrice: values.price ? parsePrice(values.price) : 0,
             comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
             costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
