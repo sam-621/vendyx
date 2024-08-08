@@ -9,3 +9,11 @@ export const setToken = (token: string) => {
 export const getToken = () => {
   return cookies().get(CookiesNames.AdminToken)?.value;
 };
+
+export const setShopId = (shopId: string) => {
+  cookies().set(CookiesNames.ShopId, shopId, { maxAge: CookiesDurations.infinite });
+};
+
+export const getShopId = () => {
+  return cookies().get(CookiesNames.ShopId)?.value;
+};

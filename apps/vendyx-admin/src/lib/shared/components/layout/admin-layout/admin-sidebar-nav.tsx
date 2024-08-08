@@ -17,25 +17,25 @@ export const AdminLayoutNav = () => {
   const SIDEBAR_ITEMS = [
     {
       icon: PackageIcon,
-      to: '/products',
+      to: pathname + '/products',
       label: 'Products',
       isActive: isInProducts
     },
     {
       icon: BoxesIcon,
-      to: '/collections',
+      to: pathname + '/collections',
       label: 'Collections',
       isActive: isInCollections
     },
     {
       icon: ShoppingCartIcon,
-      to: '/orders',
+      to: pathname + '/orders',
       label: 'Orders',
       isActive: isInOrders
     },
     {
       icon: UserIcon,
-      to: '/customers',
+      to: pathname + '/customers',
       label: 'Customers',
       isActive: isInCustomers
     }

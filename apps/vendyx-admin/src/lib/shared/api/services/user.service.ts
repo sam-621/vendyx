@@ -14,7 +14,8 @@ import {
 import { fetcher } from './fetcher';
 
 const get = async (accessToken: string) => {
-  return await fetcher(GET_USER_QUERY, { accessToken });
+  const { user } = await fetcher(GET_USER_QUERY, { accessToken });
+  return user;
 };
 
 const create = async (input: CreateUserInput): Promise<UserResult> => {

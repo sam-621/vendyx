@@ -1,4 +1,4 @@
-import { getToken } from '../../cookies';
+import { getShopId, getToken } from '../../cookies';
 import { type TypedDocumentString } from '../codegen/graphql';
 
 /**
@@ -14,7 +14,8 @@ export const fetcher = async <R, V>(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`
+        Authorization: `Bearer ${getToken()}`,
+        shop_id: getShopId() ?? ''
       },
       body: JSON.stringify({
         query: query.toString(),

@@ -454,13 +454,7 @@ export type GetShopsQuery = {
   shops: {
     __typename?: 'ShopList';
     count: number;
-    items: Array<{
-      __typename?: 'Shop';
-      id: string;
-      name: string;
-      slug: string;
-      owner: { __typename?: 'User'; id: string; email: string };
-    }>;
+    items: Array<{ __typename?: 'Shop'; id: string; slug: string }>;
   };
 };
 
@@ -663,12 +657,7 @@ export const GetShopsDocument = new TypedDocumentString(`
     count
     items {
       id
-      name
       slug
-      owner {
-        id
-        email
-      }
     }
   }
 }

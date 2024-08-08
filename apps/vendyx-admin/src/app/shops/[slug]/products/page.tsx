@@ -7,7 +7,7 @@ export default function Home() {
     <AdminPageLayout
       title="Products"
       actions={
-        <Link href="/products/new">
+        <Link href="products/new">
           <Button>Add product</Button>
         </Link>
       }

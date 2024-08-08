@@ -6,12 +6,7 @@ export const GET_SHOPS_QUERY = graphql(`
       count
       items {
         id
-        name
         slug
-        owner {
-          id
-          email
-        }
       }
     }
   }
