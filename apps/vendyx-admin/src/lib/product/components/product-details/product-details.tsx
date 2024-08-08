@@ -62,7 +62,13 @@ export const ProductDetails = () => {
             <CardTitle>Stock</CardTitle>
           </CardHeader>
           <CardContent className="flex gap-3">
-            <FormInput control={control} name="stock" label="Quantity" placeholder="0" />
+            <FormInput
+              control={control}
+              name="stock"
+              type="number"
+              label="Quantity"
+              placeholder="0"
+            />
             <FormInput control={control} name="sku" label="SKU" />
           </CardContent>
         </Card>

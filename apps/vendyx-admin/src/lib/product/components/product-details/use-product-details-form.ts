@@ -63,7 +63,7 @@ const schema = z.object({
   price: z.string().optional(),
   comparisonPrice: z.string().optional(),
   costPerUnit: z.string().optional(),
-  stock: z.number().int().min(0).default(0),
+  stock: z.preprocess(val => Number(val ?? 0), z.number().int().min(0).default(0)),
   sku: z.string().optional(),
   requiresShipping: z.boolean(),
   enabled: z.boolean().default(true)
