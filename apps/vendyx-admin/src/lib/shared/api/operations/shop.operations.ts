@@ -23,8 +23,8 @@ export const GET_SHOP_QUERY = graphql(`
 `);
 
 export const CREATE_SHOP_MUTATION = graphql(`
-  mutation CreateShop($ownerId: ID!, $input: CreateShopInput!) {
-    createShop(ownerId: $ownerId, input: $input) {
+  mutation CreateShop($input: CreateShopInput!) {
+    createShop(input: $input) {
       id
       name
       slug

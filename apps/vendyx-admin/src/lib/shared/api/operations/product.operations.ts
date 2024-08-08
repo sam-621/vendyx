@@ -39,6 +39,9 @@ export const GET_ALL_PRODUCTS_QUERY = graphql(`
   query GetProducts($input: ListInput) {
     products(input: $input) {
       count
+      pageInfo {
+        total
+      }
       items {
         id
         createdAt

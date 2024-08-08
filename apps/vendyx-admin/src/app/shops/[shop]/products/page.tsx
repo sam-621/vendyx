@@ -1,8 +1,16 @@
+import { Suspense } from 'react';
+
 import Link from 'next/link';
 
-import { AdminPageLayout, Button, DataTableEmptyState } from '@/lib/shared/components';
+import { ProductTable } from '@/lib/product';
+import {
+  AdminPageLayout,
+  Button,
+  type DataTableSearchParams,
+  DataTableSkeleton
+} from '@/lib/shared/components';
 
-export default function Home() {
+export default function ProductsPage({ searchParams }: Props) {
   return (
     <AdminPageLayout
       title="Products"
@@ -12,11 +20,13 @@ export default function Home() {
         </Link>
       }
     >
-      <DataTableEmptyState
-        title="You have no products"
-        description="You can start selling as soon as you add a product."
-        action={{ label: 'Add product', to: '/product/create' }}
-      />
+      <Suspense fallback={<DataTableSkeleton />}>
+        <ProductTable {...searchParams} />
+      </Suspense>
     </AdminPageLayout>
   );
 }
+
+type Props = {
+  searchParams: DataTableSearchParams;
+};

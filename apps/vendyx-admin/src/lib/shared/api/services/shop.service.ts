@@ -8,8 +8,8 @@ const getAll = async () => {
   return shops;
 };
 
-const create = async (ownerId: string, input: CreateShopInput) => {
-  return await fetcher(CREATE_SHOP_MUTATION, { ownerId, input });
+const create = async (input: CreateShopInput) => {
+  return await fetcher(CREATE_SHOP_MUTATION, { input });
 };
 
 export const shopService = {

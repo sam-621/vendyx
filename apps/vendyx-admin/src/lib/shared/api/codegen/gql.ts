@@ -14,7 +14,7 @@ import * as types from './graphql';
 const documents = {
   '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        # optionValues {\n        #   id\n        #   value\n        # }\n      }\n    }\n    # assets {\n    #   items {\n    #     id\n    #     createdAt\n    #     name\n    #     source\n    #     order\n    #   }\n    # }\n  }\n':
     types.CommonProductFragmentDoc,
-  '\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        # assets(input: { take: 1 }) {\n        #   items {\n        #     id\n        #     source\n        #   }\n        # }\n      }\n    }\n  }\n':
+  '\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        # assets(input: { take: 1 }) {\n        #   items {\n        #     id\n        #     source\n        #   }\n        # }\n      }\n    }\n  }\n':
     types.GetProductsDocument,
   '\n  query GetProduct($id: ID) {\n    product(id: $id) {\n      ...CommonProduct\n    }\n  }\n':
     types.GetProductDocument,
@@ -28,7 +28,7 @@ const documents = {
     types.GetShopsDocument,
   '\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      id\n      name\n      slug\n    }\n  }\n':
     types.ShopDocument,
-  '\n  mutation CreateShop($ownerId: ID!, $input: CreateShopInput!) {\n    createShop(ownerId: $ownerId, input: $input) {\n      id\n      name\n      slug\n    }\n  }\n':
+  '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      name\n      slug\n    }\n  }\n':
     types.CreateShopDocument,
   '\n  query GetUser($accessToken: String!) {\n    user(accessToken: $accessToken) {\n      id\n    }\n  }\n':
     types.GetUserDocument,
@@ -56,7 +56,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        # assets(input: { take: 1 }) {\n        #   items {\n        #     id\n        #     source\n        #   }\n        # }\n      }\n    }\n  }\n'
+  source: '\n  query GetProducts($input: ListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        # assets(input: { take: 1 }) {\n        #   items {\n        #     id\n        #     source\n        #   }\n        # }\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetProductsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -98,7 +98,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation CreateShop($ownerId: ID!, $input: CreateShopInput!) {\n    createShop(ownerId: $ownerId, input: $input) {\n      id\n      name\n      slug\n    }\n  }\n'
+  source: '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      name\n      slug\n    }\n  }\n'
 ): typeof import('./graphql').CreateShopDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

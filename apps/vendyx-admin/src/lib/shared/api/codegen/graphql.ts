@@ -57,6 +57,7 @@ export type GenerateUserAccessTokenInput = {
 export type List = {
   count: Scalars['Int']['output'];
   items: Array<Node>;
+  pageInfo: PageInfo;
 };
 
 export type ListInput = {
@@ -86,7 +87,6 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateShopArgs = {
   input: CreateShopInput;
-  ownerId: Scalars['ID']['input'];
 };
 
 export type MutationCreateUserArgs = {
@@ -145,6 +145,7 @@ export type OptionList = List & {
   __typename?: 'OptionList';
   count: Scalars['Int']['output'];
   items: Array<Option>;
+  pageInfo: PageInfo;
 };
 
 export type OptionValue = Node & {
@@ -154,6 +155,11 @@ export type OptionValue = Node & {
   name: Scalars['String']['output'];
   option: Option;
   updatedAt: Scalars['Date']['output'];
+};
+
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  total: Scalars['Int']['output'];
 };
 
 export type Product = Node & {
@@ -191,6 +197,7 @@ export type ProductList = List & {
   __typename?: 'ProductList';
   count: Scalars['Int']['output'];
   items: Array<Product>;
+  pageInfo: PageInfo;
 };
 
 export type Query = {
@@ -250,6 +257,7 @@ export type ShopList = List & {
   __typename?: 'ShopList';
   count: Scalars['Int']['output'];
   items: Array<Shop>;
+  pageInfo: PageInfo;
 };
 
 export type UpdateProductInput = {
@@ -308,6 +316,7 @@ export type UserList = List & {
   __typename?: 'UserList';
   count: Scalars['Int']['output'];
   items: Array<User>;
+  pageInfo: PageInfo;
 };
 
 export type UserResult = {
@@ -354,6 +363,7 @@ export type VariantList = List & {
   __typename?: 'VariantList';
   count: Scalars['Int']['output'];
   items: Array<Variant>;
+  pageInfo: PageInfo;
 };
 
 export type CommonProductFragment = {
@@ -388,6 +398,7 @@ export type GetProductsQuery = {
   products: {
     __typename?: 'ProductList';
     count: number;
+    pageInfo: { __typename?: 'PageInfo'; total: number };
     items: Array<{
       __typename?: 'Product';
       id: string;
@@ -471,7 +482,6 @@ export type ShopQuery = {
 };
 
 export type CreateShopMutationVariables = Exact<{
-  ownerId: Scalars['ID']['input'];
   input: CreateShopInput;
 }>;
 
@@ -596,6 +606,9 @@ export const GetProductsDocument = new TypedDocumentString(`
     query GetProducts($input: ListInput) {
   products(input: $input) {
     count
+    pageInfo {
+      total
+    }
     items {
       id
       createdAt
@@ -681,8 +694,8 @@ export const ShopDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<ShopQuery, ShopQueryVariables>;
 export const CreateShopDocument = new TypedDocumentString(`
-    mutation CreateShop($ownerId: ID!, $input: CreateShopInput!) {
-  createShop(ownerId: $ownerId, input: $input) {
+    mutation CreateShop($input: CreateShopInput!) {
+  createShop(input: $input) {
     id
     name
     slug

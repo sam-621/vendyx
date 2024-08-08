@@ -32,8 +32,8 @@ export class ShopResolver {
 
   @UseGuards(UserJwtAuthGuard)
   @Mutation('createShop')
-  async createShop(@Args('ownerId') ownerId: string, @Args('input') input: CreateShopInput) {
-    return this.shopService.create(ownerId, input);
+  async createShop(@Args('input') input: CreateShopInput) {
+    return this.shopService.create(input);
   }
 
   @ResolveField('owner')

@@ -31,8 +31,8 @@ export const DataTable = <TData, TValue>({
   const { replace } = useRouter();
 
   const [pagination, setPagination] = useState({
-    pageIndex: Number(defaults?.page ?? 0) - 1 ?? 0, // initial page index
-    pageSize: Number(defaults?.size ?? 0) ?? 10 // default page size
+    pageIndex: defaults.page - 1, // initial page index
+    pageSize: defaults.size // default page size
   });
 
   const table = useReactTable({
@@ -114,12 +114,12 @@ export const DataTable = <TData, TValue>({
   }, [pagination.pageSize]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-4 w-full">
           <Input
-            placeholder="Buscar..."
-            className="w-full"
+            placeholder="Search..."
+            className="bg-background w-fit"
             onChange={e => handleSearch(e.target.value)}
             defaultValue={searchParams.get(getParamName('search'))?.toString()}
           />
@@ -171,7 +171,7 @@ export const DataTable = <TData, TValue>({
   );
 };
 
-export type DataTableProps<TData, TValue> = Partial<ConfigurableTable> & {
+export type DataTableProps<TData, TValue> = ConfigurableTable & {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   /**
@@ -200,8 +200,8 @@ export type ConfigurableTable = {
    * Default values for the pagination and filters
    */
   defaults: {
-    page: number | string;
-    size: number | string;
+    page: number;
+    size: number;
     search: string;
   };
 };

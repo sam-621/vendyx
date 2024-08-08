@@ -16,7 +16,6 @@ export const login = async (email: string, password: string) => {
 
   const shops = await shopService.getAll();
   const shop = shops.items[0]; // By now we only support one shop per user, TODO: Remove in the future
-
   setShopId(shop.id);
 
   redirect(`/shops/${shop.slug}`);

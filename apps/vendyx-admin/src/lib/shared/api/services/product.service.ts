@@ -1,5 +1,9 @@
 import { getFragmentData } from '../codegen';
-import { type CreateProductInput, type UpdateProductInput } from '../codegen/graphql';
+import {
+  type CreateProductInput,
+  type ListInput,
+  type UpdateProductInput
+} from '../codegen/graphql';
 import {
   COMMON_PRODUCT_FRAGMENT,
   CREATE_PRODUCT_MUTATION,
@@ -10,8 +14,10 @@ import {
 } from '../operations';
 import { fetcher } from './fetcher';
 
-const getAll = async () => {
-  return await fetcher(GET_ALL_PRODUCTS_QUERY);
+const getAll = async (input?: ListInput) => {
+  const { products } = await fetcher(GET_ALL_PRODUCTS_QUERY, { input });
+
+  return products;
 };
 
 const getById = async (id: string) => {

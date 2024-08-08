@@ -28,7 +28,7 @@ type Query {
 }
 
 type Mutation {
-  createShop(ownerId: ID!, input: CreateShopInput!): Shop!
+  createShop(input: CreateShopInput!): Shop!
 }
 
 input CreateShopInput {

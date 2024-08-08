@@ -21,13 +21,12 @@ export class ShopService {
     return this.shopRepository.count(input);
   }
 
-  async create(ownerId: string, input: CreateShopInput) {
+  async create(input: CreateShopInput) {
     const slug = await this.validateAndParseSlug(input.name);
 
     return this.shopRepository.insert({
       name: input.name,
-      slug,
-      owner: { connect: { id: ownerId } }
+      slug
     });
   }
 

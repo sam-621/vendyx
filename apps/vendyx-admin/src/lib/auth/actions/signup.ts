@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 
 import { shopService, UserErrorCode, userService } from '@/lib/shared/api';
-import { setToken } from '@/lib/shared/cookies';
+import { setShopId, setToken } from '@/lib/shared/cookies';
 
 export const signup = async ({ email, password, store }: Input) => {
   const createUserResult = await userService.create({ email, password });
@@ -22,9 +22,13 @@ export const signup = async ({ email, password, store }: Input) => {
 
   setToken(accessTokenResult.accessToken);
 
-  await shopService.create(createUserResult.userId, { name: store });
+  await shopService.create({ name: store });
 
-  redirect('/');
+  const shops = await shopService.getAll();
+  const shop = shops.items[0]; // By now we only support one shop per user, TODO: Remove in the future
+  setShopId(shop.id);
+
+  redirect(`/shops/${shop.slug}`);
 };
 
 type Input = { email: string; password: string; store: string };
