@@ -1,6 +1,13 @@
 import { useFormContext } from 'react-hook-form';
 
-import { Card, CardContent, CardHeader, CardTitle, Label } from '@/lib/shared/components';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  FileUploader,
+  Label
+} from '@/lib/shared/components';
 import { FormCheckbox, FormInput, FormSwitch, FormTextarea } from '@/lib/shared/form';
 
 import { VariantContextProvider } from '../../contexts';
@@ -77,13 +84,15 @@ export const ProductDetails = () => {
           <VariantDetails />
         </VariantContextProvider>
       </div>
-      <div className="col-span-2">
+      <div className="col-span-2 flex flex-col gap-6">
         <Card>
           <CardContent className="flex flex-col gap-4 mt-6">
             <Label className="text-base">Product status</Label>
             <FormSwitch control={control} name="enabled" label="Published" />
           </CardContent>
         </Card>
+
+        <FileUploader />
       </div>
     </div>
   );
