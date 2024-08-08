@@ -1,6 +1,6 @@
 import { graphql } from '../codegen';
 
-export const CommonProductFragment = graphql(`
+export const COMMON_PRODUCT_FRAGMENT = graphql(`
   fragment CommonProduct on Product {
     id
     createdAt

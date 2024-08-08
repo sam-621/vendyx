@@ -525,6 +525,35 @@ export type ValidateAccessTokenQuery = {
   validateAccessToken?: boolean | null;
 };
 
+export type CreateVariantMutationVariables = Exact<{
+  productId: Scalars['ID']['input'];
+  input: CreateVariantInput;
+}>;
+
+export type CreateVariantMutation = {
+  __typename?: 'Mutation';
+  createVariant: { __typename?: 'Variant'; id: string };
+};
+
+export type UpdateVariantMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateVariantInput;
+}>;
+
+export type UpdateVariantMutation = {
+  __typename?: 'Mutation';
+  updateVariant: { __typename?: 'Variant'; id: string };
+};
+
+export type SoftRemoveVariantMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type SoftRemoveVariantMutation = {
+  __typename?: 'Mutation';
+  softRemoveVariant: { __typename?: 'Variant'; id: string };
+};
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -703,4 +732,28 @@ export const ValidateAccessTokenDocument = new TypedDocumentString(`
     `) as unknown as TypedDocumentString<
   ValidateAccessTokenQuery,
   ValidateAccessTokenQueryVariables
+>;
+export const CreateVariantDocument = new TypedDocumentString(`
+    mutation CreateVariant($productId: ID!, $input: CreateVariantInput!) {
+  createVariant(productId: $productId, input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<CreateVariantMutation, CreateVariantMutationVariables>;
+export const UpdateVariantDocument = new TypedDocumentString(`
+    mutation UpdateVariant($id: ID!, $input: UpdateVariantInput!) {
+  updateVariant(id: $id, input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateVariantMutation, UpdateVariantMutationVariables>;
+export const SoftRemoveVariantDocument = new TypedDocumentString(`
+    mutation SoftRemoveVariant($id: ID!) {
+  softRemoveVariant(id: $id) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<
+  SoftRemoveVariantMutation,
+  SoftRemoveVariantMutationVariables
 >;
