@@ -10,4 +10,5 @@ type Option implements Node {
 type OptionList implements List {
   items: [Option!]!
   count: Int!
+  pageInfo: PageInfo!
 }

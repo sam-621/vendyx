@@ -34,6 +34,7 @@ type Product implements Node {
 type ProductList implements List {
   items: [Product!]!
   count: Int!
+  pageInfo: PageInfo!
 }
 
 type Query {

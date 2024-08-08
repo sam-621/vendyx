@@ -21,6 +21,14 @@ export class ProductService {
     return this.productRepository.findById(id, { enabled: onlyEnabled || undefined });
   }
 
+  async count(input?: ListInput, onlyEnabled = false) {
+    return this.productRepository.count({
+      ...input,
+      enabled: onlyEnabled || undefined,
+      archived: false
+    });
+  }
+
   async create(input: CreateProductInput) {
     const slug = await this.validateAndParseSlug(input.name);
 

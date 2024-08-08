@@ -22,6 +22,10 @@ export class ShopRepository {
     return this.prisma.shop.findMany({ ...clean(input ?? {}) });
   }
 
+  async count(input?: ListInput) {
+    return this.prisma.shop.count({ ...clean(input ?? {}) });
+  }
+
   async findBySlug(slug: string) {
     return this.prisma.shop.findUnique({ where: { slug } });
   }

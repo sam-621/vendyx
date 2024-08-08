@@ -19,6 +19,7 @@ type Shop implements Node {
 type ShopList implements List {
   items: [Shop!]!
   count: Int!
+  pageInfo: PageInfo!
 }
 
 type Query {

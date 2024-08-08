@@ -23,9 +23,12 @@ export class ProductResolver {
 
   @Query('products')
   async products(@Args('input') input: ListInput) {
-    const result = await this.productService.find(input);
+    const [result, total] = await Promise.all([
+      this.productService.find(input),
+      this.productService.count()
+    ]);
 
-    return new ListResponse(result, result.length);
+    return new ListResponse(result, result.length, { total });
   }
 
   @Query('product')
@@ -50,11 +53,15 @@ export class ProductResolver {
 
   @ResolveField('variants')
   async variants(@Parent() product: Product, @Args('input') input?: ListInput) {
-    const result = await this.prisma.variant.findMany({
-      where: { productId: product.id },
-      ...clean(input ?? {})
-    });
+    const query = {
+      where: { productId: product.id }
+    };
 
-    return new ListResponse(result, result.length);
+    const [result, total] = await Promise.all([
+      this.prisma.variant.findMany({ ...query, ...clean(input ?? {}) }),
+      this.prisma.variant.count(query)
+    ]);
+
+    return new ListResponse(result, result.length, { total });
   }
 }

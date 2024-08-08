@@ -6,7 +6,12 @@ const useFactory = (prisma: PrismaService) => {
     query: {
       $allModels: {
         async $allOperations({ args, query, operation }) {
-          if (operation === 'findUnique' || operation === 'findFirst' || operation === 'findMany') {
+          if (
+            operation === 'findUnique' ||
+            operation === 'findFirst' ||
+            operation === 'findMany' ||
+            operation === 'count'
+          ) {
             args.where = { deletedAt: null, ...args.where };
           }
 

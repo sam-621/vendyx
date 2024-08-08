@@ -28,8 +28,14 @@ export class ProductRepository {
     return this.prisma.product.findUnique({ where: { id, ...options } });
   }
 
-  count() {
-    return this.prisma.product.count();
+  count(input?: ListInput & FindOptions) {
+    return this.prisma.product.count({
+      ...clean({ skip: input?.skip, take: input?.take }),
+      where: {
+        archived: input?.archived ?? undefined,
+        enabled: input?.enabled ?? undefined
+      }
+    });
   }
 
   insert(input: Prisma.ProductCreateInput) {

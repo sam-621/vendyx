@@ -22,9 +22,12 @@ export class ShopResolver {
   @UseGuards(UserJwtAuthGuard)
   @Query('shops')
   async shops(@Args('input') input: ListInput) {
-    const result = await this.shopService.find(input);
+    const [result, total] = await Promise.all([
+      this.shopService.find(input),
+      this.shopService.count()
+    ]);
 
-    return new ListResponse(result, result.length);
+    return new ListResponse(result, result.length, { total });
   }
 
   @UseGuards(UserJwtAuthGuard)

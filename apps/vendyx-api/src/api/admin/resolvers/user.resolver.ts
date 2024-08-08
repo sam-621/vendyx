@@ -5,11 +5,12 @@ import { User } from '@prisma/client';
 import {
   CreateUserInput,
   GenerateUserAccessTokenInput,
+  ListInput,
   ListResponse,
   UpdateUserInput,
   UserJwtAuthGuard
 } from '@/api/shared';
-import { isErrorResult } from '@/business/shared';
+import { clean, isErrorResult } from '@/business/shared';
 import { UserService } from '@/business/user';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
@@ -55,9 +56,16 @@ export class UserResolver {
   }
 
   @ResolveField('shops')
-  async owner(@Parent() user: User) {
-    const result = (await this.prisma.user.findUnique({ where: { id: user.id } }).shops()) ?? [];
+  async owner(@Parent() user: User, @Args('input') input?: ListInput) {
+    const query = {
+      where: { ownerId: user.id }
+    };
 
-    return new ListResponse(result, result?.length);
+    const [result, total] = await Promise.all([
+      this.prisma.shop.findMany({ ...query, ...clean(input ?? {}) }),
+      this.prisma.shop.count(query)
+    ]);
+
+    return new ListResponse(result, result?.length, { total });
   }
 }

@@ -41,6 +41,7 @@ type Variant implements Node {
 type VariantList implements List {
   items: [Variant!]!
   count: Int!
+  pageInfo: PageInfo!
 }
 
 type Query {

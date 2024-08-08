@@ -16,6 +16,7 @@ type User implements Node {
 type UserList implements List {
   items: [User!]!
   count: Int!
+  pageInfo: PageInfo!
 }
 
 type Query {

@@ -17,6 +17,10 @@ export class ShopService {
     return this.shopRepository.findMany(input);
   }
 
+  async count(input?: ListInput) {
+    return this.shopRepository.count(input);
+  }
+
   async create(ownerId: string, input: CreateShopInput) {
     const slug = await this.validateAndParseSlug(input.name);
 

@@ -19,6 +19,7 @@ A list of items with count, each result that expose a array of items should impl
 interface List {
   items: [Node!]!
   count: Int!
+  pageInfo: PageInfo!
 }
 
 # Common inputs
@@ -32,4 +33,8 @@ input ListInput {
   takes n result from where the skip position is
   """
   take: Int
+}
+
+type PageInfo {
+  total: Int!
 }
