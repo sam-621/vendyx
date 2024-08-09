@@ -8,13 +8,20 @@ import {
   PrismaForShopClientProvider
 } from './prisma-clients';
 import {
+  OptionRepository,
   ProductRepository,
   ShopRepository,
   UserRepository,
   VariantRepository
 } from './repositories';
 
-const REPOSITORIES = [UserRepository, ShopRepository, ProductRepository, VariantRepository];
+const REPOSITORIES = [
+  UserRepository,
+  ShopRepository,
+  ProductRepository,
+  VariantRepository,
+  OptionRepository
+];
 
 export const CLS_SHOP_ID = 'shop_id';
 export const CLS_OWNER_ID = 'owner_id';

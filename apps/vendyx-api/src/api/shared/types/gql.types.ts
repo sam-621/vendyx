@@ -13,6 +13,21 @@ export enum UserErrorCode {
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
 }
 
+export class CreateOptionInput {
+    name: string;
+    values: string[];
+}
+
+export class UpdateOptionInput {
+    name?: Nullable<string>;
+    values?: Nullable<UpdateOptionValueInput[]>;
+}
+
+export class UpdateOptionValueInput {
+    id?: Nullable<string>;
+    name?: Nullable<string>;
+}
+
 export class ProductFilters {
     name?: Nullable<StringFilter>;
     enabled?: Nullable<BooleanFilter>;
@@ -62,6 +77,7 @@ export class CreateVariantInput {
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
     requiresShipping?: Nullable<boolean>;
+    optionValues?: Nullable<string[]>;
 }
 
 export class UpdateVariantInput {
@@ -71,6 +87,7 @@ export class UpdateVariantInput {
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
     requiresShipping?: Nullable<boolean>;
+    optionValues?: Nullable<string[]>;
 }
 
 export class ListInput {
@@ -105,25 +122,15 @@ export interface List {
     pageInfo: PageInfo;
 }
 
-export abstract class IQuery {
-    abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
-
-    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
-
-    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
-
-    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
-
-    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
-
-    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
-
-    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
-}
-
 export abstract class IMutation {
+    abstract createOption(input: CreateOptionInput): Option | Promise<Option>;
+
+    abstract updateOption(id: string, input: UpdateOptionInput): Option | Promise<Option>;
+
+    abstract softRemoveOption(id: string): Option | Promise<Option>;
+
+    abstract softRemoveOptionValues(ids: string[]): boolean | Promise<boolean>;
+
     abstract createProduct(input: CreateProductInput): Product | Promise<Product>;
 
     abstract updateProduct(id: string, input: UpdateProductInput): Product | Promise<Product>;
@@ -143,6 +150,24 @@ export abstract class IMutation {
     abstract updateVariant(id: string, input: UpdateVariantInput): Variant | Promise<Variant>;
 
     abstract softRemoveVariant(id: string): Variant | Promise<Variant>;
+}
+
+export abstract class IQuery {
+    abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
+
+    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
+
+    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
+
+    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
+
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
 }
 
 export class Shop implements Node {

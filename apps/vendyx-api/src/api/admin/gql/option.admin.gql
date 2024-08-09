@@ -1,0 +1,25 @@
+type Mutation {
+  createOption(input: CreateOptionInput!): Option!
+  updateOption(id: ID!, input: UpdateOptionInput!): Option!
+  softRemoveOption(id: ID!): Option!
+  softRemoveOptionValues(ids: [ID!]!): Boolean!
+}
+
+input CreateOptionInput {
+  name: String!
+  values: [String!]!
+}
+
+input UpdateOptionInput {
+  name: String
+  values: [UpdateOptionValueInput!]
+}
+
+input UpdateOptionValueInput {
+  """
+  If pressent, the value will be updated.
+  If not, the value will be created and add it to the option
+  """
+  id: ID
+  name: String
+}

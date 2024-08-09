@@ -37,4 +37,9 @@ export class VariantResolver {
   async variants(@Parent() variant: Variant) {
     return await this.prisma.variant.findUnique({ where: { id: variant.id } }).product();
   }
+
+  @ResolveField('optionValues')
+  async optionValues(@Parent() variant: Variant) {
+    return await this.prisma.variantOptionValue.findMany({ where: { variantId: variant.id } });
+  }
 }

@@ -19,7 +19,8 @@ export class VariantService {
       salePrice: convertToCent(input.salePrice),
       comparisonPrice: input.comparisonPrice ? convertToCent(input.comparisonPrice) : undefined,
       costPerUnit: input.costPerUnit ? convertToCent(input.costPerUnit) : undefined,
-      product: { connect: { id: productId } }
+      product: { connect: { id: productId } },
+      variantOptionValues: { create: input.optionValues?.map(v => ({ optionValueId: v })) }
     });
   }
 
@@ -28,7 +29,10 @@ export class VariantService {
       ...clean(input),
       salePrice: input.salePrice ? convertToCent(input.salePrice) : undefined,
       comparisonPrice: input.comparisonPrice ? convertToCent(input.comparisonPrice) : undefined,
-      costPerUnit: input.costPerUnit ? convertToCent(input.costPerUnit) : undefined
+      costPerUnit: input.costPerUnit ? convertToCent(input.costPerUnit) : undefined,
+      variantOptionValues: input.optionValues?.length
+        ? { create: input.optionValues?.map(v => ({ optionValueId: v })) }
+        : undefined
     });
   }
 

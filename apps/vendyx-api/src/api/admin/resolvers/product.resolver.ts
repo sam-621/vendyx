@@ -64,4 +64,9 @@ export class ProductResolver {
 
     return new ListResponse(result, result.length, { total });
   }
+
+  @ResolveField('options')
+  async options(@Parent() product: Product) {
+    return this.prisma.productOption.findMany({ where: { productId: product.id } });
+  }
 }

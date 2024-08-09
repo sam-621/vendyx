@@ -4,7 +4,13 @@ import { DynamicModule, Module } from '@nestjs/common';
 
 import { BusinessModule } from '@/business';
 
-import { ProductResolver, ShopResolver, UserResolver, VariantResolver } from './resolvers';
+import {
+  OptionResolver,
+  ProductResolver,
+  ShopResolver,
+  UserResolver,
+  VariantResolver
+} from './resolvers';
 import { GraphqlApiModule } from '../shared';
 
 const ADMIN_API_SCHEMA_PATH = './src/api/admin/gql/**/*.gql';
@@ -27,6 +33,6 @@ export class AdminApiModule {
 
 @Module({
   imports: [BusinessModule],
-  providers: [UserResolver, ShopResolver, ProductResolver, VariantResolver]
+  providers: [UserResolver, ShopResolver, ProductResolver, VariantResolver, OptionResolver]
 })
 class AdminModule {}
