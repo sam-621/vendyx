@@ -15,7 +15,11 @@ import { ProductTableColumns } from './products-table-columns';
 export const ProductTable: FC<Props> = async props => {
   const { page, search, size } = parseDataTableSearchParams({ ...props });
 
-  const products = await productService.getAll({ skip: getSkip(page, size), take: size });
+  const products = await productService.getAll({
+    skip: getSkip(page, size),
+    take: size,
+    filters: { name: { contains: search } }
+  });
 
   if (!products) {
     return (

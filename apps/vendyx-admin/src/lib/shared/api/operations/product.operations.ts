@@ -36,7 +36,7 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
 `);
 
 export const GET_ALL_PRODUCTS_QUERY = graphql(`
-  query GetProducts($input: ListInput) {
+  query GetProducts($input: ProductListInput) {
     products(input: $input) {
       count
       pageInfo {

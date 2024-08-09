@@ -1,7 +1,7 @@
 import { getFragmentData } from '../codegen';
 import {
   type CreateProductInput,
-  type ListInput,
+  type ProductListInput,
   type UpdateProductInput
 } from '../codegen/graphql';
 import {
@@ -14,7 +14,7 @@ import {
 } from '../operations';
 import { fetcher } from './fetcher';
 
-const getAll = async (input?: ListInput) => {
+const getAll = async (input?: ProductListInput) => {
   const { products } = await fetcher(GET_ALL_PRODUCTS_QUERY, { input });
 
   return products;

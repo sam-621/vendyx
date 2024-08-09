@@ -23,6 +23,10 @@ export type Scalars = {
   JSON: { input: any; output: any };
 };
 
+export type BooleanFilter = {
+  equals?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type CreateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -193,11 +197,26 @@ export type ProductVariantsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
+export type ProductFilters = {
+  achived?: InputMaybe<BooleanFilter>;
+  enabled?: InputMaybe<BooleanFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
 export type ProductList = List & {
   __typename?: 'ProductList';
   count: Scalars['Int']['output'];
   items: Array<Product>;
   pageInfo: PageInfo;
+};
+
+export type ProductListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<ProductFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type Query = {
@@ -217,7 +236,7 @@ export type QueryProductArgs = {
 };
 
 export type QueryProductsArgs = {
-  input?: InputMaybe<ListInput>;
+  input?: InputMaybe<ProductListInput>;
 };
 
 export type QueryShopArgs = {
@@ -258,6 +277,11 @@ export type ShopList = List & {
   count: Scalars['Int']['output'];
   items: Array<Shop>;
   pageInfo: PageInfo;
+};
+
+export type StringFilter = {
+  contains?: InputMaybe<Scalars['String']['input']>;
+  equals?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateProductInput = {
@@ -390,7 +414,7 @@ export type CommonProductFragment = {
 } & { ' $fragmentName'?: 'CommonProductFragment' };
 
 export type GetProductsQueryVariables = Exact<{
-  input?: InputMaybe<ListInput>;
+  input?: InputMaybe<ProductListInput>;
 }>;
 
 export type GetProductsQuery = {
@@ -603,7 +627,7 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
   { fragmentName: 'CommonProduct' }
 ) as unknown as TypedDocumentString<CommonProductFragment, unknown>;
 export const GetProductsDocument = new TypedDocumentString(`
-    query GetProducts($input: ListInput) {
+    query GetProducts($input: ProductListInput) {
   products(input: $input) {
     count
     pageInfo {
