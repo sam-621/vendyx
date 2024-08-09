@@ -4,7 +4,7 @@ type Option implements Node {
   updatedAt: Date!
   name: String!
 
-  values: [OptionValue!]
+  values: [OptionValue!]!
 }
 
 type OptionList implements List {

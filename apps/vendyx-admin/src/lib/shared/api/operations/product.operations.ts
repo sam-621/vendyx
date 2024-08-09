@@ -17,10 +17,18 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
         comparisonPrice
         costPerUnit
         requiresShipping
-        # optionValues {
-        #   id
-        #   value
-        # }
+        optionValues {
+          id
+          name
+        }
+      }
+    }
+    options {
+      id
+      name
+      values {
+        id
+        name
       }
     }
     # assets {

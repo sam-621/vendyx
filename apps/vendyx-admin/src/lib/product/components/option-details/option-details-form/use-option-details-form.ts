@@ -31,6 +31,30 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       return o;
     });
 
+    // const optionsToCreate = [];
+    // const optionsToUpdate = [];
+
+    // for (const oldOption of options) {
+    //   const curr = newOptions.find(newOption => newOption.id === oldOption.id);
+
+    //   if (!curr) {
+    //     optionsToCreate.push(curr);
+    //     continue;
+    //   }
+
+    //   // send the option with the updated name and values
+    //   // sending all values
+    //   // if value has an id, it means it is an existing value and should be updated
+    //   // if value has no id, it means it is a new value and should be created
+    //   // and if a old values is not in the new values, it means it should be deleted
+    //   optionsToUpdate.push(curr);
+    // }
+
+    // console.log({
+    //   optionsToCreate,
+    //   optionsToUpdate
+    // });
+
     const generatedVariants = generateVariants(newOptions, variants);
 
     updateOption(option.id, {

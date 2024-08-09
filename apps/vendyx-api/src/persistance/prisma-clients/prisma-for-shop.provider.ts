@@ -1,21 +1,23 @@
 import { ClsService } from 'nestjs-cls';
 import { PrismaService } from 'nestjs-prisma';
 
+import { modelHasDeletedAtProperty } from './prisma-client-utils';
 import { CLS_OWNER_ID, CLS_SHOP_ID } from '../persistance.module';
 
 const useFactory = (prisma: PrismaService, store: ClsService) => {
   return prisma.$extends({
     query: {
       $allModels: {
-        async $allOperations({ args, query, operation }) {
+        async $allOperations({ args, query, operation, model }) {
           const shopId = String(store.get(CLS_SHOP_ID) || '00000000-0000-0000-0000-000000000000');
           const ownerId = String(store.get(CLS_OWNER_ID) || '00000000-0000-0000-0000-000000000000');
 
           if (
-            operation === 'findUnique' ||
-            operation === 'findFirst' ||
-            operation === 'findMany' ||
-            operation === 'count'
+            (operation === 'findUnique' ||
+              operation === 'findFirst' ||
+              operation === 'findMany' ||
+              operation === 'count') &&
+            modelHasDeletedAtProperty(model)
           ) {
             args.where = { deletedAt: null, ...args.where };
           }

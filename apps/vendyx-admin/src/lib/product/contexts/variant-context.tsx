@@ -1,5 +1,7 @@
 import { createContext, type ReactNode, useContext, useState } from 'react';
 
+import { type CommonProductFragment } from '@/lib/shared/api';
+
 import { getUnusedOptionValues } from '../utils';
 
 export type VariantContext = {
@@ -33,9 +35,34 @@ const Context = createContext<VariantContext>({
   removeOption: () => {}
 });
 
-export const VariantContextProvider = ({ children }: { children: ReactNode }) => {
-  const [options, setOptions] = useState<VariantContext['options']>([]);
-  const [variants, setVariants] = useState<VariantContext['variants']>([]);
+export const VariantContextProvider = ({
+  children,
+  product
+}: {
+  children: ReactNode;
+  product?: CommonProductFragment;
+}) => {
+  const baseOptions: VariantContext['options'] =
+    product?.options.map(o => ({
+      id: o.id,
+      isEditing: false,
+      name: o.name,
+      values: o.values.map(v => ({ id: v.id, name: v.name }))
+    })) ?? [];
+
+  const baseVariants: VariantContext['variants'] =
+    product?.variants.items
+      .map(v => ({
+        id: v.id,
+        values: v.optionValues.map(v => ({ id: v.id, name: v.name })),
+        price: v.salePrice,
+        stock: v.stock,
+        selected: false
+      }))
+      .filter(v => v.values.length) ?? [];
+
+  const [options, setOptions] = useState<VariantContext['options']>(baseOptions);
+  const [variants, setVariants] = useState<VariantContext['variants']>(baseVariants);
 
   const updateVariants = (variants: VariantContext['variants']) => {
     setVariants(variants);

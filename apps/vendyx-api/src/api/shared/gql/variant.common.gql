@@ -34,7 +34,7 @@ type Variant implements Node {
   """
   requiresShipping: Boolean!
 
-  optionValues: [OptionValue!]
+  optionValues: [OptionValue!]!
   product: Product!
 }
 

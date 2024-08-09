@@ -1,16 +1,19 @@
 import { ClsService } from 'nestjs-cls';
 import { PrismaService } from 'nestjs-prisma';
 
+import { modelHasDeletedAtProperty } from './prisma-client-utils';
+
 const useFactory = (prisma: PrismaService) => {
   return prisma.$extends({
     query: {
       $allModels: {
-        async $allOperations({ args, query, operation }) {
+        async $allOperations({ args, query, operation, model }) {
           if (
-            operation === 'findUnique' ||
-            operation === 'findFirst' ||
-            operation === 'findMany' ||
-            operation === 'count'
+            (operation === 'findUnique' ||
+              operation === 'findFirst' ||
+              operation === 'findMany' ||
+              operation === 'count') &&
+            modelHasDeletedAtProperty(model)
           ) {
             args.where = { deletedAt: null, ...args.where };
           }

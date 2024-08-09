@@ -27,6 +27,11 @@ export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type CreateOptionInput = {
+  name: Scalars['String']['input'];
+  values: Array<Scalars['String']['input']>;
+};
+
 export type CreateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -46,6 +51,7 @@ export type CreateUserInput = {
 export type CreateVariantInput = {
   comparisonPrice?: InputMaybe<Scalars['Int']['input']>;
   costPerUnit?: InputMaybe<Scalars['Int']['input']>;
+  optionValues?: InputMaybe<Array<Scalars['ID']['input']>>;
   requiresShipping?: InputMaybe<Scalars['Boolean']['input']>;
   salePrice: Scalars['Int']['input'];
   sku?: InputMaybe<Scalars['String']['input']>;
@@ -73,16 +79,24 @@ export type ListInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createOption: Option;
   createProduct: Product;
   createShop: Shop;
   createUser: UserResult;
   createVariant: Variant;
   generateUserAccessToken: UserAccessTokenResult;
+  softRemoveOption: Option;
+  softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProduct: Product;
   softRemoveVariant: Variant;
+  updateOption: Option;
   updateProduct: Product;
   updateUser: UserResult;
   updateVariant: Variant;
+};
+
+export type MutationCreateOptionArgs = {
+  input: CreateOptionInput;
 };
 
 export type MutationCreateProductArgs = {
@@ -106,12 +120,25 @@ export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
 
+export type MutationSoftRemoveOptionArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type MutationSoftRemoveOptionValuesArgs = {
+  ids: Array<Scalars['ID']['input']>;
+};
+
 export type MutationSoftRemoveProductArgs = {
   id: Scalars['ID']['input'];
 };
 
 export type MutationSoftRemoveVariantArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type MutationUpdateOptionArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateOptionInput;
 };
 
 export type MutationUpdateProductArgs = {
@@ -142,7 +169,7 @@ export type Option = Node & {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
-  values?: Maybe<Array<OptionValue>>;
+  values: Array<OptionValue>;
 };
 
 export type OptionList = List & {
@@ -284,6 +311,20 @@ export type StringFilter = {
   equals?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateOptionInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  values?: InputMaybe<Array<UpdateOptionValueInput>>;
+};
+
+export type UpdateOptionValueInput = {
+  /**
+   * If pressent, the value will be updated.
+   * If not, the value will be created and add it to the option
+   */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -302,6 +343,7 @@ export type UpdateUserInput = {
 export type UpdateVariantInput = {
   comparisonPrice?: InputMaybe<Scalars['Int']['input']>;
   costPerUnit?: InputMaybe<Scalars['Int']['input']>;
+  optionValues?: InputMaybe<Array<Scalars['ID']['input']>>;
   requiresShipping?: InputMaybe<Scalars['Boolean']['input']>;
   salePrice?: InputMaybe<Scalars['Int']['input']>;
   sku?: InputMaybe<Scalars['String']['input']>;
@@ -367,7 +409,7 @@ export type Variant = Node & {
   costPerUnit?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
-  optionValues?: Maybe<Array<OptionValue>>;
+  optionValues: Array<OptionValue>;
   product: Product;
   /**
    * The variant's weight
@@ -409,8 +451,15 @@ export type CommonProductFragment = {
       comparisonPrice?: number | null;
       costPerUnit?: number | null;
       requiresShipping: boolean;
+      optionValues: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
     }>;
   };
+  options: Array<{
+    __typename?: 'Option';
+    id: string;
+    name: string;
+    values: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
+  }>;
 } & { ' $fragmentName'?: 'CommonProductFragment' };
 
 export type GetProductsQueryVariables = Exact<{
@@ -620,6 +669,18 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
       comparisonPrice
       costPerUnit
       requiresShipping
+      optionValues {
+        id
+        name
+      }
+    }
+  }
+  options {
+    id
+    name
+    values {
+      id
+      name
     }
   }
 }
@@ -673,6 +734,18 @@ export const GetProductDocument = new TypedDocumentString(`
       comparisonPrice
       costPerUnit
       requiresShipping
+      optionValues {
+        id
+        name
+      }
+    }
+  }
+  options {
+    id
+    name
+    values {
+      id
+      name
     }
   }
 }`) as unknown as TypedDocumentString<GetProductQuery, GetProductQueryVariables>;

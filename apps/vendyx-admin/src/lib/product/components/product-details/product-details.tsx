@@ -1,5 +1,7 @@
+import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { type CommonProductFragment } from '@/lib/shared/api';
 import {
   Card,
   CardContent,
@@ -14,7 +16,7 @@ import { VariantContextProvider } from '../../contexts';
 import { VariantDetails } from '../variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
-export const ProductDetails = () => {
+export const ProductDetails: FC<Props> = ({ product }) => {
   const { control } = useFormContext<ProductDetailsFormInput>();
 
   return (
@@ -86,7 +88,7 @@ export const ProductDetails = () => {
           </CardContent>
         </Card>
 
-        <VariantContextProvider>
+        <VariantContextProvider product={product}>
           <VariantDetails />
         </VariantContextProvider>
       </div>
@@ -102,4 +104,8 @@ export const ProductDetails = () => {
       </div>
     </div>
   );
+};
+
+type Props = {
+  product?: CommonProductFragment;
 };

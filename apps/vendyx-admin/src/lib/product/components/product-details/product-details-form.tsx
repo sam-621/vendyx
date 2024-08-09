@@ -21,7 +21,7 @@ export const ProductDetailsForm: FC<Props> = ({ product }) => {
           maxWidth
           actions={<ProductSubmitButton isLoading={form.isLoading} />}
         >
-          <ProductDetails />
+          <ProductDetails product={product} />
         </AdminPageLayout>
       </form>
     </Form>
