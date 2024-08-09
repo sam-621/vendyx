@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
-import { ListInput } from '@/api/shared';
+import { ListInput, ProductFilters, ProductListInput } from '@/api/shared';
 import { clean } from '@/business/shared';
 
 import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
@@ -10,12 +10,13 @@ import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
 export class ProductRepository {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  findMany(input?: ListInput & FindOptions) {
+  findMany(input?: ProductListInput) {
     return this.prisma.product.findMany({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
-        archived: input?.archived ?? undefined,
-        enabled: input?.enabled ?? undefined
+        name: clean(input?.filters?.name ?? {}),
+        archived: clean(input?.filters?.achived ?? {}),
+        enabled: clean(input?.filters?.enabled ?? {})
       }
     });
   }
@@ -24,16 +25,24 @@ export class ProductRepository {
     return this.prisma.product.findUnique({ where: { slug, ...options } });
   }
 
-  findById(id: string, options?: FindOptions) {
-    return this.prisma.product.findUnique({ where: { id, ...options } });
+  findById(id: string, filters?: ProductFilters) {
+    return this.prisma.product.findUnique({
+      where: {
+        id,
+        name: clean(filters?.name ?? {}),
+        archived: clean(filters?.achived ?? {}),
+        enabled: clean(filters?.enabled ?? {})
+      }
+    });
   }
 
-  count(input?: ListInput & FindOptions) {
+  count(input?: ProductListInput) {
     return this.prisma.product.count({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
-        archived: input?.archived ?? undefined,
-        enabled: input?.enabled ?? undefined
+        name: clean(input?.filters?.name ?? {}),
+        archived: clean(input?.filters?.achived ?? {}),
+        enabled: clean(input?.filters?.enabled ?? {})
       }
     });
   }
@@ -51,4 +60,4 @@ export class ProductRepository {
   }
 }
 
-type FindOptions = { archived?: boolean; enabled?: boolean };
+type FindOptions = ListInput & { filters?: ProductFilters };

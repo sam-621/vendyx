@@ -1,3 +1,13 @@
+type Query {
+  products(input: ProductListInput): ProductList!
+}
+
+input ProductFilters {
+  name: StringFilter
+  enabled: BooleanFilter
+  achived: BooleanFilter
+}
+
 type Mutation {
   createProduct(input: CreateProductInput!): Product!
   updateProduct(id: ID!, input: UpdateProductInput!): Product!

@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateProductInput, ListInput, UpdateProductInput } from '@/api/shared';
+import {
+  CreateProductInput,
+  ProductFilters,
+  ProductListInput,
+  UpdateProductInput
+} from '@/api/shared';
 import { ProductRepository } from '@/persistance/repositories';
 
 import { clean, getSlugBy } from '../shared';
@@ -9,24 +14,28 @@ import { clean, getSlugBy } from '../shared';
 export class ProductService {
   constructor(private readonly productRepository: ProductRepository) {}
 
-  async find(input?: ListInput, onlyEnabled = false) {
+  async find(input?: ProductListInput) {
     return this.productRepository.findMany({
       ...input,
-      enabled: onlyEnabled || undefined,
-      archived: false
+      filters: {
+        achived: { equals: false },
+        ...input?.filters
+      }
     });
   }
 
-  async findById(id: string, onlyEnabled = false) {
-    return this.productRepository.findById(id, { enabled: onlyEnabled || undefined });
-  }
-
-  async count(input?: ListInput, onlyEnabled = false) {
+  async count(input?: ProductListInput) {
     return this.productRepository.count({
       ...input,
-      enabled: onlyEnabled || undefined,
-      archived: false
+      filters: {
+        achived: { equals: false },
+        ...input?.filters
+      }
     });
+  }
+
+  async findById(id: string, filters?: ProductFilters) {
+    return this.productRepository.findById(id, filters);
   }
 
   async create(input: CreateProductInput) {

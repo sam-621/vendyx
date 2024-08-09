@@ -38,6 +38,22 @@ type ProductList implements List {
 }
 
 type Query {
-  products(input: ListInput): ProductList!
   product(id: ID): Product
+}
+
+input ProductListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: ProductFilters
 }

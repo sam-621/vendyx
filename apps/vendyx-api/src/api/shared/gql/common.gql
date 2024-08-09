@@ -38,3 +38,14 @@ input ListInput {
 type PageInfo {
   total: Int!
 }
+
+# Filters
+
+input StringFilter {
+  equals: String
+  contains: String
+}
+
+input BooleanFilter {
+  equals: Boolean
+}

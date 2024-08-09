@@ -13,6 +13,12 @@ export enum UserErrorCode {
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
 }
 
+export class ProductFilters {
+    name?: Nullable<StringFilter>;
+    enabled?: Nullable<BooleanFilter>;
+    achived?: Nullable<BooleanFilter>;
+}
+
 export class CreateProductInput {
     name: string;
     description?: Nullable<string>;
@@ -51,7 +57,7 @@ export class GenerateUserAccessTokenInput {
 
 export class CreateVariantInput {
     salePrice: number;
-    stock: number;
+    stock?: Nullable<number>;
     sku?: Nullable<string>;
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
@@ -72,6 +78,21 @@ export class ListInput {
     take?: Nullable<number>;
 }
 
+export class StringFilter {
+    equals?: Nullable<string>;
+    contains?: Nullable<string>;
+}
+
+export class BooleanFilter {
+    equals?: Nullable<boolean>;
+}
+
+export class ProductListInput {
+    skip?: Nullable<number>;
+    take?: Nullable<number>;
+    filters?: Nullable<ProductFilters>;
+}
+
 export interface Node {
     id: string;
     createdAt: Date;
@@ -81,6 +102,25 @@ export interface Node {
 export interface List {
     items: Node[];
     count: number;
+    pageInfo: PageInfo;
+}
+
+export abstract class IQuery {
+    abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
+
+    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
+
+    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
+
+    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
+
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
 }
 
 export abstract class IMutation {
@@ -90,7 +130,7 @@ export abstract class IMutation {
 
     abstract softRemoveProduct(id: string): Product | Promise<Product>;
 
-    abstract createShop(ownerId: string, input: CreateShopInput): Shop | Promise<Shop>;
+    abstract createShop(input: CreateShopInput): Shop | Promise<Shop>;
 
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
 
@@ -117,24 +157,7 @@ export class Shop implements Node {
 export class ShopList implements List {
     items: Shop[];
     count: number;
-}
-
-export abstract class IQuery {
-    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
-
-    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
-
-    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
-
-    abstract products(input?: Nullable<ListInput>): ProductList | Promise<ProductList>;
-
-    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
-
-    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
-
-    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+    pageInfo: PageInfo;
 }
 
 export class User implements Node {
@@ -148,6 +171,7 @@ export class User implements Node {
 export class UserList implements List {
     items: User[];
     count: number;
+    pageInfo: PageInfo;
 }
 
 export class UserAccessTokenResult {
@@ -163,6 +187,10 @@ export class UserResult {
 export class UserErrorResult {
     code: UserErrorCode;
     message: string;
+}
+
+export class PageInfo {
+    total: number;
 }
 
 export class OptionValue implements Node {
@@ -184,6 +212,7 @@ export class Option implements Node {
 export class OptionList implements List {
     items: Option[];
     count: number;
+    pageInfo: PageInfo;
 }
 
 export class Product implements Node {
@@ -202,13 +231,14 @@ export class Product implements Node {
 export class ProductList implements List {
     items: Product[];
     count: number;
+    pageInfo: PageInfo;
 }
 
 export class Variant implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    sku: string;
+    sku?: Nullable<string>;
     salePrice: number;
     stock: number;
     comparisonPrice?: Nullable<number>;
@@ -221,6 +251,7 @@ export class Variant implements Node {
 export class VariantList implements List {
     items: Variant[];
     count: number;
+    pageInfo: PageInfo;
 }
 
 export type JSON = any;
