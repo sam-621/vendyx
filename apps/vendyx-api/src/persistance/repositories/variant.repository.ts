@@ -15,7 +15,7 @@ export class VariantRepository {
     return this.prisma.variant.create({ data: input });
   }
 
-  update(id: string, input: Prisma.VariantUpdateInput) {
+  async update(id: string, input: Prisma.VariantUpdateInput) {
     return this.prisma.variant.update({ where: { id }, data: input });
   }
 

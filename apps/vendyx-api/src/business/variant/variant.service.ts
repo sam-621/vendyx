@@ -35,7 +35,12 @@ export class VariantService {
       comparisonPrice: input.comparisonPrice ? convertToCent(input.comparisonPrice) : undefined,
       costPerUnit: input.costPerUnit ? convertToCent(input.costPerUnit) : undefined,
       variantOptionValues: optionValues?.length
-        ? { create: optionValues?.map(v => ({ optionValueId: v })) }
+        ? {
+            connectOrCreate: optionValues?.map(v => ({
+              where: { variantId_optionValueId: { variantId: id, optionValueId: v } },
+              create: { optionValueId: v }
+            }))
+          }
         : undefined
     });
   }

@@ -1,7 +1,9 @@
-import { createContext, type ReactNode, useContext, useState } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { type CommonProductFragment } from '@/lib/shared/api';
 
+import { type ProductDetailsFormInput } from '../components/product-details/use-product-details-form';
 import { getUnusedOptionValues } from '../utils';
 
 export type VariantContext = {
@@ -42,6 +44,7 @@ export const VariantContextProvider = ({
   children: ReactNode;
   product?: CommonProductFragment;
 }) => {
+  const { setValue } = useFormContext<ProductDetailsFormInput>();
   const baseOptions: VariantContext['options'] =
     product?.options.map(o => ({
       id: o.id,
@@ -63,6 +66,23 @@ export const VariantContextProvider = ({
 
   const [options, setOptions] = useState<VariantContext['options']>(baseOptions);
   const [variants, setVariants] = useState<VariantContext['variants']>(baseVariants);
+
+  useEffect(() => {
+    if (!product) return;
+
+    setOptions(baseOptions);
+    setVariants(baseVariants);
+    setValue('options', baseOptions);
+    setValue(
+      'variants',
+      baseVariants.map(v => ({
+        id: v.id,
+        stock: v.stock,
+        salePrice: v.price,
+        optionValues: v.values
+      }))
+    );
+  }, [product]);
 
   const updateVariants = (variants: VariantContext['variants']) => {
     setVariants(variants);

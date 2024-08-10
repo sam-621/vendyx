@@ -7,6 +7,13 @@ import { cn } from '@/lib/shared/utils';
 export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
   const { variants, updateVariants } = useVariantContext();
 
+  const variantName = inGroup
+    ? variant.values
+        .slice(-2)
+        .map(v => v.name)
+        .join(' / ')
+    : variant.values.map(v => v.name).join(' / ');
+
   return (
     <div className="flex items-center px-6 py-4 hover:bg-muted/50">
       <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
@@ -17,10 +24,9 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
               variants.map(v => (v.id === variant.id ? { ...v, selected: Boolean(checked) } : v))
             )
           }
-          id="variant-1"
         />
         <Dropzone size={inGroup ? 'sm' : 'md'} onAcceptFiles={files => console.log(files)} />
-        <span>{variant.values.map(v => v.name).join(' / ')}</span>
+        <span>{variantName}</span>
       </div>
       <div className="flex items-center gap-2 w-full">
         <Input defaultValue={variant.price} placeholder="$ 0.00" />

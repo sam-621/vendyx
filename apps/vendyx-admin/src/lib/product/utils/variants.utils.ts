@@ -42,7 +42,7 @@ export const generateVariants = (
   return (
     firstOption.values
       .flatMap(value => {
-        const variantAlreadyExists = existingVariants.some(variant =>
+        const variantAlreadyExists = existingVariants.find(variant =>
           variant.values.map(v => v.name).includes(value.name)
         );
 
@@ -50,7 +50,7 @@ export const generateVariants = (
         if (!restOptions.length) {
           return [
             {
-              id: Math.random().toString(),
+              id: variantAlreadyExists ? variantAlreadyExists.id : Math.random().toString(),
               values: [value],
               price: 0,
               stock: 0,
@@ -80,7 +80,7 @@ export const generateVariants = (
           // Check if the variant generated already exists in the existing variants by checking if the values are the same
           // If so, the action should be none, the variant already exists
           // If not, the action goes to be determined by the base of the variant (keep reading)
-          const variantAlreadyExists = existingVariants.some(variant =>
+          const variantAlreadyExists = existingVariants.find(variant =>
             variant.values
               .map(v => v.name)
               .join()
@@ -89,7 +89,7 @@ export const generateVariants = (
 
           // Check if the base of the variant already exists in the set
           // This is useful when the existing variants are not complete due to the user removing some variants manually
-          const baseExists = existingVariants.some(variant =>
+          const baseExists = existingVariants.find(variant =>
             variant.values
               .map(v => v.name)
               .join()
@@ -97,12 +97,26 @@ export const generateVariants = (
           );
 
           const variantToCreate = {
-            id: Math.random().toString(),
+            id: variantAlreadyExists
+              ? variantAlreadyExists.id
+              : getActionForVariantGenerated(
+                    Boolean(variantAlreadyExists),
+                    Boolean(baseExists),
+                    set,
+                    base
+                  ) === 'update'
+                ? baseExists?.id ?? ''
+                : Math.random().toString(),
             values: [value, ...variant.values],
             price: 0,
             stock: 0,
             selected: false,
-            action: getActionForVariantGenerated(variantAlreadyExists, baseExists, set, base)
+            action: getActionForVariantGenerated(
+              Boolean(variantAlreadyExists),
+              Boolean(baseExists),
+              set,
+              base
+            )
           };
 
           set.add(base);

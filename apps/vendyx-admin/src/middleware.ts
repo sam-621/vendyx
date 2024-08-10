@@ -12,8 +12,18 @@ export async function middleware(request: NextRequest) {
   const isAuth = await validateAccessToken();
   const isInAllowedPaths = ALLOWED_PATHS.includes(pathname);
 
+  console.log({
+    isAuth
+  });
+
+  // Redirect to login if not authenticated and not in allowed paths
   if (!isAuth && !isInAllowedPaths) {
     return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // Do nothing if not authenticated and in allowed paths
+  if (!isAuth && isInAllowedPaths) {
+    return NextResponse.next();
   }
 
   const shops = await shopService.getAll();

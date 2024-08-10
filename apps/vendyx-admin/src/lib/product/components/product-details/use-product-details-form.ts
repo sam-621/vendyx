@@ -29,12 +29,37 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
       stock: defaultVariant?.stock ?? 0,
       sku: defaultVariant?.sku ?? '',
       requiresShipping: defaultVariant?.requiresShipping ?? false,
-      enabled: product?.enabled ?? true
+      enabled: product?.enabled ?? true,
+      variants:
+        product?.variants.items.map(variant => ({
+          id: variant.id,
+          salePrice: variant.salePrice,
+          comparisonPrice: variant.comparisonPrice,
+          costPerUnit: variant.costPerUnit,
+          stock: variant.stock,
+          sku: variant.sku,
+          requiresShipping: variant.requiresShipping,
+          optionValues: variant.optionValues
+        })) ?? [],
+      options:
+        product?.options.map(option => ({
+          id: option.id,
+          name: option.name,
+          values: option.values.map(value => ({
+            id: value.id,
+            name: value.name
+          }))
+        })) ?? []
     }
   });
 
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
+
+    console.log({
+      variants,
+      options
+    });
 
     startTransition(async () => {
       await saveProduct({
@@ -82,8 +107,14 @@ const schema = z.object({
   options: z
     .array(
       z.object({
+        id: z.string(),
         name: z.string(),
-        values: z.array(z.string())
+        values: z.array(
+          z.object({
+            id: z.string(),
+            name: z.string()
+          })
+        )
       })
     )
     .optional(),
@@ -92,7 +123,12 @@ const schema = z.object({
       id: z.string(),
       salePrice: z.number().int().min(0),
       stock: z.number().int().optional(),
-      optionValues: z.array(z.string())
+      optionValues: z.array(
+        z.object({
+          id: z.string(),
+          name: z.string()
+        })
+      )
     })
   )
 });

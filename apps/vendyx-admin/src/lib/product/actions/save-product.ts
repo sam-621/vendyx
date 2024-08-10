@@ -3,7 +3,13 @@
 import { redirect } from 'next/navigation';
 
 import { optionService, productService, variantService } from '@/lib/shared/api';
+import { isUUID } from '@/lib/shared/utils';
+import { revalidatePath } from 'next/cache';
 
+// YA obtengo las variantes y opciones con sus ids,
+// en options estos ids son o randoms o uuids (puedo usar el mutation updateOption y mando los values como: si es un random no mando el id y si es uuid, sí lo mando)
+// Antes de crear las variantes, debo asociarlas con los nuevos ids de las opciones (replicar onCreate)
+// en variants estos ids son o randoms o uuids (si es random, creo, si es uuid, actualizo)
 export const saveProduct = async (input: SaveProductInput) => {
   const { variants } = input;
 
@@ -16,8 +22,12 @@ export const saveProduct = async (input: SaveProductInput) => {
   if (isCreating) {
     await onCreate(input);
   } else {
-    throw new Error('updateProduct: Not implemented');
+    console.log({ input });
+    // return '';
+
+    // throw new Error('updateProduct: Not implemented');
     await onUpdate(input);
+    revalidatePath(`/shops/alfertex/products/${input.productId}`);
   }
 };
 
@@ -36,7 +46,9 @@ const onCreate = async (input: SaveProductInput) => {
 
     const valuesIds = options
       .map(option => {
-        const value = option.values.find(value => variantOptionValues.includes(value.name));
+        const value = option.values.find(value =>
+          variantOptionValues.map(variantValue => variantValue.name).includes(value.name)
+        );
 
         return value?.id ?? '';
       })
@@ -44,7 +56,7 @@ const onCreate = async (input: SaveProductInput) => {
 
     return {
       ...variant,
-      optionValues: valuesIds
+      optionValues: valuesIds.map(id => ({ id, name: '' }))
     };
   });
 
@@ -58,8 +70,54 @@ const onUpdate = async (input: SaveProductInput) => {
     throw new Error('updateProduct: productId is required for update');
   }
 
+  const optionsToCreate = input.options?.filter(o => !isUUID(o.id));
+  console.log({
+    optionsToCreate
+  });
+
+  const options = await createOptions(input.productId, optionsToCreate);
+  console.log({
+    options
+  });
+
+  const newOptions = [...(input.options?.filter(o => isUUID(o.id)) ?? []), ...options];
+
+  const newVariants = input.variants.map(variant => {
+    const variantOptionValues = variant.optionValues ?? [];
+
+    const valuesIds = newOptions
+      .map(option => {
+        const value = option.values.find(value =>
+          variantOptionValues.map(variantValue => variantValue.name).includes(value.name)
+        );
+
+        return value;
+      })
+      .filter(Boolean);
+
+    return {
+      ...variant,
+      optionValues: valuesIds.map(id => ({ id: id?.id ?? '', name: id?.name ?? '' }))
+    };
+  });
+
+  console.log({
+    newVariants
+  });
+
+  // return '';
+
+  const variantsToUpdate = newVariants.filter(variant => isUUID(variant.id ?? ''));
+  const variantsToCreate = newVariants.filter(variant => !isUUID(variant.id ?? ''));
+
+  console.log({
+    variantsToUpdate,
+    variantsToCreate
+  });
+
   await updateProduct(input.productId, input);
-  await updateVariants(input.variants);
+  await updateVariants(variantsToUpdate);
+  await createVariants(input.productId, variantsToCreate);
 };
 
 const createProduct = async (input: SaveProductInput) => {
@@ -89,7 +147,7 @@ const createVariants = async (productId: string, variants: SaveProductInput['var
       stock: variant.stock,
       sku: variant.sku,
       requiresShipping: variant.requiresShipping,
-      optionValues: variant.optionValues
+      optionValues: variant.optionValues?.map(value => value.id)
     });
   }
 };
@@ -106,7 +164,8 @@ const updateVariants = async (variants: SaveProductInput['variants']) => {
       costPerUnit: variant.costPerUnit,
       stock: variant.stock,
       sku: variant.sku,
-      requiresShipping: variant.requiresShipping
+      requiresShipping: variant.requiresShipping,
+      optionValues: variant.optionValues?.map(value => value.id)
     });
   }
 };
@@ -119,7 +178,7 @@ const createOptions = async (productId: string, input: SaveProductInput['options
   for (const option of input) {
     const result = await optionService.create(productId, {
       name: option.name,
-      values: option.values
+      values: option.values.map(value => value.name)
     });
 
     options.push(result);
@@ -134,8 +193,9 @@ type SaveProductInput = {
   description?: string;
   enabled?: boolean;
   options?: {
+    id: string;
     name: string;
-    values: string[];
+    values: { id: string; name: string }[];
   }[];
   variants: {
     id?: string;
@@ -145,6 +205,6 @@ type SaveProductInput = {
     stock?: number;
     sku?: string;
     requiresShipping?: boolean;
-    optionValues?: string[];
+    optionValues?: { id: string; name: string }[];
   }[];
 };

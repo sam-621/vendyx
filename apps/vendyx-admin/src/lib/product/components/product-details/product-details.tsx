@@ -17,10 +17,6 @@ import { VariantDetails } from '../variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
-  console.log({
-    product
-  });
-
   const { control } = useFormContext<ProductDetailsFormInput>();
 
   return (
@@ -36,61 +32,65 @@ export const ProductDetails: FC<Props> = ({ product }) => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Pricing</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <div className="flex gap-3 w-full">
-              <FormInput control={control} name="price" label="Price" placeholder="$ 0.00" />
-              <FormInput
-                control={control}
-                name="comparisonPrice"
-                label="Comparison price"
-                placeholder="$ 0.00"
-              />
-            </div>
-            <div className="flex gap-3">
-              <FormInput
-                control={control}
-                name="costPerUnit"
-                label="Cost per unit"
-                placeholder="$ 0.00"
-              />
-              <FormInput name="Revenue" label="Revenue" placeholder="--" />
-              <FormInput name="margin" label="Margin" placeholder="--" />
-            </div>
-          </CardContent>
-        </Card>
+        {!product?.options.length && (
+          <>
+            <Card>
+              <CardHeader>
+                <CardTitle>Pricing</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
+                <div className="flex gap-3 w-full">
+                  <FormInput control={control} name="price" label="Price" placeholder="$ 0.00" />
+                  <FormInput
+                    control={control}
+                    name="comparisonPrice"
+                    label="Comparison price"
+                    placeholder="$ 0.00"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <FormInput
+                    control={control}
+                    name="costPerUnit"
+                    label="Cost per unit"
+                    placeholder="$ 0.00"
+                  />
+                  <FormInput name="Revenue" label="Revenue" placeholder="--" />
+                  <FormInput name="margin" label="Margin" placeholder="--" />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Stock</CardTitle>
-          </CardHeader>
-          <CardContent className="flex gap-3">
-            <FormInput
-              control={control}
-              name="stock"
-              type="number"
-              label="Quantity"
-              placeholder="0"
-            />
-            <FormInput control={control} name="sku" label="SKU" />
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Stock</CardTitle>
+              </CardHeader>
+              <CardContent className="flex gap-3">
+                <FormInput
+                  control={control}
+                  name="stock"
+                  type="number"
+                  label="Quantity"
+                  placeholder="0"
+                />
+                <FormInput control={control} name="sku" label="SKU" />
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Shipping</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <FormCheckbox
-              control={control}
-              name="requiresShipping"
-              label="This product requires shipping"
-            />
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Shipping</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3">
+                <FormCheckbox
+                  control={control}
+                  name="requiresShipping"
+                  label="This product requires shipping"
+                />
+              </CardContent>
+            </Card>
+          </>
+        )}
 
         <VariantContextProvider product={product}>
           <VariantDetails />

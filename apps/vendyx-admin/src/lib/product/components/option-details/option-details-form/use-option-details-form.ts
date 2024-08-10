@@ -22,20 +22,76 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const hasNoValues = useMemo(() => getHasNoValues(values), [values]);
 
   const onDone = () => {
-    const newOptions = options.map(o => {
-      if (o.id === option.id) {
-        return {
-          ...o,
-          name,
-          values: values.filter(v => v.name),
-          isEditing: false
-        };
-      }
+    const uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidExp.test(option.id)) {
+      // Complete new option has been created
+      const newOptions = options.map(o => {
+        if (o.id === option.id) {
+          return {
+            ...o,
+            name,
+            values: values.filter(v => v.name),
+            isEditing: false
+          };
+        }
 
-      return o;
-    });
+        return o;
+      });
 
-    const generatedVariants = generateVariants(newOptions, variants);
+      const generatedVariants = generateVariants(newOptions, variants);
+
+      console.log({
+        generatedVariants
+      });
+
+      updateOption(option.id, {
+        ...option,
+        name,
+        values: values.filter(v => v.name),
+        isEditing: false
+      });
+      updateVariants(generatedVariants);
+
+      setValue('options', newOptions);
+
+      setValue(
+        'variants',
+        generatedVariants.map(v => ({
+          id: v.id,
+          stock: v.stock,
+          salePrice: v.price,
+          optionValues: v.values
+        }))
+      );
+
+      return;
+    }
+
+    // updating
+    const _values = values.filter(v => v.name);
+
+    const newValues = _values.filter(v => v.name && !uuidExp.test(v.id));
+    const removedValues = option.values.filter(v => !_values.some(_v => _v.id === v.id));
+
+    let newVariants = variants;
+    let newOptions = options;
+
+    if (newValues.length || removedValues.length) {
+      newOptions = options.map(o => {
+        if (o.id === option.id) {
+          return {
+            ...o,
+            name,
+            values: values.filter(v => v.name),
+            isEditing: false
+          };
+        }
+
+        return o;
+      });
+
+      newVariants = generateVariants(newOptions, variants);
+    }
 
     updateOption(option.id, {
       ...option,
@@ -43,20 +99,17 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       values: values.filter(v => v.name),
       isEditing: false
     });
-    updateVariants(generatedVariants);
+    updateVariants(newVariants);
 
-    setValue(
-      'options',
-      newOptions.map(o => ({ name: o.name, values: o.values.map(v => v.name) }))
-    );
+    setValue('options', newOptions);
 
     setValue(
       'variants',
-      generatedVariants.map(v => ({
+      newVariants.map(v => ({
         id: v.id,
         stock: v.stock,
         salePrice: v.price,
-        optionValues: v.values.map(v => v.name)
+        optionValues: v.values
       }))
     );
   };
@@ -78,6 +131,9 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     const newOptions = options.filter(o => o.id !== option.id);
 
     const generatedVariants = generateVariants(newOptions, variants);
+    console.log({
+      generatedVariants
+    });
 
     removeOption(option.id);
     updateVariants(generatedVariants);
