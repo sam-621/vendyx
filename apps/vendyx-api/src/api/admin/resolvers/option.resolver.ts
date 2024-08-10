@@ -13,8 +13,11 @@ export class OptionResolver {
   ) {}
 
   @Mutation('createOption')
-  async createOption(@Args('input') input: CreateOptionInput) {
-    return this.service.create(input);
+  async createOption(
+    @Args('productId') productId: string,
+    @Args('input') input: CreateOptionInput
+  ) {
+    return this.service.create(productId, input);
   }
 
   @Mutation('updateOption')

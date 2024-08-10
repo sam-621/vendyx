@@ -17,6 +17,10 @@ import { VariantDetails } from '../variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
+  console.log({
+    product
+  });
+
   const { control } = useFormContext<ProductDetailsFormInput>();
 
   return (

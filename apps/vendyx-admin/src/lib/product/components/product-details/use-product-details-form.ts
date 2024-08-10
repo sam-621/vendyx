@@ -34,23 +34,28 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
   });
 
   async function onSubmit(values: ProductDetailsFormInput) {
+    const { variants, options } = values;
+
     startTransition(async () => {
       await saveProduct({
         productId: product?.id,
         name: values.name,
         description: values.description,
         enabled: values.enabled,
-        variants: [
-          {
-            id: defaultVariant?.id,
-            salePrice: values.price ? parsePrice(values.price) : 0,
-            comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
-            costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
-            stock: values.stock,
-            sku: values.sku,
-            requiresShipping: values.requiresShipping
-          }
-        ]
+        options,
+        variants: variants.length
+          ? variants
+          : [
+              {
+                id: defaultVariant?.id,
+                salePrice: values.price ? parsePrice(values.price) : 0,
+                comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
+                costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
+                stock: values.stock,
+                sku: values.sku,
+                requiresShipping: values.requiresShipping
+              }
+            ]
       });
 
       notification.success('Product saved');
@@ -73,7 +78,23 @@ const schema = z.object({
   stock: z.preprocess(val => Number(val ?? 0), z.number().int().min(0).default(0)),
   sku: z.string().optional(),
   requiresShipping: z.boolean(),
-  enabled: z.boolean().default(true)
+  enabled: z.boolean().default(true),
+  options: z
+    .array(
+      z.object({
+        name: z.string(),
+        values: z.array(z.string())
+      })
+    )
+    .optional(),
+  variants: z.array(
+    z.object({
+      id: z.string(),
+      salePrice: z.number().int().min(0),
+      stock: z.number().int().optional(),
+      optionValues: z.array(z.string())
+    })
+  )
 });
 
 export type ProductDetailsFormInput = z.infer<typeof schema>;

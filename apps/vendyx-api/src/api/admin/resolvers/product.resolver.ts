@@ -67,6 +67,11 @@ export class ProductResolver {
 
   @ResolveField('options')
   async options(@Parent() product: Product) {
-    return this.prisma.productOption.findMany({ where: { productId: product.id } });
+    const result = await this.prisma.productOption.findMany({
+      where: { productId: product.id },
+      select: { option: true }
+    });
+
+    return result.map(({ option }) => option);
   }
 }

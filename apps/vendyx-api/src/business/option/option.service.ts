@@ -8,10 +8,11 @@ export class OptionService {
   constructor(private readonly repository: OptionRepository) {}
 
   // TODO: Add validation for duplicated names and duplicated values
-  async create(input: CreateOptionInput) {
+  async create(productId: string, input: CreateOptionInput) {
     return this.repository.insert({
       name: input.name,
-      values: { createMany: { data: input.values.map(v => ({ name: v })) } }
+      values: { createMany: { data: input.values.map(v => ({ name: v })) } },
+      products: { create: { productId } }
     });
   }
 

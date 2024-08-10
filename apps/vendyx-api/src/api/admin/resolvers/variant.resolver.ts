@@ -40,6 +40,11 @@ export class VariantResolver {
 
   @ResolveField('optionValues')
   async optionValues(@Parent() variant: Variant) {
-    return await this.prisma.variantOptionValue.findMany({ where: { variantId: variant.id } });
+    const result = await this.prisma.variantOptionValue.findMany({
+      where: { variantId: variant.id },
+      select: { optionValue: true }
+    });
+
+    return result.map(({ optionValue }) => optionValue);
   }
 }

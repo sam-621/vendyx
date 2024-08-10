@@ -97,6 +97,7 @@ export type Mutation = {
 
 export type MutationCreateOptionArgs = {
   input: CreateOptionInput;
+  productId: Scalars['ID']['input'];
 };
 
 export type MutationCreateProductArgs = {
@@ -432,6 +433,45 @@ export type VariantList = List & {
   pageInfo: PageInfo;
 };
 
+export type CreateOptionMutationVariables = Exact<{
+  productId: Scalars['ID']['input'];
+  input: CreateOptionInput;
+}>;
+
+export type CreateOptionMutation = {
+  __typename?: 'Mutation';
+  createOption: {
+    __typename?: 'Option';
+    id: string;
+    name: string;
+    values: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
+  };
+};
+
+export type UpdateOptionMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateOptionInput;
+}>;
+
+export type UpdateOptionMutation = {
+  __typename?: 'Mutation';
+  updateOption: {
+    __typename?: 'Option';
+    id: string;
+    name: string;
+    values: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
+  };
+};
+
+export type RemoveOptionValuesMutationVariables = Exact<{
+  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+}>;
+
+export type RemoveOptionValuesMutation = {
+  __typename?: 'Mutation';
+  softRemoveOptionValues: boolean;
+};
+
 export type CommonProductFragment = {
   __typename?: 'Product';
   id: string;
@@ -687,6 +727,38 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonProduct' }
 ) as unknown as TypedDocumentString<CommonProductFragment, unknown>;
+export const CreateOptionDocument = new TypedDocumentString(`
+    mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {
+  createOption(productId: $productId, input: $input) {
+    id
+    name
+    values {
+      id
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<CreateOptionMutation, CreateOptionMutationVariables>;
+export const UpdateOptionDocument = new TypedDocumentString(`
+    mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {
+  updateOption(id: $id, input: $input) {
+    id
+    name
+    values {
+      id
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateOptionMutation, UpdateOptionMutationVariables>;
+export const RemoveOptionValuesDocument = new TypedDocumentString(`
+    mutation RemoveOptionValues($ids: [ID!]!) {
+  softRemoveOptionValues(ids: $ids)
+}
+    `) as unknown as TypedDocumentString<
+  RemoveOptionValuesMutation,
+  RemoveOptionValuesMutationVariables
+>;
 export const GetProductsDocument = new TypedDocumentString(`
     query GetProducts($input: ProductListInput) {
   products(input: $input) {

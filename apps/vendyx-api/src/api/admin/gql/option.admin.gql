@@ -1,5 +1,5 @@
 type Mutation {
-  createOption(input: CreateOptionInput!): Option!
+  createOption(productId: ID!, input: CreateOptionInput!): Option!
   updateOption(id: ID!, input: UpdateOptionInput!): Option!
   softRemoveOption(id: ID!): Option!
   softRemoveOptionValues(ids: [ID!]!): Boolean!

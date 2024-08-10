@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 
-import { productService, variantService } from '@/lib/shared/api';
+import { optionService, productService, variantService } from '@/lib/shared/api';
 
 export const saveProduct = async (input: SaveProductInput) => {
   const { variants } = input;
@@ -16,15 +16,39 @@ export const saveProduct = async (input: SaveProductInput) => {
   if (isCreating) {
     await onCreate(input);
   } else {
+    throw new Error('updateProduct: Not implemented');
     await onUpdate(input);
   }
 };
 
 const onCreate = async (input: SaveProductInput) => {
-  const { variants } = input;
-
   const product = await createProduct(input);
-  await createVariants(product.id, variants);
+
+  if (!input.options?.length) {
+    await createVariants(product.id, input.variants);
+    redirect(`${product.id}`);
+  }
+
+  const options = await createOptions(product.id, input.options);
+
+  const newVariants = input.variants.map(variant => {
+    const variantOptionValues = variant.optionValues ?? [];
+
+    const valuesIds = options
+      .map(option => {
+        const value = option.values.find(value => variantOptionValues.includes(value.name));
+
+        return value?.id ?? '';
+      })
+      .filter(Boolean);
+
+    return {
+      ...variant,
+      optionValues: valuesIds
+    };
+  });
+
+  await createVariants(product.id, newVariants);
 
   redirect(`${product.id}`);
 };
@@ -58,7 +82,15 @@ const updateProduct = async (productId: string, input: SaveProductInput) => {
 
 const createVariants = async (productId: string, variants: SaveProductInput['variants']) => {
   for (const variant of variants) {
-    await variantService.create(productId, variant);
+    await variantService.create(productId, {
+      salePrice: variant.salePrice,
+      comparisonPrice: variant.comparisonPrice,
+      costPerUnit: variant.costPerUnit,
+      stock: variant.stock,
+      sku: variant.sku,
+      requiresShipping: variant.requiresShipping,
+      optionValues: variant.optionValues
+    });
   }
 };
 
@@ -79,11 +111,32 @@ const updateVariants = async (variants: SaveProductInput['variants']) => {
   }
 };
 
+const createOptions = async (productId: string, input: SaveProductInput['options']) => {
+  if (!input?.length) return [];
+
+  const options = [];
+
+  for (const option of input) {
+    const result = await optionService.create(productId, {
+      name: option.name,
+      values: option.values
+    });
+
+    options.push(result);
+  }
+
+  return options;
+};
+
 type SaveProductInput = {
   productId?: string;
   name: string;
   description?: string;
   enabled?: boolean;
+  options?: {
+    name: string;
+    values: string[];
+  }[];
   variants: {
     id?: string;
     salePrice: number;
@@ -92,5 +145,6 @@ type SaveProductInput = {
     stock?: number;
     sku?: string;
     requiresShipping?: boolean;
+    optionValues?: string[];
   }[];
 };

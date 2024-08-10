@@ -93,7 +93,7 @@ model Option {
   values OptionValue[]
 
   /// the option's products
-  options ProductOption[]
+  products ProductOption[]
 
   shop   Shop   @relation(fields: [shopId], references: [id])
   shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid

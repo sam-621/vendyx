@@ -12,6 +12,12 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+  '\n  mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
+    types.CreateOptionDocument,
+  '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
+    types.UpdateOptionDocument,
+  '\n  mutation RemoveOptionValues($ids: [ID!]!) {\n    softRemoveOptionValues(ids: $ids)\n  }\n':
+    types.RemoveOptionValuesDocument,
   '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        optionValues {\n          id\n          name\n        }\n      }\n    }\n    options {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n    # assets {\n    #   items {\n    #     id\n    #     createdAt\n    #     name\n    #     source\n    #     order\n    #   }\n    # }\n  }\n':
     types.CommonProductFragmentDoc,
   '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        # assets(input: { take: 1 }) {\n        #   items {\n        #     id\n        #     source\n        #   }\n        # }\n      }\n    }\n  }\n':
@@ -46,6 +52,24 @@ const documents = {
     types.SoftRemoveVariantDocument
 };
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n'
+): typeof import('./graphql').CreateOptionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n'
+): typeof import('./graphql').UpdateOptionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RemoveOptionValues($ids: [ID!]!) {\n    softRemoveOptionValues(ids: $ids)\n  }\n'
+): typeof import('./graphql').RemoveOptionValuesDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,9 +1,13 @@
 import { useMemo, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { generateVariants } from '@/lib/product/utils';
 
+import { type ProductDetailsFormInput } from '../../product-details/use-product-details-form';
+
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
+  const { setValue } = useFormContext<ProductDetailsFormInput>();
   const { updateOption, removeOption, options, variants, updateVariants } = useVariantContext();
   const [name, setName] = useState(option.name);
   const [values, setValues] = useState<{ name: string; id: string }[]>(option.values);
@@ -31,30 +35,6 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       return o;
     });
 
-    // const optionsToCreate = [];
-    // const optionsToUpdate = [];
-
-    // for (const oldOption of options) {
-    //   const curr = newOptions.find(newOption => newOption.id === oldOption.id);
-
-    //   if (!curr) {
-    //     optionsToCreate.push(curr);
-    //     continue;
-    //   }
-
-    //   // send the option with the updated name and values
-    //   // sending all values
-    //   // if value has an id, it means it is an existing value and should be updated
-    //   // if value has no id, it means it is a new value and should be created
-    //   // and if a old values is not in the new values, it means it should be deleted
-    //   optionsToUpdate.push(curr);
-    // }
-
-    // console.log({
-    //   optionsToCreate,
-    //   optionsToUpdate
-    // });
-
     const generatedVariants = generateVariants(newOptions, variants);
 
     updateOption(option.id, {
@@ -64,6 +44,21 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       isEditing: false
     });
     updateVariants(generatedVariants);
+
+    setValue(
+      'options',
+      newOptions.map(o => ({ name: o.name, values: o.values.map(v => v.name) }))
+    );
+
+    setValue(
+      'variants',
+      generatedVariants.map(v => ({
+        id: v.id,
+        stock: v.stock,
+        salePrice: v.price,
+        optionValues: v.values.map(v => v.name)
+      }))
+    );
   };
 
   const onCancel = () => {

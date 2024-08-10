@@ -14,24 +14,28 @@ export class VariantService {
   }
 
   create(productId: string, input: CreateVariantInput) {
+    const { optionValues, ...rest } = input;
+
     return this.variantRepository.insert({
-      ...clean(input),
+      ...clean(rest),
       salePrice: convertToCent(input.salePrice),
       comparisonPrice: input.comparisonPrice ? convertToCent(input.comparisonPrice) : undefined,
       costPerUnit: input.costPerUnit ? convertToCent(input.costPerUnit) : undefined,
       product: { connect: { id: productId } },
-      variantOptionValues: { create: input.optionValues?.map(v => ({ optionValueId: v })) }
+      variantOptionValues: { create: optionValues?.map(v => ({ optionValueId: v })) }
     });
   }
 
   update(id: string, input: UpdateVariantInput) {
+    const { optionValues, ...rest } = input;
+
     return this.variantRepository.update(id, {
-      ...clean(input),
+      ...clean(rest),
       salePrice: input.salePrice ? convertToCent(input.salePrice) : undefined,
       comparisonPrice: input.comparisonPrice ? convertToCent(input.comparisonPrice) : undefined,
       costPerUnit: input.costPerUnit ? convertToCent(input.costPerUnit) : undefined,
-      variantOptionValues: input.optionValues?.length
-        ? { create: input.optionValues?.map(v => ({ optionValueId: v })) }
+      variantOptionValues: optionValues?.length
+        ? { create: optionValues?.map(v => ({ optionValueId: v })) }
         : undefined
     });
   }
