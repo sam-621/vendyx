@@ -11,6 +11,10 @@ export class OptionRepository {
     return this.prisma.option.findUnique({ where: { id } });
   }
 
+  findValues(optionId: string) {
+    return this.prisma.optionValue.findMany({ where: { optionId } });
+  }
+
   insert(input: Prisma.OptionCreateInput) {
     return this.prisma.option.create({ data: input });
   }

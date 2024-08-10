@@ -463,13 +463,13 @@ export type UpdateOptionMutation = {
   };
 };
 
-export type RemoveOptionValuesMutationVariables = Exact<{
-  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+export type RemoveOptionMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
 }>;
 
-export type RemoveOptionValuesMutation = {
+export type RemoveOptionMutation = {
   __typename?: 'Mutation';
-  softRemoveOptionValues: boolean;
+  softRemoveOption: { __typename?: 'Option'; id: string };
 };
 
 export type CommonProductFragment = {
@@ -751,14 +751,13 @@ export const UpdateOptionDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UpdateOptionMutation, UpdateOptionMutationVariables>;
-export const RemoveOptionValuesDocument = new TypedDocumentString(`
-    mutation RemoveOptionValues($ids: [ID!]!) {
-  softRemoveOptionValues(ids: $ids)
+export const RemoveOptionDocument = new TypedDocumentString(`
+    mutation RemoveOption($id: ID!) {
+  softRemoveOption(id: $id) {
+    id
+  }
 }
-    `) as unknown as TypedDocumentString<
-  RemoveOptionValuesMutation,
-  RemoveOptionValuesMutationVariables
->;
+    `) as unknown as TypedDocumentString<RemoveOptionMutation, RemoveOptionMutationVariables>;
 export const GetProductsDocument = new TypedDocumentString(`
     query GetProducts($input: ProductListInput) {
   products(input: $input) {

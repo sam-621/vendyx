@@ -41,7 +41,7 @@ export class VariantResolver {
   @ResolveField('optionValues')
   async optionValues(@Parent() variant: Variant) {
     const result = await this.prisma.variantOptionValue.findMany({
-      where: { variantId: variant.id },
+      where: { variantId: variant.id, optionValue: { deletedAt: null } },
       select: { optionValue: true }
     });
 

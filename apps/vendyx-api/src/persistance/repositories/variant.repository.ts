@@ -19,6 +19,12 @@ export class VariantRepository {
     return this.prisma.variant.update({ where: { id }, data: input });
   }
 
+  async removeOptionValuesNotIn(variantId: string, ids: string[]) {
+    return this.prisma.variantOptionValue.deleteMany({
+      where: { optionValueId: { notIn: ids }, variantId }
+    });
+  }
+
   softDelete(id: string) {
     return this.prisma.variant.update({ where: { id }, data: { deletedAt: new Date() } });
   }

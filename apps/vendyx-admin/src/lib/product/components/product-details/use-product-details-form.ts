@@ -56,11 +56,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
 
-    // console.log({
-    //   variants,
-    //   options
-    // });
-
     startTransition(async () => {
       await saveProduct({
         productId: product?.id,
@@ -80,7 +75,15 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
                 sku: values.sku,
                 requiresShipping: values.requiresShipping
               }
-            ]
+            ],
+        variantsToRemove:
+          product?.variants.items
+            .filter(variant => !variants.some(v => v.id === variant.id))
+            .map(variant => variant.id) ?? [],
+        optionsToRemove:
+          product?.options
+            .filter(option => !options.some(o => o.id === option.id))
+            .map(option => option.id) ?? []
       });
 
       notification.success('Product saved');
@@ -104,20 +107,18 @@ const schema = z.object({
   sku: z.string().optional(),
   requiresShipping: z.boolean(),
   enabled: z.boolean().default(true),
-  options: z
-    .array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        values: z.array(
-          z.object({
-            id: z.string(),
-            name: z.string()
-          })
-        )
-      })
-    )
-    .optional(),
+  options: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      values: z.array(
+        z.object({
+          id: z.string(),
+          name: z.string()
+        })
+      )
+    })
+  ),
   variants: z.array(
     z.object({
       id: z.string(),

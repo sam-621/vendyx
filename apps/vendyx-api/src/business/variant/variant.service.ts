@@ -26,8 +26,10 @@ export class VariantService {
     });
   }
 
-  update(id: string, input: UpdateVariantInput) {
+  async update(id: string, input: UpdateVariantInput) {
     const { optionValues, ...rest } = input;
+
+    await this.variantRepository.removeOptionValuesNotIn(id, optionValues ?? []);
 
     return this.variantRepository.update(id, {
       ...clean(rest),

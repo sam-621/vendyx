@@ -73,21 +73,35 @@ const onUpdate = async (input: SaveProductInput) => {
   const optionsToCreate = input.options?.filter(o => !isUUID(o.id));
   const optionsToUpdate = input.options?.filter(o => isUUID(o.id));
 
+  console.log({
+    optionsToCreate,
+    optionsToUpdate,
+    optionsToRemove: input.optionsToRemove
+  });
+
+  const optionsUpdated = [];
+
   if (optionsToUpdate?.length) {
     for (const option of optionsToUpdate) {
-      await optionService.update(option.id, {
+      const updatedOption = await optionService.update(option.id, {
         name: option.name,
-        values: option.values
+        values: option.values.map(value => ({
+          id: isUUID(value.id) ? value.id : '',
+          name: value.name
+        }))
       });
+
+      optionsUpdated.push(updatedOption);
     }
   }
 
   const options = await createOptions(input.productId, optionsToCreate);
-  console.log({
-    options
-  });
 
-  const newOptions = [...(input.options?.filter(o => isUUID(o.id)) ?? []), ...options];
+  await Promise.all(
+    input.optionsToRemove.map(async optionId => await optionService.remove(optionId))
+  );
+
+  const newOptions = [...optionsUpdated, ...options];
 
   const newVariants = input.variants.map(variant => {
     const variantOptionValues = variant.optionValues ?? [];
@@ -109,10 +123,9 @@ const onUpdate = async (input: SaveProductInput) => {
   });
 
   console.log({
+    newOptions,
     newVariants
   });
-
-  // return '';
 
   const variantsToUpdate = newVariants.filter(variant => isUUID(variant.id ?? ''));
   const variantsToCreate = newVariants.filter(variant => !isUUID(variant.id ?? ''));
@@ -125,6 +138,9 @@ const onUpdate = async (input: SaveProductInput) => {
   await updateProduct(input.productId, input);
   await updateVariants(variantsToUpdate);
   await createVariants(input.productId, variantsToCreate);
+  await Promise.all(
+    input.variantsToRemove.map(async variantId => await variantService.remove(variantId))
+  );
 };
 
 const createProduct = async (input: SaveProductInput) => {
@@ -214,4 +230,6 @@ type SaveProductInput = {
     requiresShipping?: boolean;
     optionValues?: { id: string; name: string }[];
   }[];
+  variantsToRemove: string[];
+  optionsToRemove: string[];
 };

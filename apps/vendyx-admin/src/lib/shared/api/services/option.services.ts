@@ -18,12 +18,12 @@ const update = async (id: string, input: UpdateOptionInput) => {
   return updateOption;
 };
 
-const removeOption = async (ids: string[]) => {
-  await fetcher(REMOVE_OPTION_MUTATION, { ids });
+const remove = async (id: string) => {
+  await fetcher(REMOVE_OPTION_MUTATION, { id });
 };
 
 export const optionService = {
   create,
   update,
-  removeOption
+  remove
 };

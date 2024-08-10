@@ -27,7 +27,9 @@ export const UPDATE_OPTION_MUTATION = graphql(`
 `);
 
 export const REMOVE_OPTION_MUTATION = graphql(`
-  mutation RemoveOptionValues($ids: [ID!]!) {
-    softRemoveOptionValues(ids: $ids)
+  mutation RemoveOption($id: ID!) {
+    softRemoveOption(id: $id) {
+      id
+    }
   }
 `);

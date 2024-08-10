@@ -18,8 +18,16 @@ export class OptionService {
 
   // TODO: Add validation for duplicated names and duplicated values
   async update(id: string, input: UpdateOptionInput) {
-    const valuesToCreate = input.values?.filter(v => v.id === undefined);
-    const valuesToUpdate = input.values?.filter(v => v.id !== undefined);
+    const valuesToCreate = input.values?.filter(v => !v.id);
+    const valuesToUpdate = input.values?.filter(v => Boolean(v.id)); // TODO: impletent isUUID()
+
+    const allValues = await this.repository.findValues(id);
+    const allValuesIds = allValues.map(v => v.id);
+    const newValuesIds = valuesToUpdate?.map(v => v.id) ?? [];
+
+    const valuesToRemove = allValuesIds.filter(v => !newValuesIds.includes(v));
+
+    await this.softRemoveValues(valuesToRemove);
 
     return await this.repository.update(id, {
       name: input.name ?? '',

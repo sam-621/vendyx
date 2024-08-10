@@ -72,8 +72,12 @@ export class ProductResolver {
   @ResolveField('options')
   async options(@Parent() product: Product) {
     const result = await this.prisma.productOption.findMany({
-      where: { productId: product.id },
-      select: { option: true }
+      where: { productId: product.id, option: { deletedAt: null } },
+      include: { option: true }
+    });
+
+    console.log({
+      result
     });
 
     return result
