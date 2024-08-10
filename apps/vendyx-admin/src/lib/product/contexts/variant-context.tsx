@@ -67,6 +67,11 @@ export const VariantContextProvider = ({
   const [options, setOptions] = useState<VariantContext['options']>(baseOptions);
   const [variants, setVariants] = useState<VariantContext['variants']>(baseVariants);
 
+  console.log({
+    options,
+    variants
+  });
+
   useEffect(() => {
     if (!product) return;
 
@@ -83,6 +88,20 @@ export const VariantContextProvider = ({
       }))
     );
   }, [product]);
+
+  useEffect(() => {
+    setValue('options', options);
+
+    setValue(
+      'variants',
+      variants.map(v => ({
+        id: v.id,
+        stock: v.stock,
+        salePrice: v.price,
+        optionValues: v.values
+      }))
+    );
+  }, [variants, options]);
 
   const updateVariants = (variants: VariantContext['variants']) => {
     setVariants(variants);

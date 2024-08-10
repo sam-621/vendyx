@@ -37,6 +37,9 @@ export class OptionResolver {
 
   @ResolveField('values')
   values(@Parent() option: Option) {
-    return this.prisma.optionValue.findMany({ where: { optionId: option.id } });
+    return this.prisma.optionValue.findMany({
+      where: { optionId: option.id },
+      orderBy: { createdAt: 'asc' }
+    });
   }
 }

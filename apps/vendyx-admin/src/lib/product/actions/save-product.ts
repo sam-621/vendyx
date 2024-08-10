@@ -1,10 +1,10 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { optionService, productService, variantService } from '@/lib/shared/api';
 import { isUUID } from '@/lib/shared/utils';
-import { revalidatePath } from 'next/cache';
 
 // YA obtengo las variantes y opciones con sus ids,
 // en options estos ids son o randoms o uuids (puedo usar el mutation updateOption y mando los values como: si es un random no mando el id y si es uuid, sí lo mando)
@@ -71,9 +71,16 @@ const onUpdate = async (input: SaveProductInput) => {
   }
 
   const optionsToCreate = input.options?.filter(o => !isUUID(o.id));
-  console.log({
-    optionsToCreate
-  });
+  const optionsToUpdate = input.options?.filter(o => isUUID(o.id));
+
+  if (optionsToUpdate?.length) {
+    for (const option of optionsToUpdate) {
+      await optionService.update(option.id, {
+        name: option.name,
+        values: option.values
+      });
+    }
+  }
 
   const options = await createOptions(input.productId, optionsToCreate);
   console.log({

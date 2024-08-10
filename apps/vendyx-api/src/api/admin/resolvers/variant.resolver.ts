@@ -45,6 +45,8 @@ export class VariantResolver {
       select: { optionValue: true }
     });
 
-    return result.map(({ optionValue }) => optionValue);
+    return result
+      .map(({ optionValue }) => optionValue)
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   }
 }

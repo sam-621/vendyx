@@ -1,13 +1,9 @@
 import { useMemo, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { generateVariants } from '@/lib/product/utils';
 
-import { type ProductDetailsFormInput } from '../../product-details/use-product-details-form';
-
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
-  const { setValue } = useFormContext<ProductDetailsFormInput>();
   const { updateOption, removeOption, options, variants, updateVariants } = useVariantContext();
   const [name, setName] = useState(option.name);
   const [values, setValues] = useState<{ name: string; id: string }[]>(option.values);
@@ -52,18 +48,6 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       });
       updateVariants(generatedVariants);
 
-      setValue('options', newOptions);
-
-      setValue(
-        'variants',
-        generatedVariants.map(v => ({
-          id: v.id,
-          stock: v.stock,
-          salePrice: v.price,
-          optionValues: v.values
-        }))
-      );
-
       return;
     }
 
@@ -71,7 +55,9 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     const _values = values.filter(v => v.name);
 
     const newValues = _values.filter(v => v.name && !uuidExp.test(v.id));
-    const removedValues = option.values.filter(v => !_values.some(_v => _v.id === v.id));
+    const removedValues = option.values
+      .filter(v => v.name)
+      .filter(v => !_values.some(_v => _v.id === v.id));
 
     let newVariants = variants;
     let newOptions = options;
@@ -99,17 +85,18 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       values: values.filter(v => v.name),
       isEditing: false
     });
-    updateVariants(newVariants);
-
-    setValue('options', newOptions);
-
-    setValue(
-      'variants',
+    updateVariants(
       newVariants.map(v => ({
-        id: v.id,
-        stock: v.stock,
-        salePrice: v.price,
-        optionValues: v.values
+        ...v,
+        values: v.values.map(ov => {
+          const currentValue = _values.find(_v => _v.id === ov.id);
+
+          if (currentValue) {
+            return currentValue;
+          }
+
+          return ov;
+        })
       }))
     );
   };

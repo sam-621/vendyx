@@ -58,7 +58,11 @@ export class ProductResolver {
     };
 
     const [result, total] = await Promise.all([
-      this.prisma.variant.findMany({ ...query, ...clean(input ?? {}) }),
+      this.prisma.variant.findMany({
+        ...query,
+        ...clean(input ?? {}),
+        orderBy: { createdAt: 'asc' }
+      }),
       this.prisma.variant.count(query)
     ]);
 
@@ -72,6 +76,8 @@ export class ProductResolver {
       select: { option: true }
     });
 
-    return result.map(({ option }) => option);
+    return result
+      .map(({ option }) => option)
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   }
 }

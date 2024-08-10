@@ -56,10 +56,10 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
 
-    console.log({
-      variants,
-      options
-    });
+    // console.log({
+    //   variants,
+    //   options
+    // });
 
     startTransition(async () => {
       await saveProduct({
