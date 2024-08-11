@@ -47,8 +47,8 @@ export class ProductResolver {
   }
 
   @Mutation('softRemoveProduct')
-  async softRemove(@Args('id') id: string) {
-    return this.productService.softRemove(id);
+  async softRemove(@Args('ids') ids: string[]) {
+    return this.productService.softRemove(ids);
   }
 
   @ResolveField('variants')

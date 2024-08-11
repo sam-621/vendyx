@@ -11,7 +11,7 @@ input ProductFilters {
 type Mutation {
   createProduct(input: CreateProductInput!): Product!
   updateProduct(id: ID!, input: UpdateProductInput!): Product!
-  softRemoveProduct(id: ID!): Product!
+  softRemoveProduct(ids: [ID!]!): Boolean!
 }
 
 input CreateProductInput {

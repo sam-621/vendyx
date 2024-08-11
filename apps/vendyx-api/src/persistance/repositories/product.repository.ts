@@ -59,6 +59,33 @@ export class ProductRepository {
   softDelete(id: string) {
     return this.prisma.product.update({ where: { id }, data: { deletedAt: new Date() } });
   }
+
+  softDeleteVariants(productId: string) {
+    return this.prisma.variant.updateMany({
+      where: { productId },
+      data: { deletedAt: new Date() }
+    });
+  }
+
+  /**
+   * Hard delete all options and its values from a product and variants
+   */
+  async hardDeleteOptions(productId: string) {
+    const optionsToDelete = await this.prisma.productOption.findMany({ where: { productId } });
+    const optionsIds = optionsToDelete.map(o => o.optionId);
+
+    await this.prisma.variantOptionValue.deleteMany({
+      where: { optionValue: { optionId: { in: optionsIds } } }
+    });
+    await this.prisma.optionValue.deleteMany({
+      where: { optionId: { in: optionsIds } }
+    });
+
+    await this.prisma.productOption.deleteMany({ where: { productId } });
+    await this.prisma.option.deleteMany({
+      where: { id: { in: optionsIds } }
+    });
+  }
 }
 
 type FindOptions = ListInput & { filters?: ProductFilters };

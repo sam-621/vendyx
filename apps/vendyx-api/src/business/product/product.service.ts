@@ -56,8 +56,15 @@ export class ProductService {
     });
   }
 
-  async softRemove(id: string) {
-    return this.productRepository.softDelete(id);
+  async softRemove(ids: string[]) {
+    await Promise.all(
+      ids.map(async id => {
+        await this.productRepository.hardDeleteOptions(id);
+        await this.productRepository.softDelete(id);
+      })
+    );
+
+    return true;
   }
 
   private async validateAndParseSlug(name: string) {
