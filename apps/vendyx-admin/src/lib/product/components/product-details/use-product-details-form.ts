@@ -1,4 +1,4 @@
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,6 +26,8 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
       comparisonPrice: defaultVariant?.comparisonPrice
         ? formatPrice(defaultVariant.comparisonPrice)
         : '',
+      revenue: '',
+      margin: '',
       costPerUnit: defaultVariant?.costPerUnit ? formatPrice(defaultVariant.costPerUnit) : '',
       stock: defaultVariant?.stock ?? 0,
       sku: defaultVariant?.sku ?? '',
@@ -53,6 +55,47 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
         })) ?? []
     }
   });
+
+  useEffect(
+    function setInitialValuesAfterProductIsRefetched() {
+      form.reset({
+        name: product?.name ?? '',
+        description: product?.description ?? '',
+        price: defaultVariant?.salePrice ? formatPrice(defaultVariant.salePrice) : '',
+        comparisonPrice: defaultVariant?.comparisonPrice
+          ? formatPrice(defaultVariant.comparisonPrice)
+          : '',
+        revenue: '',
+        margin: '',
+        costPerUnit: defaultVariant?.costPerUnit ? formatPrice(defaultVariant.costPerUnit) : '',
+        stock: defaultVariant?.stock ?? 0,
+        sku: defaultVariant?.sku ?? '',
+        requiresShipping: defaultVariant?.requiresShipping ?? false,
+        enabled: product?.enabled ?? true,
+        variants:
+          product?.variants.items.map(variant => ({
+            id: variant.id,
+            salePrice: variant.salePrice,
+            comparisonPrice: variant.comparisonPrice,
+            costPerUnit: variant.costPerUnit,
+            stock: variant.stock,
+            sku: variant.sku,
+            requiresShipping: variant.requiresShipping,
+            optionValues: variant.optionValues
+          })) ?? [],
+        options:
+          product?.options.map(option => ({
+            id: option.id,
+            name: option.name,
+            values: option.values.map(value => ({
+              id: value.id,
+              name: value.name
+            }))
+          })) ?? []
+      });
+    },
+    [product]
+  );
 
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
@@ -129,6 +172,8 @@ const schema = z.object({
   sku: z.string().optional(),
   requiresShipping: z.boolean(),
   enabled: z.boolean().default(true),
+  margin: z.string().optional(),
+  revenue: z.string().optional(),
   options: z.array(
     z.object({
       id: z.string(),

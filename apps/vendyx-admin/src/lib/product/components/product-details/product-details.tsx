@@ -55,8 +55,8 @@ export const ProductDetails: FC<Props> = ({ product }) => {
                     label="Cost per unit"
                     placeholder="$ 0.00"
                   />
-                  <FormInput name="Revenue" label="Revenue" placeholder="--" />
-                  <FormInput name="margin" label="Margin" placeholder="--" />
+                  <FormInput control={control} name="revenue" label="Revenue" placeholder="--" />
+                  <FormInput control={control} name="margin" label="Margin" placeholder="--" />
                 </div>
               </CardContent>
             </Card>

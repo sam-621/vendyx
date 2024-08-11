@@ -75,16 +75,6 @@ export const VariantContextProvider = ({
 
       setOptions(baseOptions);
       setVariants(baseVariants);
-      setValue('options', baseOptions);
-      setValue(
-        'variants',
-        baseVariants.map(v => ({
-          id: v.id,
-          stock: v.stock,
-          salePrice: parsePrice(v.price),
-          optionValues: v.values
-        }))
-      );
     },
     [product]
   );

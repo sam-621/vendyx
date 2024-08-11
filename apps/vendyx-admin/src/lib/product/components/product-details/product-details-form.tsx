@@ -19,7 +19,7 @@ export const ProductDetailsForm: FC<Props> = ({ product }) => {
         <AdminPageLayout
           title={product ? product.name : 'Create product'}
           maxWidth
-          actions={<ProductSubmitButton isLoading={form.isLoading} />}
+          actions={<ProductSubmitButton isLoading={form.isLoading} product={product} />}
         >
           <ProductDetails product={product} />
         </AdminPageLayout>
