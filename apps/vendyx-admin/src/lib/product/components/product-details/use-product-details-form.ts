@@ -9,7 +9,8 @@ import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
 import { formatPrice, parsePrice } from '@/lib/shared/utils';
 
-import { saveProduct } from '../../actions';
+import { createProduct } from '../../actions';
+import { updateProduct } from '../../actions/update-product';
 
 export const useProductDetailsForm = (product?: CommonProductFragment) => {
   const [isLoading, startTransition] = useTransition();
@@ -56,47 +57,59 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
 
-    // console.log({
-    //   values,
-    //   price: parsePrice(values.price ?? '0')
-    // });
-
-    console.log({
-      variants
-    });
-
     startTransition(async () => {
-      await saveProduct({
-        productId: product?.id,
-        name: values.name,
-        description: values.description,
-        enabled: values.enabled,
-        options,
-        variants: variants.length
-          ? variants
-          : [
-              {
-                id: defaultVariant?.id,
-                salePrice: values.price ? parsePrice(values.price) : 0,
-                comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
-                costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
-                stock: values.stock,
-                sku: values.sku,
-                requiresShipping: values.requiresShipping
-              }
-            ],
-        variantsToRemove:
-          product?.variants.items
-            .filter(variant => !variants.some(v => v.id === variant.id))
-            .filter(variant => variant.id !== defaultVariant?.id) // Don't remove the default variant
-            .map(variant => variant.id) ?? [],
-        optionsToRemove:
-          product?.options
-            .filter(option => !options.some(o => o.id === option.id))
-            .map(option => option.id) ?? []
-      });
+      if (product?.id) {
+        // Update product
+        await updateProduct(product.id, {
+          name: values.name,
+          description: values.description,
+          enabled: values.enabled,
+          options,
+          variants: variants.length
+            ? variants
+            : [
+                {
+                  id: defaultVariant?.id ?? '',
+                  salePrice: values.price ? parsePrice(values.price) : 0,
+                  comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
+                  costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
+                  stock: values.stock,
+                  sku: values.sku,
+                  requiresShipping: values.requiresShipping
+                }
+              ],
+          variantsToRemove:
+            product?.variants.items
+              .filter(variant => !variants.some(v => v.id === variant.id))
+              .filter(variant => variant.id !== defaultVariant?.id) // Don't remove the default variant
+              .map(variant => variant.id) ?? [],
+          optionsToRemove:
+            product?.options
+              .filter(option => !options.some(o => o.id === option.id))
+              .map(option => option.id) ?? []
+        });
 
-      notification.success('Product saved');
+        notification.success('Product saved');
+      } else {
+        await createProduct({
+          name: values.name,
+          description: values.description,
+          enabled: values.enabled,
+          options,
+          variants: variants.length
+            ? variants
+            : [
+                {
+                  salePrice: values.price ? parsePrice(values.price) : 0,
+                  comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
+                  costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
+                  stock: values.stock,
+                  sku: values.sku,
+                  requiresShipping: values.requiresShipping
+                }
+              ]
+        });
+      }
     });
   }
 
