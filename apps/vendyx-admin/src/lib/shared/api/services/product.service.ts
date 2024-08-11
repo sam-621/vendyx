@@ -15,13 +15,21 @@ import {
 import { fetcher } from './fetcher';
 
 const getAll = async (input?: ProductListInput) => {
-  const { products } = await fetcher(GET_ALL_PRODUCTS_QUERY, { input });
+  const { products } = await fetcher(
+    GET_ALL_PRODUCTS_QUERY,
+    { input },
+    { tags: [ProductsTags.products] }
+  );
 
   return products;
 };
 
 const getById = async (id: string) => {
-  const result = await fetcher(GET_PRODUCT_BY_ID_QUERY, { id });
+  const result = await fetcher(
+    GET_PRODUCT_BY_ID_QUERY,
+    { id },
+    { tags: [ProductsTags.product(id)] }
+  );
   const data = getFragmentData(COMMON_PRODUCT_FRAGMENT, result.product);
 
   return data;
@@ -51,4 +59,9 @@ export const productService = {
   create,
   update,
   remove
+};
+
+export const ProductsTags = {
+  products: 'products',
+  product: (id: string) => `product-${id}`
 };

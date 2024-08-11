@@ -52,8 +52,8 @@ export const generateVariants = (
             {
               id: variantAlreadyExists ? variantAlreadyExists.id : Math.random().toString(),
               values: [value],
-              price: 0,
-              stock: 0,
+              price: variantAlreadyExists ? variantAlreadyExists.price : '0',
+              stock: variantAlreadyExists ? variantAlreadyExists.stock : 0,
               selected: false,
               action: (variantAlreadyExists ? 'none' : 'create') as 'create' | 'update' | 'none'
             }
@@ -108,8 +108,26 @@ export const generateVariants = (
                 ? baseExists?.id ?? ''
                 : Math.random().toString(),
             values: [value, ...variant.values],
-            price: 0,
-            stock: 0,
+            price: variantAlreadyExists
+              ? variantAlreadyExists.price
+              : getActionForVariantGenerated(
+                    Boolean(variantAlreadyExists),
+                    Boolean(baseExists),
+                    set,
+                    base
+                  ) === 'update'
+                ? baseExists?.price ?? '0'
+                : '0',
+            stock: variantAlreadyExists
+              ? variantAlreadyExists.stock
+              : getActionForVariantGenerated(
+                    Boolean(variantAlreadyExists),
+                    Boolean(baseExists),
+                    set,
+                    base
+                  ) === 'update'
+                ? baseExists?.stock ?? 0
+                : 0,
             selected: false,
             action: getActionForVariantGenerated(
               Boolean(variantAlreadyExists),

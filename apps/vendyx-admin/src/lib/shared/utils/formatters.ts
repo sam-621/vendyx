@@ -30,10 +30,12 @@ export const parsePrice = (price: string) => {
  * // priceFormatted = $10.99
  * ```
  */
-export const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-US', {
+export const formatPrice = (price: number, options?: { withCurrencyIcon?: boolean }) => {
+  const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
     // Vendyx prices are always in cents
   }).format(price / 100);
+
+  return options?.withCurrencyIcon ? formattedPrice : formattedPrice.replace('$', '');
 };

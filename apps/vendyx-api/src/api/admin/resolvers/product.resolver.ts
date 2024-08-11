@@ -76,12 +76,6 @@ export class ProductResolver {
       include: { option: true }
     });
 
-    console.log({
-      result
-    });
-
-    return result
-      .map(({ option }) => option)
-      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    return result.map(({ option }) => option).sort((a, b) => a.order - b.order);
   }
 }

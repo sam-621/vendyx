@@ -89,6 +89,9 @@ model Option {
   /// The option's name
   name String
 
+  /// The option's order
+  order Int
+
   /// the option's values
   values OptionValue[]
 
@@ -111,6 +114,9 @@ model OptionValue {
 
   /// The option value's name
   name String
+
+  /// The option value's order
+  order Int
 
   /// Variants that this option value belongs to
   variantOptionValues VariantOptionValue[]

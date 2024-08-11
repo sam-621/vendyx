@@ -1,3 +1,11 @@
+extend type Option {
+  order: Int!
+}
+
+extend type OptionValue {
+  order: Int!
+}
+
 type Mutation {
   createOption(productId: ID!, input: CreateOptionInput!): Option!
   updateOption(id: ID!, input: UpdateOptionInput!): Option!
@@ -6,11 +14,18 @@ type Mutation {
 }
 
 input CreateOptionInput {
+  order: Int!
   name: String!
-  values: [String!]!
+  values: [CreateOptionValueInput!]!
+}
+
+input CreateOptionValueInput {
+  order: Int!
+  name: String!
 }
 
 input UpdateOptionInput {
+  order: Int
   name: String
   values: [UpdateOptionValueInput!]
 }
@@ -22,4 +37,5 @@ input UpdateOptionValueInput {
   """
   id: ID
   name: String
+  order: Int
 }

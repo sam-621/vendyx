@@ -19,12 +19,6 @@ export class OptionRepository {
     return this.prisma.option.create({ data: input });
   }
 
-  insertValues(optionId: string, values: string[]) {
-    return this.prisma.$transaction(
-      values.map(v => this.prisma.optionValue.create({ data: { name: v, optionId } }))
-    );
-  }
-
   update(id: string, input: Prisma.OptionUpdateInput) {
     return this.prisma.option.update({ where: { id }, data: input });
   }
@@ -38,13 +32,19 @@ export class OptionRepository {
   }
 
   softRemove(id: string) {
-    return this.prisma.option.update({ where: { id }, data: { deletedAt: new Date() } });
+    return this.prisma.option.update({
+      where: { id },
+      data: { order: -1, deletedAt: new Date() }
+    });
   }
 
   softRemoveValues(ids: string[]) {
     return this.prisma.$transaction(
       ids.map(id =>
-        this.prisma.optionValue.update({ where: { id }, data: { deletedAt: new Date() } })
+        this.prisma.optionValue.update({
+          where: { id },
+          data: { order: -1, deletedAt: new Date() }
+        })
       )
     );
   }

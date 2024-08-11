@@ -19,7 +19,7 @@ export class ShopRepository {
   ) {}
 
   async findMany(input?: ListInput) {
-    return this.prisma.shop.findMany({ ...clean(input ?? {}) });
+    return this.prisma.shop.findMany({ ...clean(input ?? {}), orderBy: { createdAt: 'desc' } });
   }
 
   async count(input?: ListInput) {

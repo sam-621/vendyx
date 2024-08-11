@@ -2,6 +2,7 @@ import { createContext, type ReactNode, useContext, useEffect, useState } from '
 import { useFormContext } from 'react-hook-form';
 
 import { type CommonProductFragment } from '@/lib/shared/api';
+import { formatPrice, parsePrice } from '@/lib/shared/utils';
 
 import { type ProductDetailsFormInput } from '../components/product-details/use-product-details-form';
 import { getUnusedOptionValues } from '../utils';
@@ -16,7 +17,7 @@ export type VariantContext = {
   variants: {
     id: string;
     values: { name: string; id: string }[];
-    price: number;
+    price: string;
     stock: number;
     selected: boolean;
   }[];
@@ -58,7 +59,7 @@ export const VariantContextProvider = ({
       .map(v => ({
         id: v.id,
         values: v.optionValues.map(v => ({ id: v.id, name: v.name })),
-        price: v.salePrice,
+        price: formatPrice(v.salePrice),
         stock: v.stock,
         selected: false
       }))
@@ -68,12 +69,15 @@ export const VariantContextProvider = ({
   const [variants, setVariants] = useState<VariantContext['variants']>(baseVariants);
 
   console.log({
-    options,
     variants
   });
 
   useEffect(() => {
     if (!product) return;
+
+    console.log({
+      variants
+    });
 
     setOptions(baseOptions);
     setVariants(baseVariants);
@@ -83,7 +87,7 @@ export const VariantContextProvider = ({
       baseVariants.map(v => ({
         id: v.id,
         stock: v.stock,
-        salePrice: v.price,
+        salePrice: parsePrice(v.price),
         optionValues: v.values
       }))
     );
@@ -97,7 +101,7 @@ export const VariantContextProvider = ({
       variants.map(v => ({
         id: v.id,
         stock: v.stock,
-        salePrice: v.price,
+        salePrice: parsePrice(v.price),
         optionValues: v.values
       }))
     );

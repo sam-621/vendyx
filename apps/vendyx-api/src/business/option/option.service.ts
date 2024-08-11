@@ -10,8 +10,9 @@ export class OptionService {
   // TODO: Add validation for duplicated names and duplicated values
   async create(productId: string, input: CreateOptionInput) {
     return this.repository.insert({
+      order: input.order,
       name: input.name,
-      values: { createMany: { data: input.values.map(v => ({ name: v })) } },
+      values: { createMany: { data: input.values.map(v => ({ name: v.name, order: v.order })) } },
       products: { create: { productId } }
     });
   }
@@ -30,13 +31,14 @@ export class OptionService {
     await this.softRemoveValues(valuesToRemove);
 
     return await this.repository.update(id, {
+      order: input.order ?? 0,
       name: input.name ?? '',
       values: {
         update: valuesToUpdate?.map(v => ({
           where: { id: v.id ?? '' },
-          data: { name: v.name ?? '' }
+          data: { name: v.name ?? '', order: v.order ?? 0 }
         })),
-        create: valuesToCreate?.map(v => ({ name: v.name ?? '' }))
+        create: valuesToCreate?.map(v => ({ name: v.name ?? '', order: v.order ?? 0 }))
       }
     });
   }

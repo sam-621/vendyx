@@ -29,8 +29,25 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
         <span>{variantName}</span>
       </div>
       <div className="flex items-center gap-2 w-full">
-        <Input defaultValue={variant.price} placeholder="$ 0.00" />
-        <Input defaultValue={variant.stock} type="number" placeholder="0" />
+        <Input
+          onChange={e =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, price: e.target.value } : v))
+            )
+          }
+          value={variant.price}
+          placeholder="$ 0.00"
+        />
+        <Input
+          value={variant.stock}
+          onChange={e =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, stock: Number(e.target.value) } : v))
+            )
+          }
+          type="number"
+          placeholder="0"
+        />
       </div>
     </div>
   );

@@ -62,6 +62,11 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     let newVariants = variants;
     let newOptions = options;
 
+    console.log({
+      newValues,
+      removedValues
+    });
+
     if (newValues.length || removedValues.length) {
       newOptions = options.map(o => {
         if (o.id === option.id) {
@@ -78,6 +83,10 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
 
       newVariants = generateVariants(newOptions, variants);
     }
+
+    console.log({
+      newVariants
+    });
 
     updateOption(option.id, {
       ...option,

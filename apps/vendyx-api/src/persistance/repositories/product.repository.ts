@@ -17,7 +17,8 @@ export class ProductRepository {
         name: clean(input?.filters?.name ?? {}),
         archived: clean(input?.filters?.achived ?? {}),
         enabled: clean(input?.filters?.enabled ?? {})
-      }
+      },
+      orderBy: { createdAt: 'desc' }
     });
   }
 

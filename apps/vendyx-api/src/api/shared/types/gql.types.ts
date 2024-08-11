@@ -14,11 +14,18 @@ export enum UserErrorCode {
 }
 
 export class CreateOptionInput {
+    order: number;
     name: string;
-    values: string[];
+    values: CreateOptionValueInput[];
+}
+
+export class CreateOptionValueInput {
+    order: number;
+    name: string;
 }
 
 export class UpdateOptionInput {
+    order?: Nullable<number>;
     name?: Nullable<string>;
     values?: Nullable<UpdateOptionValueInput[]>;
 }
@@ -26,6 +33,7 @@ export class UpdateOptionInput {
 export class UpdateOptionValueInput {
     id?: Nullable<string>;
     name?: Nullable<string>;
+    order?: Nullable<number>;
 }
 
 export class ProductFilters {
@@ -122,8 +130,26 @@ export interface List {
     pageInfo: PageInfo;
 }
 
+export class Option implements Node {
+    order: number;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    values: OptionValue[];
+}
+
+export class OptionValue implements Node {
+    order: number;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    option: Option;
+}
+
 export abstract class IMutation {
-    abstract createOption(input: CreateOptionInput): Option | Promise<Option>;
+    abstract createOption(productId: string, input: CreateOptionInput): Option | Promise<Option>;
 
     abstract updateOption(id: string, input: UpdateOptionInput): Option | Promise<Option>;
 
@@ -218,22 +244,6 @@ export class PageInfo {
     total: number;
 }
 
-export class OptionValue implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    option: Option;
-}
-
-export class Option implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    values: OptionValue[];
-}
-
 export class OptionList implements List {
     items: Option[];
     count: number;
@@ -269,7 +279,7 @@ export class Variant implements Node {
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
     requiresShipping: boolean;
-    optionValues?: Nullable<OptionValue[]>;
+    optionValues: OptionValue[];
     product: Product;
 }
 

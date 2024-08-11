@@ -29,7 +29,13 @@ export type BooleanFilter = {
 
 export type CreateOptionInput = {
   name: Scalars['String']['input'];
-  values: Array<Scalars['String']['input']>;
+  order: Scalars['Int']['input'];
+  values: Array<CreateOptionValueInput>;
+};
+
+export type CreateOptionValueInput = {
+  name: Scalars['String']['input'];
+  order: Scalars['Int']['input'];
 };
 
 export type CreateProductInput = {
@@ -169,6 +175,7 @@ export type Option = Node & {
   createdAt: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  order: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
   values: Array<OptionValue>;
 };
@@ -186,6 +193,7 @@ export type OptionValue = Node & {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   option: Option;
+  order: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -314,6 +322,7 @@ export type StringFilter = {
 
 export type UpdateOptionInput = {
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
   values?: InputMaybe<Array<UpdateOptionValueInput>>;
 };
 
@@ -324,6 +333,7 @@ export type UpdateOptionValueInput = {
    */
   id?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UpdateProductInput = {

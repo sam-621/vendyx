@@ -1,9 +1,9 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { optionService, productService, variantService } from '@/lib/shared/api';
+import { optionService, productService, ProductsTags, variantService } from '@/lib/shared/api';
 import { isUUID } from '@/lib/shared/utils';
 
 // YA obtengo las variantes y opciones con sus ids,
@@ -12,6 +12,10 @@ import { isUUID } from '@/lib/shared/utils';
 // en variants estos ids son o randoms o uuids (si es random, creo, si es uuid, actualizo)
 export const saveProduct = async (input: SaveProductInput) => {
   const { variants } = input;
+
+  console.log({
+    input
+  });
 
   if (!variants.length) {
     throw new Error('createProduct: At least one variant is required');
@@ -27,7 +31,7 @@ export const saveProduct = async (input: SaveProductInput) => {
 
     // throw new Error('updateProduct: Not implemented');
     await onUpdate(input);
-    revalidatePath(`/shops/alfertex/products/${input.productId}`);
+    revalidateTag(ProductsTags.product(input.productId ?? ''));
   }
 };
 
@@ -197,14 +201,17 @@ const createOptions = async (productId: string, input: SaveProductInput['options
   if (!input?.length) return [];
 
   const options = [];
+  let order = 0;
 
   for (const option of input) {
     const result = await optionService.create(productId, {
+      order,
       name: option.name,
-      values: option.values.map(value => value.name)
+      values: option.values.map((value, i) => ({ name: value.name, order: i }))
     });
 
     options.push(result);
+    order++;
   }
 
   return options;

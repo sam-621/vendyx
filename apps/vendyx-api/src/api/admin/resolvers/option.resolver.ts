@@ -39,7 +39,7 @@ export class OptionResolver {
   values(@Parent() option: Option) {
     return this.prisma.optionValue.findMany({
       where: { optionId: option.id },
-      orderBy: { createdAt: 'asc' }
+      orderBy: { order: 'asc' }
     });
   }
 }

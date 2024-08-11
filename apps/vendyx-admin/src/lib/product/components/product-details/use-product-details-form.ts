@@ -56,6 +56,15 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
 
+    // console.log({
+    //   values,
+    //   price: parsePrice(values.price ?? '0')
+    // });
+
+    console.log({
+      variants
+    });
+
     startTransition(async () => {
       await saveProduct({
         productId: product?.id,
@@ -79,6 +88,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
         variantsToRemove:
           product?.variants.items
             .filter(variant => !variants.some(v => v.id === variant.id))
+            .filter(variant => variant.id !== defaultVariant?.id) // Don't remove the default variant
             .map(variant => variant.id) ?? [],
         optionsToRemove:
           product?.options
