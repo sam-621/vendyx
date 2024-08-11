@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { generateVariants } from '@/lib/product/utils';
+import { isUUID } from '@/lib/shared/utils';
 
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const { updateOption, removeOption, options, variants, updateVariants } = useVariantContext();
@@ -18,43 +19,20 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const hasNoValues = useMemo(() => getHasNoValues(values), [values]);
 
   const onDone = () => {
-    const uuidExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!uuidExp.test(option.id)) {
-      // Complete new option has been created
-      const newOptions = options.map(o => {
-        if (o.id === option.id) {
-          return {
-            ...o,
-            name,
-            values: values.filter(v => v.name),
-            isEditing: false
-          };
-        }
-
-        return o;
-      });
-
-      const generatedVariants = generateVariants(newOptions, variants);
-
-      console.log({
-        generatedVariants
-      });
-
-      updateOption(option.id, {
-        ...option,
-        name,
-        values: values.filter(v => v.name),
-        isEditing: false
-      });
-      updateVariants(generatedVariants);
-
+    // An complete new option
+    if (!isUUID(option.id)) {
+      onNewOption();
       return;
     }
 
-    // updating
+    // An option already created being updated
+
+    // get values without empty ones
     const _values = values.filter(v => v.name);
 
-    const newValues = _values.filter(v => v.name && !uuidExp.test(v.id));
+    // new values are the values with a math random id
+    const newValues = _values.filter(v => v.name && !isUUID(v.id));
+    // remove values are the old values (in db) that are not in the new values
     const removedValues = option.values
       .filter(v => v.name)
       .filter(v => !_values.some(_v => _v.id === v.id));
@@ -62,12 +40,9 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     let newVariants = variants;
     let newOptions = options;
 
-    console.log({
-      newValues,
-      removedValues
-    });
-
+    // If the values length has changed, we need to update the re generate the variants
     if (newValues.length || removedValues.length) {
+      // add the current option to the options already in state
       newOptions = options.map(o => {
         if (o.id === option.id) {
           return {
@@ -81,13 +56,12 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
         return o;
       });
 
+      // generate variants with the latest options and the varianst already in db (to determine which ones to create and update)
       newVariants = generateVariants(newOptions, variants);
     }
 
-    console.log({
-      newVariants
-    });
-
+    // wheter the variants have been regenerated or not,
+    // update the state in VariantsContext adding the new option and variants
     updateOption(option.id, {
       ...option,
       name,
@@ -127,11 +101,36 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     const newOptions = options.filter(o => o.id !== option.id);
 
     const generatedVariants = generateVariants(newOptions, variants);
-    console.log({
-      generatedVariants
-    });
 
     removeOption(option.id);
+    updateVariants(generatedVariants);
+  };
+
+  const onNewOption = () => {
+    // Add the current option to the options already in state
+    const newOptions = options.map(o => {
+      if (o.id === option.id) {
+        return {
+          ...o,
+          name,
+          values: values.filter(v => v.name),
+          isEditing: false
+        };
+      }
+
+      return o;
+    });
+
+    // Generate the new variants with this new option
+    const generatedVariants = generateVariants(newOptions, variants);
+
+    // Update the state in VariantsContext adding the new option and variants
+    updateOption(option.id, {
+      ...option,
+      name,
+      values: values.filter(v => v.name),
+      isEditing: false
+    });
     updateVariants(generatedVariants);
   };
 

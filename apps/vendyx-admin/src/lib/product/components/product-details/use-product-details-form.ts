@@ -59,7 +59,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
 
     startTransition(async () => {
       if (product?.id) {
-        // Update product
         await updateProduct(product.id, {
           name: values.name,
           description: values.description,

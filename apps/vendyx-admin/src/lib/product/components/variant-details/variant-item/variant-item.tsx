@@ -4,14 +4,15 @@ import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { Checkbox, Dropzone, Input } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
-export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
+export const VariantItem: FC<Props> = ({ variant, groupName }) => {
   const { variants, updateVariants } = useVariantContext();
+  const inGroup = Boolean(groupName);
 
   const variantName = inGroup
     ? variant.values
-        .slice(-2)
+        .filter(v => v.name !== groupName)
         .map(v => v.name)
-        .join(' / ')
+        .join('/')
     : variant.values.map(v => v.name).join(' / ');
 
   return (
@@ -55,5 +56,8 @@ export const VariantItem: FC<Props> = ({ variant, inGroup }) => {
 
 type Props = {
   variant: VariantContext['variants'][0];
-  inGroup?: boolean;
+  /**
+   * Determines if the variant is being rendered inside a group
+   */
+  groupName?: string;
 };

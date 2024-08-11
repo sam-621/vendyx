@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -68,36 +69,45 @@ export const VariantContextProvider = ({
   const [options, setOptions] = useState<VariantContext['options']>(baseOptions);
   const [variants, setVariants] = useState<VariantContext['variants']>(baseVariants);
 
-  useEffect(() => {
-    if (!product) return;
+  useEffect(
+    function setBaseValuesWhenProductIsRefetch() {
+      if (!product) return;
 
-    setOptions(baseOptions);
-    setVariants(baseVariants);
-    setValue('options', baseOptions);
-    setValue(
-      'variants',
-      baseVariants.map(v => ({
-        id: v.id,
-        stock: v.stock,
-        salePrice: parsePrice(v.price),
-        optionValues: v.values
-      }))
-    );
-  }, [product]);
+      setOptions(baseOptions);
+      setVariants(baseVariants);
+      setValue('options', baseOptions);
+      setValue(
+        'variants',
+        baseVariants.map(v => ({
+          id: v.id,
+          stock: v.stock,
+          salePrice: parsePrice(v.price),
+          optionValues: v.values
+        }))
+      );
+    },
+    [product]
+  );
 
-  useEffect(() => {
-    setValue('options', options);
+  useEffect(
+    function setValuesInForm() {
+      setValue(
+        'options',
+        options.filter(o => o.name)
+      );
 
-    setValue(
-      'variants',
-      variants.map(v => ({
-        id: v.id,
-        stock: v.stock,
-        salePrice: parsePrice(v.price),
-        optionValues: v.values
-      }))
-    );
-  }, [variants, options]);
+      setValue(
+        'variants',
+        variants.map(v => ({
+          id: v.id,
+          stock: v.stock,
+          salePrice: parsePrice(v.price),
+          optionValues: v.values
+        }))
+      );
+    },
+    [variants, options]
+  );
 
   const updateVariants = (variants: VariantContext['variants']) => {
     setVariants(variants);

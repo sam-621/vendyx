@@ -15,6 +15,8 @@ import { VariantItem } from '../variant-item';
 export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
   const { variants: AllVariants, updateVariants } = useVariantContext();
 
+  if (!variants.length) return null;
+
   return (
     <Accordion type="single" collapsible className="w-full pt-3">
       <AccordionItem value="item-1">
@@ -49,7 +51,7 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
 
         <AccordionContent className="flex flex-col border-t pb-0 divide-y">
           {variants.map(variant => (
-            <VariantItem key={variant.id} variant={variant} inGroup />
+            <VariantItem key={variant.id} variant={variant} groupName={groupName} />
           ))}
         </AccordionContent>
       </AccordionItem>
