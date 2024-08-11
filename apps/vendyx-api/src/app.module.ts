@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ClsModule } from 'nestjs-cls';
 
-import { AdminApiModule } from './api/admin/admin-api.module';
+import { ApiModule } from './api';
 import { AuthModule } from './auth';
 import { PersistanceModule } from './persistance';
 
@@ -9,7 +9,7 @@ import { PersistanceModule } from './persistance';
   imports: [
     PersistanceModule,
     AuthModule,
-    AdminApiModule.register(),
+    ApiModule,
     ClsModule.forRoot({ global: true, middleware: { mount: true } })
   ]
 })

@@ -23,7 +23,8 @@
   "symbols.files.associations": {
     "*.module.ts": "nest",
     "*.service.ts": "nest-service",
-    "*.resolver.ts": "nest-controller"
+    "*.resolver.ts": "nest-controller",
+    "*.controller.ts": "nest-controller"
   },
   "cSpell.words": [
     "Cloudinary",

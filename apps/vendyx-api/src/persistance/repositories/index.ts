@@ -3,3 +3,4 @@ export * from './shop.repository';
 export * from './product.repository';
 export * from './variant.repository';
 export * from './option.repository';
+export * from './asset.repository';

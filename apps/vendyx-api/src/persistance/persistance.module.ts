@@ -8,6 +8,7 @@ import {
   PrismaForShopClientProvider
 } from './prisma-clients';
 import {
+  AssetRepository,
   OptionRepository,
   ProductRepository,
   ShopRepository,
@@ -20,7 +21,8 @@ const REPOSITORIES = [
   ShopRepository,
   ProductRepository,
   VariantRepository,
-  OptionRepository
+  OptionRepository,
+  AssetRepository
 ];
 
 export const CLS_SHOP_ID = 'shop_id';
