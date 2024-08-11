@@ -4,6 +4,7 @@ export * from './empty-states';
 export * from './file-uploader';
 export * from './layout';
 export * from './logo';
+export * from './remove-entity';
 export * from './skeletons';
 export * from './theme-provider';
 export * from './theme-switcher';

@@ -28,7 +28,7 @@ const documents = {
     types.CreateProductDocument,
   '\n  mutation UpdateProduct($id: ID!, $input: UpdateProductInput!) {\n    updateProduct(id: $id, input: $input) {\n      id\n    }\n  }\n':
     types.UpdateProductDocument,
-  '\n  mutation RemoveProduct($id: ID!) {\n    softRemoveProduct(id: $id) {\n      id\n    }\n  }\n':
+  '\n  mutation RemoveProduct($ids: [ID!]!) {\n    softRemoveProduct(ids: $ids)\n  }\n':
     types.RemoveProductDocument,
   '\n  query getShops {\n    shops {\n      count\n      items {\n        id\n        slug\n      }\n    }\n  }\n':
     types.GetShopsDocument,
@@ -104,7 +104,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation RemoveProduct($id: ID!) {\n    softRemoveProduct(id: $id) {\n      id\n    }\n  }\n'
+  source: '\n  mutation RemoveProduct($ids: [ID!]!) {\n    softRemoveProduct(ids: $ids)\n  }\n'
 ): typeof import('./graphql').RemoveProductDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

@@ -18,7 +18,7 @@ const getAll = async (input?: ProductListInput) => {
   const { products } = await fetcher(
     GET_ALL_PRODUCTS_QUERY,
     { input },
-    { tags: [ProductsTags.products] }
+    { tags: [ProductTags.products] }
   );
 
   return products;
@@ -28,7 +28,7 @@ const getById = async (id: string) => {
   const result = await fetcher(
     GET_PRODUCT_BY_ID_QUERY,
     { id },
-    { tags: [ProductsTags.product(id)] }
+    { tags: [ProductTags.product(id)] }
   );
   const data = getFragmentData(COMMON_PRODUCT_FRAGMENT, result.product);
 
@@ -47,8 +47,8 @@ const update = async (id: string, input: UpdateProductInput) => {
   return updateProduct;
 };
 
-const remove = async (id: string) => {
-  const { softRemoveProduct } = await fetcher(REMOVE_PRODUCT_MUTATION, { id });
+const massiveRemove = async (ids: string[]) => {
+  const { softRemoveProduct } = await fetcher(REMOVE_PRODUCT_MUTATION, { ids });
 
   return softRemoveProduct;
 };
@@ -58,10 +58,10 @@ export const productService = {
   getById,
   create,
   update,
-  remove
+  massiveRemove
 };
 
-export const ProductsTags = {
+export const ProductTags = {
   products: 'products',
   product: (id: string) => `product-${id}`
 };

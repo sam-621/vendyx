@@ -93,7 +93,7 @@ export type Mutation = {
   generateUserAccessToken: UserAccessTokenResult;
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
-  softRemoveProduct: Product;
+  softRemoveProduct: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateOption: Option;
   updateProduct: Product;
@@ -136,7 +136,7 @@ export type MutationSoftRemoveOptionValuesArgs = {
 };
 
 export type MutationSoftRemoveProductArgs = {
-  id: Scalars['ID']['input'];
+  ids: Array<Scalars['ID']['input']>;
 };
 
 export type MutationSoftRemoveVariantArgs = {
@@ -576,13 +576,10 @@ export type UpdateProductMutation = {
 };
 
 export type RemoveProductMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
 }>;
 
-export type RemoveProductMutation = {
-  __typename?: 'Mutation';
-  softRemoveProduct: { __typename?: 'Product'; id: string };
-};
+export type RemoveProductMutation = { __typename?: 'Mutation'; softRemoveProduct: boolean };
 
 export type GetShopsQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -845,10 +842,8 @@ export const UpdateProductDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<UpdateProductMutation, UpdateProductMutationVariables>;
 export const RemoveProductDocument = new TypedDocumentString(`
-    mutation RemoveProduct($id: ID!) {
-  softRemoveProduct(id: $id) {
-    id
-  }
+    mutation RemoveProduct($ids: [ID!]!) {
+  softRemoveProduct(ids: $ids)
 }
     `) as unknown as TypedDocumentString<RemoveProductMutation, RemoveProductMutationVariables>;
 export const GetShopsDocument = new TypedDocumentString(`

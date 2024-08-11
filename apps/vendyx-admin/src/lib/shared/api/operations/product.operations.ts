@@ -100,9 +100,7 @@ export const UPDATE_PRODUCT_MUTATION = graphql(`
 `);
 
 export const REMOVE_PRODUCT_MUTATION = graphql(`
-  mutation RemoveProduct($id: ID!) {
-    softRemoveProduct(id: $id) {
-      id
-    }
+  mutation RemoveProduct($ids: [ID!]!) {
+    softRemoveProduct(ids: $ids)
   }
 `);

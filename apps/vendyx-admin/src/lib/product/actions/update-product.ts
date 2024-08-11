@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { optionService, productService, ProductsTags, variantService } from '@/lib/shared/api';
+import { optionService, productService, ProductTags, variantService } from '@/lib/shared/api';
 import { isUUID } from '@/lib/shared/utils';
 
 export const updateProduct = async (productId: string, input: UpdateProductInput) => {
@@ -38,7 +38,7 @@ export const updateProduct = async (productId: string, input: UpdateProductInput
     input.variantsToRemove.map(async variantId => await variantService.remove(variantId))
   );
 
-  revalidateTag(ProductsTags.product(productId));
+  revalidateTag(ProductTags.product(productId));
 };
 
 const attachOptionValues = (
