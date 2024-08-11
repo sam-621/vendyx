@@ -96,38 +96,30 @@ export const generateVariants = (
               .includes(base)
           );
 
+          // The persistes variant could be
+          // A variant that already exists in the existing variants,
+          // A variant that only need to be updated not create
+          const persistedVariant =
+            // If the variant already exists, the persisted variant is the current
+            variantAlreadyExists ??
+            // If the variant only needs to be updated, the persisted variant is the current
+            (getActionForVariantGenerated(
+              Boolean(variantAlreadyExists),
+              Boolean(baseExists),
+              set,
+              base
+            ) === 'update'
+              ? baseExists ?? null
+              : // If the variant is not in the existing variants and does not need to be updated,
+                // then is a new variant that need to be created and for this iteration, there is no data to persist
+                // we use the default values
+                null);
+
           const variantToCreate = {
-            id: variantAlreadyExists
-              ? variantAlreadyExists.id
-              : getActionForVariantGenerated(
-                    Boolean(variantAlreadyExists),
-                    Boolean(baseExists),
-                    set,
-                    base
-                  ) === 'update'
-                ? baseExists?.id ?? ''
-                : Math.random().toString(),
+            id: persistedVariant?.id ?? Math.random().toString(),
             values: [value, ...variant.values],
-            price: variantAlreadyExists
-              ? variantAlreadyExists.price
-              : getActionForVariantGenerated(
-                    Boolean(variantAlreadyExists),
-                    Boolean(baseExists),
-                    set,
-                    base
-                  ) === 'update'
-                ? baseExists?.price ?? '0'
-                : '0',
-            stock: variantAlreadyExists
-              ? variantAlreadyExists.stock
-              : getActionForVariantGenerated(
-                    Boolean(variantAlreadyExists),
-                    Boolean(baseExists),
-                    set,
-                    base
-                  ) === 'update'
-                ? baseExists?.stock ?? 0
-                : 0,
+            price: persistedVariant?.price ?? '0',
+            stock: persistedVariant?.stock ?? 0,
             selected: false,
             action: getActionForVariantGenerated(
               Boolean(variantAlreadyExists),
