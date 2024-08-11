@@ -32,6 +32,8 @@ model ProductAsset {
   asset     Asset   @relation(fields: [assetId], references: [id])
   assetId   String  @map("asset_id") @db.Uuid
 
+  order Int
+
   @@id([productId, assetId])
   @@map("product_asset")
 }

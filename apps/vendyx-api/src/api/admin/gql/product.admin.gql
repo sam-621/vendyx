@@ -19,6 +19,8 @@ input CreateProductInput {
   description: String
   enabled: Boolean
   archived: Boolean
+
+  assets: [AssetInProductInput!]
 }
 
 input UpdateProductInput {
@@ -26,4 +28,11 @@ input UpdateProductInput {
   description: String
   enabled: Boolean
   archived: Boolean
+
+  assets: [AssetInProductInput!]
+}
+
+input AssetInProductInput {
+  id: ID!
+  order: Int!
 }
