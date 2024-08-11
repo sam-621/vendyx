@@ -68,16 +68,8 @@ export const VariantContextProvider = ({
   const [options, setOptions] = useState<VariantContext['options']>(baseOptions);
   const [variants, setVariants] = useState<VariantContext['variants']>(baseVariants);
 
-  console.log({
-    variants
-  });
-
   useEffect(() => {
     if (!product) return;
-
-    console.log({
-      variants
-    });
 
     setOptions(baseOptions);
     setVariants(baseVariants);

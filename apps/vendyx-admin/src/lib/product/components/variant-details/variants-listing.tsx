@@ -53,7 +53,7 @@ export const VariantsListing = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col divide-y">
           {Object.entries(variantsGrouped).map(([key, variants]) => (
             <VariantGroup key={key} groupName={key} variants={variants} />
           ))}

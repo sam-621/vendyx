@@ -159,13 +159,15 @@ export const getVariantsGroupedByOption = (
 ) => {
   const groups: Record<string, VariantContext['variants'][0][]> = {};
 
-  option?.values?.forEach(v => {
-    const variantsWithCurrentValue = variants.filter(variant =>
-      variant.values?.map(v => v.id).includes(v.id)
-    );
+  option?.values
+    ?.filter(v => v.name)
+    .forEach(v => {
+      const variantsWithCurrentValue = variants.filter(variant =>
+        variant.values?.map(v => v.id).includes(v.id)
+      );
 
-    groups[v.name] = variantsWithCurrentValue;
-  });
+      groups[v.name] = variantsWithCurrentValue;
+    });
 
   return groups;
 };
