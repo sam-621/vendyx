@@ -2,17 +2,30 @@
 
 import { redirect } from 'next/navigation';
 
-import { optionService, productService, variantService } from '@/lib/shared/api';
+import {
+  assetService,
+  optionService,
+  productService,
+  variantService,
+  type VendyxAsset
+} from '@/lib/shared/api';
 
 export const createProduct = async (input: CreateProductInput) => {
   if (!input.variants.length) {
     throw new Error('createProduct: At least one variant is required');
   }
 
+  let images: Omit<VendyxAsset, 'order'>[] = [];
+
+  if (input.images.has('files')) {
+    images = await assetService.upload(input.images);
+  }
+
   const product = await productService.create({
     name: input.name,
     description: input.description,
-    enabled: input.enabled
+    enabled: input.enabled,
+    assets: images.map((image, i) => ({ id: image.id, order: i }))
   });
 
   if (!input.options?.length) {
@@ -90,6 +103,7 @@ type CreateProductInput = {
   name: string;
   description?: string;
   enabled?: boolean;
+  images: FormData;
   options: {
     id: string;
     name: string;

@@ -13,6 +13,10 @@ export enum UserErrorCode {
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
 }
 
+export enum AssetType {
+    IMAGE = "IMAGE"
+}
+
 export class CreateOptionInput {
     order: number;
     name: string;
@@ -47,6 +51,7 @@ export class CreateProductInput {
     description?: Nullable<string>;
     enabled?: Nullable<boolean>;
     archived?: Nullable<boolean>;
+    assets?: Nullable<AssetInProductInput[]>;
 }
 
 export class UpdateProductInput {
@@ -54,6 +59,12 @@ export class UpdateProductInput {
     description?: Nullable<string>;
     enabled?: Nullable<boolean>;
     archived?: Nullable<boolean>;
+    assets?: Nullable<AssetInProductInput[]>;
+}
+
+export class AssetInProductInput {
+    id: string;
+    order: number;
 }
 
 export class CreateShopInput {
@@ -161,7 +172,7 @@ export abstract class IMutation {
 
     abstract updateProduct(id: string, input: UpdateProductInput): Product | Promise<Product>;
 
-    abstract softRemoveProduct(id: string): Product | Promise<Product>;
+    abstract softRemoveProduct(ids: string[]): boolean | Promise<boolean>;
 
     abstract createShop(input: CreateShopInput): Shop | Promise<Shop>;
 
@@ -240,6 +251,22 @@ export class UserErrorResult {
     message: string;
 }
 
+export class Asset implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    source: string;
+    type: AssetType;
+    order: number;
+}
+
+export class AssetList implements List {
+    items: Asset[];
+    count: number;
+    pageInfo: PageInfo;
+}
+
 export class PageInfo {
     total: number;
 }
@@ -260,6 +287,7 @@ export class Product implements Node {
     enabled: boolean;
     archived: boolean;
     variants?: VariantList;
+    assets?: AssetList;
     options: Option[];
 }
 

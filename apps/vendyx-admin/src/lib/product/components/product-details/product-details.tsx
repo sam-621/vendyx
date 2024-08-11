@@ -18,7 +18,7 @@ import { VariantDetails } from '../variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
-  const { control } = useFormContext<ProductDetailsFormInput>();
+  const { control, setValue } = useFormContext<ProductDetailsFormInput>();
 
   return (
     <div className="flex flex-col gap-4">
@@ -106,7 +106,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
             </CardContent>
           </Card>
 
-          <FileUploader />
+          <FileUploader onAcceptFiles={files => setValue('images', files)} />
         </div>
       </div>
       {product && (

@@ -10,7 +10,7 @@ export const fetcher = async <R, V>(
   options?: Options
 ): Promise<R> => {
   try {
-    const result = await fetch(process.env.VENDYX_ADMIN_API_URL, {
+    const result = await fetch(`${process.env.VENDYX_ADMIN_BASE_API_URL}/admin-api`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -23,6 +23,33 @@ export type Scalars = {
   JSON: { input: any; output: any };
 };
 
+export type Asset = Node & {
+  __typename?: 'Asset';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  order: Scalars['Int']['output'];
+  source: Scalars['String']['output'];
+  type: AssetType;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type AssetInProductInput = {
+  id: Scalars['ID']['input'];
+  order: Scalars['Int']['input'];
+};
+
+export type AssetList = List & {
+  __typename?: 'AssetList';
+  count: Scalars['Int']['output'];
+  items: Array<Asset>;
+  pageInfo: PageInfo;
+};
+
+export enum AssetType {
+  Image = 'IMAGE'
+}
+
 export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -40,6 +67,7 @@ export type CreateOptionValueInput = {
 
 export type CreateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
+  assets?: InputMaybe<Array<AssetInProductInput>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name: Scalars['String']['input'];
@@ -210,6 +238,7 @@ export type Product = Node & {
    * Useful for products that are not available anymore but you don't want to lose their data.
    */
   archived: Scalars['Boolean']['output'];
+  assets: AssetList;
   createdAt: Scalars['Date']['output'];
   /** The product's description */
   description?: Maybe<Scalars['String']['output']>;
@@ -227,6 +256,10 @@ export type Product = Node & {
   slug: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
   variants: VariantList;
+};
+
+export type ProductAssetsArgs = {
+  input?: InputMaybe<ListInput>;
 };
 
 export type ProductVariantsArgs = {
@@ -338,6 +371,7 @@ export type UpdateOptionValueInput = {
 
 export type UpdateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
+  assets?: InputMaybe<Array<AssetInProductInput>>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -510,6 +544,10 @@ export type CommonProductFragment = {
     name: string;
     values: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
   }>;
+  assets: {
+    __typename?: 'AssetList';
+    items: Array<{ __typename?: 'Asset'; id: string; name: string; source: string; order: number }>;
+  };
 } & { ' $fragmentName'?: 'CommonProductFragment' };
 
 export type GetProductsQueryVariables = Exact<{
@@ -538,6 +576,10 @@ export type GetProductsQuery = {
           stock: number;
           salePrice: number;
         }>;
+      };
+      assets: {
+        __typename?: 'AssetList';
+        items: Array<{ __typename?: 'Asset'; id: string; source: string }>;
       };
     }>;
   };
@@ -730,6 +772,14 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
       name
     }
   }
+  assets {
+    items {
+      id
+      name
+      source
+      order
+    }
+  }
 }
     `,
   { fragmentName: 'CommonProduct' }
@@ -786,6 +836,12 @@ export const GetProductsDocument = new TypedDocumentString(`
           salePrice
         }
       }
+      assets(input: {take: 1}) {
+        items {
+          id
+          source
+        }
+      }
     }
   }
 }
@@ -824,6 +880,14 @@ export const GetProductDocument = new TypedDocumentString(`
     values {
       id
       name
+    }
+  }
+  assets {
+    items {
+      id
+      name
+      source
+      order
     }
   }
 }`) as unknown as TypedDocumentString<GetProductQuery, GetProductQueryVariables>;

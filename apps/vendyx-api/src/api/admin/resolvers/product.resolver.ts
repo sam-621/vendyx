@@ -78,4 +78,20 @@ export class ProductResolver {
 
     return result.map(({ option }) => option).sort((a, b) => a.order - b.order);
   }
+
+  @ResolveField('assets')
+  async assets(@Parent() product: Product, @Args('input') input: ListInput) {
+    const [result, count] = await Promise.all([
+      this.prisma.productAsset.findMany({
+        where: { productId: product.id },
+        include: { asset: true },
+        orderBy: { order: 'asc' },
+        ...clean(input)
+      }),
+      this.prisma.productAsset.count({ where: { productId: product.id } })
+    ]);
+
+    const assetsList = result.map(r => ({ ...r.asset, order: r.order }));
+    return new ListResponse(assetsList, assetsList.length, { total: count });
+  }
 }

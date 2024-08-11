@@ -2,13 +2,13 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { useState } from 'react';
+import { type FC, useState } from 'react';
 
 import { cn, isFirst } from '../../utils';
 import { Dropzone } from '../dropzone';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui';
 
-export const FileUploader = () => {
+export const FileUploader: FC<Props> = ({ onAcceptFiles }) => {
   const [files, setFiles] = useState<File[]>([]);
 
   return (
@@ -22,7 +22,10 @@ export const FileUploader = () => {
             size="lg"
             onAcceptFiles={acceptedFiles => {
               // setPreviews(files.map(file => URL.createObjectURL(file)));
-              setFiles([...files, ...acceptedFiles]);
+              const newFiles = [...files, ...acceptedFiles];
+
+              setFiles(newFiles);
+              onAcceptFiles(newFiles);
             }}
           />
         )}
@@ -51,4 +54,8 @@ export const FileUploader = () => {
       </CardContent>
     </Card>
   );
+};
+
+type Props = {
+  onAcceptFiles: (files: File[]) => void;
 };

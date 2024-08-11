@@ -31,15 +31,14 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
         name
       }
     }
-    # assets {
-    #   items {
-    #     id
-    #     createdAt
-    #     name
-    #     source
-    #     order
-    #   }
-    # }
+    assets {
+      items {
+        id
+        name
+        source
+        order
+      }
+    }
   }
 `);
 
@@ -64,12 +63,12 @@ export const GET_ALL_PRODUCTS_QUERY = graphql(`
             salePrice
           }
         }
-        # assets(input: { take: 1 }) {
-        #   items {
-        #     id
-        #     source
-        #   }
-        # }
+        assets(input: { take: 1 }) {
+          items {
+            id
+            source
+          }
+        }
       }
     }
   }

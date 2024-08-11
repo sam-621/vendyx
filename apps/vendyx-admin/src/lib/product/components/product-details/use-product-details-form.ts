@@ -133,10 +133,14 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
 
         notification.success('Product saved');
       } else {
+        const images = new FormData();
+        values.images?.forEach(image => images.append('files', image));
+
         await createProduct({
           name: values.name,
           description: values.description,
           enabled: values.enabled,
+          images,
           options,
           variants: variants.length
             ? variants
@@ -174,6 +178,7 @@ const schema = z.object({
   enabled: z.boolean().default(true),
   margin: z.string().optional(),
   revenue: z.string().optional(),
+  images: z.array(z.instanceof(File)).optional(),
   options: z.array(
     z.object({
       id: z.string(),

@@ -43,7 +43,10 @@ export class ProductService {
 
     const product = await this.productRepository.insert({
       ...clean(input),
-      slug
+      slug,
+      assets: input.assets
+        ? { create: input.assets.map(asset => ({ assetId: asset.id, order: asset.order })) }
+        : undefined
     });
 
     return product;
@@ -52,7 +55,15 @@ export class ProductService {
   async update(id: string, input: UpdateProductInput) {
     return this.productRepository.update(id, {
       ...clean(input),
-      slug: input.name ? await this.validateAndParseSlug(input.name) : undefined
+      slug: input.name ? await this.validateAndParseSlug(input.name) : undefined,
+      assets: input.assets
+        ? {
+            connectOrCreate: input.assets.map(asset => ({
+              where: { productId_assetId: { productId: id, assetId: asset.id } },
+              create: { assetId: asset.id, order: asset.order }
+            }))
+          }
+        : undefined
     });
   }
 

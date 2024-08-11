@@ -13,10 +13,6 @@ export const VariantsListing = () => {
   const optionsSaved = options.filter(option => option.values.filter(v => v.name).length);
   const selectedVariantIds = variants.filter(v => v.selected).map(v => v.id);
 
-  console.log({
-    variantsGrouped
-  });
-
   if (!variants.length) return null;
 
   return (

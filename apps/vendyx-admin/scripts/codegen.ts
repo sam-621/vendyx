@@ -1,6 +1,6 @@
 import { type CodegenConfig } from '@graphql-codegen/cli';
 
-const GQL_SCHEMA_URL = process.env.VENDYX_ADMIN_API_URL;
+const GQL_SCHEMA_URL = process.env.VENDYX_ADMIN_BASE_API_URL + '/admin-api';
 
 const config: CodegenConfig = {
   schema: GQL_SCHEMA_URL,

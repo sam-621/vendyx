@@ -28,6 +28,7 @@ type Product implements Node {
   archived: Boolean!
 
   variants(input: ListInput): VariantList!
+  assets(input: ListInput): AssetList!
   options: [Option!]!
 }
 
