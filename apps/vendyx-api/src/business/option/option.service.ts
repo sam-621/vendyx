@@ -18,6 +18,12 @@ export class OptionService {
   }
 
   // TODO: Add validation for duplicated names and duplicated values
+  /**
+   * @description
+   * Creates and update the recived option values depending on its id
+   * if id comes, the the option value is updated, if not, it is created
+   * the option values not presents in the input are removed
+   */
   async update(id: string, input: UpdateOptionInput) {
     const valuesToCreate = input.values?.filter(v => !v.id);
     const valuesToUpdate = input.values?.filter(v => Boolean(v.id)); // TODO: impletent isUUID()

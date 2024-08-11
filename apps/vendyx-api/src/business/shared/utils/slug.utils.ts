@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 /**
  * Format the base to a slug
  *
@@ -8,9 +10,5 @@
  * console.log(productSlug) // black-t-shirt
  */
 export const getSlugBy = (base: string) => {
-  return base
-    .toLowerCase()
-    .replaceAll(' ', '-')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  return slugify(base);
 };
