@@ -2,14 +2,14 @@ import { useTransition } from 'react';
 
 import { notification } from '@/lib/shared/notifications';
 
-import { removeProducts } from '../../actions';
+import { removeProduct } from '../../actions';
 
 export const useRemoveProduct = () => {
   const [isLoading, startTransition] = useTransition();
 
-  const removeProduct = async (id: string) => {
+  const exec = async (id: string) => {
     startTransition(async () => {
-      const result = await removeProducts(id);
+      const result = await removeProduct(id);
 
       if (result?.error) {
         notification.error(result.error);
@@ -19,6 +19,6 @@ export const useRemoveProduct = () => {
 
   return {
     isLoading,
-    removeProduct
+    removeProduct: exec
   };
 };

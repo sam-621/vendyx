@@ -2,23 +2,17 @@ import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { type CommonProductFragment } from '@/lib/shared/api';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  FileUploader,
-  Label
-} from '@/lib/shared/components';
+import { Card, CardContent, CardHeader, CardTitle, Label } from '@/lib/shared/components';
 import { FormCheckbox, FormInput, FormSwitch, FormTextarea } from '@/lib/shared/form';
 
 import { VariantContextProvider } from '../../contexts';
+import { ProductAssetUploader } from '../product-asset-uploader';
 import { RemoveProductButton } from '../remove-product';
 import { VariantDetails } from '../variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {
-  const { control, setValue } = useFormContext<ProductDetailsFormInput>();
+  const { control } = useFormContext<ProductDetailsFormInput>();
 
   return (
     <div className="flex flex-col gap-4">
@@ -106,7 +100,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
             </CardContent>
           </Card>
 
-          <FileUploader onAcceptFiles={files => setValue('images', files)} />
+          <ProductAssetUploader product={product} />
         </div>
       </div>
       {product && (
