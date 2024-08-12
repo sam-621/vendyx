@@ -1,0 +1,64 @@
+model Payment {
+  id        String    @id @default(uuid()) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The transaction id of the payment. Is nullable because the payment might not have been processed yet.
+  transactionId String? @map("transaction_id")
+
+  ///The total amount of the payment
+  amount Int
+
+  /// The Payment method name used for the payment
+  method String
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("payment")
+}
+
+model PaymentMethod {
+  id        String    @id @default(uuid()) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// Whether the payment method is enabled or not
+  /// Not enabled payment methods will not be shown in the storefront
+  /// Useful for payment methods that are not ready to be used yet
+  enabled Boolean @default(true)
+
+  /// Specific data for the payment integration chosen
+  /// Usually, this json stores the payment integration keys
+  integrationMetadata Json @map("integration_metadata")
+
+  paymentIntegration   PaymentIntegration @relation(fields: [paymentIntegrationId], references: [id])
+  paymentIntegrationId String             @map("payment_integration_id") @db.Uuid
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("payment_method")
+}
+
+model PaymentIntegration {
+  id        String    @id @default(uuid()) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// Payment integration's name
+  name String
+
+  /// Payment integration's icon (show in UI)
+  icon String
+
+  /// Payment integration's handler code (used in code)
+  handlerCode String @map("handler_code")
+
+  paymentMethods PaymentMethod[]
+
+  @@map("payment_integration")
+}
