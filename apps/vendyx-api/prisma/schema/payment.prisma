@@ -55,7 +55,9 @@ model PaymentIntegration {
   /// Payment integration's icon (show in UI)
   icon String
 
-  /// Payment integration's handler code (used in code)
+  /// Payment integration's handler code 
+  /// Used to identify which payment handler to use in this integration
+  /// Used to know how to render the payment form in the storefront (paypal, stripe, etc)
   handlerCode String @map("handler_code")
 
   paymentMethods PaymentMethod[]
