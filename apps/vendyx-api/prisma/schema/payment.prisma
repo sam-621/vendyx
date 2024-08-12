@@ -1,3 +1,4 @@
+/// A payment is a transaction between a customer and a shop, is assigned to an order
 model Payment {
   id        String    @id @default(uuid()) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
@@ -19,6 +20,7 @@ model Payment {
   @@map("payment")
 }
 
+/// A payment method is a way to pay for an order in your shop, like credit card, paypal, etc
 model PaymentMethod {
   id        String    @id @default(uuid()) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
@@ -43,6 +45,7 @@ model PaymentMethod {
   @@map("payment_method")
 }
 
+/// A payment integration is am integration to be used in a payment method by any shop.
 model PaymentIntegration {
   id        String    @id @default(uuid()) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
