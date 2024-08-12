@@ -36,8 +36,15 @@ export const ProductDetails: FC<Props> = ({ product }) => {
                 </CardHeader>
                 <CardContent className="flex flex-col gap-3">
                   <div className="flex gap-3 w-full">
-                    <FormInput control={control} name="price" label="Price" placeholder="$ 0.00" />
                     <FormInput
+                      control={control}
+                      name="price"
+                      label="Price"
+                      placeholder="$ 0.00"
+                      isPrice
+                    />
+                    <FormInput
+                      isPrice
                       control={control}
                       name="comparisonPrice"
                       label="Comparison price"
@@ -46,6 +53,7 @@ export const ProductDetails: FC<Props> = ({ product }) => {
                   </div>
                   <div className="flex gap-3">
                     <FormInput
+                      isPrice
                       control={control}
                       name="costPerUnit"
                       label="Cost per unit"

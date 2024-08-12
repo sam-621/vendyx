@@ -31,6 +31,7 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
       </div>
       <div className="flex items-center gap-2 w-full">
         <Input
+          isPrice
           onChange={e =>
             updateVariants(
               variants.map(v => (v.id === variant.id ? { ...v, price: e.target.value } : v))

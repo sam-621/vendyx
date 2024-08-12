@@ -13,6 +13,7 @@ export const FormInput = <
   description,
   placeholder,
   type,
+  isPrice,
   ...rest
 }: Props<TFieldValues, TName>) => {
   return (
@@ -23,7 +24,7 @@ export const FormInput = <
         <FormItem className="w-full">
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+            <Input type={type} placeholder={placeholder} isPrice={isPrice} {...field} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
@@ -44,4 +45,5 @@ type Props<
   description?: string;
   placeholder?: string;
   type?: HTMLInputTypeAttribute;
+  isPrice?: boolean;
 };
