@@ -5,6 +5,7 @@ import { StorageModule } from '@/storage';
 
 import { AssetService } from './asset';
 import { OptionService } from './option';
+import { PaymentMethodService } from './payment-method';
 import { ProductService } from './product';
 import { ShopService } from './shop';
 import { UserService } from './user';
@@ -16,7 +17,8 @@ const SERVICES = [
   ProductService,
   VariantService,
   OptionService,
-  AssetService
+  AssetService,
+  PaymentMethodService
 ];
 
 @Module({

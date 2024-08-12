@@ -40,6 +40,17 @@ export class UpdateOptionValueInput {
     order?: Nullable<number>;
 }
 
+export class CreatePaymentMethodInput {
+    integrationId: string;
+    integrationMetadata: JSON;
+    enabled?: Nullable<boolean>;
+}
+
+export class UpdatePaymentMethodInput {
+    integrationMetadata?: Nullable<JSON>;
+    enabled?: Nullable<boolean>;
+}
+
 export class ProductFilters {
     name?: Nullable<StringFilter>;
     enabled?: Nullable<BooleanFilter>;
@@ -168,6 +179,12 @@ export abstract class IMutation {
 
     abstract softRemoveOptionValues(ids: string[]): boolean | Promise<boolean>;
 
+    abstract createPaymentMethod(input: CreatePaymentMethodInput): PaymentMethod | Promise<PaymentMethod>;
+
+    abstract updatePaymentMethod(id: string, input: UpdatePaymentMethodInput): PaymentMethod | Promise<PaymentMethod>;
+
+    abstract removePaymentMethod(id: string): boolean | Promise<boolean>;
+
     abstract createProduct(input: CreateProductInput): Product | Promise<Product>;
 
     abstract updateProduct(id: string, input: UpdateProductInput): Product | Promise<Product>;
@@ -189,7 +206,32 @@ export abstract class IMutation {
     abstract softRemoveVariant(id: string): Variant | Promise<Variant>;
 }
 
+export class PaymentMethod {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    icon: string;
+    enabled: boolean;
+    integrationMetadata: JSON;
+}
+
+export class PaymentIntegrations {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    icon: string;
+    integrationMetadata: JSON;
+}
+
 export abstract class IQuery {
+    abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
+
+    abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
+
+    abstract paymentIntegrations(): PaymentIntegrations[] | Promise<PaymentIntegrations[]>;
+
     abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
 
     abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;

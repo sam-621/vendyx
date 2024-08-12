@@ -1,8 +1,8 @@
 /// A payment is a transaction between a customer and a shop, is assigned to an order
 model Payment {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   /// The transaction id of the payment. Is nullable because the payment might not have been processed yet.
@@ -22,9 +22,9 @@ model Payment {
 
 /// A payment method is a way to pay for an order in your shop, like credit card, paypal, etc
 model PaymentMethod {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   /// Whether the payment method is enabled or not
@@ -47,9 +47,9 @@ model PaymentMethod {
 
 /// A payment integration is am integration to be used in a payment method by any shop.
 model PaymentIntegration {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
   /// Payment integration's name
@@ -62,6 +62,10 @@ model PaymentIntegration {
   /// Used to identify which payment handler to use in this integration
   /// Used to know how to render the payment form in the storefront (paypal, stripe, etc)
   handlerCode String @map("handler_code")
+
+  /// Payment integration's metadata
+  /// This metadata is usually used to store the payment integration keys
+  metadata Json
 
   paymentMethods PaymentMethod[]
 

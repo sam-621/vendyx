@@ -52,7 +52,7 @@ type PaymentIntegrations {
   Specific data for the payment integration chosen
   Usually, this json stores the payment integration keys
   """
-  integrationMetadata: JSON!
+  metadata: JSON!
 }
 
 type Query {

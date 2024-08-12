@@ -6,6 +6,7 @@ import { BusinessModule } from '@/business';
 
 import {
   OptionResolver,
+  PaymentMethodResolver,
   ProductResolver,
   ShopResolver,
   UserResolver,
@@ -33,6 +34,13 @@ export class AdminApiModule {
 
 @Module({
   imports: [BusinessModule],
-  providers: [UserResolver, ShopResolver, ProductResolver, VariantResolver, OptionResolver]
+  providers: [
+    UserResolver,
+    ShopResolver,
+    ProductResolver,
+    VariantResolver,
+    OptionResolver,
+    PaymentMethodResolver
+  ]
 })
 class AdminModule {}

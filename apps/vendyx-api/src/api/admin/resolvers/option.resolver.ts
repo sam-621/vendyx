@@ -1,10 +1,11 @@
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
-import { CreateOptionInput, Option, UpdateOptionInput } from '@/api/shared';
+import { CreateOptionInput, Option, UpdateOptionInput, UserJwtAuthGuard } from '@/api/shared';
 import { OptionService } from '@/business/option';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
+@UseGuards(UserJwtAuthGuard)
 @Resolver('Option')
 export class OptionResolver {
   constructor(
