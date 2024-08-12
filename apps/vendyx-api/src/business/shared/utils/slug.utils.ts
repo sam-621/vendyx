@@ -10,5 +10,5 @@ import slugify from 'slugify';
  * console.log(productSlug) // black-t-shirt
  */
 export const getSlugBy = (base: string) => {
-  return slugify(base);
+  return slugify(base, { lower: true });
 };

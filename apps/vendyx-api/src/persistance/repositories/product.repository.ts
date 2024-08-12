@@ -86,6 +86,18 @@ export class ProductRepository {
       where: { id: { in: optionsIds } }
     });
   }
+
+  async hardDeleteAssets(productId: string) {
+    const assetsToDelete = await this.prisma.productAsset.findMany({ where: { productId } });
+    const assetsIds = assetsToDelete.map(a => a.assetId);
+
+    await this.prisma.productAsset.deleteMany({ where: { productId } });
+    await this.prisma.asset.deleteMany({
+      where: {
+        id: { in: assetsIds }
+      }
+    });
+  }
 }
 
 type FindOptions = ListInput & { filters?: ProductFilters };

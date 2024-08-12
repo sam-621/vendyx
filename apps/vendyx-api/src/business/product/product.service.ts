@@ -71,6 +71,7 @@ export class ProductService {
     await Promise.all(
       ids.map(async id => {
         await this.productRepository.hardDeleteOptions(id);
+        await this.productRepository.hardDeleteAssets(id);
         await this.productRepository.softDelete(id);
       })
     );
