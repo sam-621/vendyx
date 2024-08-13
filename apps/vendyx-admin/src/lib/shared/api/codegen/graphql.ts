@@ -65,6 +65,12 @@ export type CreateOptionValueInput = {
   order: Scalars['Int']['input'];
 };
 
+export type CreatePaymentMethodInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  integrationId: Scalars['ID']['input'];
+  integrationMetadata: Scalars['JSON']['input'];
+};
+
 export type CreateProductInput = {
   archived?: InputMaybe<Scalars['Boolean']['input']>;
   assets?: InputMaybe<Array<AssetInProductInput>>;
@@ -114,16 +120,19 @@ export type ListInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createOption: Option;
+  createPaymentMethod: PaymentMethod;
   createProduct: Product;
   createShop: Shop;
   createUser: UserResult;
   createVariant: Variant;
   generateUserAccessToken: UserAccessTokenResult;
+  removePaymentMethod: Scalars['Boolean']['output'];
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProduct: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
   updateOption: Option;
+  updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
   updateUser: UserResult;
   updateVariant: Variant;
@@ -132,6 +141,10 @@ export type Mutation = {
 export type MutationCreateOptionArgs = {
   input: CreateOptionInput;
   productId: Scalars['ID']['input'];
+};
+
+export type MutationCreatePaymentMethodArgs = {
+  input: CreatePaymentMethodInput;
 };
 
 export type MutationCreateProductArgs = {
@@ -155,6 +168,10 @@ export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
 
+export type MutationRemovePaymentMethodArgs = {
+  id: Scalars['ID']['input'];
+};
+
 export type MutationSoftRemoveOptionArgs = {
   id: Scalars['ID']['input'];
 };
@@ -174,6 +191,11 @@ export type MutationSoftRemoveVariantArgs = {
 export type MutationUpdateOptionArgs = {
   id: Scalars['ID']['input'];
   input: UpdateOptionInput;
+};
+
+export type MutationUpdatePaymentMethodArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdatePaymentMethodInput;
 };
 
 export type MutationUpdateProductArgs = {
@@ -228,6 +250,46 @@ export type OptionValue = Node & {
 export type PageInfo = {
   __typename?: 'PageInfo';
   total: Scalars['Int']['output'];
+};
+
+/** A payment integration is am integration to be used in a payment method by any shop. */
+export type PaymentIntegrations = {
+  __typename?: 'PaymentIntegrations';
+  createdAt: Scalars['Date']['output'];
+  /** The payment integration's icon */
+  icon: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  /**
+   * Specific data for the payment integration chosen
+   * Usually, this json stores the payment integration keys
+   */
+  metadata: Scalars['JSON']['output'];
+  /** The payment integration's name (e.g. 'Stripe') */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A payment method is a way to pay for an order in your shop, like credit card, paypal, etc */
+export type PaymentMethod = {
+  __typename?: 'PaymentMethod';
+  createdAt: Scalars['Date']['output'];
+  /**
+   * Whether the payment method is enabled or not
+   * Not enabled payment methods will not be shown in the storefront
+   * Useful for payment methods that are not ready to be used yet
+   */
+  enabled: Scalars['Boolean']['output'];
+  /** The payment method's icon */
+  icon: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  /**
+   * Specific data for the payment integration chosen
+   * Usually, this json stores the payment integration keys
+   */
+  integrationMetadata: Scalars['JSON']['output'];
+  /** The payment method's name (e.g. 'Stripe') */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type Product = Node & {
@@ -290,6 +352,9 @@ export type ProductListInput = {
 
 export type Query = {
   __typename?: 'Query';
+  paymentIntegrations: Array<PaymentIntegrations>;
+  paymentMethod?: Maybe<PaymentMethod>;
+  paymentMethods: Array<PaymentMethod>;
   product?: Maybe<Product>;
   products: ProductList;
   shop?: Maybe<Shop>;
@@ -298,6 +363,10 @@ export type Query = {
   validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
   variants: VariantList;
+};
+
+export type QueryPaymentMethodArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type QueryProductArgs = {
@@ -367,6 +436,11 @@ export type UpdateOptionValueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdatePaymentMethodInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  integrationMetadata?: InputMaybe<Scalars['JSON']['input']>;
 };
 
 export type UpdateProductInput = {
@@ -515,6 +589,61 @@ export type RemoveOptionMutation = {
   __typename?: 'Mutation';
   softRemoveOption: { __typename?: 'Option'; id: string };
 };
+
+export type GetPaymentMethodsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPaymentMethodsQuery = {
+  __typename?: 'Query';
+  paymentMethods: Array<{
+    __typename?: 'PaymentMethod';
+    id: string;
+    name: string;
+    icon: string;
+    enabled: boolean;
+    integrationMetadata: any;
+  }>;
+};
+
+export type GetPaymentMethodQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type GetPaymentMethodQuery = {
+  __typename?: 'Query';
+  paymentMethod?: {
+    __typename?: 'PaymentMethod';
+    id: string;
+    name: string;
+    icon: string;
+    enabled: boolean;
+    integrationMetadata: any;
+  } | null;
+};
+
+export type CreatePaymentMethodMutationVariables = Exact<{
+  input: CreatePaymentMethodInput;
+}>;
+
+export type CreatePaymentMethodMutation = {
+  __typename?: 'Mutation';
+  createPaymentMethod: { __typename?: 'PaymentMethod'; id: string };
+};
+
+export type UpdatePaymentMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdatePaymentMethodInput;
+}>;
+
+export type UpdatePaymentMethodMutation = {
+  __typename?: 'Mutation';
+  updatePaymentMethod: { __typename?: 'PaymentMethod'; id: string };
+};
+
+export type RemovePaymentMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type RemovePaymentMethodMutation = { __typename?: 'Mutation'; removePaymentMethod: boolean };
 
 export type CommonProductFragment = {
   __typename?: 'Product';
@@ -815,6 +944,56 @@ export const RemoveOptionDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<RemoveOptionMutation, RemoveOptionMutationVariables>;
+export const GetPaymentMethodsDocument = new TypedDocumentString(`
+    query GetPaymentMethods {
+  paymentMethods {
+    id
+    name
+    icon
+    enabled
+    integrationMetadata
+  }
+}
+    `) as unknown as TypedDocumentString<GetPaymentMethodsQuery, GetPaymentMethodsQueryVariables>;
+export const GetPaymentMethodDocument = new TypedDocumentString(`
+    query GetPaymentMethod($id: ID!) {
+  paymentMethod(id: $id) {
+    id
+    name
+    icon
+    enabled
+    integrationMetadata
+  }
+}
+    `) as unknown as TypedDocumentString<GetPaymentMethodQuery, GetPaymentMethodQueryVariables>;
+export const CreatePaymentMethodDocument = new TypedDocumentString(`
+    mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {
+  createPaymentMethod(input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<
+  CreatePaymentMethodMutation,
+  CreatePaymentMethodMutationVariables
+>;
+export const UpdatePaymentMethodDocument = new TypedDocumentString(`
+    mutation UpdatePaymentMethod($id: ID!, $input: UpdatePaymentMethodInput!) {
+  updatePaymentMethod(id: $id, input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<
+  UpdatePaymentMethodMutation,
+  UpdatePaymentMethodMutationVariables
+>;
+export const RemovePaymentMethodDocument = new TypedDocumentString(`
+    mutation RemovePaymentMethod($id: ID!) {
+  removePaymentMethod(id: $id)
+}
+    `) as unknown as TypedDocumentString<
+  RemovePaymentMethodMutation,
+  RemovePaymentMethodMutationVariables
+>;
 export const GetProductsDocument = new TypedDocumentString(`
     query GetProducts($input: ProductListInput) {
   products(input: $input) {

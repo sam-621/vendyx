@@ -18,6 +18,16 @@ const documents = {
     types.UpdateOptionDocument,
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n':
     types.RemoveOptionDocument,
+  '\n  query GetPaymentMethods {\n    paymentMethods {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n':
+    types.GetPaymentMethodsDocument,
+  '\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n':
+    types.GetPaymentMethodDocument,
+  '\n  mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {\n    createPaymentMethod(input: $input) {\n      id\n    }\n  }\n':
+    types.CreatePaymentMethodDocument,
+  '\n  mutation UpdatePaymentMethod($id: ID!, $input: UpdatePaymentMethodInput!) {\n    updatePaymentMethod(id: $id, input: $input) {\n      id\n    }\n  }\n':
+    types.UpdatePaymentMethodDocument,
+  '\n  mutation RemovePaymentMethod($id: ID!) {\n    removePaymentMethod(id: $id)\n  }\n':
+    types.RemovePaymentMethodDocument,
   '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    slug\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        optionValues {\n          id\n          name\n        }\n      }\n    }\n    options {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n    assets {\n      items {\n        id\n        name\n        source\n        order\n      }\n    }\n  }\n':
     types.CommonProductFragmentDoc,
   '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n':
@@ -70,6 +80,36 @@ export function graphql(
 export function graphql(
   source: '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n'
 ): typeof import('./graphql').RemoveOptionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetPaymentMethods {\n    paymentMethods {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n'
+): typeof import('./graphql').GetPaymentMethodsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n'
+): typeof import('./graphql').GetPaymentMethodDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {\n    createPaymentMethod(input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').CreatePaymentMethodDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdatePaymentMethod($id: ID!, $input: UpdatePaymentMethodInput!) {\n    updatePaymentMethod(id: $id, input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').UpdatePaymentMethodDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RemovePaymentMethod($id: ID!) {\n    removePaymentMethod(id: $id)\n  }\n'
+): typeof import('./graphql').RemovePaymentMethodDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
