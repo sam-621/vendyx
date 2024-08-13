@@ -63,7 +63,7 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
                   </TableCell>
                   <TableCell>
                     <Badge variant={method.enabled ? 'default' : 'secondary'}>
-                      {method.enabled ? 'Active' : 'Inactive'}
+                      {method.enabled ? 'Enabled' : 'Disabled'}
                     </Badge>
                   </TableCell>
                 </TableRow>

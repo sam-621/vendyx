@@ -6,9 +6,10 @@ import {
   type CommonPaymentIntegrationFragment,
   type CommonPaymentMethodFragment
 } from '@/lib/shared/api';
-import { Button, SettingsPageLayout } from '@/lib/shared/components';
+import { SettingsPageLayout } from '@/lib/shared/components';
 import { Form } from '@/lib/shared/form';
 
+import { PaymentMethodSubmitButton } from '../payment-method-submit-button';
 import { PaymentMethodDetails } from './payment-method-details';
 import { usePaymentMethodForm } from './use-payment-method-form';
 
@@ -23,9 +24,11 @@ export const PaymentMethodForm: FC<Props> = ({ integrations, method }) => {
           subtitle={!method ? 'Add a payment method to start receiving payments.' : undefined}
           backUrl="/settings/payments"
           actions={
-            <Button isLoading={form.isLoading} type="submit">
-              Save
-            </Button>
+            <PaymentMethodSubmitButton
+              integrations={integrations}
+              isLoading={form.isLoading}
+              method={method}
+            />
           }
         >
           <PaymentMethodDetails integrations={integrations} method={method} />

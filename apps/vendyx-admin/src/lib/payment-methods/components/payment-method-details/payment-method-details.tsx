@@ -1,6 +1,6 @@
 'use client';
 
-import { type FC, useState } from 'react';
+import { type FC, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Label } from '@radix-ui/react-dropdown-menu';
@@ -39,7 +39,15 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
   const [selectedIntegration, setSelectedIntegration] =
     useState<CommonPaymentIntegrationFragment>(defaultIntegration);
 
-  const metadata = selectedIntegration.metadata as Metadata[];
+  const metadata = useMemo(
+    () =>
+      (selectedIntegration.metadata as Metadata[]).map(metadata => ({
+        key: metadata.key,
+        value: metadata.value,
+        id: Math.random().toString()
+      })),
+    [selectedIntegration]
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -60,6 +68,7 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
                   }
 
                   field.onChange(value);
+                  setValue('metadata', {});
                 }}
                 defaultValue={field.value}
               >
@@ -87,8 +96,8 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
 
       {selectedIntegration && (
         <div className="flex flex-col gap-4">
-          {metadata.map(({ key }) => (
-            <div key={key} className="flex flex-col gap-2">
+          {metadata.map(({ key, id }) => (
+            <div key={id} className="flex flex-col gap-2">
               <Label>{key}</Label>
               <Input
                 onChange={e =>

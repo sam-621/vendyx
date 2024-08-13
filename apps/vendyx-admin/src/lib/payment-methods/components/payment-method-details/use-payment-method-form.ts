@@ -17,10 +17,6 @@ export const usePaymentMethodForm = (
   integrations: CommonPaymentIntegrationFragment[],
   method?: CommonPaymentMethodFragment
 ) => {
-  console.log({
-    method
-  });
-
   const [isLoading, startTransition] = useTransition();
 
   const defaultIntegration = method
@@ -32,7 +28,7 @@ export const usePaymentMethodForm = (
     defaultValues: {
       integration: defaultIntegration.id,
       metadata: method?.integrationMetadata ?? {},
-      enabled: true
+      enabled: method?.enabled ?? true
     }
   });
 
