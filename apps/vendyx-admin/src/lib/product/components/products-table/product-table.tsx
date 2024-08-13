@@ -1,7 +1,5 @@
 import { type FC } from 'react';
 
-import { headers } from 'next/headers';
-
 import { productService } from '@/lib/shared/api';
 import {
   DataTable,
@@ -10,16 +8,13 @@ import {
   getSkip,
   parseDataTableSearchParams
 } from '@/lib/shared/components';
-import { DEFAULT_PRODUCT_IMAGE, getBasePathFormHeaders } from '@/lib/shared/utils';
+import { DEFAULT_PRODUCT_IMAGE } from '@/lib/shared/utils';
 
 import { ProductTableColumns } from './products-table-columns';
 
 export const ProductTable: FC<Props> = async props => {
   const { page, search, size } = parseDataTableSearchParams({ ...props });
-  console.log({
-    headers: headers(),
-    base: getBasePathFormHeaders(headers())
-  });
+
   const products = await productService.getAll({
     skip: getSkip(page, size),
     take: size,

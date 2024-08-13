@@ -12,9 +12,5 @@ export default async function PaymentDetailsPage({ params }: { params: { id: str
     return notFound();
   }
 
-  console.log({
-    method
-  });
-
   return <PaymentMethodForm method={method} integrations={integrations} />;
 }
