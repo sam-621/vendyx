@@ -59,7 +59,7 @@ export const AdminLayoutNav = () => {
       </div>
       <div className="pb-6">
         <AdminSidebarNavItem
-          href="/settings"
+          href={`/shops/${shop}/settings`}
           label="Settings"
           icon={SettingsIcon}
           isActive={isInSettings}
