@@ -253,8 +253,8 @@ export type PageInfo = {
 };
 
 /** A payment integration is am integration to be used in a payment method by any shop. */
-export type PaymentIntegrations = {
-  __typename?: 'PaymentIntegrations';
+export type PaymentIntegration = {
+  __typename?: 'PaymentIntegration';
   createdAt: Scalars['Date']['output'];
   /** The payment integration's icon */
   icon: Scalars['String']['output'];
@@ -352,7 +352,7 @@ export type ProductListInput = {
 
 export type Query = {
   __typename?: 'Query';
-  paymentIntegrations: Array<PaymentIntegrations>;
+  paymentIntegrations: Array<PaymentIntegration>;
   paymentMethod?: Maybe<PaymentMethod>;
   paymentMethods: Array<PaymentMethod>;
   product?: Maybe<Product>;
@@ -590,18 +590,32 @@ export type RemoveOptionMutation = {
   softRemoveOption: { __typename?: 'Option'; id: string };
 };
 
+export type CommonPaymentIntegrationFragment = {
+  __typename?: 'PaymentIntegration';
+  id: string;
+  icon: string;
+  name: string;
+  metadata: any;
+} & { ' $fragmentName'?: 'CommonPaymentIntegrationFragment' };
+
+export type CommonPaymentMethodFragment = {
+  __typename?: 'PaymentMethod';
+  id: string;
+  name: string;
+  icon: string;
+  enabled: boolean;
+  integrationMetadata: any;
+} & { ' $fragmentName'?: 'CommonPaymentMethodFragment' };
+
 export type GetPaymentMethodsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPaymentMethodsQuery = {
   __typename?: 'Query';
-  paymentMethods: Array<{
-    __typename?: 'PaymentMethod';
-    id: string;
-    name: string;
-    icon: string;
-    enabled: boolean;
-    integrationMetadata: any;
-  }>;
+  paymentMethods: Array<
+    { __typename?: 'PaymentMethod' } & {
+      ' $fragmentRefs'?: { CommonPaymentMethodFragment: CommonPaymentMethodFragment };
+    }
+  >;
 };
 
 export type GetPaymentMethodQueryVariables = Exact<{
@@ -610,14 +624,22 @@ export type GetPaymentMethodQueryVariables = Exact<{
 
 export type GetPaymentMethodQuery = {
   __typename?: 'Query';
-  paymentMethod?: {
-    __typename?: 'PaymentMethod';
-    id: string;
-    name: string;
-    icon: string;
-    enabled: boolean;
-    integrationMetadata: any;
-  } | null;
+  paymentMethod?:
+    | ({ __typename?: 'PaymentMethod' } & {
+        ' $fragmentRefs'?: { CommonPaymentMethodFragment: CommonPaymentMethodFragment };
+      })
+    | null;
+};
+
+export type GetPaymentIntegrationsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPaymentIntegrationsQuery = {
+  __typename?: 'Query';
+  paymentIntegrations: Array<
+    { __typename?: 'PaymentIntegration' } & {
+      ' $fragmentRefs'?: { CommonPaymentIntegrationFragment: CommonPaymentIntegrationFragment };
+    }
+  >;
 };
 
 export type CreatePaymentMethodMutationVariables = Exact<{
@@ -869,6 +891,29 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+export const CommonPaymentIntegrationFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonPaymentIntegration on PaymentIntegration {
+  id
+  icon
+  name
+  metadata
+}
+    `,
+  { fragmentName: 'CommonPaymentIntegration' }
+) as unknown as TypedDocumentString<CommonPaymentIntegrationFragment, unknown>;
+export const CommonPaymentMethodFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonPaymentMethod on PaymentMethod {
+  id
+  name
+  icon
+  enabled
+  integrationMetadata
+}
+    `,
+  { fragmentName: 'CommonPaymentMethod' }
+) as unknown as TypedDocumentString<CommonPaymentMethodFragment, unknown>;
 export const CommonProductFragmentDoc = new TypedDocumentString(
   `
     fragment CommonProduct on Product {
@@ -947,25 +992,44 @@ export const RemoveOptionDocument = new TypedDocumentString(`
 export const GetPaymentMethodsDocument = new TypedDocumentString(`
     query GetPaymentMethods {
   paymentMethods {
-    id
-    name
-    icon
-    enabled
-    integrationMetadata
+    ...CommonPaymentMethod
   }
 }
-    `) as unknown as TypedDocumentString<GetPaymentMethodsQuery, GetPaymentMethodsQueryVariables>;
+    fragment CommonPaymentMethod on PaymentMethod {
+  id
+  name
+  icon
+  enabled
+  integrationMetadata
+}`) as unknown as TypedDocumentString<GetPaymentMethodsQuery, GetPaymentMethodsQueryVariables>;
 export const GetPaymentMethodDocument = new TypedDocumentString(`
     query GetPaymentMethod($id: ID!) {
   paymentMethod(id: $id) {
-    id
-    name
-    icon
-    enabled
-    integrationMetadata
+    ...CommonPaymentMethod
   }
 }
-    `) as unknown as TypedDocumentString<GetPaymentMethodQuery, GetPaymentMethodQueryVariables>;
+    fragment CommonPaymentMethod on PaymentMethod {
+  id
+  name
+  icon
+  enabled
+  integrationMetadata
+}`) as unknown as TypedDocumentString<GetPaymentMethodQuery, GetPaymentMethodQueryVariables>;
+export const GetPaymentIntegrationsDocument = new TypedDocumentString(`
+    query GetPaymentIntegrations {
+  paymentIntegrations {
+    ...CommonPaymentIntegration
+  }
+}
+    fragment CommonPaymentIntegration on PaymentIntegration {
+  id
+  icon
+  name
+  metadata
+}`) as unknown as TypedDocumentString<
+  GetPaymentIntegrationsQuery,
+  GetPaymentIntegrationsQueryVariables
+>;
 export const CreatePaymentMethodDocument = new TypedDocumentString(`
     mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {
   createPaymentMethod(input: $input) {

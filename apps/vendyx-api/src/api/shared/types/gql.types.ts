@@ -216,13 +216,13 @@ export class PaymentMethod {
     integrationMetadata: JSON;
 }
 
-export class PaymentIntegrations {
+export class PaymentIntegration {
     id: string;
     createdAt: Date;
     updatedAt: Date;
     name: string;
     icon: string;
-    integrationMetadata: JSON;
+    metadata: JSON;
 }
 
 export abstract class IQuery {
@@ -230,7 +230,7 @@ export abstract class IQuery {
 
     abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 
-    abstract paymentIntegrations(): PaymentIntegrations[] | Promise<PaymentIntegrations[]>;
+    abstract paymentIntegrations(): PaymentIntegration[] | Promise<PaymentIntegration[]>;
 
     abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
 

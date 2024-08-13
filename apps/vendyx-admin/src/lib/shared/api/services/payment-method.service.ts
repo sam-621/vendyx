@@ -1,6 +1,10 @@
+import { getFragmentData } from '../codegen';
 import { type CreatePaymentMethodInput } from '../codegen/graphql';
 import {
+  COMMON_PAYMENT_INTEGRATION_FRAGMENT,
+  COMMON_PAYMENT_METHOD_FRAGMENT,
   CREATE_PAYMENT_METHOD,
+  GET_ALL_PAYMENT_INTEGRATIONS,
   GET_ALL_PAYMENT_METHODS,
   GET_PAYMENT_METHOD,
   REMOVE_PAYMENT_METHOD,
@@ -10,26 +14,46 @@ import { fetcher } from './fetcher';
 
 export const PaymentMethodService = {
   Tags: {
-    paymentMethods: 'paymentMethods',
-    paymentMethod: (id: string) => `paymentMethod-${id}`
+    methods: 'methods',
+    method: (id: string) => `method-${id}`,
+    integrations: 'integrations'
   },
 
   async getAll() {
-    const { paymentMethods } = await fetcher(
+    const result = await fetcher(
       GET_ALL_PAYMENT_METHODS,
       {},
-      { tags: [PaymentMethodService.Tags.paymentMethods] }
+      { tags: [PaymentMethodService.Tags.methods] }
     );
+
+    const paymentMethods = getFragmentData(COMMON_PAYMENT_METHOD_FRAGMENT, result.paymentMethods);
 
     return paymentMethods;
   },
 
+  async getAllIntegrations() {
+    const result = await fetcher(
+      GET_ALL_PAYMENT_INTEGRATIONS,
+      {},
+      { tags: [PaymentMethodService.Tags.integrations] }
+    );
+
+    const paymentIntegrations = getFragmentData(
+      COMMON_PAYMENT_INTEGRATION_FRAGMENT,
+      result.paymentIntegrations
+    );
+
+    return paymentIntegrations;
+  },
+
   async getById(id: string) {
-    const { paymentMethod } = await fetcher(
+    const result = await fetcher(
       GET_PAYMENT_METHOD,
       { id },
-      { tags: [PaymentMethodService.Tags.paymentMethod(id)] }
+      { tags: [PaymentMethodService.Tags.method(id)] }
     );
+
+    const paymentMethod = getFragmentData(COMMON_PAYMENT_METHOD_FRAGMENT, result.paymentMethod);
 
     return paymentMethod;
   },

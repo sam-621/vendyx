@@ -18,10 +18,16 @@ const documents = {
     types.UpdateOptionDocument,
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n':
     types.RemoveOptionDocument,
-  '\n  query GetPaymentMethods {\n    paymentMethods {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n':
+  '\n  fragment CommonPaymentIntegration on PaymentIntegration {\n    id\n    icon\n    name\n    metadata\n  }\n':
+    types.CommonPaymentIntegrationFragmentDoc,
+  '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    icon\n    enabled\n    integrationMetadata\n  }\n':
+    types.CommonPaymentMethodFragmentDoc,
+  '\n  query GetPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n':
     types.GetPaymentMethodsDocument,
-  '\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n':
+  '\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n':
     types.GetPaymentMethodDocument,
+  '\n  query GetPaymentIntegrations {\n    paymentIntegrations {\n      ...CommonPaymentIntegration\n    }\n  }\n':
+    types.GetPaymentIntegrationsDocument,
   '\n  mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {\n    createPaymentMethod(input: $input) {\n      id\n    }\n  }\n':
     types.CreatePaymentMethodDocument,
   '\n  mutation UpdatePaymentMethod($id: ID!, $input: UpdatePaymentMethodInput!) {\n    updatePaymentMethod(id: $id, input: $input) {\n      id\n    }\n  }\n':
@@ -84,14 +90,32 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetPaymentMethods {\n    paymentMethods {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n'
+  source: '\n  fragment CommonPaymentIntegration on PaymentIntegration {\n    id\n    icon\n    name\n    metadata\n  }\n'
+): typeof import('./graphql').CommonPaymentIntegrationFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    icon\n    enabled\n    integrationMetadata\n  }\n'
+): typeof import('./graphql').CommonPaymentMethodFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetPaymentMethods {\n    paymentMethods {\n      ...CommonPaymentMethod\n    }\n  }\n'
 ): typeof import('./graphql').GetPaymentMethodsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      id\n      name\n      icon\n      enabled\n      integrationMetadata\n    }\n  }\n'
+  source: '\n  query GetPaymentMethod($id: ID!) {\n    paymentMethod(id: $id) {\n      ...CommonPaymentMethod\n    }\n  }\n'
 ): typeof import('./graphql').GetPaymentMethodDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetPaymentIntegrations {\n    paymentIntegrations {\n      ...CommonPaymentIntegration\n    }\n  }\n'
+): typeof import('./graphql').GetPaymentIntegrationsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -33,7 +33,7 @@ type PaymentMethod {
 """
 A payment integration is am integration to be used in a payment method by any shop.
 """
-type PaymentIntegrations {
+type PaymentIntegration {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
@@ -58,7 +58,7 @@ type PaymentIntegrations {
 type Query {
   paymentMethod(id: ID!): PaymentMethod
   paymentMethods: [PaymentMethod!]!
-  paymentIntegrations: [PaymentIntegrations!]!
+  paymentIntegrations: [PaymentIntegration!]!
 }
 
 type Mutation {

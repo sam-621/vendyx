@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 

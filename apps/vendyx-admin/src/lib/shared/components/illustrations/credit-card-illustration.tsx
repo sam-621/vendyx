@@ -7,7 +7,7 @@ export const CreditCardIllustration = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_3630_2029)">
+      <g clipPath="url(#clip0_3630_2029)">
         <path
           d="M94.4871 9.19508L2.61963 35.9614L5.05293 44.313L96.9204 17.5467L94.4871 9.19508Z"
           fill="hsl(var(--muted-foreground))"
