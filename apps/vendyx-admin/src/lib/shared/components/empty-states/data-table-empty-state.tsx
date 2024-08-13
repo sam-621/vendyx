@@ -1,10 +1,15 @@
+'use client';
+
 import { type FC } from 'react';
 
 import Link from 'next/link';
 
+import { useBase } from '../../hooks';
 import { Button } from '../ui';
 
 export const DataTableEmptyState: FC<Props> = ({ title, description, action }) => {
+  const base = useBase();
+
   return (
     <div className="w-full h-full border border-dashed rounded-lg flex flex-col justify-center items-center gap-6 bg-background">
       <div className="flex flex-col gap-1">
@@ -13,7 +18,7 @@ export const DataTableEmptyState: FC<Props> = ({ title, description, action }) =
       </div>
       {action && (
         <div>
-          <Link href={action.to}>
+          <Link href={`${base}${action.to}`}>
             <Button>{action.label}</Button>
           </Link>
         </div>
