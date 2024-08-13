@@ -4,36 +4,62 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { type CommonPaymentIntegrationFragment } from '@/lib/shared/api';
+import {
+  type CommonPaymentIntegrationFragment,
+  type CommonPaymentMethodFragment
+} from '@/lib/shared/api';
 import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
 
-import { createPaymentMethod } from '../../actions';
+import { createPaymentMethod, updatePaymentMethod } from '../../actions';
 
-export const usePaymentMethodForm = (integrations: CommonPaymentIntegrationFragment[]) => {
+export const usePaymentMethodForm = (
+  integrations: CommonPaymentIntegrationFragment[],
+  method?: CommonPaymentMethodFragment
+) => {
+  console.log({
+    method
+  });
+
   const [isLoading, startTransition] = useTransition();
+
+  const defaultIntegration = method
+    ? integrations.find(i => i.name === method.name) ?? integrations[0]
+    : integrations[0];
 
   const form = useForm<PaymentMethodFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      integration: integrations[0].id,
-      metadata: {},
+      integration: defaultIntegration.id,
+      metadata: method?.integrationMetadata ?? {},
       enabled: true
     }
   });
 
   async function onSubmit(values: PaymentMethodFormInput) {
-    startTransition(async () => {
-      if (!Object.keys(values.metadata).length) {
-        notification.error('Provider metadata is required');
-        return;
-      }
+    const integrationSelected = integrations.find(i => i.id === values.integration);
 
-      await createPaymentMethod({
-        enabled: values.enabled,
-        integrationId: values.integration,
-        metadata: values.metadata
-      });
+    const allMetadataIsFilled =
+      Object.values(values.metadata).every(value => !!value) &&
+      integrationSelected?.metadata.length === Object.values(values.metadata).length;
+
+    if (!Object.values(values.metadata).length || !allMetadataIsFilled) {
+      notification.error('Provider metadata is required');
+      return;
+    }
+
+    startTransition(async () => {
+      if (method) {
+        await updatePaymentMethod(method.id, values);
+
+        notification.success('Payment method updated');
+      } else {
+        await createPaymentMethod({
+          enabled: values.enabled,
+          integrationId: values.integration,
+          metadata: values.metadata
+        });
+      }
     });
   }
 

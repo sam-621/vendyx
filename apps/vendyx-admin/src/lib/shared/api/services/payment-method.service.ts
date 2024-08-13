@@ -1,5 +1,5 @@
 import { getFragmentData } from '../codegen';
-import { type CreatePaymentMethodInput } from '../codegen/graphql';
+import { type CreatePaymentMethodInput, type UpdatePaymentMethodInput } from '../codegen/graphql';
 import {
   COMMON_PAYMENT_INTEGRATION_FRAGMENT,
   COMMON_PAYMENT_METHOD_FRAGMENT,
@@ -64,7 +64,7 @@ export const PaymentMethodService = {
     return createPaymentMethod;
   },
 
-  async update(id: string, input: CreatePaymentMethodInput) {
+  async update(id: string, input: UpdatePaymentMethodInput) {
     const { updatePaymentMethod } = await fetcher(UPDATE_PAYMENT_METHOD, { id, input });
 
     return updatePaymentMethod;

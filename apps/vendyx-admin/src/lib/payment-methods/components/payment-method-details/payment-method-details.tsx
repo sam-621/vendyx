@@ -5,7 +5,11 @@ import { useFormContext } from 'react-hook-form';
 
 import { Label } from '@radix-ui/react-dropdown-menu';
 
-import { type CommonPaymentIntegrationFragment, type Metadata } from '@/lib/shared/api';
+import {
+  type CommonPaymentIntegrationFragment,
+  type CommonPaymentMethodFragment,
+  type Metadata
+} from '@/lib/shared/api';
 import {
   Input,
   Select,
@@ -25,8 +29,10 @@ import {
 
 import { type PaymentMethodFormInput } from './use-payment-method-form';
 
-export const PaymentMethodDetails: FC<Props> = ({ integrations }) => {
-  const defaultIntegration = integrations[0];
+export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
+  const defaultIntegration = method
+    ? integrations.find(i => i.name === method.name) ?? integrations[0]
+    : integrations[0];
 
   const { control, setValue, getValues } = useFormContext<PaymentMethodFormInput>();
   const [selectedIntegration, setSelectedIntegration] =
@@ -44,6 +50,7 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations }) => {
             <FormItem className="w-full">
               <FormLabel>Provider</FormLabel>
               <Select
+                disabled={Boolean(method)}
                 onValueChange={value => {
                   const integration = integrations.find(integration => integration.id === value);
 
@@ -86,6 +93,7 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations }) => {
                 onChange={e =>
                   setValue('metadata', { ...getValues('metadata'), [key]: e.target.value })
                 }
+                defaultValue={method?.integrationMetadata[key] ?? ''}
                 placeholder="*****"
               />
             </div>
@@ -97,5 +105,6 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations }) => {
 };
 
 type Props = {
+  method?: CommonPaymentMethodFragment;
   integrations: CommonPaymentIntegrationFragment[];
 };

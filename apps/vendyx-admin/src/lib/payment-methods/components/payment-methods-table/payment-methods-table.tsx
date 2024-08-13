@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { type GetPaymentMethodsQuery } from '@/lib/shared/api';
+import { type CommonPaymentMethodFragment } from '@/lib/shared/api';
 import {
   Badge,
   Button,
@@ -26,6 +26,7 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
   if (!paymentMethods.length) {
     return <PaymentMethodsTableEmptyState />;
   }
+
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
@@ -34,7 +35,7 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
           <CardDescription>Configure payment methods for your store</CardDescription>
         </div>
         <div>
-          <Link href="/settings/payments/new">
+          <Link href="payments/new">
             <Button variant="secondary" size="sm" className="gap-2">
               <PlusIcon size={16} />
               Add payment method
@@ -56,7 +57,7 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
               {paymentMethods.map(method => (
                 <TableRow key={method.id}>
                   <TableCell>
-                    <Link href={`/settings/payments/${method.id}`} className="hover:underline">
+                    <Link href={`payments/${method.id}`} className="hover:underline">
                       <span>{method.name}</span>
                     </Link>
                   </TableCell>
@@ -76,5 +77,5 @@ export const PaymentMethodsTable: FC<Props> = ({ paymentMethods }) => {
 };
 
 type Props = {
-  paymentMethods: GetPaymentMethodsQuery['paymentMethods'];
+  paymentMethods: CommonPaymentMethodFragment[];
 };

@@ -16,9 +16,8 @@ export const createPaymentMethod = async (input: Input) => {
 
   const basePath = getBasePathFormHeaders(headers());
 
-  revalidateTag(PaymentMethodService.Tags.method(result.id));
   revalidateTag(PaymentMethodService.Tags.methods);
-  redirect(`${basePath}/payment-methods/${result.id}`);
+  redirect(`${basePath}/settings/payments/${result.id}`);
 };
 
 type Input = {
