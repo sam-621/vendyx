@@ -27,6 +27,7 @@ import {
   FormSwitch
 } from '@/lib/shared/form';
 
+import { RemovePaymentMethodButton } from '../remove-payment-method';
 import { type PaymentMethodFormInput } from './use-payment-method-form';
 
 export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
@@ -98,6 +99,12 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
               />
             </div>
           ))}
+        </div>
+      )}
+
+      {method && (
+        <div className="flex justify-end">
+          <RemovePaymentMethodButton method={method} />
         </div>
       )}
     </div>

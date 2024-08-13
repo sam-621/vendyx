@@ -26,7 +26,7 @@ export const RemoveEntityButton: FC<Props> = ({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         {trigger === 'button' ? (
-          <Button isLoading={isLoading} type="button" variant="destructive">
+          <Button isLoading={isLoading} type="button" variant="destructive" size="sm">
             Remove
           </Button>
         ) : isLoading ? (
@@ -44,8 +44,8 @@ export const RemoveEntityButton: FC<Props> = ({
           <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
           <AlertDialogAction
             type="button"
-            onClick={async () => {
-              await onRemove();
+            onClick={() => {
+              onRemove();
             }}
           >
             Remove
