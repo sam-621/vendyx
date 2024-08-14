@@ -3,8 +3,6 @@
 import { type FC, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { Label } from '@radix-ui/react-dropdown-menu';
-
 import {
   type CommonPaymentIntegrationFragment,
   type CommonPaymentMethodFragment,
@@ -12,6 +10,7 @@ import {
 } from '@/lib/shared/api';
 import {
   Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
@@ -42,8 +41,7 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
   const metadata = useMemo(
     () =>
       (selectedIntegration.metadata as Metadata[]).map(metadata => ({
-        key: metadata.key,
-        value: metadata.value,
+        ...metadata,
         id: Math.random().toString()
       })),
     [selectedIntegration]
@@ -96,10 +94,11 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
 
       {selectedIntegration && (
         <div className="flex flex-col gap-4">
-          {metadata.map(({ key, id }) => (
+          {metadata.map(({ id, label, key }) => (
             <div key={id} className="flex flex-col gap-2">
-              <Label>{key}</Label>
+              <Label htmlFor={key}>{label}</Label>
               <Input
+                id={key}
                 onChange={e =>
                   setValue('metadata', { ...getValues('metadata'), [key]: e.target.value })
                 }

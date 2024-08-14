@@ -61,7 +61,7 @@ model PaymentIntegration {
   /// Payment integration's handler code 
   /// Used to identify which payment handler to use in this integration
   /// Used to know how to render the payment form in the storefront (paypal, stripe, etc)
-  handlerCode String @map("handler_code")
+  handlerCode String @unique @map("handler_code")
 
   /// Payment integration's metadata
   /// This metadata is usually used to store the payment integration keys

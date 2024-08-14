@@ -42,7 +42,7 @@ model ShippingHandler {
   deletedAt DateTime? @map("deleted_at")
 
   name        String
-  handlerCode String @map("handler_code")
+  handlerCode String @unique @map("handler_code")
   metadata    Json
 
   shippingMethods ShippingMethod[]

@@ -1,11 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 
 import { generatePaymentIntegrations } from './payment.seed';
+import { generateShippingHandlers } from './shipment.seed';
 
 const prisma = new PrismaClient();
 
 async function main() {
   await generatePaymentIntegrations(prisma);
+  await generateShippingHandlers(prisma);
 }
 main()
   .then(async () => {
