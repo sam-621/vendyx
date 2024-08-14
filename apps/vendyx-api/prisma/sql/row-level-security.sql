@@ -8,6 +8,9 @@ ALTER TABLE "option_value" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "asset" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "payment" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "payment_method" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "shipment" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "shipping_method" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "zone" ENABLE ROW LEVEL SECURITY;
 
 -- Force Row Level Security for table owners
 ALTER TABLE "users" ENABLE ROW LEVEL SECURITY;
@@ -19,6 +22,9 @@ ALTER TABLE "option_value" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "asset" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "payment" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "payment_method" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "shipment" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "shipping_method" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "zone" FORCE ROW LEVEL SECURITY;
 
 -- Create row security policies
 CREATE POLICY owner_isolation_policy ON "users" USING (id = current_setting('app.current_owner_id', TRUE)::uuid);
@@ -31,6 +37,9 @@ CREATE POLICY shop_isolation_policy ON "option_value" USING (shop_id = current_s
 CREATE POLICY shop_isolation_policy ON "asset" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
 CREATE POLICY shop_isolation_policy ON "payment" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
 CREATE POLICY shop_isolation_policy ON "payment_method" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
+CREATE POLICY shop_isolation_policy ON "shipment" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
+CREATE POLICY shop_isolation_policy ON "shipping_method" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
+CREATE POLICY shop_isolation_policy ON "zone" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
 
 -- Bypass RLS policy
 CREATE POLICY bypass_rls_policy ON "users" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
@@ -42,3 +51,6 @@ CREATE POLICY bypass_rls_policy ON "option_value" USING (current_setting('app.by
 CREATE POLICY bypass_rls_policy ON "asset" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "payment" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "payment_method" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "shipment" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "shipping_method" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "zone" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');

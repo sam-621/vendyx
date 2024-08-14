@@ -1,0 +1,79 @@
+model Shipment {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  amount       Int
+  trackingCode String @map("tracking_code")
+  carrier      String
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("shipment")
+}
+
+model ShippingMethod {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name        String
+  description String?
+  enabled     Boolean @default(true)
+
+  zone              Zone            @relation(fields: [zoneId], references: [id])
+  zoneId            String          @db.Uuid
+  shippingHandler   ShippingHandler @relation(fields: [shippingHandlerId], references: [id])
+  shippingHandlerId String          @map("shipping_handler_id") @db.Uuid
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("shipping_method")
+}
+
+model ShippingHandler {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name        String
+  handlerCode String @map("handler_code")
+  metadata    Json
+
+  shippingMethods ShippingMethod[]
+
+  @@map("price_calculator")
+}
+
+model Zone {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name String
+
+  shippingMethods ShippingMethod[]
+  states          StateZone[]
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("zone")
+}
+
+model StateZone {
+  zone   Zone   @relation(fields: [zoneId], references: [id])
+  zoneId String @map("zone_id") @db.Uuid
+
+  state   State  @relation(fields: [stateId], references: [id])
+  stateId String @map("state_id") @db.Uuid
+
+  @@id([zoneId, stateId])
+  @@map("state_zone")
+}

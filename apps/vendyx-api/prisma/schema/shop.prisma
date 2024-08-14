@@ -29,13 +29,16 @@ model Shop {
   /// The shop's slug
   slug String @unique
 
-  product       Product[]
-  variant       Variant[]
-  option        Option[]
-  optionValue   OptionValue[]
-  asset         Asset[]
-  Payment       Payment[]
-  PaymentMethod PaymentMethod[]
+  product        Product[]
+  variant        Variant[]
+  option         Option[]
+  optionValue    OptionValue[]
+  asset          Asset[]
+  payment        Payment[]
+  paymentMethod  PaymentMethod[]
+  shipment       Shipment[]
+  shippingMethod ShippingMethod[]
+  zone           Zone[]
 
   /// The shop's owner
   owner   User   @relation(fields: [ownerId], references: [id])

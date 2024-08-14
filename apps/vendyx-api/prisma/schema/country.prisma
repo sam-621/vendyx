@@ -1,0 +1,31 @@
+/// A country in vendyx is a representation of a country in the world.
+/// Contains available countries where our customers can sell 
+model Country {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name String
+
+  states State[]
+
+  @@map("country")
+}
+
+/// An state is a Geographical Region in a country.
+model State {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name String
+
+  zones StateZone[]
+
+  country   Country @relation(fields: [countryId], references: [id])
+  countryId String  @map("country_id") @db.Uuid
+
+  @@map("state")
+}
