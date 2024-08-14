@@ -1,0 +1,31 @@
+type Zone implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  name: String!
+
+  shippingMethods: [ShippingMethod!]!
+  states: [State!]!
+}
+
+type Query {
+  zones: [Zone!]!
+  zone(id: ID!): Zone!
+}
+
+type Mutation {
+  createZone(input: CreateZoneInput!): Zone!
+  updateZone(id: ID!, input: UpdateZoneInput!): Zone!
+  removeZone(id: ID!): Boolean!
+}
+
+input CreateZoneInput {
+  name: String!
+  stateIds: [ID!]!
+}
+
+input UpdateZoneInput {
+  name: String
+  stateIds: [ID!]
+}

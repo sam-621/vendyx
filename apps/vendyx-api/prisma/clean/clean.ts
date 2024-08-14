@@ -16,14 +16,14 @@ async function main() {
 
     prisma.asset.deleteMany(),
 
-    prisma.shippingHandler.deleteMany(),
-    prisma.shippingMethod.deleteMany(),
     prisma.shipment.deleteMany(),
+    prisma.shippingMethod.deleteMany(),
+    prisma.shippingHandler.deleteMany(),
     prisma.zone.deleteMany(),
 
-    prisma.paymentIntegration.deleteMany(),
-    prisma.paymentMethod.deleteMany(),
     prisma.payment.deleteMany(),
+    prisma.paymentMethod.deleteMany(),
+    prisma.paymentIntegration.deleteMany(),
 
     prisma.stateZone.deleteMany(),
     prisma.state.deleteMany(),

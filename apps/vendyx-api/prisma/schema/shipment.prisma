@@ -47,7 +47,7 @@ model ShippingHandler {
 
   shippingMethods ShippingMethod[]
 
-  @@map("price_calculator")
+  @@map("shipping_handler")
 }
 
 model Zone {

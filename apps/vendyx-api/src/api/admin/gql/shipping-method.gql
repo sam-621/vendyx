@@ -1,0 +1,80 @@
+"""
+A shipping method is a method chosen by the customer to ship the order to the customer's address
+"""
+type ShippingMethod implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The shipping method's name (e.g. 'Stripe')
+  """
+  name: String!
+
+  """
+  The shipping method's description
+  """
+  description: String!
+
+  """
+  Whether the shipping method is enabled or not
+  Not enabled shipping methods will not be shown in the storefront
+  Useful for shipping methods that are not ready to be used yet
+  """
+  enabled: Boolean!
+
+  """
+  Specific data for the shipping handler chosen
+  Usually, this json stores the shipping handler keys
+  """
+  handlerMetadata: JSON!
+
+  handler: ShippingHandler!
+}
+
+"""
+A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc
+"""
+type ShippingHandler implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The shipping handler's name (e.g. 'Fedex')
+  """
+  name: String!
+
+  """
+  Specific data for the shipping handler chosen.
+  Usually, this json stores the shipping handler keys
+  """
+  metadata: JSON!
+}
+
+type Query {
+  shippingMethods: [ShippingMethod!]!
+  shippingHandlers: [ShippingHandler!]!
+}
+
+type Mutation {
+  createShippingMethod(input: CreateShippingMethodInput!): ShippingMethod!
+  updateShippingMethod(id: ID!, input: UpdateShippingMethodInput!): ShippingMethod!
+  removeShippingMethod(id: ID!): Boolean!
+}
+
+input CreateShippingMethodInput {
+  name: String!
+  description: String!
+  enabled: Boolean!
+  handlerMetadata: JSON!
+  handlerId: ID!
+  zoneId: ID!
+}
+
+input UpdateShippingMethodInput {
+  name: String
+  description: String
+  enabled: Boolean
+  handlerMetadata: JSON
+}
