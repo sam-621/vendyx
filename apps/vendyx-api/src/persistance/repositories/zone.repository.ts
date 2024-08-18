@@ -48,6 +48,12 @@ export class ZoneRepository {
     });
   }
 
+  async removeAllShippingMethods(zoneId: string) {
+    await this.prisma.shippingMethod.deleteMany({
+      where: { zoneId }
+    });
+  }
+
   async removeStates(zoneId: string, stateIds: string[]) {
     await this.prisma.stateZone.deleteMany({
       where: {

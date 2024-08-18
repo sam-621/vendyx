@@ -47,6 +47,7 @@ export class ZoneService {
 
   async remove(id: string) {
     await this.zoneRepository.removeAllStates(id);
+    await this.zoneRepository.removeAllShippingMethods(id);
     await this.zoneRepository.remove(id);
 
     return true;
