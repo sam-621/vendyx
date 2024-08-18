@@ -13,6 +13,12 @@ export class ZoneRepository {
     });
   }
 
+  findStates(zoneId: string) {
+    return this.prisma.stateZone.findMany({
+      where: { zoneId }
+    });
+  }
+
   findById(id: string) {
     return this.prisma.zone.findUnique({
       where: { id }
@@ -23,8 +29,8 @@ export class ZoneRepository {
     return this.prisma.zone.create({ data: input });
   }
 
-  update(id: string, input: Prisma.ZoneUpdateInput) {
-    return this.prisma.zone.update({
+  async update(id: string, input: Prisma.ZoneUpdateInput) {
+    return await this.prisma.zone.update({
       where: { id },
       data: input
     });
@@ -37,8 +43,17 @@ export class ZoneRepository {
   }
 
   async removeAllStates(zoneId: string) {
-    this.prisma.stateZone.deleteMany({
+    await this.prisma.stateZone.deleteMany({
       where: { zoneId }
+    });
+  }
+
+  async removeStates(zoneId: string, stateIds: string[]) {
+    await this.prisma.stateZone.deleteMany({
+      where: {
+        zoneId,
+        stateId: { in: stateIds }
+      }
     });
   }
 }

@@ -5,12 +5,15 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { BusinessModule } from '@/business';
 
 import {
+  CountryResolver,
   OptionResolver,
   PaymentMethodResolver,
   ProductResolver,
+  ShippingMethodResolver,
   ShopResolver,
   UserResolver,
-  VariantResolver
+  VariantResolver,
+  ZoneResolver
 } from './resolvers';
 import { GraphqlApiModule } from '../shared';
 
@@ -40,7 +43,10 @@ export class AdminApiModule {
     ProductResolver,
     VariantResolver,
     OptionResolver,
-    PaymentMethodResolver
+    PaymentMethodResolver,
+    ShippingMethodResolver,
+    CountryResolver,
+    ZoneResolver
   ]
 })
 class AdminModule {}

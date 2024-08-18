@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateZoneInput } from '@/api/shared';
+import { CreateZoneInput, UpdateZoneInput } from '@/api/shared';
 import { ZoneRepository } from '@/persistance/repositories';
 
 @Injectable()
@@ -22,9 +22,18 @@ export class ZoneService {
     });
   }
 
-  update(id: string, input: CreateZoneInput) {
-    return this.zoneRepository.update(id, {
-      name: input.name,
+  async update(id: string, input: UpdateZoneInput) {
+    const states = await this.zoneRepository.findStates(id);
+
+    const statesToRemove = states.filter(state => !input.stateIds?.includes(state.stateId));
+
+    await this.zoneRepository.removeStates(
+      id,
+      statesToRemove.map(state => state.stateId)
+    );
+
+    return await this.zoneRepository.update(id, {
+      name: input.name ?? undefined,
       states: input.stateIds
         ? {
             connectOrCreate: input.stateIds.map(stateId => ({
@@ -38,6 +47,8 @@ export class ZoneService {
 
   async remove(id: string) {
     await this.zoneRepository.removeAllStates(id);
-    return this.zoneRepository.remove(id);
+    await this.zoneRepository.remove(id);
+
+    return true;
   }
 }

@@ -4,3 +4,6 @@ export * from './product.resolver';
 export * from './variant.resolver';
 export * from './option.resolver';
 export * from './payment-method.resolver';
+export * from './shipping-method.resolver';
+export * from './country.resolver';
+export * from './zone.resolver';

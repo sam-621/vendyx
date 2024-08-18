@@ -1,13 +1,20 @@
+import { Injectable } from '@nestjs/common';
+
 import { CreateShippingMethodInput, UpdateShippingMethodInput } from '@/api/shared';
 import { ShippingMethodRepository } from '@/persistance/repositories';
 
 import { clean } from '../shared';
 
-export class ShippingMethod {
+@Injectable()
+export class ShippingMethodService {
   constructor(private readonly shippingMethodRepository: ShippingMethodRepository) {}
 
   find() {
     return this.shippingMethodRepository.find();
+  }
+
+  findHandlers() {
+    return this.shippingMethodRepository.findHandlers();
   }
 
   create(input: CreateShippingMethodInput) {
@@ -30,10 +37,11 @@ export class ShippingMethod {
   }
 
   async update(id: string, input: UpdateShippingMethodInput) {
-    await this.shippingMethodRepository.update(id, clean(input));
+    return await this.shippingMethodRepository.update(id, clean(input));
   }
 
   async remove(id: string) {
     await this.shippingMethodRepository.remove(id);
+    return true;
   }
 }

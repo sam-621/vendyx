@@ -14,7 +14,7 @@ type ShippingMethod implements Node {
   """
   The shipping method's description
   """
-  description: String!
+  description: String
 
   """
   Whether the shipping method is enabled or not
@@ -65,8 +65,8 @@ type Mutation {
 
 input CreateShippingMethodInput {
   name: String!
-  description: String!
-  enabled: Boolean!
+  description: String
+  enabled: Boolean
   handlerMetadata: JSON!
   handlerId: ID!
   zoneId: ID!
