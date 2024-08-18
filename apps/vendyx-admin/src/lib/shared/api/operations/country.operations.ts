@@ -1,6 +1,6 @@
 import { graphql } from '../codegen';
 
-export const GET_ALL_COUNTRIES = graphql(`
+export const GET_ALL_COUNTRIES_QUERY = graphql(`
   query GetCountries {
     countries {
       id

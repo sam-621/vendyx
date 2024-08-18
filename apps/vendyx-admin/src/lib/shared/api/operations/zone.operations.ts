@@ -23,7 +23,7 @@ export const COMMON_ZONE_FRAGMENT = graphql(`
   }
 `);
 
-export const GET_ALL_ZONES = graphql(`
+export const GET_ALL_ZONES_QUERY = graphql(`
   query getAllZones {
     zones {
       id
@@ -35,7 +35,7 @@ export const GET_ALL_ZONES = graphql(`
   }
 `);
 
-export const GET_ZONE = graphql(`
+export const GET_ZONE_QUERY = graphql(`
   query GetZone($id: ID!) {
     zone(id: $id) {
       ...CommonZone
@@ -43,7 +43,7 @@ export const GET_ZONE = graphql(`
   }
 `);
 
-export const CREATE_ZONE = graphql(`
+export const CREATE_ZONE_MUTATION = graphql(`
   mutation CreateZone($input: CreateZoneInput!) {
     createZone(input: $input) {
       id
@@ -51,7 +51,7 @@ export const CREATE_ZONE = graphql(`
   }
 `);
 
-export const UPDATE_ZONE = graphql(`
+export const UPDATE_ZONE_MUTATION = graphql(`
   mutation UpdateZone($id: ID!, $input: UpdateZoneInput!) {
     updateZone(id: $id, input: $input) {
       id
@@ -59,7 +59,7 @@ export const UPDATE_ZONE = graphql(`
   }
 `);
 
-export const REMOVE_ZONE = graphql(`
+export const REMOVE_ZONE_MUTATION = graphql(`
   mutation RemoveZone($id: ID!) {
     removeZone(id: $id)
   }
