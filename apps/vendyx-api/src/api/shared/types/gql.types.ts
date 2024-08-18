@@ -78,6 +78,22 @@ export class AssetInProductInput {
     order: number;
 }
 
+export class CreateShippingMethodInput {
+    name: string;
+    description: string;
+    enabled: boolean;
+    handlerMetadata: JSON;
+    handlerId: string;
+    zoneId: string;
+}
+
+export class UpdateShippingMethodInput {
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+    handlerMetadata?: Nullable<JSON>;
+}
+
 export class CreateShopInput {
     name: string;
 }
@@ -120,6 +136,16 @@ export class UpdateVariantInput {
     optionValues?: Nullable<string[]>;
 }
 
+export class CreateZoneInput {
+    name: string;
+    stateIds: string[];
+}
+
+export class UpdateZoneInput {
+    name?: Nullable<string>;
+    stateIds?: Nullable<string[]>;
+}
+
 export class ListInput {
     skip?: Nullable<number>;
     take?: Nullable<number>;
@@ -150,6 +176,56 @@ export interface List {
     items: Node[];
     count: number;
     pageInfo: PageInfo;
+}
+
+export class Country implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    states: State[];
+}
+
+export class State implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    country: Country;
+}
+
+export abstract class IQuery {
+    abstract countries(): Country[] | Promise<Country[]>;
+
+    abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
+
+    abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
+
+    abstract paymentIntegrations(): PaymentIntegration[] | Promise<PaymentIntegration[]>;
+
+    abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
+
+    abstract shippingMethods(): ShippingMethod[] | Promise<ShippingMethod[]>;
+
+    abstract shippingHandlers(): ShippingHandler[] | Promise<ShippingHandler[]>;
+
+    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
+
+    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
+
+    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract zones(): Zone[] | Promise<Zone[]>;
+
+    abstract zone(id: string): Zone | Promise<Zone>;
+
+    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
+
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
 }
 
 export class Option implements Node {
@@ -191,6 +267,12 @@ export abstract class IMutation {
 
     abstract softRemoveProduct(ids: string[]): boolean | Promise<boolean>;
 
+    abstract createShippingMethod(input: CreateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
+
+    abstract updateShippingMethod(id: string, input: UpdateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
+
+    abstract removeShippingMethod(id: string): boolean | Promise<boolean>;
+
     abstract createShop(input: CreateShopInput): Shop | Promise<Shop>;
 
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
@@ -204,6 +286,12 @@ export abstract class IMutation {
     abstract updateVariant(id: string, input: UpdateVariantInput): Variant | Promise<Variant>;
 
     abstract softRemoveVariant(id: string): Variant | Promise<Variant>;
+
+    abstract createZone(input: CreateZoneInput): Zone | Promise<Zone>;
+
+    abstract updateZone(id: string, input: UpdateZoneInput): Zone | Promise<Zone>;
+
+    abstract removeZone(id: string): boolean | Promise<boolean>;
 }
 
 export class PaymentMethod {
@@ -225,28 +313,23 @@ export class PaymentIntegration {
     metadata: JSON;
 }
 
-export abstract class IQuery {
-    abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
+export class ShippingMethod implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    description: string;
+    enabled: boolean;
+    handlerMetadata: JSON;
+    handler: ShippingHandler;
+}
 
-    abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
-
-    abstract paymentIntegrations(): PaymentIntegration[] | Promise<PaymentIntegration[]>;
-
-    abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
-
-    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
-
-    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
-
-    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
-
-    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
-
-    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
-
-    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+export class ShippingHandler implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    metadata: JSON;
 }
 
 export class Shop implements Node {
@@ -291,6 +374,15 @@ export class UserResult {
 export class UserErrorResult {
     code: UserErrorCode;
     message: string;
+}
+
+export class Zone implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    shippingMethods: ShippingMethod[];
+    states: State[];
 }
 
 export class Asset implements Node {

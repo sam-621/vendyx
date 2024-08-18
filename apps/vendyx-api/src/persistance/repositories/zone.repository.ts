@@ -30,13 +30,15 @@ export class ZoneRepository {
     });
   }
 
-  async remove(id: string) {
-    await this.prisma.stateZone.deleteMany({
-      where: { zoneId: id }
-    });
-
+  remove(id: string) {
     return this.prisma.zone.delete({
       where: { id }
+    });
+  }
+
+  async removeAllStates(zoneId: string) {
+    this.prisma.stateZone.deleteMany({
+      where: { zoneId }
     });
   }
 }

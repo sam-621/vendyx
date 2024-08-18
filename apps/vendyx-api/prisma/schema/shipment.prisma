@@ -20,9 +20,10 @@ model ShippingMethod {
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  name        String
-  description String?
-  enabled     Boolean @default(true)
+  name            String
+  description     String?
+  enabled         Boolean @default(true)
+  handlerMetadata Json    @map("handler_metadata")
 
   zone              Zone            @relation(fields: [zoneId], references: [id])
   zoneId            String          @db.Uuid
