@@ -54,6 +54,15 @@ export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type Country = Node & {
+  __typename?: 'Country';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  states: Array<State>;
+  updatedAt: Scalars['Date']['output'];
+};
+
 export type CreateOptionInput = {
   name: Scalars['String']['input'];
   order: Scalars['Int']['input'];
@@ -79,6 +88,15 @@ export type CreateProductInput = {
   name: Scalars['String']['input'];
 };
 
+export type CreateShippingMethodInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  handlerId: Scalars['ID']['input'];
+  handlerMetadata: Scalars['JSON']['input'];
+  name: Scalars['String']['input'];
+  zoneId: Scalars['ID']['input'];
+};
+
 export type CreateShopInput = {
   name: Scalars['String']['input'];
 };
@@ -96,6 +114,11 @@ export type CreateVariantInput = {
   salePrice: Scalars['Int']['input'];
   sku?: InputMaybe<Scalars['String']['input']>;
   stock?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type CreateZoneInput = {
+  name: Scalars['String']['input'];
+  stateIds: Array<Scalars['ID']['input']>;
 };
 
 export type GenerateUserAccessTokenInput = {
@@ -122,11 +145,15 @@ export type Mutation = {
   createOption: Option;
   createPaymentMethod: PaymentMethod;
   createProduct: Product;
+  createShippingMethod: ShippingMethod;
   createShop: Shop;
   createUser: UserResult;
   createVariant: Variant;
+  createZone: Zone;
   generateUserAccessToken: UserAccessTokenResult;
   removePaymentMethod: Scalars['Boolean']['output'];
+  removeShippingMethod: Scalars['Boolean']['output'];
+  removeZone: Scalars['Boolean']['output'];
   softRemoveOption: Option;
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProduct: Scalars['Boolean']['output'];
@@ -134,8 +161,10 @@ export type Mutation = {
   updateOption: Option;
   updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
+  updateShippingMethod: ShippingMethod;
   updateUser: UserResult;
   updateVariant: Variant;
+  updateZone: Zone;
 };
 
 export type MutationCreateOptionArgs = {
@@ -151,6 +180,10 @@ export type MutationCreateProductArgs = {
   input: CreateProductInput;
 };
 
+export type MutationCreateShippingMethodArgs = {
+  input: CreateShippingMethodInput;
+};
+
 export type MutationCreateShopArgs = {
   input: CreateShopInput;
 };
@@ -164,11 +197,23 @@ export type MutationCreateVariantArgs = {
   productId: Scalars['ID']['input'];
 };
 
+export type MutationCreateZoneArgs = {
+  input: CreateZoneInput;
+};
+
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
 };
 
 export type MutationRemovePaymentMethodArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type MutationRemoveShippingMethodArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type MutationRemoveZoneArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -203,6 +248,11 @@ export type MutationUpdateProductArgs = {
   input: UpdateProductInput;
 };
 
+export type MutationUpdateShippingMethodArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateShippingMethodInput;
+};
+
 export type MutationUpdateUserArgs = {
   id: Scalars['ID']['input'];
   input: UpdateUserInput;
@@ -211,6 +261,11 @@ export type MutationUpdateUserArgs = {
 export type MutationUpdateVariantArgs = {
   id: Scalars['ID']['input'];
   input: UpdateVariantInput;
+};
+
+export type MutationUpdateZoneArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateZoneInput;
 };
 
 /** A node, each type that represents a entity should implement this interface */
@@ -352,17 +407,22 @@ export type ProductListInput = {
 
 export type Query = {
   __typename?: 'Query';
+  countries: Array<Country>;
   paymentIntegrations: Array<PaymentIntegration>;
   paymentMethod?: Maybe<PaymentMethod>;
   paymentMethods: Array<PaymentMethod>;
   product?: Maybe<Product>;
   products: ProductList;
+  shippingHandlers: Array<ShippingHandler>;
+  shippingMethods: Array<ShippingMethod>;
   shop?: Maybe<Shop>;
   shops: ShopList;
   user?: Maybe<User>;
   validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
   variants: VariantList;
+  zone: Zone;
+  zones: Array<Zone>;
 };
 
 export type QueryPaymentMethodArgs = {
@@ -397,6 +457,49 @@ export type QueryVariantsArgs = {
   input?: InputMaybe<ListInput>;
 };
 
+export type QueryZoneArgs = {
+  id: Scalars['ID']['input'];
+};
+
+/** A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc */
+export type ShippingHandler = Node & {
+  __typename?: 'ShippingHandler';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /**
+   * Specific data for the shipping handler chosen.
+   * Usually, this json stores the shipping handler keys
+   */
+  metadata: Scalars['JSON']['output'];
+  /** The shipping handler's name (e.g. 'Fedex') */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A shipping method is a method chosen by the customer to ship the order to the customer's address */
+export type ShippingMethod = Node & {
+  __typename?: 'ShippingMethod';
+  createdAt: Scalars['Date']['output'];
+  /** The shipping method's description */
+  description?: Maybe<Scalars['String']['output']>;
+  /**
+   * Whether the shipping method is enabled or not
+   * Not enabled shipping methods will not be shown in the storefront
+   * Useful for shipping methods that are not ready to be used yet
+   */
+  enabled: Scalars['Boolean']['output'];
+  handler: ShippingHandler;
+  /**
+   * Specific data for the shipping handler chosen
+   * Usually, this json stores the shipping handler keys
+   */
+  handlerMetadata: Scalars['JSON']['output'];
+  id: Scalars['ID']['output'];
+  /** The shipping method's name (e.g. 'Stripe') */
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
 export type Shop = Node & {
   __typename?: 'Shop';
   createdAt: Scalars['Date']['output'];
@@ -415,6 +518,15 @@ export type ShopList = List & {
   count: Scalars['Int']['output'];
   items: Array<Shop>;
   pageInfo: PageInfo;
+};
+
+export type State = Node & {
+  __typename?: 'State';
+  country: Country;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
 };
 
 export type StringFilter = {
@@ -451,6 +563,13 @@ export type UpdateProductInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateShippingMethodInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  handlerMetadata?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateShopInput = {
   name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -467,6 +586,11 @@ export type UpdateVariantInput = {
   salePrice?: InputMaybe<Scalars['Int']['input']>;
   sku?: InputMaybe<Scalars['String']['input']>;
   stock?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateZoneInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  stateIds?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type User = Node & {
@@ -549,6 +673,28 @@ export type VariantList = List & {
   count: Scalars['Int']['output'];
   items: Array<Variant>;
   pageInfo: PageInfo;
+};
+
+export type Zone = Node & {
+  __typename?: 'Zone';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  shippingMethods: Array<ShippingMethod>;
+  states: Array<State>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type GetCountriesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetCountriesQuery = {
+  __typename?: 'Query';
+  countries: Array<{
+    __typename?: 'Country';
+    id: string;
+    name: string;
+    states: Array<{ __typename?: 'State'; id: string; name: string }>;
+  }>;
 };
 
 export type CreateOptionMutationVariables = Exact<{
@@ -774,6 +920,46 @@ export type RemoveProductMutationVariables = Exact<{
 
 export type RemoveProductMutation = { __typename?: 'Mutation'; softRemoveProduct: boolean };
 
+export type GetAllHandlersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAllHandlersQuery = {
+  __typename?: 'Query';
+  shippingHandlers: Array<{
+    __typename?: 'ShippingHandler';
+    id: string;
+    metadata: any;
+    name: string;
+  }>;
+};
+
+export type CreateShippingMethodMutationVariables = Exact<{
+  input: CreateShippingMethodInput;
+}>;
+
+export type CreateShippingMethodMutation = {
+  __typename?: 'Mutation';
+  createShippingMethod: { __typename?: 'ShippingMethod'; id: string };
+};
+
+export type UpdateShippingMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateShippingMethodInput;
+}>;
+
+export type UpdateShippingMethodMutation = {
+  __typename?: 'Mutation';
+  updateShippingMethod: { __typename?: 'ShippingMethod'; id: string };
+};
+
+export type RemoveShippingMethodMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type RemoveShippingMethodMutation = {
+  __typename?: 'Mutation';
+  removeShippingMethod: boolean;
+};
+
 export type GetShopsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetShopsQuery = {
@@ -874,6 +1060,72 @@ export type SoftRemoveVariantMutation = {
   softRemoveVariant: { __typename?: 'Variant'; id: string };
 };
 
+export type CommonZoneFragment = {
+  __typename?: 'Zone';
+  id: string;
+  name: string;
+  states: Array<{
+    __typename?: 'State';
+    id: string;
+    name: string;
+    country: { __typename?: 'Country'; id: string; name: string };
+  }>;
+  shippingMethods: Array<{
+    __typename?: 'ShippingMethod';
+    id: string;
+    name: string;
+    description?: string | null;
+    enabled: boolean;
+    handlerMetadata: any;
+  }>;
+} & { ' $fragmentName'?: 'CommonZoneFragment' };
+
+export type GetAllZonesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAllZonesQuery = {
+  __typename?: 'Query';
+  zones: Array<{
+    __typename?: 'Zone';
+    id: string;
+    name: string;
+    shippingMethods: Array<{ __typename?: 'ShippingMethod'; id: string }>;
+  }>;
+};
+
+export type GetZoneQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type GetZoneQuery = {
+  __typename?: 'Query';
+  zone: { __typename?: 'Zone' } & { ' $fragmentRefs'?: { CommonZoneFragment: CommonZoneFragment } };
+};
+
+export type CreateZoneMutationVariables = Exact<{
+  input: CreateZoneInput;
+}>;
+
+export type CreateZoneMutation = {
+  __typename?: 'Mutation';
+  createZone: { __typename?: 'Zone'; id: string };
+};
+
+export type UpdateZoneMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateZoneInput;
+}>;
+
+export type UpdateZoneMutation = {
+  __typename?: 'Mutation';
+  updateZone: { __typename?: 'Zone'; id: string };
+};
+
+export type RemoveZoneMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type RemoveZoneMutation = { __typename?: 'Mutation'; removeZone: boolean };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -958,6 +1210,42 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonProduct' }
 ) as unknown as TypedDocumentString<CommonProductFragment, unknown>;
+export const CommonZoneFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonZone on Zone {
+  id
+  name
+  states {
+    id
+    name
+    country {
+      id
+      name
+    }
+  }
+  shippingMethods {
+    id
+    name
+    description
+    enabled
+    handlerMetadata
+  }
+}
+    `,
+  { fragmentName: 'CommonZone' }
+) as unknown as TypedDocumentString<CommonZoneFragment, unknown>;
+export const GetCountriesDocument = new TypedDocumentString(`
+    query GetCountries {
+  countries {
+    id
+    name
+    states {
+      id
+      name
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetCountriesQuery, GetCountriesQueryVariables>;
 export const CreateOptionDocument = new TypedDocumentString(`
     mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {
   createOption(productId: $productId, input: $input) {
@@ -1153,6 +1441,43 @@ export const RemoveProductDocument = new TypedDocumentString(`
   softRemoveProduct(ids: $ids)
 }
     `) as unknown as TypedDocumentString<RemoveProductMutation, RemoveProductMutationVariables>;
+export const GetAllHandlersDocument = new TypedDocumentString(`
+    query GetAllHandlers {
+  shippingHandlers {
+    id
+    metadata
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<GetAllHandlersQuery, GetAllHandlersQueryVariables>;
+export const CreateShippingMethodDocument = new TypedDocumentString(`
+    mutation CreateShippingMethod($input: CreateShippingMethodInput!) {
+  createShippingMethod(input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<
+  CreateShippingMethodMutation,
+  CreateShippingMethodMutationVariables
+>;
+export const UpdateShippingMethodDocument = new TypedDocumentString(`
+    mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {
+  updateShippingMethod(id: $id, input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<
+  UpdateShippingMethodMutation,
+  UpdateShippingMethodMutationVariables
+>;
+export const RemoveShippingMethodDocument = new TypedDocumentString(`
+    mutation RemoveShippingMethod($id: ID!) {
+  removeShippingMethod(id: $id)
+}
+    `) as unknown as TypedDocumentString<
+  RemoveShippingMethodMutation,
+  RemoveShippingMethodMutationVariables
+>;
 export const GetShopsDocument = new TypedDocumentString(`
     query getShops {
   shops {
@@ -1248,3 +1573,58 @@ export const SoftRemoveVariantDocument = new TypedDocumentString(`
   SoftRemoveVariantMutation,
   SoftRemoveVariantMutationVariables
 >;
+export const GetAllZonesDocument = new TypedDocumentString(`
+    query getAllZones {
+  zones {
+    id
+    name
+    shippingMethods {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetAllZonesQuery, GetAllZonesQueryVariables>;
+export const GetZoneDocument = new TypedDocumentString(`
+    query GetZone($id: ID!) {
+  zone(id: $id) {
+    ...CommonZone
+  }
+}
+    fragment CommonZone on Zone {
+  id
+  name
+  states {
+    id
+    name
+    country {
+      id
+      name
+    }
+  }
+  shippingMethods {
+    id
+    name
+    description
+    enabled
+    handlerMetadata
+  }
+}`) as unknown as TypedDocumentString<GetZoneQuery, GetZoneQueryVariables>;
+export const CreateZoneDocument = new TypedDocumentString(`
+    mutation CreateZone($input: CreateZoneInput!) {
+  createZone(input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<CreateZoneMutation, CreateZoneMutationVariables>;
+export const UpdateZoneDocument = new TypedDocumentString(`
+    mutation UpdateZone($id: ID!, $input: UpdateZoneInput!) {
+  updateZone(id: $id, input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateZoneMutation, UpdateZoneMutationVariables>;
+export const RemoveZoneDocument = new TypedDocumentString(`
+    mutation RemoveZone($id: ID!) {
+  removeZone(id: $id)
+}
+    `) as unknown as TypedDocumentString<RemoveZoneMutation, RemoveZoneMutationVariables>;

@@ -12,6 +12,8 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+  '\n  query GetCountries {\n    countries {\n      id\n      name\n      states {\n        id\n        name\n      }\n    }\n  }\n':
+    types.GetCountriesDocument,
   '\n  mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
     types.CreateOptionDocument,
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
@@ -46,6 +48,14 @@ const documents = {
     types.UpdateProductDocument,
   '\n  mutation RemoveProduct($ids: [ID!]!) {\n    softRemoveProduct(ids: $ids)\n  }\n':
     types.RemoveProductDocument,
+  '\n  query GetAllHandlers {\n    shippingHandlers {\n      id\n      metadata\n      name\n    }\n  }\n':
+    types.GetAllHandlersDocument,
+  '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      id\n    }\n  }\n':
+    types.CreateShippingMethodDocument,
+  '\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      id\n    }\n  }\n':
+    types.UpdateShippingMethodDocument,
+  '\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n':
+    types.RemoveShippingMethodDocument,
   '\n  query getShops {\n    shops {\n      count\n      items {\n        id\n        slug\n      }\n    }\n  }\n':
     types.GetShopsDocument,
   '\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      id\n      name\n      slug\n    }\n  }\n':
@@ -65,9 +75,26 @@ const documents = {
   '\n  mutation UpdateVariant($id: ID!, $input: UpdateVariantInput!) {\n    updateVariant(id: $id, input: $input) {\n      id\n    }\n  }\n':
     types.UpdateVariantDocument,
   '\n  mutation SoftRemoveVariant($id: ID!) {\n    softRemoveVariant(id: $id) {\n      id\n    }\n  }\n':
-    types.SoftRemoveVariantDocument
+    types.SoftRemoveVariantDocument,
+  '\n  fragment CommonZone on Zone {\n    id\n    name\n    states {\n      id\n      name\n      country {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      id\n      name\n      description\n      enabled\n      handlerMetadata\n    }\n  }\n':
+    types.CommonZoneFragmentDoc,
+  '\n  query getAllZones {\n    zones {\n      id\n      name\n      shippingMethods {\n        id\n      }\n    }\n  }\n':
+    types.GetAllZonesDocument,
+  '\n  query GetZone($id: ID!) {\n    zone(id: $id) {\n      ...CommonZone\n    }\n  }\n':
+    types.GetZoneDocument,
+  '\n  mutation CreateZone($input: CreateZoneInput!) {\n    createZone(input: $input) {\n      id\n    }\n  }\n':
+    types.CreateZoneDocument,
+  '\n  mutation UpdateZone($id: ID!, $input: UpdateZoneInput!) {\n    updateZone(id: $id, input: $input) {\n      id\n    }\n  }\n':
+    types.UpdateZoneDocument,
+  '\n  mutation RemoveZone($id: ID!) {\n    removeZone(id: $id)\n  }\n': types.RemoveZoneDocument
 };
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCountries {\n    countries {\n      id\n      name\n      states {\n        id\n        name\n      }\n    }\n  }\n'
+): typeof import('./graphql').GetCountriesDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -174,6 +201,30 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: '\n  query GetAllHandlers {\n    shippingHandlers {\n      id\n      metadata\n      name\n    }\n  }\n'
+): typeof import('./graphql').GetAllHandlersDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').CreateShippingMethodDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').UpdateShippingMethodDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n'
+): typeof import('./graphql').RemoveShippingMethodDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: '\n  query getShops {\n    shops {\n      count\n      items {\n        id\n        slug\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetShopsDocument;
 /**
@@ -230,6 +281,42 @@ export function graphql(
 export function graphql(
   source: '\n  mutation SoftRemoveVariant($id: ID!) {\n    softRemoveVariant(id: $id) {\n      id\n    }\n  }\n'
 ): typeof import('./graphql').SoftRemoveVariantDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonZone on Zone {\n    id\n    name\n    states {\n      id\n      name\n      country {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      id\n      name\n      description\n      enabled\n      handlerMetadata\n    }\n  }\n'
+): typeof import('./graphql').CommonZoneFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query getAllZones {\n    zones {\n      id\n      name\n      shippingMethods {\n        id\n      }\n    }\n  }\n'
+): typeof import('./graphql').GetAllZonesDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetZone($id: ID!) {\n    zone(id: $id) {\n      ...CommonZone\n    }\n  }\n'
+): typeof import('./graphql').GetZoneDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateZone($input: CreateZoneInput!) {\n    createZone(input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').CreateZoneDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateZone($id: ID!, $input: UpdateZoneInput!) {\n    updateZone(id: $id, input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').UpdateZoneDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RemoveZone($id: ID!) {\n    removeZone(id: $id)\n  }\n'
+): typeof import('./graphql').RemoveZoneDocument;
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
