@@ -9,12 +9,15 @@ import {
 } from './prisma-clients';
 import {
   AssetRepository,
+  CountryRepository,
   OptionRepository,
   PaymentMethodRepository,
   ProductRepository,
+  ShippingMethodRepository,
   ShopRepository,
   UserRepository,
-  VariantRepository
+  VariantRepository,
+  ZoneRepository
 } from './repositories';
 
 const REPOSITORIES = [
@@ -24,7 +27,10 @@ const REPOSITORIES = [
   VariantRepository,
   OptionRepository,
   AssetRepository,
-  PaymentMethodRepository
+  PaymentMethodRepository,
+  CountryRepository,
+  ZoneRepository,
+  ShippingMethodRepository
 ];
 
 export const CLS_SHOP_ID = 'shop_id';
