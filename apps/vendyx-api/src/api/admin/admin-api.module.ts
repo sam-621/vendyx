@@ -3,6 +3,7 @@ import * as path from 'path';
 import { DynamicModule, Module } from '@nestjs/common';
 
 import { BusinessModule } from '@/business';
+import { ShipmentModule } from '@/shipments';
 
 import {
   CountryResolver,
@@ -36,7 +37,7 @@ export class AdminApiModule {
 }
 
 @Module({
-  imports: [BusinessModule],
+  imports: [ShipmentModule, BusinessModule],
   providers: [
     UserResolver,
     ShopResolver,

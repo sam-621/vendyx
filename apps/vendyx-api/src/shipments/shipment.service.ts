@@ -12,9 +12,9 @@ export class ShipmentService {
     return handler.calculatePrice(order, {});
   }
 
-  getPricePreview(handlerCode: string): number {
+  getPricePreview(handlerCode: string, args: Record<string, string>): number {
     const handler = this.getHandler(handlerCode);
-    return handler.getPricePreview({});
+    return handler.getPricePreview(args);
   }
 
   private getHandler(handlerCode: string) {

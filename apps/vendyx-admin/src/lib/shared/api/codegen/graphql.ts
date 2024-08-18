@@ -497,6 +497,7 @@ export type ShippingMethod = Node & {
   id: Scalars['ID']['output'];
   /** The shipping method's name (e.g. 'Stripe') */
   name: Scalars['String']['output'];
+  pricePreview: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -1077,6 +1078,7 @@ export type CommonZoneFragment = {
     description?: string | null;
     enabled: boolean;
     handlerMetadata: any;
+    pricePreview: number;
   }>;
 } & { ' $fragmentName'?: 'CommonZoneFragment' };
 
@@ -1229,6 +1231,7 @@ export const CommonZoneFragmentDoc = new TypedDocumentString(
     description
     enabled
     handlerMetadata
+    pricePreview
   }
 }
     `,
@@ -1607,6 +1610,7 @@ export const GetZoneDocument = new TypedDocumentString(`
     description
     enabled
     handlerMetadata
+    pricePreview
   }
 }`) as unknown as TypedDocumentString<GetZoneQuery, GetZoneQueryVariables>;
 export const CreateZoneDocument = new TypedDocumentString(`

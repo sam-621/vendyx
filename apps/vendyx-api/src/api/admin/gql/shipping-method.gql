@@ -30,6 +30,8 @@ type ShippingMethod implements Node {
   handlerMetadata: JSON!
 
   handler: ShippingHandler!
+
+  pricePreview: Int!
 }
 
 """

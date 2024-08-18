@@ -18,6 +18,7 @@ export const COMMON_ZONE_FRAGMENT = graphql(`
       description
       enabled
       handlerMetadata
+      pricePreview
     }
   }
 `);

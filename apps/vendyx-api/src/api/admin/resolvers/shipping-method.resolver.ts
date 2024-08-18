@@ -9,18 +9,31 @@ import {
 } from '@/api/shared';
 import { ShippingMethodService } from '@/business/shipping-method';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { ShipmentService } from '@/shipments';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('ShippingMethod')
 export class ShippingMethodResolver {
   constructor(
     private readonly shippingMethodService: ShippingMethodService,
+    private readonly shipmentService: ShipmentService,
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {}
 
   @Query('shippingMethods')
   async shippingMethods() {
-    return this.shippingMethodService.find();
+    const shippingMethods = await this.prisma.shippingMethod.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: { shippingHandler: true }
+    });
+
+    return shippingMethods.map(shippingMethod => ({
+      ...shippingMethod,
+      pricePreview: this.shipmentService.getPricePreview(
+        shippingMethod.shippingHandler.handlerCode,
+        shippingMethod.handlerMetadata as Record<string, string>
+      )
+    }));
   }
 
   @Query('shippingHandlers')
