@@ -1,6 +1,6 @@
 import { BellIcon } from 'lucide-react';
 
-import { AdminLayoutNav, Button, Logo } from '@/lib/shared/components';
+import { AdminLayoutNav, Button, Logo } from '@/components/shared';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

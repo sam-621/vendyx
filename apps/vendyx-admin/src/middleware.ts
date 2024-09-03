@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { validateAccessToken } from './lib/auth/actions';
-import { shopService } from './lib/shared/api';
+import { validateAccessToken } from './actions/auth/validate-access-token';
+import { ShopService } from './api';
 
 const ALLOWED_PATHS = ['/login', '/signup'];
 
@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const shops = await shopService.getAll();
+  const shops = await ShopService.getAll();
   const shop = shops.items[0];
 
   if (isAuth && !pathname.startsWith(`/shops/${shop.slug}`)) {

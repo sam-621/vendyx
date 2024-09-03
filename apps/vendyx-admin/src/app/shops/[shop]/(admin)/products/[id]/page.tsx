@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import { ProductDetailsForm } from '@/lib/product';
-import { productService } from '@/lib/shared/api';
+import { ProductService } from '@/api';
+import { ProductDetailsForm } from '@/components/product';
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
-  const product = await productService.getById(params.id);
+  const product = await ProductService.getById(params.id);
 
   if (!product) {
     notFound();

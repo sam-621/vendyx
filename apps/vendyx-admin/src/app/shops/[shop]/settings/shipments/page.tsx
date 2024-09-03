@@ -1,9 +1,9 @@
-import { SettingsPageLayout } from '@/lib/shared/components';
-import { getZones } from '@/lib/shipments';
-import { ZonesTable } from '@/lib/shipments/components/zones-table/zones-table';
+import { ZoneService } from '@/api';
+import { SettingsPageLayout } from '@/components/shared';
+import { ZonesTable } from '@/components/shipment/zones-table/zones-table';
 
 export default async function ShipmentsPage() {
-  const zones = await getZones();
+  const zones = await ZoneService.getAll();
 
   return (
     <SettingsPageLayout title="Shipments" subtitle="Manage your rates depending on your zones">

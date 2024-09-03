@@ -1,8 +1,9 @@
-import { getPaymentMethods, PaymentMethodsTable } from '@/lib/payment-methods';
-import { SettingsPageLayout } from '@/lib/shared/components';
+import { PaymentMethodService } from '@/api';
+import { PaymentMethodsTable } from '@/components/payment';
+import { SettingsPageLayout } from '@/components/shared';
 
 export default async function PaymentMethodsPage() {
-  const paymentMethods = await getPaymentMethods();
+  const paymentMethods = await PaymentMethodService.getAll();
 
   return (
     <SettingsPageLayout title="Payments" subtitle="Manage your payment methods">

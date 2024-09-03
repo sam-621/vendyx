@@ -1,4 +1,4 @@
-import { ProductDetailsForm } from '@/lib/product';
+import { ProductDetailsForm } from '@/components/product';
 
 export default function CreateProductPage() {
   return <ProductDetailsForm />;

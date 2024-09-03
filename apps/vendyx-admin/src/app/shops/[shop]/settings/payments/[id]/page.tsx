@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
 
-import { getPaymentIntegrations, getPaymentMethod, PaymentMethodForm } from '@/lib/payment-methods';
+import { PaymentMethodService } from '@/api';
+import { PaymentMethodForm } from '@/components/payment';
 
 export default async function PaymentDetailsPage({ params }: { params: { id: string } }) {
   const [integrations, method] = await Promise.all([
-    getPaymentIntegrations(),
-    getPaymentMethod(params.id)
+    PaymentMethodService.getAllIntegrations(),
+    PaymentMethodService.getById(params.id)
   ]);
 
   if (!method) {
