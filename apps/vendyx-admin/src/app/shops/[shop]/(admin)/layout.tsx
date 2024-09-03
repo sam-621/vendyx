@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <header className="h-16 flex items-center justify-between px-6 border-b">
           <div className="flex gap-2">
             <Logo />
-            <span>Ebloc</span>
+            <span>Vendyx</span>
           </div>
           <div>
             <Button size={'icon'} variant="outline">
