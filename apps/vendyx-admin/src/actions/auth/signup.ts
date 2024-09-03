@@ -9,7 +9,6 @@ import { setShopId, setToken } from '@/lib/cookies';
 
 export const signup = async ({ email, password, store }: Input) => {
   const createUserResult = await UserService.create({ email, password });
-  const accessTokenResult = await UserService.generateAccessToken({ email, password });
 
   if (!createUserResult.success) {
     if (createUserResult.errorCode === UserErrorCode.EmailAlreadyExists) {
@@ -17,6 +16,8 @@ export const signup = async ({ email, password, store }: Input) => {
     }
     return { error: createUserResult.error };
   }
+
+  const accessTokenResult = await UserService.generateAccessToken({ email, password });
 
   if (!accessTokenResult.success) {
     return { error: accessTokenResult.error };
