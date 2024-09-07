@@ -39,3 +39,14 @@ export const formatPrice = (price: number, options?: { withCurrencyIcon?: boolea
 
   return options?.withCurrencyIcon ? formattedPrice : formattedPrice.replace('$', '');
 };
+
+/**
+ * Add 3 dots to the end of the string if it's longer than the limit
+ *
+ * @example
+ * add3dots('Hello World', 5) // Hello...
+ * add3dots('Hello World', 20) // Hello World
+ */
+export const add3dots = (str: string, limit: number) => {
+  return str.length > limit ? str.substring(0, limit) + '...' : str;
+};

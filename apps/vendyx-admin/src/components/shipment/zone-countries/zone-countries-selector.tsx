@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { PlusIcon } from 'lucide-react';
@@ -25,8 +26,13 @@ import {
 import { useEntityContext } from '@/lib/contexts';
 import { cn } from '@/lib/utils';
 
+import { isStateInCountry } from '../shipment.utils';
+import { type ZoneDetailsFormInput } from '../zone-details/use-zone-details-form';
+
 export const ZoneCountriesSelector = () => {
+  const { setValue } = useFormContext<ZoneDetailsFormInput>();
   const { entity: countries } = useEntityContext<CommonCountryFragment[]>();
+
   const [selectedStates, setSelectedStates] = useState<CommonCountryFragment['states']>([]);
 
   return (
@@ -58,17 +64,16 @@ export const ZoneCountriesSelector = () => {
                   <AccordionItem value={`entity-${country.id}`}>
                     <div className="flex items-center border-b pl-6 w-full sticky top-0 bg-background">
                       <Checkbox
-                        checked={selectedStates.some(selectedState =>
-                          country.states.map(s => s.id).includes(selectedState.id)
-                        )}
+                        checked={selectedStates.some(s => isStateInCountry(s, country))}
                         onCheckedChange={checked => {
                           if (checked) {
                             setSelectedStates([...selectedStates, ...country.states]);
                           } else {
+                            const stateIds = country.states.map(s => s.id);
+
                             setSelectedStates(
                               selectedStates.filter(
-                                selectedState =>
-                                  !country.states.map(s => s.id).includes(selectedState.id)
+                                selectedState => !stateIds.includes(selectedState.id)
                               )
                             );
                           }
@@ -118,19 +123,15 @@ export const ZoneCountriesSelector = () => {
               Cancel
             </Button>
           </DialogClose>
-          <Button
-            onClick={async () => {
-              // setIsLoading(true);
-              // const { closeModal } = await onDone(selectedIds);
-              // if (closeModal) {
-              //   setIsOpen(false);
-              // }
-              // setIsLoading(false);
-            }}
-            // isLoading={isLoading}
-          >
-            Done
-          </Button>
+          <DialogClose asChild>
+            <Button
+              onClick={() => {
+                setValue('states', selectedStates);
+              }}
+            >
+              Done
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

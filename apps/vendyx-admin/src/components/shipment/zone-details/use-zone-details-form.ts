@@ -9,7 +9,8 @@ export const useZoneDetailsForm = () => {
   const form = useForm<ZoneDetailsFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: ''
+      name: '',
+      states: []
     }
   });
 
@@ -25,7 +26,7 @@ export const useZoneDetailsForm = () => {
 
 const schema = z.object({
   name: z.string().min(1, FormMessages.min(1)),
-  countries: z.array(
+  states: z.array(
     z.object({
       id: z.string().uuid(),
       name: z.string()
