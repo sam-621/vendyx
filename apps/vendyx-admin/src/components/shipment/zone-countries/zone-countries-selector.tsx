@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { PlusIcon } from 'lucide-react';
 
@@ -23,6 +27,7 @@ import { cn } from '@/lib/utils';
 
 export const ZoneCountriesSelector = () => {
   const { entity: countries } = useEntityContext<CommonCountryFragment[]>();
+  const [selectedStates, setSelectedStates] = useState<CommonCountryFragment['states']>([]);
 
   return (
     <Dialog>
@@ -53,8 +58,22 @@ export const ZoneCountriesSelector = () => {
                   <AccordionItem value={`entity-${country.id}`}>
                     <div className="flex items-center border-b pl-6 w-full sticky top-0 bg-background">
                       <Checkbox
-                      // defaultChecked={selectedIds.includes(country.id)}
-                      // onCheckedChange={handleCheck(country.id)}
+                        checked={selectedStates.some(selectedState =>
+                          country.states.map(s => s.id).includes(selectedState.id)
+                        )}
+                        onCheckedChange={checked => {
+                          if (checked) {
+                            setSelectedStates([...selectedStates, ...country.states]);
+                          } else {
+                            setSelectedStates(
+                              selectedStates.filter(
+                                selectedState =>
+                                  !country.states.map(s => s.id).includes(selectedState.id)
+                              )
+                            );
+                          }
+                        }}
+                        // defaultChecked={selectedIds.includes(country.id)}
                       />
                       <AccordionTrigger className="py-0 pr-6" containerClassName="w-full">
                         <div className="flex items-center gap-4 px-6 py-4 cursor-pointer">
@@ -72,6 +91,14 @@ export const ZoneCountriesSelector = () => {
                           <Checkbox
                             id={`state-${state.id}`}
                             className="ml-8"
+                            checked={selectedStates.map(s => s.id).includes(state.id)}
+                            onCheckedChange={checked => {
+                              if (checked) {
+                                setSelectedStates([...selectedStates, state]);
+                              } else {
+                                setSelectedStates(selectedStates.filter(s => s.id !== state.id));
+                              }
+                            }}
                             // defaultChecked={selectedIds.includes(country.id)}
                             // onCheckedChange={handleCheck(country.id)}
                           />
@@ -81,18 +108,6 @@ export const ZoneCountriesSelector = () => {
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
-                // <label
-                //   key={country.id}
-                //   htmlFor={`entity-${country.id}`}
-                //   className="flex items-center gap-4 px-6 py-4 hover:bg-muted cursor-pointer"
-                // >
-                //   <Checkbox
-                //     id={`entity-${country.id}`}
-                //     // defaultChecked={selectedIds.includes(country.id)}
-                //     // onCheckedChange={handleCheck(country.id)}
-                //   />
-                //   <p>{country.name}</p>
-                // </label>
               ))}
             </div>
           </div>
