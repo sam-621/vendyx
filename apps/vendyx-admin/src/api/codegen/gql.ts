@@ -12,7 +12,9 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  query GetCountries {\n    countries {\n      id\n      name\n      states {\n        id\n        name\n      }\n    }\n  }\n':
+  '\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      id\n      name\n    }\n  }\n':
+    types.CommonCountryFragmentDoc,
+  '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n':
     types.GetCountriesDocument,
   '\n  mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
     types.CreateOptionDocument,
@@ -93,7 +95,13 @@ const documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetCountries {\n    countries {\n      id\n      name\n      states {\n        id\n        name\n      }\n    }\n  }\n'
+  source: '\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      id\n      name\n    }\n  }\n'
+): typeof import('./graphql').CommonCountryFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n'
 ): typeof import('./graphql').GetCountriesDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

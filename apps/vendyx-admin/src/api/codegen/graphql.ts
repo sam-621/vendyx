@@ -686,16 +686,22 @@ export type Zone = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type CommonCountryFragment = {
+  __typename?: 'Country';
+  id: string;
+  name: string;
+  states: Array<{ __typename?: 'State'; id: string; name: string }>;
+} & { ' $fragmentName'?: 'CommonCountryFragment' };
+
 export type GetCountriesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetCountriesQuery = {
   __typename?: 'Query';
-  countries: Array<{
-    __typename?: 'Country';
-    id: string;
-    name: string;
-    states: Array<{ __typename?: 'State'; id: string; name: string }>;
-  }>;
+  countries: Array<
+    { __typename?: 'Country' } & {
+      ' $fragmentRefs'?: { CommonCountryFragment: CommonCountryFragment };
+    }
+  >;
 };
 
 export type CreateOptionMutationVariables = Exact<{
@@ -1145,6 +1151,19 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+export const CommonCountryFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonCountry on Country {
+  id
+  name
+  states {
+    id
+    name
+  }
+}
+    `,
+  { fragmentName: 'CommonCountry' }
+) as unknown as TypedDocumentString<CommonCountryFragment, unknown>;
 export const CommonPaymentIntegrationFragmentDoc = new TypedDocumentString(
   `
     fragment CommonPaymentIntegration on PaymentIntegration {
@@ -1240,15 +1259,17 @@ export const CommonZoneFragmentDoc = new TypedDocumentString(
 export const GetCountriesDocument = new TypedDocumentString(`
     query GetCountries {
   countries {
-    id
-    name
-    states {
-      id
-      name
-    }
+    ...CommonCountry
   }
 }
-    `) as unknown as TypedDocumentString<GetCountriesQuery, GetCountriesQueryVariables>;
+    fragment CommonCountry on Country {
+  id
+  name
+  states {
+    id
+    name
+  }
+}`) as unknown as TypedDocumentString<GetCountriesQuery, GetCountriesQueryVariables>;
 export const CreateOptionDocument = new TypedDocumentString(`
     mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {
   createOption(productId: $productId, input: $input) {

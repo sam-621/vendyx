@@ -1,4 +1,5 @@
-import { GET_ALL_COUNTRIES_QUERY } from '../operations/country.operations';
+import { getFragmentData } from '../codegen';
+import { COMMON_COUNTRY_FRAGMENT, GET_ALL_COUNTRIES_QUERY } from '../operations/country.operations';
 import { fetcher } from './fetcher';
 
 export const CountryService = {
@@ -7,11 +8,13 @@ export const CountryService = {
   },
 
   async getAll() {
-    const { countries } = await fetcher(
+    const result = await fetcher(
       GET_ALL_COUNTRIES_QUERY,
       {},
       { tags: [CountryService.Tags.countries] }
     );
+
+    const countries = getFragmentData(COMMON_COUNTRY_FRAGMENT, result.countries);
 
     return countries;
   }

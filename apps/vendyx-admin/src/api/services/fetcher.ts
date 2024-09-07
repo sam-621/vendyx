@@ -23,7 +23,7 @@ export const fetcher = async <R, V>(
         variables
       }),
       cache: options?.cache ?? 'no-store',
-      next: { tags: options?.tags }
+      next: { tags: options?.tags, revalidate: options?.revalidate }
     });
 
     const { data, errors } = await result.json();
@@ -46,4 +46,5 @@ export const fetcher = async <R, V>(
 type Options = {
   tags?: string[];
   cache?: RequestCache;
+  revalidate?: number;
 };
