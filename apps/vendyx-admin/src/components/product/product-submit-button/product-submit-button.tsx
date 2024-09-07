@@ -14,10 +14,14 @@ export const ProductSubmitButton: FC<Props> = ({ isLoading, product }) => {
   const values = useWatch({ defaultValue: form.getValues() });
 
   const hasChanged = product ? valuesHasChanged(values, product) : true; // is creating a new product;
-  const withValues = Boolean(values.name?.length);
+  const withRequiredValues = Boolean(values.name?.length);
 
   return (
-    <Button isLoading={isLoading} disabled={!withValues || isLoading || !hasChanged} type="submit">
+    <Button
+      isLoading={isLoading}
+      disabled={!withRequiredValues || isLoading || !hasChanged}
+      type="submit"
+    >
       Save
     </Button>
   );
