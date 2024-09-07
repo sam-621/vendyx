@@ -29,7 +29,7 @@ export const ZonesTable: FC<Props> = ({ zones }) => {
         description="You haven't created any zones yet. Zones are used to group rates by geographical regions."
         action={{
           label: 'Add Zone',
-          href: 'shipments/new'
+          href: '/settings/shipments/new'
         }}
       />
     );

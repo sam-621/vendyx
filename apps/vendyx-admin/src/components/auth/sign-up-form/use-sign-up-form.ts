@@ -22,15 +22,15 @@ export const useSignUpForm = () => {
 
   async function onSubmit(values: FormInput) {
     startTransition(async () => {
-      const { error, field } = await signup(values);
+      const result = await signup(values);
 
-      if (error) {
-        if (field === 'email') {
-          form.setError(field, { message: error });
+      if (result.error) {
+        if (result.field === 'email') {
+          form.setError(result.field, { message: result.error });
           return;
         }
 
-        notification.error(error);
+        notification.error(result.error);
       }
     });
   }

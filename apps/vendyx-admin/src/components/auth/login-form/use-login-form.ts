@@ -23,10 +23,10 @@ export const useLoginForm = () => {
     const { email, password } = values;
 
     startTransition(async () => {
-      const { error } = await login(email, password);
+      const result = await login(email, password);
 
-      if (error) {
-        notification.error(error);
+      if (result.error) {
+        notification.error(result.error);
       }
     });
   }
