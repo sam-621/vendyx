@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { Separator, SettingsLayoutGoBack, SettingsSidebarNav } from '@/components/shared';
+import { Separator, SettingsLayoutGoBack, SettingsSidebarNav } from '@/lib/shared/components';
 
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (

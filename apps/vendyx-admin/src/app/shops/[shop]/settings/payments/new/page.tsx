@@ -1,5 +1,5 @@
 import { PaymentMethodService } from '@/api';
-import { PaymentMethodForm } from '@/components/payment';
+import { PaymentMethodForm } from '@/lib/payment/components';
 
 export default async function NewPaymentMethodPage() {
   const integrations = await PaymentMethodService.getAllIntegrations();

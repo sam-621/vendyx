@@ -2,13 +2,13 @@ import { Suspense } from 'react';
 
 import Link from 'next/link';
 
-import { ProductTable } from '@/components/product';
+import { ProductTable } from '@/lib/product/components';
 import {
   AdminPageLayout,
   Button,
   type DataTableSearchParams,
   DataTableSkeleton
-} from '@/components/shared';
+} from '@/lib/shared/components';
 
 export default function ProductsPage({ searchParams }: Props) {
   return (

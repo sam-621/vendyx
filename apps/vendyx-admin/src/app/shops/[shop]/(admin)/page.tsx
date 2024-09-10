@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { AdminPageLayout, Button, DataTableEmptyState } from '@/components/shared';
+import { AdminPageLayout, Button, DataTableEmptyState } from '@/lib/shared/components';
 
 export default function Home() {
   return (

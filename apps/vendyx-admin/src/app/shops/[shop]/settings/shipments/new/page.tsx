@@ -1,6 +1,6 @@
 import { CountryService } from '@/api';
-import { ZoneDetailsForm } from '@/components/shipment';
-import { EntityProvider } from '@/lib/contexts';
+import { EntityProvider } from '@/lib/shared/contexts';
+import { ZoneDetailsForm } from '@/lib/shipment/components';
 
 export default async function NewZonePage() {
   const countries = await CountryService.getAll();

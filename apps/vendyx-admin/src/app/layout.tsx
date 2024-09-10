@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
-import { ThemeProvider } from '@/components/shared';
-import { Notification } from '@/lib/notifications';
+import { ThemeProvider } from '@/lib/shared/components';
+import { Notification } from '@/lib/shared/notifications';
 
 import './globals.css';
 

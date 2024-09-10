@@ -1,4 +1,4 @@
-import { getShopId, getToken } from '@/lib/cookies';
+import { getShopId, getToken } from '@/lib/shared/cookies';
 
 import { type TypedDocumentString } from '../codegen/graphql';
 

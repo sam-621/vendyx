@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { validateAccessToken } from './actions/auth/validate-access-token';
+import { validateAccessToken } from './lib/auth/actions/validate-access-token';
 import { ShopService } from './api';
 
 const ALLOWED_PATHS = ['/login', '/signup'];

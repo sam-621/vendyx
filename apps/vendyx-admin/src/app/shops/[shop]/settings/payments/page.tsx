@@ -1,6 +1,6 @@
 import { PaymentMethodService } from '@/api';
-import { PaymentMethodsTable } from '@/components/payment';
-import { SettingsPageLayout } from '@/components/shared';
+import { PaymentMethodsTable } from '@/lib/payment/components';
+import { SettingsPageLayout } from '@/lib/shared/components';
 
 export default async function PaymentMethodsPage() {
   const paymentMethods = await PaymentMethodService.getAll();

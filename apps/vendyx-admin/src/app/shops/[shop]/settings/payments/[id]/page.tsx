@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { PaymentMethodService } from '@/api';
-import { PaymentMethodForm } from '@/components/payment';
+import { PaymentMethodForm } from '@/lib/payment/components';
 
 export default async function PaymentDetailsPage({ params }: { params: { id: string } }) {
   const [integrations, method] = await Promise.all([

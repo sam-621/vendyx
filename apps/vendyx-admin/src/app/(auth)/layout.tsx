@@ -1,4 +1,4 @@
-import { ThemeSwitcher } from '@/components/shared';
+import { ThemeSwitcher } from '@/lib/shared/components';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
