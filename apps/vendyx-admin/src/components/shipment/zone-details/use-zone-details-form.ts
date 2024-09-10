@@ -1,11 +1,15 @@
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { createZone } from '@/actions/shipment/create-zone';
 import { FormMessages } from '@/lib/form';
 
 export const useZoneDetailsForm = () => {
+  const [isLoading, startTransition] = useTransition();
+
   const form = useForm<ZoneDetailsFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -15,12 +19,15 @@ export const useZoneDetailsForm = () => {
   });
 
   async function onSubmit(values: ZoneDetailsFormInput) {
-    console.log(values);
+    startTransition(async () => {
+      await createZone({ name: values.name, statesIds: values.states.map(state => state.id) });
+    });
   }
 
   return {
     ...form,
-    onSubmit: form.handleSubmit(onSubmit)
+    onSubmit: form.handleSubmit(onSubmit),
+    isLoading
   };
 };
 

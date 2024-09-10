@@ -16,7 +16,7 @@ export const ZoneDetailsForm = () => {
         <SettingsPageLayout
           title="Create zone"
           subtitle="Create zones to add rates for places you want to deliver."
-          actions={<ZoneDetailsSubmitButton />}
+          actions={<ZoneDetailsSubmitButton isLoading={form.isLoading} />}
         >
           <ZoneDetails />
         </SettingsPageLayout>
