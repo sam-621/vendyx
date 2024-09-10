@@ -1,5 +1,10 @@
 import { useParams } from 'next/navigation';
 
+/**
+ * Returns the base path for the current shop.
+ *
+ * @returns "/shops/:shop"
+ */
 export const useBase = () => {
   const params = useParams();
 

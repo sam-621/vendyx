@@ -12,6 +12,7 @@ import {
   ProductResolver,
   ShippingMethodResolver,
   ShopResolver,
+  StateResolver,
   UserResolver,
   VariantResolver,
   ZoneResolver
@@ -47,7 +48,8 @@ export class AdminApiModule {
     PaymentMethodResolver,
     ShippingMethodResolver,
     CountryResolver,
-    ZoneResolver
+    ZoneResolver,
+    StateResolver
   ]
 })
 class AdminModule {}

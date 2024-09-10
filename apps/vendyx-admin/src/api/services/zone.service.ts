@@ -8,12 +8,13 @@ import {
   REMOVE_ZONE_MUTATION,
   UPDATE_ZONE_MUTATION
 } from '../operations';
+import { type ID } from '../scalars';
 import { fetcher } from './fetcher';
 
 export const ZoneService = {
   Tags: {
     zones: 'zones',
-    zone: (id: string) => `zone-${id}`
+    zone: (id: ID) => `zone-${id}`
   },
 
   async getAll() {
@@ -22,7 +23,7 @@ export const ZoneService = {
     return zones;
   },
 
-  async getById(id: string) {
+  async getById(id: ID) {
     const result = await fetcher(GET_ZONE_QUERY, { id }, { tags: [ZoneService.Tags.zone(id)] });
     const zone = getFragmentData(COMMON_ZONE_FRAGMENT, result.zone);
 
