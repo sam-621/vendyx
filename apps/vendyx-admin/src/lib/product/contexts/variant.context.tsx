@@ -5,8 +5,8 @@ import { useFormContext } from 'react-hook-form';
 import { type CommonProductFragment } from '@/api';
 import { formatPrice, parsePrice } from '@/lib/shared/utils';
 
-import { type ProductDetailsFormInput } from '../product-details/use-product-details-form';
-import { getUnusedOptionValues } from './variant.utils';
+import { type ProductDetailsFormInput } from '../components/product-details/use-product-details-form';
+import { getUnusedOptionValues } from '../utils/variant.utils';
 
 export type VariantContext = {
   options: {

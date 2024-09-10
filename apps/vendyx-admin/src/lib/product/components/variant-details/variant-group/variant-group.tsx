@@ -1,5 +1,6 @@
 import { type FC } from 'react';
 
+import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +10,6 @@ import {
   Input
 } from '@/lib/shared/components';
 
-import { useVariantContext, type VariantContext } from '../variant.context';
 import { VariantItem } from '../variant-item';
 
 export const VariantGroup: FC<Props> = ({ variants, groupName }) => {

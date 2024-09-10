@@ -26,7 +26,7 @@ import {
 import { useEntityContext } from '@/lib/shared/contexts';
 import { cn } from '@/lib/shared/utils';
 
-import { isStateInCountry } from '../shipment.utils';
+import { isStateInCountry } from '../../utils';
 import { type ZoneDetailsFormInput } from '../zone-details/use-zone-details-form';
 
 export const ZoneCountriesSelector = () => {

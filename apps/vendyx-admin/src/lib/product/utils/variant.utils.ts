@@ -1,4 +1,4 @@
-import { type VariantContext } from './variant.context';
+import { type VariantContext } from '../contexts/variant.context';
 
 /**
  * Generate all possible variants based on the provided options.

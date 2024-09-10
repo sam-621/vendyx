@@ -1,7 +1,7 @@
+import { useVariantContext } from '@/lib/product/contexts';
+import { getVariantsGroupedByOption } from '@/lib/product/utils';
 import { Button, Checkbox, Label } from '@/lib/shared/components';
 
-import { useVariantContext } from '../variant.context';
-import { getVariantsGroupedByOption } from '../variant.utils';
 import { VariantGroup } from '../variant-group';
 import { VariantItem } from '../variant-item';
 

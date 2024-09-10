@@ -1,9 +1,8 @@
 import { type FC } from 'react';
 
+import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { Checkbox, Dropzone, Input } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
-
-import { useVariantContext, type VariantContext } from '../variant.context';
 
 export const VariantItem: FC<Props> = ({ variant, groupName }) => {
   const { variants, updateVariants } = useVariantContext();
