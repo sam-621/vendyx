@@ -4,6 +4,7 @@ export const COMMON_ZONE_FRAGMENT = graphql(`
   fragment CommonZone on Zone {
     id
     name
+    createdAt
     states {
       id
       name

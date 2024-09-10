@@ -22,7 +22,7 @@ export const fetcher = async <R, V>(
         query: query.toString(),
         variables
       }),
-      cache: options?.cache ?? 'no-store',
+      cache: options?.cache === null ? undefined : options?.cache ?? 'no-store',
       next: { tags: options?.tags, revalidate: options?.revalidate }
     });
 
@@ -45,6 +45,6 @@ export const fetcher = async <R, V>(
 
 type Options = {
   tags?: string[];
-  cache?: RequestCache;
+  cache?: RequestCache | null;
   revalidate?: number;
 };

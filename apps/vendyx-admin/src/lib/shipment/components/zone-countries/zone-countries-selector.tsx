@@ -30,10 +30,11 @@ import { isStateInCountry } from '../../utils';
 import { type ZoneDetailsFormInput } from '../zone-details/use-zone-details-form';
 
 export const ZoneCountriesSelector = () => {
-  const { setValue } = useFormContext<ZoneDetailsFormInput>();
+  const { setValue, watch } = useFormContext<ZoneDetailsFormInput>();
   const { entity: countries } = useEntityContext<CommonCountryFragment[]>();
+  const states = watch('states');
 
-  const [selectedStates, setSelectedStates] = useState<CommonCountryFragment['states']>([]);
+  const [selectedStates, setSelectedStates] = useState<CommonCountryFragment['states']>(states);
 
   return (
     <Dialog>
@@ -78,7 +79,6 @@ export const ZoneCountriesSelector = () => {
                             );
                           }
                         }}
-                        // defaultChecked={selectedIds.includes(country.id)}
                       />
                       <AccordionTrigger className="py-0 pr-6" containerClassName="w-full">
                         <div className="flex items-center gap-4 px-6 py-4 cursor-pointer">

@@ -11,7 +11,7 @@ export const CountryService = {
     const result = await fetcher(
       GET_ALL_COUNTRIES_QUERY,
       {},
-      { revalidate: Infinity, cache: 'default' }
+      { revalidate: Infinity, cache: null }
     );
 
     const countries = getFragmentData(COMMON_COUNTRY_FRAGMENT, result.countries);

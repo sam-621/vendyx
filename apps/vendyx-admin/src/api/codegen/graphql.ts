@@ -1071,6 +1071,7 @@ export type CommonZoneFragment = {
   __typename?: 'Zone';
   id: string;
   name: string;
+  createdAt: any;
   states: Array<{
     __typename?: 'State';
     id: string;
@@ -1236,6 +1237,7 @@ export const CommonZoneFragmentDoc = new TypedDocumentString(
     fragment CommonZone on Zone {
   id
   name
+  createdAt
   states {
     id
     name
@@ -1617,6 +1619,7 @@ export const GetZoneDocument = new TypedDocumentString(`
     fragment CommonZone on Zone {
   id
   name
+  createdAt
   states {
     id
     name

@@ -4,18 +4,19 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { type CommonZoneFragment } from '@/api';
 import { FormMessages } from '@/lib/shared/form';
 
 import { createZone } from '../../actions/create-zone';
 
-export const useZoneDetailsForm = () => {
+export const useZoneDetailsForm = (zone?: CommonZoneFragment) => {
   const [isLoading, startTransition] = useTransition();
 
   const form = useForm<ZoneDetailsFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
-      states: []
+      name: zone?.name ?? '',
+      states: zone?.states ?? []
     }
   });
 
