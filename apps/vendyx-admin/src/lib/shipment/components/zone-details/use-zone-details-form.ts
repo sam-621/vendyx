@@ -21,6 +21,8 @@ export const useZoneDetailsForm = (zone?: CommonZoneFragment) => {
   });
 
   async function onSubmit(values: ZoneDetailsFormInput) {
+    if (zone) return;
+
     startTransition(async () => {
       await createZone({ name: values.name, statesIds: values.states.map(state => state.id) });
     });
