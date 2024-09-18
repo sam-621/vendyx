@@ -20,13 +20,20 @@ export const RemoveEntityButton: FC<Props> = ({
   description,
   onRemove,
   isLoading,
-  trigger = 'button'
+  trigger = 'button',
+  className
 }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         {trigger === 'button' ? (
-          <Button isLoading={isLoading} type="button" variant="destructive" size="sm">
+          <Button
+            isLoading={isLoading}
+            type="button"
+            variant="destructive"
+            size="sm"
+            className={className}
+          >
             Remove
           </Button>
         ) : isLoading ? (
@@ -64,4 +71,5 @@ type Props = {
   onRemove: () => void;
   isLoading: boolean;
   trigger?: 'button' | 'icon';
+  className?: string;
 };

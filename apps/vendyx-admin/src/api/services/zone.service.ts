@@ -42,7 +42,7 @@ export const ZoneService = {
     return updateZone;
   },
 
-  async remove(id: string) {
+  async remove(id: ID) {
     const { removeZone } = await fetcher(REMOVE_ZONE_MUTATION, { id });
 
     return removeZone;

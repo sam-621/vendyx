@@ -27,7 +27,7 @@ export const ZoneDetailsForm: FC<Props> = ({ zone }) => {
           }
           actions={<ZoneDetailsSubmitButton isLoading={form.isLoading} />}
         >
-          <ZoneDetails />
+          <ZoneDetails zone={zone} />
         </SettingsPageLayout>
       </form>
     </Form>
