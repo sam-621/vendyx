@@ -1,5 +1,7 @@
+import { getFragmentData } from '../codegen';
 import { type CreateShippingMethodInput, type UpdateShippingMethodInput } from '../codegen/graphql';
 import {
+  COMMON_SHIPPING_HANDLERS_FRAGMENT,
   CREATE_SHIPPING_METHOD_MUTATION,
   GET_ALL_SHIPPING_HANDLERS_QUERY,
   REMOVE_SHIPPING_METHOD_MUTATION,
@@ -13,10 +15,15 @@ export const ShippingMethodService = {
   },
 
   async getHandlers() {
-    const { shippingHandlers } = await fetcher(
+    const result = await fetcher(
       GET_ALL_SHIPPING_HANDLERS_QUERY,
       {},
       { tags: [ShippingMethodService.Tags.handlers] }
+    );
+
+    const shippingHandlers = getFragmentData(
+      COMMON_SHIPPING_HANDLERS_FRAGMENT,
+      result.shippingHandlers
     );
 
     return shippingHandlers;

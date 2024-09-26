@@ -1,16 +1,18 @@
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type CommonCountryFragment } from '@/api';
 import { CardDescription, CardTitle } from '@/lib/shared/components';
 import { useEntityContext } from '@/lib/shared/contexts';
 import { add3dots } from '@/lib/shared/utils';
 
+import { type ShipmentContext } from '../../contexts';
 import { isStateInCountry } from '../../utils';
 import { type ZoneDetailsFormInput } from '../zone-details/use-zone-details-form';
 
 export const ZoneCountriesSummary = () => {
-  const { entity: countries } = useEntityContext<CommonCountryFragment[]>();
+  const {
+    entity: { countries }
+  } = useEntityContext<ShipmentContext>();
   const { watch } = useFormContext<ZoneDetailsFormInput>();
 
   const states = watch('states');

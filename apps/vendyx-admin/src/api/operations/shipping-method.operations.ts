@@ -1,11 +1,17 @@
 import { graphql } from '../codegen';
 
+export const COMMON_SHIPPING_HANDLERS_FRAGMENT = graphql(`
+  fragment CommonShippingHandlers on ShippingHandler {
+    id
+    metadata
+    name
+  }
+`);
+
 export const GET_ALL_SHIPPING_HANDLERS_QUERY = graphql(`
   query GetAllHandlers {
     shippingHandlers {
-      id
-      metadata
-      name
+      ...CommonShippingHandlers
     }
   }
 `);

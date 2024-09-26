@@ -927,16 +927,22 @@ export type RemoveProductMutationVariables = Exact<{
 
 export type RemoveProductMutation = { __typename?: 'Mutation'; softRemoveProduct: boolean };
 
+export type CommonShippingHandlersFragment = {
+  __typename?: 'ShippingHandler';
+  id: string;
+  metadata: any;
+  name: string;
+} & { ' $fragmentName'?: 'CommonShippingHandlersFragment' };
+
 export type GetAllHandlersQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetAllHandlersQuery = {
   __typename?: 'Query';
-  shippingHandlers: Array<{
-    __typename?: 'ShippingHandler';
-    id: string;
-    metadata: any;
-    name: string;
-  }>;
+  shippingHandlers: Array<
+    { __typename?: 'ShippingHandler' } & {
+      ' $fragmentRefs'?: { CommonShippingHandlersFragment: CommonShippingHandlersFragment };
+    }
+  >;
 };
 
 export type CreateShippingMethodMutationVariables = Exact<{
@@ -1232,6 +1238,16 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonProduct' }
 ) as unknown as TypedDocumentString<CommonProductFragment, unknown>;
+export const CommonShippingHandlersFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonShippingHandlers on ShippingHandler {
+  id
+  metadata
+  name
+}
+    `,
+  { fragmentName: 'CommonShippingHandlers' }
+) as unknown as TypedDocumentString<CommonShippingHandlersFragment, unknown>;
 export const CommonZoneFragmentDoc = new TypedDocumentString(
   `
     fragment CommonZone on Zone {
@@ -1470,12 +1486,14 @@ export const RemoveProductDocument = new TypedDocumentString(`
 export const GetAllHandlersDocument = new TypedDocumentString(`
     query GetAllHandlers {
   shippingHandlers {
-    id
-    metadata
-    name
+    ...CommonShippingHandlers
   }
 }
-    `) as unknown as TypedDocumentString<GetAllHandlersQuery, GetAllHandlersQueryVariables>;
+    fragment CommonShippingHandlers on ShippingHandler {
+  id
+  metadata
+  name
+}`) as unknown as TypedDocumentString<GetAllHandlersQuery, GetAllHandlersQueryVariables>;
 export const CreateShippingMethodDocument = new TypedDocumentString(`
     mutation CreateShippingMethod($input: CreateShippingMethodInput!) {
   createShippingMethod(input: $input) {

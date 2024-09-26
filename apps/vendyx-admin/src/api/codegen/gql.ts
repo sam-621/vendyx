@@ -50,7 +50,9 @@ const documents = {
     types.UpdateProductDocument,
   '\n  mutation RemoveProduct($ids: [ID!]!) {\n    softRemoveProduct(ids: $ids)\n  }\n':
     types.RemoveProductDocument,
-  '\n  query GetAllHandlers {\n    shippingHandlers {\n      id\n      metadata\n      name\n    }\n  }\n':
+  '\n  fragment CommonShippingHandlers on ShippingHandler {\n    id\n    metadata\n    name\n  }\n':
+    types.CommonShippingHandlersFragmentDoc,
+  '\n  query GetAllHandlers {\n    shippingHandlers {\n      ...CommonShippingHandlers\n    }\n  }\n':
     types.GetAllHandlersDocument,
   '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      id\n    }\n  }\n':
     types.CreateShippingMethodDocument,
@@ -209,7 +211,13 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetAllHandlers {\n    shippingHandlers {\n      id\n      metadata\n      name\n    }\n  }\n'
+  source: '\n  fragment CommonShippingHandlers on ShippingHandler {\n    id\n    metadata\n    name\n  }\n'
+): typeof import('./graphql').CommonShippingHandlersFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllHandlers {\n    shippingHandlers {\n      ...CommonShippingHandlers\n    }\n  }\n'
 ): typeof import('./graphql').GetAllHandlersDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

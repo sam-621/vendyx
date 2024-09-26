@@ -2,6 +2,7 @@ import { type ComponentProps, type HTMLInputTypeAttribute } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
 import { Input } from '../components';
+import { cn } from '../utils';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
 
 export const FormInput = <
@@ -14,6 +15,7 @@ export const FormInput = <
   placeholder,
   type,
   isPrice,
+  className,
   ...rest
 }: Props<TFieldValues, TName>) => {
   return (
@@ -21,7 +23,7 @@ export const FormInput = <
       {...rest}
       name={name}
       render={({ field }) => (
-        <FormItem className="w-full">
+        <FormItem className={cn('w-full', className)}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <Input type={type} placeholder={placeholder} isPrice={isPrice} {...field} />
@@ -46,4 +48,5 @@ type Props<
   placeholder?: string;
   type?: HTMLInputTypeAttribute;
   isPrice?: boolean;
+  className?: string;
 };

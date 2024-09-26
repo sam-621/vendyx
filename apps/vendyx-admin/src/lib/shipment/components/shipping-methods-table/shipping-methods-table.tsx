@@ -1,11 +1,8 @@
 import { type FC } from 'react';
 
-import { PlusIcon } from 'lucide-react';
-
 import { type CommonZoneFragment } from '@/api';
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -21,6 +18,7 @@ import {
 import { cn } from '@/lib/shared/utils';
 
 import { formatShippingMethodPreviewPrice } from '../../utils';
+import { AddShippingMethodButton } from '../add-shipping-method';
 
 export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
   const hasShippingMethods = Boolean(shippingMethods.length);
@@ -33,10 +31,11 @@ export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
         <CardTitle>Shipping methods</CardTitle>
         <div>
           {/* <AddShippingMethod zoneId={zone.id} /> */}
-          <Button variant="secondary" size="sm" className="gap-2">
+          <AddShippingMethodButton />
+          {/* <Button variant="secondary" size="sm" className="gap-2">
             <PlusIcon size={16} />
             Add Shipping method
-          </Button>
+          </Button> */}
         </div>
       </CardHeader>
 
