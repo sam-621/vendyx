@@ -4,12 +4,14 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 import { CreateZoneInput, UpdateZoneInput, UserJwtAuthGuard, Zone } from '@/api/shared';
 import { ZoneService } from '@/business/zone';
 import { PRISMA_FOR_ADMIN, PrismaForShop } from '@/persistance/prisma-clients';
+import { ShipmentService } from '@/shipments';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Zone')
 export class ZoneResolver {
   constructor(
     private readonly zoneService: ZoneService,
+    private readonly shipmentService: ShipmentService,
     @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForShop
   ) {}
 
@@ -51,9 +53,16 @@ export class ZoneResolver {
   @ResolveField('shippingMethods')
   async shippingMethods(@Parent() zone: Zone) {
     const result = await this.prismaForAdmin.shippingMethod.findMany({
-      where: { zoneId: zone.id }
+      where: { zoneId: zone.id },
+      include: { shippingHandler: true }
     });
 
-    return result;
+    return result.map(shippingMethod => ({
+      ...shippingMethod,
+      pricePreview: this.shipmentService.getPricePreview(
+        shippingMethod.shippingHandler.handlerCode,
+        shippingMethod.handlerMetadata as Record<string, string>
+      )
+    }));
   }
 }

@@ -18,7 +18,7 @@ export const ZoneDetails: FC<Props> = ({ zone }) => {
     <div className="flex flex-col gap-4">
       <FormInput control={control} name="name" label="Name" placeholder="International" />
       <ZoneCountries />
-      <ShippingMethodsTable shippingMethods={zone?.shippingMethods ?? []} />
+      {zone && <ShippingMethodsTable shippingMethods={zone?.shippingMethods ?? []} />}
       {zone && <RemoveZoneButton zone={zone} />}
     </div>
   );

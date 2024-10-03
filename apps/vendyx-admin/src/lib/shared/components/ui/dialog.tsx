@@ -7,7 +7,24 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 
 import { cn } from '../../utils';
 
-const Dialog = DialogPrimitive.Root;
+const DialogContext = React.createContext({
+  isOpen: false,
+  setIsOpen: (_: boolean) => {}
+});
+
+export const useDialogContext = () => React.useContext(DialogContext);
+
+const Dialog: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <DialogContext.Provider value={{ isOpen, setIsOpen }}>
+      <DialogPrimitive.Root open={isOpen} onOpenChange={open => setIsOpen(open)}>
+        {children}
+      </DialogPrimitive.Root>
+    </DialogContext.Provider>
+  );
+};
 
 const DialogTrigger = DialogPrimitive.Trigger;
 

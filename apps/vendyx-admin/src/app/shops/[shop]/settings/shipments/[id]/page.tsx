@@ -20,7 +20,7 @@ export default async function ZoneDetailsPage({ params: { id } }: { params: { id
   });
 
   return (
-    <EntityProvider entity={{ countries, shippingHandlers }}>
+    <EntityProvider entity={{ countries, shippingHandlers, zone }}>
       <ZoneDetailsForm zone={zone} />
     </EntityProvider>
   );
