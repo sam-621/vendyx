@@ -7,9 +7,10 @@ import { type CommonProductFragment } from '@/api';
 import { Card, CardContent, CardHeader, CardTitle, Label } from '@/lib/shared/components';
 import { FormCheckbox, FormInput, FormSwitch, FormTextarea } from '@/lib/shared/form';
 
+import { VariantContextProvider } from '../../contexts';
 import { ProductAssetUploader } from '../product-asset-uploader';
 import { RemoveProductButton } from '../remove-product';
-import { VariantContextProvider, VariantDetails } from '../variant-details';
+import { VariantDetails } from '../variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
 
 export const ProductDetails: FC<Props> = ({ product }) => {

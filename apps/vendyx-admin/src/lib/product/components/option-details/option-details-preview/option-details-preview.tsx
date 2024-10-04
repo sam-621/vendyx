@@ -1,8 +1,7 @@
 import { type FC } from 'react';
 
+import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { Badge, Label } from '@/lib/shared/components';
-
-import { useVariantContext, type VariantContext } from '../../variant-details';
 
 export const OptionDetailsPreview: FC<Props> = ({ option }) => {
   const { updateOption } = useVariantContext();

@@ -2,7 +2,7 @@ import { PlusIcon } from 'lucide-react';
 
 import { Button } from '@/lib/shared/components';
 
-import { MAX_OPTIONS_ALLOWED, useVariantContext } from '../variant-details';
+import { MAX_OPTIONS_ALLOWED, useVariantContext } from '../../contexts';
 import { OptionDetails } from './option-details';
 
 export const OptionsListing = () => {

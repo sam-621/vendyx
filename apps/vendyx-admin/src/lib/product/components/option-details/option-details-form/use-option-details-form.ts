@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 
+import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
+import { generateVariants } from '@/lib/product/utils';
 import { isUUID } from '@/lib/shared/utils';
-
-import { generateVariants, useVariantContext, type VariantContext } from '../../variant-details';
 
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const { updateOption, removeOption, options, variants, updateVariants } = useVariantContext();
