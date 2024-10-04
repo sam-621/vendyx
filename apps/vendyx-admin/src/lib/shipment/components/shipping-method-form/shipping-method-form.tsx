@@ -1,6 +1,6 @@
 import { type FC, useEffect, useMemo } from 'react';
 
-import { type CommonShippingHandlersFragment, type Metadata } from '@/api';
+import { type CommonShippingHandlersFragment, type CommonZoneFragment, type Metadata } from '@/api';
 import {
   Button,
   DialogClose,
@@ -11,16 +11,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Separator,
   Textarea
 } from '@/lib/shared/components';
-import { convertToCent, parsePrice } from '@/lib/shared/utils';
+import { convertToCent, formatPrice, parsePrice } from '@/lib/shared/utils';
 
-import { useAddShippingMethodForm } from './use-add-shipping-method-form';
+import { useShippingMethodForm } from './use-shipping-method-form';
 
-export const AddShippingMethodForm: FC<Props> = ({ shippingHandlers }) => {
+export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate }) => {
   const { method, setValue, handler, setHandler, isLoading, createShippingMethod } =
-    useAddShippingMethodForm(shippingHandlers);
+    useShippingMethodForm(shippingHandlers, methodToUpdate);
 
   const form: Metadata[] = useMemo(() => JSON.parse(String(handler.metadata)), [handler]);
 
@@ -34,6 +33,8 @@ export const AddShippingMethodForm: FC<Props> = ({ shippingHandlers }) => {
       <div className="flex flex-col gap-2 w-full">
         <Label>Type of shipping method</Label>
         <Select
+          // Editing handler id for a shipping method is not supported
+          disabled={!!methodToUpdate}
           value={handler.id}
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           onValueChange={value => setHandler(shippingHandlers.find(h => h.id === value)!)}
@@ -50,14 +51,19 @@ export const AddShippingMethodForm: FC<Props> = ({ shippingHandlers }) => {
           </SelectContent>
         </Select>
       </div>
-      <Separator />
       <div className="flex flex-col gap-2">
         <Label>Name</Label>
-        <Input onChange={e => setValue({ key: 'name', value: e.target.value })} />
+        <Input
+          defaultValue={method.name}
+          onChange={e => setValue({ key: 'name', value: e.target.value })}
+        />
       </div>
       <div className="flex flex-col gap-2">
         <Label>Description</Label>
-        <Textarea onChange={e => setValue({ key: 'description', value: e.target.value })} />
+        <Textarea
+          defaultValue={method.description}
+          onChange={e => setValue({ key: 'description', value: e.target.value })}
+        />
       </div>
       {form.map(({ key, label, type }) =>
         type === 'price' ? (
@@ -66,6 +72,7 @@ export const AddShippingMethodForm: FC<Props> = ({ shippingHandlers }) => {
             <Input
               placeholder="$ 0.00"
               isPrice
+              defaultValue={formatPrice(Number(method.args[key]))}
               onChange={e =>
                 setValue({
                   key: 'args',
@@ -82,6 +89,7 @@ export const AddShippingMethodForm: FC<Props> = ({ shippingHandlers }) => {
             <Label>{label}</Label>
             <Input
               type={type}
+              defaultValue={method.args[key]}
               onChange={e =>
                 setValue({
                   key: 'args',
@@ -108,4 +116,8 @@ export const AddShippingMethodForm: FC<Props> = ({ shippingHandlers }) => {
 
 type Props = {
   shippingHandlers: CommonShippingHandlersFragment[];
+  /**
+   * Optional prop to make the form update a shipping method instead of creating a new one
+   */
+  methodToUpdate?: CommonZoneFragment['shippingMethods'][0];
 };

@@ -19,6 +19,7 @@ import { cn } from '@/lib/shared/utils';
 import { formatShippingMethodPreviewPrice } from '../../utils';
 import { AddShippingMethodButton } from '../add-shipping-method';
 import { RemoveSHippingMethodButton } from '../remove-shipping-method';
+import { UpdateShippingMethodButton } from '../update-shipping-method';
 
 export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
   const hasShippingMethods = Boolean(shippingMethods.length);
@@ -54,8 +55,7 @@ export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
               {shippingMethods.map(method => (
                 <TableRow key={method.id}>
                   <TableCell>
-                    {/* <UpdateShippingMethodForm zoneId={zone.id} shippingMethod={method} /> */}
-                    <span>{method.name}</span>
+                    <UpdateShippingMethodButton method={method} />
                   </TableCell>
                   <TableCell>{formatShippingMethodPreviewPrice(method.pricePreview)}</TableCell>
                   <TableCell>

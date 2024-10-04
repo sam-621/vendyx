@@ -4,4 +4,3 @@ export type Metadata = {
   label: string;
   type: 'text' | 'price';
 };
-

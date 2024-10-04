@@ -1092,6 +1092,7 @@ export type CommonZoneFragment = {
     enabled: boolean;
     handlerMetadata: any;
     pricePreview: number;
+    handler: { __typename?: 'ShippingHandler'; id: string };
   }>;
 } & { ' $fragmentName'?: 'CommonZoneFragment' };
 
@@ -1268,6 +1269,9 @@ export const CommonZoneFragmentDoc = new TypedDocumentString(
     description
     enabled
     handlerMetadata
+    handler {
+      id
+    }
     pricePreview
   }
 }
@@ -1652,6 +1656,9 @@ export const GetZoneDocument = new TypedDocumentString(`
     description
     enabled
     handlerMetadata
+    handler {
+      id
+    }
     pricePreview
   }
 }`) as unknown as TypedDocumentString<GetZoneQuery, GetZoneQueryVariables>;

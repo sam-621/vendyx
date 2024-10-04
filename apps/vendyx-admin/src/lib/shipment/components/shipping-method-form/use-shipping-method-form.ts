@@ -1,14 +1,20 @@
 import { useEffect, useState, useTransition } from 'react';
 
-import { type CommonShippingHandlersFragment, type Metadata } from '@/api';
+import { type CommonShippingHandlersFragment, type CommonZoneFragment, type Metadata } from '@/api';
 import { useDialogContext } from '@/lib/shared/components';
 import { useEntityContext } from '@/lib/shared/contexts';
 import { notification } from '@/lib/shared/notifications';
 
 import { createShippingMethod } from '../../actions/create-shipping-method';
+import { updateShippingMethod } from '../../actions/update-shipping-method';
 import { type ShipmentContext } from '../../contexts';
 
-export const useAddShippingMethodForm = (shippingHandlers: CommonShippingHandlersFragment[]) => {
+export const useShippingMethodForm = (
+  shippingHandlers: CommonShippingHandlersFragment[],
+  methodToUpdate?: CommonZoneFragment['shippingMethods'][0]
+) => {
+  const isEditing = methodToUpdate;
+
   const [isLoading, startTransition] = useTransition();
   const [isSuccess, setIsSuccess] = useState(false);
   const [handler, setHandler] = useState(shippingHandlers[0]);
@@ -19,16 +25,18 @@ export const useAddShippingMethodForm = (shippingHandlers: CommonShippingHandler
   const { setIsOpen } = useDialogContext();
 
   const [method, setMethod] = useState<FormInput>({
-    handlerId: '',
-    name: '',
-    description: '',
-    enabled: true,
-    args: {}
+    handlerId: methodToUpdate?.handler.id ?? '',
+    name: methodToUpdate?.name ?? '',
+    description: methodToUpdate?.description ?? '',
+    enabled: methodToUpdate?.enabled ?? true,
+    args: methodToUpdate?.handlerMetadata ?? {}
   });
 
   useEffect(() => {
     if (!isLoading && isSuccess) {
-      notification.success('Shipping method created');
+      notification.success(
+        isEditing ? `Method ${methodToUpdate.name} updated` : 'Shipping method created'
+      );
       setIsOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,14 +66,23 @@ export const useAddShippingMethodForm = (shippingHandlers: CommonShippingHandler
     }
 
     startTransition(async () => {
-      await createShippingMethod({
-        name: method.name,
-        description: method.description,
-        enabled: method.enabled,
-        zoneId: zone.id,
-        handlerId: method.handlerId,
-        handlerMetadata: method.args
-      });
+      if (isEditing) {
+        await updateShippingMethod(zone.id, methodToUpdate.id, {
+          name: method.name,
+          description: method.description,
+          enabled: method.enabled,
+          handlerMetadata: method.args
+        });
+      } else {
+        await createShippingMethod({
+          name: method.name,
+          description: method.description,
+          enabled: method.enabled,
+          zoneId: zone.id,
+          handlerId: method.handlerId,
+          handlerMetadata: method.args
+        });
+      }
 
       setIsSuccess(true);
     });

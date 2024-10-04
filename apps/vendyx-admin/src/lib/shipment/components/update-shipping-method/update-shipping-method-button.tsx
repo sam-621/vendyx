@@ -1,7 +1,7 @@
-import { PlusIcon } from 'lucide-react';
+import { type FC } from 'react';
 
+import { type CommonZoneFragment } from '@/api';
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogHeader,
@@ -13,7 +13,7 @@ import { useEntityContext } from '@/lib/shared/contexts';
 import { type ShipmentContext } from '../../contexts';
 import { ShippingMethodForm } from '../shipping-method-form';
 
-export const AddShippingMethodButton = () => {
+export const UpdateShippingMethodButton: FC<Props> = ({ method }) => {
   const {
     entity: { shippingHandlers }
   } = useEntityContext<ShipmentContext>();
@@ -21,17 +21,18 @@ export const AddShippingMethodButton = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="sm" className="gap-2">
-          <PlusIcon size={16} />
-          Add Shipping method
-        </Button>
+        <span className="hover:underline cursor-pointer">{method.name}</span>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add shipping method</DialogTitle>
+          <DialogTitle>{method.name}</DialogTitle>
         </DialogHeader>
-        <ShippingMethodForm shippingHandlers={shippingHandlers} />
+        <ShippingMethodForm shippingHandlers={shippingHandlers} methodToUpdate={method} />
       </DialogContent>
     </Dialog>
   );
+};
+
+type Props = {
+  method: CommonZoneFragment['shippingMethods'][0];
 };
