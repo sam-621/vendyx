@@ -72,7 +72,9 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
             <Input
               placeholder="$ 0.00"
               isPrice
-              defaultValue={formatPrice(Number(method.args[key]))}
+              defaultValue={
+                method.args[key] !== undefined ? formatPrice(Number(method.args[key])) : ''
+              }
               onChange={e =>
                 setValue({
                   key: 'args',

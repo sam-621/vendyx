@@ -54,7 +54,8 @@ export class ZoneResolver {
   async shippingMethods(@Parent() zone: Zone) {
     const result = await this.prismaForAdmin.shippingMethod.findMany({
       where: { zoneId: zone.id },
-      include: { shippingHandler: true }
+      include: { shippingHandler: true },
+      orderBy: { createdAt: 'desc' }
     });
 
     return result.map(shippingMethod => ({
