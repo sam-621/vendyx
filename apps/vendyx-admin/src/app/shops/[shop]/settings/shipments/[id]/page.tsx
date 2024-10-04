@@ -15,10 +15,6 @@ export default async function ZoneDetailsPage({ params: { id } }: { params: { id
     notFound();
   }
 
-  console.log({
-    shippingHandlers
-  });
-
   return (
     <EntityProvider entity={{ countries, shippingHandlers, zone }}>
       <ZoneDetailsForm zone={zone} />

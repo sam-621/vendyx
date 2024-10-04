@@ -1,4 +1,4 @@
-import { useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,11 +6,14 @@ import { z } from 'zod';
 
 import { type CommonZoneFragment } from '@/api';
 import { FormMessages } from '@/lib/shared/form';
+import { notification } from '@/lib/shared/notifications';
 
 import { createZone } from '../../actions/create-zone';
+import { updateZone } from '../../actions/update-zone';
 
 export const useZoneDetailsForm = (zone?: CommonZoneFragment) => {
   const [isLoading, startTransition] = useTransition();
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm<ZoneDetailsFormInput>({
     resolver: zodResolver(schema),
@@ -20,11 +23,24 @@ export const useZoneDetailsForm = (zone?: CommonZoneFragment) => {
     }
   });
 
-  async function onSubmit(values: ZoneDetailsFormInput) {
-    if (zone) return;
+  useEffect(() => {
+    if (isSuccess && !isLoading) {
+      notification.success('Zone updated');
+    }
+  }, [isSuccess, isLoading]);
 
+  async function onSubmit(values: ZoneDetailsFormInput) {
     startTransition(async () => {
-      await createZone({ name: values.name, statesIds: values.states.map(state => state.id) });
+      if (zone) {
+        await updateZone(zone?.id, {
+          name: values.name,
+          stateIds: values.states.map(state => state.id)
+        });
+
+        setIsSuccess(true);
+      } else {
+        await createZone({ name: values.name, statesIds: values.states.map(state => state.id) });
+      }
     });
   }
 

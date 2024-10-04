@@ -1,5 +1,5 @@
 import { getFragmentData } from '../codegen';
-import { type CreateZoneInput } from '../codegen/graphql';
+import { type CreateZoneInput, type UpdateZoneInput } from '../codegen/graphql';
 import {
   COMMON_ZONE_FRAGMENT,
   CREATE_ZONE_MUTATION,
@@ -36,7 +36,7 @@ export const ZoneService = {
     return createZone;
   },
 
-  async update(id: string, input: CreateZoneInput) {
+  async update(id: string, input: UpdateZoneInput) {
     const { updateZone } = await fetcher(UPDATE_ZONE_MUTATION, { id, input });
 
     return updateZone;

@@ -25,7 +25,7 @@ export const ZoneDetailsForm: FC<Props> = ({ zone }) => {
               ? `Created at ${formatDate(new Date(String(zone.createdAt)))}`
               : 'Create zones to add rates for places you want to deliver.'
           }
-          actions={<ZoneDetailsSubmitButton isLoading={form.isLoading} />}
+          actions={<ZoneDetailsSubmitButton zone={zone} isLoading={form.isLoading} />}
         >
           <ZoneDetails zone={zone} />
         </SettingsPageLayout>
