@@ -7,7 +7,6 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  RemoveEntityButton,
   Table,
   TableBody,
   TableCell,
@@ -19,6 +18,7 @@ import { cn } from '@/lib/shared/utils';
 
 import { formatShippingMethodPreviewPrice } from '../../utils';
 import { AddShippingMethodButton } from '../add-shipping-method';
+import { RemoveSHippingMethodButton } from '../remove-shipping-method';
 
 export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
   const hasShippingMethods = Boolean(shippingMethods.length);
@@ -64,17 +64,7 @@ export const ShippingMethodsTable: FC<Props> = ({ shippingMethods }) => {
                     </Badge>
                   </TableCell>
                   <TableCell className="w-[32px]">
-                    {/* <RemoveShippingMethodButton zoneId={zone.id} shippingMethod={method} /> */}
-
-                    <RemoveEntityButton
-                      title={`Remove shipping method "${method.name}"`}
-                      description="You will not be able to accept orders with this shipping method. This action cannot be undone."
-                      onRemove={() => {
-                        console.log('remove');
-                      }}
-                      isLoading={false}
-                      trigger="icon"
-                    />
+                    <RemoveSHippingMethodButton method={method} />
                   </TableCell>
                 </TableRow>
               ))}

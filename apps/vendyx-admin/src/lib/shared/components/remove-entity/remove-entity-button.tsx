@@ -29,6 +29,7 @@ export const RemoveEntityButton: FC<Props> = ({
         {trigger === 'button' ? (
           <Button
             isLoading={isLoading}
+            disabled={isLoading}
             type="button"
             variant="destructive"
             size="sm"
