@@ -11,8 +11,10 @@ ALTER TABLE "payment_method" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "shipment" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "shipping_method" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "zone" ENABLE ROW LEVEL SECURITY;
-ALTER TABLE "country" ENABLE ROW LEVEL SECURITY;
-ALTER TABLE "state" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "orders" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "order_line" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "customer" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "address" ENABLE ROW LEVEL SECURITY;
 
 -- Force Row Level Security for table owners
 ALTER TABLE "users" ENABLE ROW LEVEL SECURITY;
@@ -27,8 +29,10 @@ ALTER TABLE "payment_method" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "shipment" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "shipping_method" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "zone" FORCE ROW LEVEL SECURITY;
-ALTER TABLE "country" FORCE ROW LEVEL SECURITY;
-ALTER TABLE "state" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "orders" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "order_line" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "customer" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "address" FORCE ROW LEVEL SECURITY;
 
 -- Create row security policies
 CREATE POLICY owner_isolation_policy ON "users" USING (id = current_setting('app.current_owner_id', TRUE)::uuid);
@@ -44,8 +48,10 @@ CREATE POLICY shop_isolation_policy ON "payment_method" USING (shop_id = current
 CREATE POLICY shop_isolation_policy ON "shipment" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
 CREATE POLICY shop_isolation_policy ON "shipping_method" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
 CREATE POLICY shop_isolation_policy ON "zone" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
-CREATE POLICY shop_isolation_policy ON "country" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
-CREATE POLICY shop_isolation_policy ON "state" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
+CREATE POLICY shop_isolation_policy ON "order" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
+CREATE POLICY shop_isolation_policy ON "order_line" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
+CREATE POLICY shop_isolation_policy ON "customer" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
+CREATE POLICY shop_isolation_policy ON "address" USING (shop_id = current_setting('app.current_shop_id', TRUE)::uuid);
 
 -- Bypass RLS policy
 CREATE POLICY bypass_rls_policy ON "users" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
@@ -60,5 +66,7 @@ CREATE POLICY bypass_rls_policy ON "payment_method" USING (current_setting('app.
 CREATE POLICY bypass_rls_policy ON "shipment" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "shipping_method" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "zone" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
-CREATE POLICY bypass_rls_policy ON "country" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
-CREATE POLICY bypass_rls_policy ON "state" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "order" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "order_line" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "customer" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "address" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');

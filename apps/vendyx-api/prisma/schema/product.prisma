@@ -71,6 +71,7 @@ model Variant {
 
   /// The variant's option values
   variantOptionValues VariantOptionValue[]
+  OrderLine           OrderLine[]
 
   /// The product that this variant belongs to
   product   Product @relation(fields: [productId], references: [id])

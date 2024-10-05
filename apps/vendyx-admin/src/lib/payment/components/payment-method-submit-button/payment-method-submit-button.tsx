@@ -27,7 +27,7 @@ export const PaymentMethodSubmitButton: FC<Props> = ({ isLoading, method, integr
 
   return (
     <Button
-      disabled={!metadataHasValues || !allMetadataIsFilled || !formHasChanged}
+      disabled={!metadataHasValues || !allMetadataIsFilled || !formHasChanged || isLoading}
       isLoading={isLoading}
       type="submit"
     >

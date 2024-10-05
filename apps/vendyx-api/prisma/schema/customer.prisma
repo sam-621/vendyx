@@ -1,0 +1,44 @@
+model Customer {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  firstName   String  @db.VarChar(100)
+  lastname    String  @db.VarChar(100)
+  email       String  @unique @db.VarChar(255) // 255 Standard
+  password    String? // Guest customer can be created without password (When customer buys as guest)
+  phoneNumber String? @db.VarChar(15) // Max length of phone number is 15
+  /// to customer be able to login, place orders, etc. the customer must be enabled
+  enabled     Boolean @default(true)
+
+  Order     Order[]
+  addresses Address[]
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("customer")
+}
+
+model Address {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  country     String
+  fullName    String? @map("full_name")
+  streetLine1 String  @map("street_line1")
+  streetLine2 String? @map("street_line2")
+  city        String
+  /// State
+  province    String
+  postalCode  String  @map("postal_code")
+  references  String? @map("references") @db.Text
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String   @map("customer_id") @db.Uuid
+
+  @@map("address")
+}

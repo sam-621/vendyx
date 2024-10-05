@@ -16,6 +16,7 @@ model User {
   @@map("users")
 }
 
+// TODO: Add storefront api key
 /// A vendyx shop
 model Shop {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -39,6 +40,8 @@ model Shop {
   shipment       Shipment[]
   shippingMethod ShippingMethod[]
   zone           Zone[]
+  Order          Order[]
+  Customer       Customer[]
 
   /// The shop's owner
   owner   User   @relation(fields: [ownerId], references: [id])

@@ -8,6 +8,8 @@ model Shipment {
   trackingCode String @map("tracking_code")
   carrier      String
 
+  Order Order[]
+
   shop   Shop   @relation(fields: [shopId], references: [id])
   shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
