@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
 import { CreateShopInput, ListInput } from '@/api/shared';
+import { AuthService } from '@/auth';
 import { ShopRepository } from '@/persistance/repositories';
 
 import { getSlugBy } from '../shared';
 
 @Injectable()
 export class ShopService {
-  constructor(private readonly shopRepository: ShopRepository) {}
+  constructor(
+    private readonly shopRepository: ShopRepository,
+    private readonly authService: AuthService
+  ) {}
 
   async findBySlug(slug: string) {
     return this.shopRepository.findBySlug(slug);
@@ -23,10 +27,12 @@ export class ShopService {
 
   async create(input: CreateShopInput) {
     const slug = await this.validateAndParseSlug(input.name);
+    const shopApiKey = await this.authService.generateShopApiKey();
 
     return this.shopRepository.insert({
       name: input.name,
-      slug
+      slug,
+      shopApiKey
     });
   }
 

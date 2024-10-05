@@ -1,3 +1,5 @@
+import * as crypto from 'crypto';
+
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -5,6 +7,10 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
+
+  async generateShopApiKey() {
+    return crypto.randomBytes(48).toString('hex');
+  }
 
   async generateToken<TPayload extends object>(payload: TPayload) {
     return {
