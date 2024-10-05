@@ -1,0 +1,37 @@
+type Customer implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  firstName: String
+  lastName: String!
+  email: String!
+  phoneNumber: String
+  """
+  to customer be able to login, place orders, etc. the customer must be enabled
+  """
+  enabled: Boolean!
+
+  orders: OrderList!
+  addresses: AddressList!
+}
+
+type CustomerList implements List {
+  items: [Customer!]!
+  count: Int!
+}
+
+" Results "
+type CustomerResult {
+  customer: Customer
+  apiErrors: [CustomerErrorResult!]!
+}
+
+type CustomerErrorResult {
+  code: CustomerErrorCode!
+  message: String!
+}
+
+enum CustomerErrorCode {
+  INVALID_EMAIL
+  EMAIL_ALREADY_EXISTS
+}

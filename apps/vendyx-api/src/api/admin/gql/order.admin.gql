@@ -1,0 +1,32 @@
+type Query {
+  orders(input: ListInput): OrderList
+}
+
+type Mutation {
+  markOrderAsShipped(id: ID!, input: MarkOrderAsShippedInput!): OrderResult!
+  markOrderAsDelivered(id: ID!): OrderResult!
+  cancelOrder(id: ID!): OrderResult!
+}
+
+input MarkOrderAsShippedInput {
+  carrier: String!
+  trackingCode: String!
+}
+
+" Results "
+type OrderResult {
+  order: Order
+  apiErrors: [OrderErrorResult!]!
+}
+
+type OrderErrorResult {
+  code: OrderErrorCode!
+  message: String!
+}
+
+" Utils "
+enum OrderErrorCode {
+  ORDER_NOT_FOUND
+  ORDER_TRANSITION_ERROR
+  FORBIDDEN_ORDER_ACTION
+}
