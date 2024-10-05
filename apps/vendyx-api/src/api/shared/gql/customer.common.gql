@@ -18,6 +18,7 @@ type Customer implements Node {
 type CustomerList implements List {
   items: [Customer!]!
   count: Int!
+  pageInfo: PageInfo!
 }
 
 " Results "

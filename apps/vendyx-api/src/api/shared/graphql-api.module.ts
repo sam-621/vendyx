@@ -4,6 +4,8 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
 
+export const SHARED_SCHEMA_PATH = './src/api/shared/**/*.gql';
+
 /**
  * Module to create a GraphQL API used for /admin-api and /storefront-api
  */

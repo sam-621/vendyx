@@ -72,6 +72,7 @@ type OrderShippingAddressJson {
 type OrderList implements List {
   items: [Order!]!
   count: Int!
+  pageInfo: PageInfo!
 }
 
 type Query {

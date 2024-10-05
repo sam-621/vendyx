@@ -12,4 +12,5 @@ type OrderLine implements Node {
 type OrderLineList implements List {
   items: [OrderLine!]!
   count: Int!
+  pageInfo: PageInfo!
 }

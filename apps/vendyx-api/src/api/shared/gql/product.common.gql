@@ -58,3 +58,9 @@ input ProductListInput {
   """
   filters: ProductFilters
 }
+
+input ProductFilters {
+  name: StringFilter
+  enabled: BooleanFilter
+  achived: BooleanFilter
+}
