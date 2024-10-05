@@ -36,6 +36,14 @@ export class ShopService {
     });
   }
 
+  async validateShopApiKey(shopId: string, shopApiKey: string) {
+    const shop = await this.shopRepository.findById(shopId);
+
+    if (!shop) return false;
+
+    return this.authService.compare(shopApiKey, shop.shopApiKey);
+  }
+
   /**
    * @description
    * Parse slug and validate if there are other shops with the same name,

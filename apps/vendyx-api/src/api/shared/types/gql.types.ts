@@ -8,6 +8,20 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum OrderErrorCode {
+    NOT_ENOUGH_STOCK = "NOT_ENOUGH_STOCK",
+    CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
+    CUSTOMER_DISABLED = "CUSTOMER_DISABLED",
+    MISSING_SHIPPING_ADDRESS = "MISSING_SHIPPING_ADDRESS",
+    MISSING_SHIPPING_PRICE_CALCULATOR = "MISSING_SHIPPING_PRICE_CALCULATOR",
+    MISSING_PAYMENT_HANDLER = "MISSING_PAYMENT_HANDLER",
+    PAYMENT_DECLINED = "PAYMENT_DECLINED",
+    ORDER_TRANSITION_ERROR = "ORDER_TRANSITION_ERROR",
+    PAYMENT_FAILED = "PAYMENT_FAILED",
+    FORBIDDEN_ORDER_ACTION = "FORBIDDEN_ORDER_ACTION",
+    ORDER_NOT_FOUND = "ORDER_NOT_FOUND"
+}
+
 export enum UserErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
@@ -15,6 +29,20 @@ export enum UserErrorCode {
 
 export enum AssetType {
     IMAGE = "IMAGE"
+}
+
+export enum CustomerErrorCode {
+    INVALID_EMAIL = "INVALID_EMAIL",
+    EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
+}
+
+export enum OrderState {
+    MODIFYING = "MODIFYING",
+    PAYMENT_ADDED = "PAYMENT_ADDED",
+    PAYMENT_AUTHORIZED = "PAYMENT_AUTHORIZED",
+    SHIPPED = "SHIPPED",
+    DELIVERED = "DELIVERED",
+    CANCELED = "CANCELED"
 }
 
 export class CreateOptionInput {
@@ -40,6 +68,11 @@ export class UpdateOptionValueInput {
     order?: Nullable<number>;
 }
 
+export class MarkOrderAsShippedInput {
+    carrier: string;
+    trackingCode: string;
+}
+
 export class CreatePaymentMethodInput {
     integrationId: string;
     integrationMetadata: JSON;
@@ -49,12 +82,6 @@ export class CreatePaymentMethodInput {
 export class UpdatePaymentMethodInput {
     integrationMetadata?: Nullable<JSON>;
     enabled?: Nullable<boolean>;
-}
-
-export class ProductFilters {
-    name?: Nullable<StringFilter>;
-    enabled?: Nullable<BooleanFilter>;
-    achived?: Nullable<BooleanFilter>;
 }
 
 export class CreateProductInput {
@@ -78,10 +105,22 @@ export class AssetInProductInput {
     order: number;
 }
 
+export class ProductListInput {
+    skip?: Nullable<number>;
+    take?: Nullable<number>;
+    filters?: Nullable<ProductFilters>;
+}
+
+export class ProductFilters {
+    name?: Nullable<StringFilter>;
+    enabled?: Nullable<BooleanFilter>;
+    achived?: Nullable<BooleanFilter>;
+}
+
 export class CreateShippingMethodInput {
     name: string;
-    description: string;
-    enabled: boolean;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
     handlerMetadata: JSON;
     handlerId: string;
     zoneId: string;
@@ -160,10 +199,42 @@ export class BooleanFilter {
     equals?: Nullable<boolean>;
 }
 
-export class ProductListInput {
-    skip?: Nullable<number>;
-    take?: Nullable<number>;
-    filters?: Nullable<ProductFilters>;
+export class CreateOrderInput {
+    line?: Nullable<CreateOrderLineInput>;
+}
+
+export class CreateOrderLineInput {
+    productVariantId: string;
+    quantity: number;
+}
+
+export class UpdateOrderLineInput {
+    quantity: number;
+}
+
+export class AddCustomerToOrderInput {
+    firstName?: Nullable<string>;
+    lastName: string;
+    email: string;
+    phoneNumber?: Nullable<string>;
+}
+
+export class CreateAddressInput {
+    country: string;
+    streetLine1: string;
+    streetLine2?: Nullable<string>;
+    city: string;
+    province: string;
+    postalCode: string;
+    references?: Nullable<string>;
+}
+
+export class AddPaymentToOrderInput {
+    methodId: string;
+}
+
+export class AddShipmentToOrderInput {
+    methodId: string;
 }
 
 export interface Node {
@@ -197,6 +268,8 @@ export class State implements Node {
 export abstract class IQuery {
     abstract countries(): Country[] | Promise<Country[]>;
 
+    abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
+
     abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
 
     abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
@@ -217,15 +290,15 @@ export abstract class IQuery {
 
     abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
 
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+
     abstract zones(): Zone[] | Promise<Zone[]>;
 
     abstract zone(id: string): Zone | Promise<Zone>;
 
+    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
+
     abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
-
-    abstract variants(input?: Nullable<ListInput>): VariantList | Promise<VariantList>;
-
-    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
 }
 
 export class Option implements Node {
@@ -254,6 +327,12 @@ export abstract class IMutation {
     abstract softRemoveOption(id: string): Option | Promise<Option>;
 
     abstract softRemoveOptionValues(ids: string[]): boolean | Promise<boolean>;
+
+    abstract markOrderAsShipped(id: string, input: MarkOrderAsShippedInput): OrderResult | Promise<OrderResult>;
+
+    abstract markOrderAsDelivered(id: string): OrderResult | Promise<OrderResult>;
+
+    abstract cancelOrder(id: string): OrderResult | Promise<OrderResult>;
 
     abstract createPaymentMethod(input: CreatePaymentMethodInput): PaymentMethod | Promise<PaymentMethod>;
 
@@ -292,6 +371,32 @@ export abstract class IMutation {
     abstract updateZone(id: string, input: UpdateZoneInput): Zone | Promise<Zone>;
 
     abstract removeZone(id: string): boolean | Promise<boolean>;
+
+    abstract createOrder(input?: Nullable<CreateOrderInput>): OrderResult | Promise<OrderResult>;
+
+    abstract addLineToOrder(orderId: string, input: CreateOrderLineInput): OrderResult | Promise<OrderResult>;
+
+    abstract updateOrderLine(lineId: string, input: UpdateOrderLineInput): OrderResult | Promise<OrderResult>;
+
+    abstract removeOrderLine(lineId: string): OrderResult | Promise<OrderResult>;
+
+    abstract addCustomerToOrder(orderId: string, input: AddCustomerToOrderInput): OrderResult | Promise<OrderResult>;
+
+    abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): OrderResult | Promise<OrderResult>;
+
+    abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
+
+    abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): OrderResult | Promise<OrderResult>;
+}
+
+export class OrderResult {
+    order?: Nullable<Order>;
+    apiErrors: OrderErrorResult[];
+}
+
+export class OrderErrorResult {
+    code: OrderErrorCode;
+    message: string;
 }
 
 export class PaymentMethod {
@@ -318,10 +423,11 @@ export class ShippingMethod implements Node {
     createdAt: Date;
     updatedAt: Date;
     name: string;
-    description: string;
+    description?: Nullable<string>;
     enabled: boolean;
     handlerMetadata: JSON;
     handler: ShippingHandler;
+    pricePreview: number;
 }
 
 export class ShippingHandler implements Node {
@@ -385,6 +491,26 @@ export class Zone implements Node {
     states: State[];
 }
 
+export class Address implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    country: string;
+    fullName?: Nullable<string>;
+    streetLine1: string;
+    streetLine2?: Nullable<string>;
+    city: string;
+    province: string;
+    postalCode: string;
+    references?: Nullable<string>;
+}
+
+export class AddressList implements List {
+    items: Address[];
+    count: number;
+    pageInfo: PageInfo;
+}
+
 export class Asset implements Node {
     id: string;
     createdAt: Date;
@@ -405,10 +531,98 @@ export class PageInfo {
     total: number;
 }
 
+export class Customer implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    firstName?: Nullable<string>;
+    lastName: string;
+    email: string;
+    phoneNumber?: Nullable<string>;
+    enabled: boolean;
+    orders: OrderList;
+    addresses: AddressList;
+}
+
+export class CustomerList implements List {
+    items: Customer[];
+    count: number;
+    pageInfo: PageInfo;
+}
+
+export class CustomerResult {
+    customer?: Nullable<Customer>;
+    apiErrors: CustomerErrorResult[];
+}
+
+export class CustomerErrorResult {
+    code: CustomerErrorCode;
+    message: string;
+}
+
 export class OptionList implements List {
     items: Option[];
     count: number;
     pageInfo: PageInfo;
+}
+
+export class OrderLine implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    unitPrice: number;
+    quantity: number;
+    linePrice: number;
+    productVariant: Variant;
+}
+
+export class OrderLineList implements List {
+    items: OrderLine[];
+    count: number;
+    pageInfo: PageInfo;
+}
+
+export class Order implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    code: string;
+    state: OrderState;
+    total: number;
+    subtotal: number;
+    placedAt?: Nullable<Date>;
+    totalQuantity: number;
+    lines: OrderLineList;
+    customer?: Nullable<Customer>;
+    shippingAddress?: Nullable<OrderShippingAddressJson>;
+    payment?: Nullable<Payment>;
+    shipment?: Nullable<Shipment>;
+}
+
+export class OrderShippingAddressJson {
+    country: string;
+    fullName?: Nullable<string>;
+    streetLine1: string;
+    streetLine2?: Nullable<string>;
+    city: string;
+    province: string;
+    postalCode: string;
+    references?: Nullable<string>;
+}
+
+export class OrderList implements List {
+    items: Order[];
+    count: number;
+    pageInfo: PageInfo;
+}
+
+export class Payment implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    transactionId?: Nullable<string>;
+    amount: number;
+    method: string;
 }
 
 export class Product implements Node {
@@ -429,6 +643,17 @@ export class ProductList implements List {
     items: Product[];
     count: number;
     pageInfo: PageInfo;
+}
+
+export class Shipment implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    trackingCode?: Nullable<string>;
+    carrier?: Nullable<string>;
+    amount: number;
+    method: string;
+    order: Order;
 }
 
 export class Variant implements Node {

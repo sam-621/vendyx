@@ -4,6 +4,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 
 import { BusinessModule } from '@/business';
 
+import { ProductResolver } from './resolvers';
 import { GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared';
 
 const SHOP_API_SCHEMA_PATH = './src/api/shop/gql/**/*.gql';
@@ -25,6 +26,6 @@ export class ShopApiModule {
 
 @Module({
   imports: [BusinessModule],
-  providers: []
+  providers: [ProductResolver]
 })
 class ShopModule {}

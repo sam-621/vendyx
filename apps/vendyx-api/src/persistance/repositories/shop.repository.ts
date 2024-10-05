@@ -22,6 +22,10 @@ export class ShopRepository {
     return this.prisma.shop.findMany({ ...clean(input ?? {}), orderBy: { createdAt: 'desc' } });
   }
 
+  async findById(id: string) {
+    return this.prisma.shop.findUnique({ where: { id } });
+  }
+
   async count(input?: ListInput) {
     return this.prisma.shop.count({ ...clean(input ?? {}) });
   }

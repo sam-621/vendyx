@@ -21,7 +21,7 @@ export class ShippingMethodService {
     return this.shippingMethodRepository.insert({
       name: input.name,
       description: input.description,
-      enabled: input.enabled,
+      enabled: input.enabled ?? false,
       handlerMetadata: input.handlerMetadata,
       shippingHandler: {
         connect: {

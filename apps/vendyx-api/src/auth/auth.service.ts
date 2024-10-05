@@ -8,8 +8,13 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  async generateShopApiKey() {
-    return crypto.randomBytes(48).toString('hex');
+  generateShopApiKey() {
+    const rawApiKey = crypto.randomBytes(48).toString('hex');
+    console.log({
+      rawApiKey
+    });
+
+    return this.hash(rawApiKey);
   }
 
   async generateToken<TPayload extends object>(payload: TPayload) {

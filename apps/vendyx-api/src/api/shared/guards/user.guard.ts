@@ -20,6 +20,8 @@ export class UserJwtAuthGuard extends AuthGuard('user-jwt') {
    */
   handleRequest<TUser = any>(err: any, user: any): TUser {
     if (err || !user) {
+      console.log('hii');
+
       throw new UnauthorizedException('Invalid access token');
     }
 
