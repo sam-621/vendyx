@@ -43,8 +43,3 @@ type VariantList implements List {
   count: Int!
   pageInfo: PageInfo!
 }
-
-type Query {
-  variants(input: ListInput): VariantList!
-  variant(id: ID!): Variant
-}

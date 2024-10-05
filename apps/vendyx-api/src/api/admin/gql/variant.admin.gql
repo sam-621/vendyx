@@ -1,3 +1,7 @@
+type Query {
+  variant(id: ID!): Variant
+}
+
 type Mutation {
   createVariant(productId: ID!, input: CreateVariantInput!): Variant!
   updateVariant(id: ID!, input: UpdateVariantInput!): Variant!

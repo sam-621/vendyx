@@ -30,3 +30,26 @@ input AssetInProductInput {
   id: ID!
   order: Int!
 }
+
+input ProductListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: ProductFilters
+}
+
+input ProductFilters {
+  name: StringFilter
+  enabled: BooleanFilter
+  achived: BooleanFilter
+}
