@@ -10,15 +10,20 @@ import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
 export class OrderRepository {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  findMany(input?: ListInput) {
+  findMany(input?: FindOptions) {
     return this.prisma.order.findMany({
       ...clean({ skip: input?.skip, take: input?.take }),
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
+      where: { state: input?.notInModifyinState ? { not: 'MODIFYING' } : undefined }
     });
   }
 
   findById(id: string) {
     return this.prisma.order.findUnique({ where: { id } });
+  }
+
+  findByIdOrThrow(id: string, options?: FindUniqueOptions) {
+    return this.prisma.order.findUniqueOrThrow({ where: { id }, ...options });
   }
 
   findByCode(code: number) {
@@ -37,3 +42,6 @@ export class OrderRepository {
     return this.prisma.order.update({ where: { id }, data: { deletedAt: new Date() } });
   }
 }
+
+type FindOptions = ListInput & { notInModifyinState?: boolean };
+type FindUniqueOptions = { include: Prisma.OrderInclude };

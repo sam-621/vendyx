@@ -11,6 +11,10 @@ export class VariantRepository {
     return this.prisma.variant.findUnique({ where: { id } });
   }
 
+  findByIdOrThrow(id: string) {
+    return this.prisma.variant.findUniqueOrThrow({ where: { id } });
+  }
+
   insert(input: Prisma.VariantCreateInput) {
     return this.prisma.variant.create({ data: input });
   }

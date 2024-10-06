@@ -32,14 +32,14 @@ model Order {
 
   lines OrderLine[]
 
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId String   @map("customer_id") @db.Uuid
-  payment    Payment  @relation(fields: [paymentId], references: [id])
-  paymentId  String   @map("payment_id") @db.Uuid
-  shipment   Shipment @relation(fields: [shipmentId], references: [id])
-  shipmentId String   @map("shipment_id") @db.Uuid
-  shop       Shop     @relation(fields: [shopId], references: [id])
-  shopId     String   @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?   @map("customer_id") @db.Uuid
+  payment    Payment?  @relation(fields: [paymentId], references: [id])
+  paymentId  String?   @map("payment_id") @db.Uuid
+  shipment   Shipment? @relation(fields: [shipmentId], references: [id])
+  shipmentId String?   @map("shipment_id") @db.Uuid
+  shop       Shop      @relation(fields: [shopId], references: [id])
+  shopId     String    @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("orders")
 }
