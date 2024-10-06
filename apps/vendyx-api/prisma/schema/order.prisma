@@ -19,7 +19,7 @@ model Order {
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  code            Int        @default(autoincrement())
+  code            Int        @unique @default(autoincrement())
   state           OrderState @default(MODIFYING)
   /// The price that will be sent to the payment provider. subtotal plus shipping price
   total           Int        @default(0)
