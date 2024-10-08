@@ -6,3 +6,8 @@ export type Metadata = {
   label: string;
   type: 'text' | 'price';
 };
+
+/**
+ * Unique identifier uuid
+ */
+export type ID = `${string}-${string}-${string}-${string}-${string}`;

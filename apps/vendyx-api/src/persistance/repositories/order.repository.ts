@@ -5,6 +5,7 @@ import { ListInput } from '@/api/shared';
 import { clean } from '@/business/shared';
 
 import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
+import { ID } from '../types';
 
 @Injectable()
 export class OrderRepository {
@@ -28,6 +29,17 @@ export class OrderRepository {
 
   findByCode(code: number) {
     return this.prisma.order.findUnique({ where: { code } });
+  }
+
+  findLineWithOrderAndVariant(id: ID) {
+    return this.prisma.orderLine.findUniqueOrThrow({
+      where: { id },
+      include: { order: true, variant: true }
+    });
+  }
+
+  findLineWithOrder(id: ID) {
+    return this.prisma.orderLine.findUniqueOrThrow({ where: { id }, include: { order: true } });
   }
 
   insert(input: Prisma.OrderCreateInput) {

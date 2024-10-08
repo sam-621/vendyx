@@ -10,6 +10,7 @@ import {
 import {
   AssetRepository,
   CountryRepository,
+  CustomerRepository,
   OptionRepository,
   OrderRepository,
   PaymentMethodRepository,
@@ -32,7 +33,8 @@ const REPOSITORIES = [
   CountryRepository,
   ZoneRepository,
   ShippingMethodRepository,
-  OrderRepository
+  OrderRepository,
+  CustomerRepository
 ];
 
 export const CLS_SHOP_ID = 'shop_id';

@@ -1,16 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { Customer, Order, OrderLine, OrderState, Shipment, Variant } from '@prisma/client';
+import { Customer, Order, OrderLine, OrderState, Prisma, Shipment, Variant } from '@prisma/client';
 
-import { CreateOrderInput, CreateOrderLineInput, ListInput } from '@/api/shared';
-import { OrderRepository, VariantRepository } from '@/persistance/repositories';
+import {
+  AddCustomerToOrderInput,
+  CreateAddressInput,
+  CreateOrderInput,
+  CreateOrderLineInput,
+  ListInput,
+  UpdateOrderLineInput
+} from '@/api/shared';
+import { CustomerRepository, OrderRepository, VariantRepository } from '@/persistance/repositories';
+import { ID } from '@/persistance/types';
 
-import { ForbidenOrderAction, NotEnoughStock } from './order.errors';
+import {
+  CustomerDisabled,
+  CustomerInvalidEmail,
+  ForbidenOrderAction,
+  NotEnoughStock
+} from './order.errors';
+import { validateEmail } from '../shared/utils';
 
 @Injectable()
 export class OrderService {
   constructor(
     private readonly repository: OrderRepository,
-    private readonly variantRepository: VariantRepository
+    private readonly variantRepository: VariantRepository,
+    private readonly customerRepository: CustomerRepository
   ) {}
 
   async find(input?: ListInput) {
@@ -99,6 +114,94 @@ export class OrderService {
       },
       total: order.total + newLinePrice,
       totalQuantity: order.totalQuantity + input.quantity
+    });
+  }
+
+  async updateLine(lineId: ID, input: UpdateOrderLineInput) {
+    const line = await this.repository.findLineWithOrderAndVariant(lineId);
+    const { order, variant } = line;
+
+    if (!this.canPerformAction(order, 'modify')) {
+      return new ForbidenOrderAction(order.state);
+    }
+
+    // If the quantity 0, remove the line and recalculate the order stats
+    if (input.quantity <= 0) {
+      this.repository.update(order.id, {
+        lines: {
+          delete: { id: line.id }
+        },
+        subtotal: order.subtotal - line.linePrice,
+        total: order.total - line.linePrice,
+        totalQuantity: order.totalQuantity - line.quantity
+      });
+    }
+
+    if (variant.stock < input.quantity) {
+      return new NotEnoughStock();
+    }
+
+    const unitPrice = variant.salePrice;
+    const linePrice = unitPrice * input.quantity;
+
+    // Update the line with the new quantity and line price and order stats
+    await this.repository.update(order.id, {
+      lines: {
+        update: {
+          where: { id: line.id },
+          data: { quantity: input.quantity, linePrice, unitPrice }
+        }
+      },
+      total: order.total - line.linePrice + linePrice,
+      subtotal: order.subtotal - line.linePrice + linePrice,
+      totalQuantity: order.totalQuantity - line.quantity + input.quantity
+    });
+  }
+
+  async removeLine(lineId: ID) {
+    const line = await this.repository.findLineWithOrder(lineId);
+
+    await this.repository.update(line.order.id, {
+      lines: {
+        delete: { id: line.id }
+      },
+      total: line.order.total - line.linePrice,
+      subtotal: line.order.subtotal - line.linePrice,
+      totalQuantity: line.order.totalQuantity - line.quantity
+    });
+  }
+
+  async addCustomer(orderId: ID, input: AddCustomerToOrderInput) {
+    if (!validateEmail(input.email)) {
+      return new CustomerInvalidEmail();
+    }
+
+    const order = await this.repository.findByIdOrThrow(orderId);
+
+    if (!this.canPerformAction(order, 'add_customer')) {
+      return new ForbidenOrderAction(order.state);
+    }
+
+    const customer = await this.customerRepository.findByEmail(input.email);
+
+    if (customer.enabled === false) {
+      return new CustomerDisabled();
+    }
+
+    return this.repository.update(orderId, {
+      customer: { connectOrCreate: { where: { email: input.email }, create: customer } }
+    });
+  }
+
+  async addShippingAddress(orderId: ID, input: CreateAddressInput) {
+    const order = await this.repository.findByIdOrThrow(orderId);
+
+    if (!this.canPerformAction(order, 'add_shipping_address')) {
+      return new ForbidenOrderAction(order.state);
+    }
+
+    this.repository.update(orderId, {
+      shippingAddress: input as unknown as Prisma.JsonObject
     });
   }
 
