@@ -1,22 +1,29 @@
 import { Inject } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
-import {
-  PRISMA_FOR_ADMIN,
-  PRISMA_FOR_SHOP,
-  PrismaForAdmin,
-  PrismaForShop
-} from '../prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
+import { ID } from '../types';
 
 export class ShippingMethodRepository {
-  constructor(
-    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
-    @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin
-  ) {}
+  constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  find() {
+  find(options?: FindOptions) {
     return this.prisma.shippingMethod.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
+      where: options?.onlyEnabled ? { enabled: true } : undefined
+    });
+  }
+
+  findByIdOrThrow(id: ID, options?: FindOptions) {
+    return this.prisma.shippingMethod.findUniqueOrThrow({
+      where: { id, ...(options?.onlyEnabled ? { enabled: true } : undefined) }
+    });
+  }
+
+  findById(id: ID, options?: FindOptions) {
+    return this.prisma.shippingMethod.findUniqueOrThrow({
+      where: { id, ...(options?.onlyEnabled ? { enabled: true } : undefined) },
+      include: { shippingHandler: true }
     });
   }
 
@@ -43,3 +50,5 @@ export class ShippingMethodRepository {
     });
   }
 }
+
+type FindOptions = { onlyEnabled?: boolean };

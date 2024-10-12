@@ -10,4 +10,4 @@ export type Metadata = {
 /**
  * Unique identifier uuid
  */
-export type ID = `${string}-${string}-${string}-${string}-${string}`;
+export type ID = string;

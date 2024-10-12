@@ -8,8 +8,8 @@ import { ErrorResult } from '../shared';
  * Error thrown when trying to transition an order to an invalid state
  */
 export class OrderTransitionError extends ErrorResult<OrderErrorCode> {
-  constructor() {
-    super(OrderErrorCode.ORDER_TRANSITION_ERROR, 'Order transition error');
+  constructor(reason: string) {
+    super(OrderErrorCode.ORDER_TRANSITION_ERROR, reason);
   }
 }
 
@@ -46,5 +46,41 @@ export class CustomerInvalidEmail extends ErrorResult<OrderErrorCode> {
 export class CustomerDisabled extends ErrorResult<OrderErrorCode> {
   constructor() {
     super(OrderErrorCode.CUSTOMER_DISABLED, 'Customer is disabled');
+  }
+}
+
+/**
+ * Error thrown when trying to add a shipment to an order with a missing shipping address
+ */
+export class MissingShippingAddress extends ErrorResult<OrderErrorCode> {
+  constructor() {
+    super(OrderErrorCode.MISSING_SHIPPING_ADDRESS, 'Missing shipping address');
+  }
+}
+
+/**
+ * Error thrown when trying to add a shipment to an order and the shipping method id provided does not exist
+ */
+export class ShippingMethodNotFound extends ErrorResult<OrderErrorCode> {
+  constructor() {
+    super(OrderErrorCode.SHIPPING_METHOD_NOT_FOUND, 'Shipping method not found');
+  }
+}
+
+export class PaymentMethodNotFound extends ErrorResult<OrderErrorCode> {
+  constructor() {
+    super(OrderErrorCode.PAYMENT_METHOD_NOT_FOUND, 'Payment method not found');
+  }
+}
+
+export class PaymentFailed extends ErrorResult<OrderErrorCode> {
+  constructor() {
+    super(OrderErrorCode.PAYMENT_FAILED, 'An unexpected error occurred in the payment handler');
+  }
+}
+
+export class PaymentDeclined extends ErrorResult<OrderErrorCode> {
+  constructor(reason: string, rawError: any) {
+    super(OrderErrorCode.PAYMENT_DECLINED, reason, rawError);
   }
 }

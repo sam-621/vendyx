@@ -13,8 +13,8 @@ export enum OrderErrorCode {
     CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
     CUSTOMER_DISABLED = "CUSTOMER_DISABLED",
     MISSING_SHIPPING_ADDRESS = "MISSING_SHIPPING_ADDRESS",
-    MISSING_SHIPPING_PRICE_CALCULATOR = "MISSING_SHIPPING_PRICE_CALCULATOR",
-    MISSING_PAYMENT_HANDLER = "MISSING_PAYMENT_HANDLER",
+    SHIPPING_METHOD_NOT_FOUND = "SHIPPING_METHOD_NOT_FOUND",
+    PAYMENT_METHOD_NOT_FOUND = "PAYMENT_METHOD_NOT_FOUND",
     PAYMENT_DECLINED = "PAYMENT_DECLINED",
     ORDER_TRANSITION_ERROR = "ORDER_TRANSITION_ERROR",
     PAYMENT_FAILED = "PAYMENT_FAILED",
@@ -384,9 +384,9 @@ export abstract class IMutation {
 
     abstract addShippingAddressToOrder(orderId: string, input: CreateAddressInput): OrderResult | Promise<OrderResult>;
 
-    abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
-
     abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): OrderResult | Promise<OrderResult>;
+
+    abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
 }
 
 export class OrderResult {

@@ -5,8 +5,8 @@ type Mutation {
   removeOrderLine(lineId: ID!): OrderResult!
   addCustomerToOrder(orderId: ID!, input: AddCustomerToOrderInput!): OrderResult!
   addShippingAddressToOrder(orderId: ID!, input: CreateAddressInput!): OrderResult!
-  addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): OrderResult!
   addShipmentToOrder(orderId: ID!, input: AddShipmentToOrderInput!): OrderResult!
+  addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): OrderResult!
 }
 
 input CreateOrderInput {
@@ -64,8 +64,8 @@ enum OrderErrorCode {
   CUSTOMER_INVALID_EMAIL
   CUSTOMER_DISABLED
   MISSING_SHIPPING_ADDRESS
-  MISSING_SHIPPING_PRICE_CALCULATOR
-  MISSING_PAYMENT_HANDLER
+  SHIPPING_METHOD_NOT_FOUND
+  PAYMENT_METHOD_NOT_FOUND
   PAYMENT_DECLINED
   ORDER_TRANSITION_ERROR
   """

@@ -15,7 +15,7 @@ export interface PaymentHandler {
   createPayment(
     order: any,
     totalAmount: number,
-    metadata?: Record<string, any>
+    metadata: Record<string, any>
   ): Promise<CreatePaymentResult>;
 
   /**
@@ -27,7 +27,7 @@ export interface PaymentHandler {
    * If {@link AuthorizePaymentResult.success} is true, that means that the payment is authorized and the money is in your account and the order is marked as paid
    * If {@link AuthorizePaymentResult.success} is false, that means that something went wrong and the order state keeps the same
    */
-  authorizePayment(order: any): Promise<AuthorizePaymentResult>;
+  authorizePayment(order: any, metadata: Record<string, string>): Promise<AuthorizePaymentResult>;
 }
 
 export type CreatePaymentResult =

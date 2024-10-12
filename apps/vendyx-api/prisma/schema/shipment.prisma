@@ -5,8 +5,10 @@ model Shipment {
   deletedAt DateTime? @map("deleted_at")
 
   amount       Int
-  trackingCode String @map("tracking_code")
-  carrier      String
+  /// Method name that was used to create the shipment. We do not reference the ShippingMethod here because the method can be deleted.
+  method       String
+  trackingCode String? @map("tracking_code")
+  carrier      String?
 
   Order Order[]
 

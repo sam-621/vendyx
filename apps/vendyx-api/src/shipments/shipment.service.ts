@@ -6,10 +6,10 @@ import { FlatPriceService } from './handlers';
 export class ShipmentService {
   constructor(private readonly flatPriceService: FlatPriceService) {}
 
-  async calculatePrice(order: any, handlerCode: string) {
+  async calculatePrice(order: any, handlerCode: string, args: Record<string, string>) {
     const handler = this.getHandler(handlerCode);
 
-    return handler.calculatePrice(order, {});
+    return handler.calculatePrice(order, args);
   }
 
   getPricePreview(handlerCode: string, args: Record<string, string>): number {

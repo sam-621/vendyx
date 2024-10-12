@@ -9,8 +9,8 @@ import { clean } from '../shared';
 export class ShippingMethodService {
   constructor(private readonly shippingMethodRepository: ShippingMethodRepository) {}
 
-  find() {
-    return this.shippingMethodRepository.find();
+  find(options?: FindOptions) {
+    return this.shippingMethodRepository.find({ onlyEnabled: options?.onlyEnabled });
   }
 
   findHandlers() {
@@ -45,3 +45,5 @@ export class ShippingMethodService {
     return true;
   }
 }
+
+type FindOptions = { onlyEnabled?: boolean };

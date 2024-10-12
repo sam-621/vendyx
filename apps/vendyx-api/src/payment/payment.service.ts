@@ -10,14 +10,14 @@ export class PaymentService {
     private readonly stripeService: StripeService
   ) {}
 
-  async create(order: any, handlerCode: string) {
+  async create(order: any, handlerCode: string, metadata: Record<string, string>) {
     const handler = this.getHandler(handlerCode);
-    return handler.createPayment(order, order.totalAmount);
+    return handler.createPayment(order, order.totalAmount, metadata);
   }
 
   async authorize(order: any, handlerCode: string) {
     const handler = this.getHandler(handlerCode);
-    return handler.authorizePayment(order);
+    return handler.authorizePayment(order, {});
   }
 
   private getHandler(paymentMethod: string): PaymentHandler {
