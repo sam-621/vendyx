@@ -39,9 +39,19 @@ export class ShopService {
   async validateShopApiKey(shopId: string, shopApiKey: string) {
     const shop = await this.shopRepository.findById(shopId);
 
-    if (!shop) return false;
+    if (!shop) {
+      return {
+        isValid: false,
+        cause: 'Shop with the given ID does not exist'
+      };
+    }
 
-    return this.authService.compare(shopApiKey, shop.shopApiKey);
+    const isValidApiKey = await this.authService.compare(shopApiKey, shop.shopApiKey);
+
+    return {
+      isValid: isValidApiKey,
+      cause: isValidApiKey ? null : 'Invalid shop API key'
+    };
   }
 
   /**

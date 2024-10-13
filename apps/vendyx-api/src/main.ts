@@ -1,6 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 
-import { PrismaClientExceptionFilter, clsMiddleware } from './api/shared';
+import {
+  GlobalExceptionFilter,
+  HttpExceptionFilter,
+  PrismaClientExceptionFilter,
+  clsMiddleware
+} from './api/shared';
 import { AppModule } from './app.module';
 import { AuthService } from './auth';
 
@@ -10,7 +15,11 @@ async function bootstrap() {
   const authService = app.get(AuthService);
 
   app.use(clsMiddleware(authService));
-  app.useGlobalFilters(new PrismaClientExceptionFilter());
+  app.useGlobalFilters(
+    new GlobalExceptionFilter(),
+    new HttpExceptionFilter(),
+    new PrismaClientExceptionFilter()
+  );
 
   await app.listen(5000);
 }

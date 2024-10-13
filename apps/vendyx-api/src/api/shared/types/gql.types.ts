@@ -383,7 +383,7 @@ export abstract class IMutation {
 
     abstract removeZone(id: string): boolean | Promise<boolean>;
 
-    abstract createOrder(input?: Nullable<CreateOrderInput>): OrderResult | Promise<OrderResult>;
+    abstract createOrder(input: CreateOrderInput): OrderResult | Promise<OrderResult>;
 
     abstract addLineToOrder(orderId: string, input: CreateOrderLineInput): OrderResult | Promise<OrderResult>;
 

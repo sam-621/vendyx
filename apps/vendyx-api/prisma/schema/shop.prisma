@@ -41,6 +41,7 @@ model Shop {
   shippingMethod ShippingMethod[]
   zone           Zone[]
   order          Order[]
+  orderLines     OrderLine[]
   customer       Customer[]
 
   /// The shop's owner

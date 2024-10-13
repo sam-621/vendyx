@@ -15,12 +15,20 @@ export class ShopApiKeyGuard implements CanActivate {
     const shopId = req.headers.shop_id;
     const shopApiKey = req.headers.x_vendyx_shop_api_key;
 
-    const isValidApiKey = await this.shopService.validateShopApiKey(shopId, shopApiKey);
-
-    if (!isValidApiKey) {
-      throw new UnauthorizedException('Invalid shop API key');
+    if (!shopApiKey) {
+      throw new UnauthorizedException('Missing shop API key');
     }
 
-    return isValidApiKey;
+    if (!shopId) {
+      throw new UnauthorizedException('Missing shop ID');
+    }
+
+    const { isValid, cause } = await this.shopService.validateShopApiKey(shopId, shopApiKey);
+
+    if (!isValid) {
+      throw new UnauthorizedException(cause);
+    }
+
+    return isValid;
   }
 }

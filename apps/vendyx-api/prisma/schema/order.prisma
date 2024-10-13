@@ -38,8 +38,9 @@ model Order {
   paymentId  String?   @map("payment_id") @db.Uuid
   shipment   Shipment? @relation(fields: [shipmentId], references: [id])
   shipmentId String?   @map("shipment_id") @db.Uuid
-  shop       Shop      @relation(fields: [shopId], references: [id])
-  shopId     String    @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("orders")
 }
@@ -58,6 +59,9 @@ model OrderLine {
   orderId   String  @map("order_id") @db.Uuid
   variant   Variant @relation(fields: [variantId], references: [id])
   variantId String  @map("variant_id") @db.Uuid
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("order_line")
 }
