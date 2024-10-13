@@ -16,7 +16,7 @@ import { isErrorResult } from '@/business/shared';
 import { ID } from '@/persistance/types';
 
 @UseGuards(ShopApiKeyGuard)
-@Resolver()
+@Resolver('order')
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
 

@@ -48,7 +48,7 @@ type Order implements Node {
   placedAt: Date
   totalQuantity: Int!
 
-  lines: OrderLineList!
+  lines(input: ListInput): OrderLineList!
   customer: Customer
   shippingAddress: OrderShippingAddressJson
   payment: Payment

@@ -4,7 +4,7 @@ import { ListResponse, OrderListInput } from '@/api/shared';
 import { OrderService } from '@/business/order/order.service';
 import { ID } from '@/persistance/types';
 
-@Resolver()
+@Resolver('Order')
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
 

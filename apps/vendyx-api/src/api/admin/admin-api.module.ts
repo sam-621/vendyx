@@ -18,7 +18,7 @@ import {
   VariantResolver,
   ZoneResolver
 } from './resolvers';
-import { GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared';
+import { COMMON_RESOLVERS, GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared';
 
 const ADMIN_API_SCHEMA_PATH = './src/api/admin/gql/**/*.gql';
 
@@ -40,6 +40,7 @@ export class AdminApiModule {
 @Module({
   imports: [ShipmentModule, BusinessModule],
   providers: [
+    ...COMMON_RESOLVERS,
     UserResolver,
     ShopResolver,
     ProductResolver,

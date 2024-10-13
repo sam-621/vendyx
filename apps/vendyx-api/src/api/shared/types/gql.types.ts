@@ -603,7 +603,7 @@ export class Order implements Node {
     subtotal: number;
     placedAt?: Nullable<Date>;
     totalQuantity: number;
-    lines: OrderLineList;
+    lines?: OrderLineList;
     customer?: Nullable<Customer>;
     shippingAddress?: Nullable<OrderShippingAddressJson>;
     payment?: Nullable<Payment>;
