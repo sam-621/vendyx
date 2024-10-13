@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from '@/auth';
+import { PaymentModule } from '@/payment';
+import { ShipmentModule } from '@/shipments';
 import { StorageModule } from '@/storage';
 
 import { AssetService } from './asset';
 import { CountryService } from './country';
 import { OptionService } from './option';
+import { OrderService } from './order';
 import { PaymentMethodService } from './payment-method';
 import { ProductService } from './product';
 import { ShippingMethodService } from './shipping-method';
@@ -24,11 +27,12 @@ const SERVICES = [
   PaymentMethodService,
   ShippingMethodService,
   ZoneService,
-  CountryService
+  CountryService,
+  OrderService
 ];
 
 @Module({
-  imports: [AuthModule, StorageModule],
+  imports: [AuthModule, StorageModule, ShipmentModule, PaymentModule],
   providers: [...SERVICES],
   exports: [...SERVICES]
 })

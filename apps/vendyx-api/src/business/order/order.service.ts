@@ -9,6 +9,7 @@ import {
   CreateOrderInput,
   CreateOrderLineInput,
   ListInput,
+  OrderListInput,
   UpdateOrderLineInput
 } from '@/api/shared';
 import { PaymentService } from '@/payment';
@@ -39,8 +40,25 @@ export class OrderService {
     private readonly paymentService: PaymentService
   ) {}
 
-  async find(input?: ListInput) {
-    return this.prisma.order.findMany({ ...clean(input ?? {}) });
+  async find(input?: OrderListInput) {
+    return this.prisma.order.findMany({
+      ...clean({ skip: input?.skip, take: input?.take }),
+      where: {
+        code: input?.filters?.code ? this.parseOrderCode(input?.filters?.code) : undefined,
+        state: input?.filters?.state ? input?.filters?.state : { not: OrderState.MODIFYING }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+  }
+
+  async count(input?: OrderListInput) {
+    return this.prisma.order.count({
+      where: {
+        code: input?.filters?.code ? this.parseOrderCode(input?.filters?.code) : undefined,
+        state: input?.filters?.state ? input?.filters?.state : { not: OrderState.MODIFYING }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
   }
 
   async findUnique(id?: string, code?: string) {

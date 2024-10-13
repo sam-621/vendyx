@@ -73,6 +73,17 @@ export class MarkOrderAsShippedInput {
     trackingCode: string;
 }
 
+export class OrderListInput {
+    skip?: Nullable<number>;
+    take?: Nullable<number>;
+    filters?: Nullable<OrderFilters>;
+}
+
+export class OrderFilters {
+    code?: Nullable<string>;
+    state?: Nullable<OrderState>;
+}
+
 export class CreatePaymentMethodInput {
     integrationId: string;
     integrationMetadata: JSON;
@@ -268,7 +279,7 @@ export class State implements Node {
 export abstract class IQuery {
     abstract countries(): Country[] | Promise<Country[]>;
 
-    abstract orders(input?: Nullable<ListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
+    abstract orders(input?: Nullable<OrderListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
 
     abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
 
