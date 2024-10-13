@@ -1,3 +1,3 @@
-import { OrderFieldResolver } from './resolvers';
+import { OrderFieldResolver, OrderLineFieldResolver } from './resolvers';
 
-export const COMMON_RESOLVERS = [OrderFieldResolver];
+export const COMMON_RESOLVERS = [OrderFieldResolver, OrderLineFieldResolver];

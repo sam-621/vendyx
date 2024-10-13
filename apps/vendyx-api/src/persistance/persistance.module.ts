@@ -12,7 +12,6 @@ import {
   CountryRepository,
   CustomerRepository,
   OptionRepository,
-  OrderRepository,
   PaymentMethodRepository,
   ProductRepository,
   ShippingMethodRepository,
@@ -33,7 +32,6 @@ const REPOSITORIES = [
   CountryRepository,
   ZoneRepository,
   ShippingMethodRepository,
-  OrderRepository,
   CustomerRepository
 ];
 

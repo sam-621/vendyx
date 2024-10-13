@@ -55,10 +55,10 @@ model OrderLine {
   quantity  Int @default(0) @db.SmallInt
   linePrice Int @default(0) @map("line_price")
 
-  order     Order   @relation(fields: [orderId], references: [id])
-  orderId   String  @map("order_id") @db.Uuid
-  variant   Variant @relation(fields: [variantId], references: [id])
-  variantId String  @map("variant_id") @db.Uuid
+  order            Order   @relation(fields: [orderId], references: [id])
+  orderId          String  @map("order_id") @db.Uuid
+  productVariant   Variant @relation(fields: [productVariantId], references: [id])
+  productVariantId String  @map("product_variant_id") @db.Uuid
 
   shop   Shop   @relation(fields: [shopId], references: [id])
   shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid

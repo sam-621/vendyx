@@ -26,4 +26,34 @@ export class OrderFieldResolver {
 
     return new ListResponse(result, result.length, { total });
   }
+
+  @ResolveField('customer')
+  async customer(@Parent() order: Order) {
+    const result = await this.prisma.order.findUnique({
+      where: { id: order.id },
+      select: { customer: true }
+    });
+
+    return result?.customer;
+  }
+
+  @ResolveField('shipment')
+  async shipment(@Parent() order: Order) {
+    const result = await this.prisma.order.findUnique({
+      where: { id: order.id },
+      select: { shipment: true }
+    });
+
+    return result?.shipment;
+  }
+
+  @ResolveField('payment')
+  async payment(@Parent() order: Order) {
+    const result = await this.prisma.order.findUnique({
+      where: { id: order.id },
+      select: { payment: true }
+    });
+
+    return result?.payment;
+  }
 }

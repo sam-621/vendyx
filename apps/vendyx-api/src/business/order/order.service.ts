@@ -108,7 +108,9 @@ export class OrderService {
     const newQuantity = input.quantity;
     const newLinePrice = newQuantity * variant.salePrice;
 
-    const lineWithTheVariant = order.lines.find(line => line.variantId === input.productVariantId);
+    const lineWithTheVariant = order.lines.find(
+      line => line.productVariantId === input.productVariantId
+    );
 
     // If a line with the variant already exists, only update the quantity and recalculate the line price, not adding a new line
     // NOTE: When updating, we replace the current quantity with the new one, not adding the new quantity to the current one
@@ -141,7 +143,7 @@ export class OrderService {
       data: {
         lines: {
           create: {
-            variantId: input.productVariantId,
+            productVariantId: input.productVariantId,
             quantity: input.quantity,
             linePrice: newLinePrice,
             unitPrice: variant.salePrice
@@ -156,10 +158,10 @@ export class OrderService {
   async updateLine(lineId: ID, input: UpdateOrderLineInput) {
     const line = await this.prisma.orderLine.findUniqueOrThrow({
       where: { id: lineId },
-      include: { order: true, variant: true }
+      include: { order: true, productVariant: true }
     });
 
-    const { order, variant } = line;
+    const { order, productVariant } = line;
 
     if (!this.canPerformAction(order, 'modify')) {
       return new ForbidenOrderAction(order.state);
@@ -180,11 +182,11 @@ export class OrderService {
       });
     }
 
-    if (variant.stock < input.quantity) {
+    if (productVariant.stock < input.quantity) {
       return new NotEnoughStock();
     }
 
-    const unitPrice = variant.salePrice;
+    const unitPrice = productVariant.salePrice;
     const linePrice = unitPrice * input.quantity;
 
     // Update the line with the new quantity and line price and order stats
@@ -299,7 +301,7 @@ export class OrderService {
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
     const order = await this.prisma.order.findUniqueOrThrow({
       where: { id: orderId },
-      include: { customer: true, lines: { include: { variant: true } } }
+      include: { customer: true, lines: { include: { productVariant: true } } }
     });
 
     if (!this.canPerformAction(order, 'add_payment')) {
@@ -371,7 +373,7 @@ export class OrderService {
     await this.prisma.$transaction(
       order.lines.map(line =>
         this.prisma.variant.update({
-          where: { id: line.variant.id },
+          where: { id: line.productVariant.id },
           data: { stock: { decrement: line.quantity } }
         })
       )
@@ -471,7 +473,7 @@ export class OrderService {
     return await this.prisma.order.create({
       data: {
         lines: {
-          create: { variantId: variant.id, quantity: quantity, linePrice, unitPrice }
+          create: { productVariantId: variant.id, quantity: quantity, linePrice, unitPrice }
         },
         total: linePrice,
         subtotal: linePrice,
