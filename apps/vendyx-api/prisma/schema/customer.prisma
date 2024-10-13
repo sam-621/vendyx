@@ -4,11 +4,11 @@ model Customer {
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  firstName   String  @db.VarChar(100)
-  lastname    String  @db.VarChar(100)
+  firstName   String? @map("first_name") @db.VarChar(100)
+  lastName    String  @map("last_name") @db.VarChar(100)
   email       String  @unique @db.VarChar(255) // 255 Standard
   password    String? // Guest customer can be created without password (When customer buys as guest)
-  phoneNumber String? @db.VarChar(15) // Max length of phone number is 15
+  phoneNumber String? @map("phone_number") @db.VarChar(15) // Max length of phone number is 15
   /// to customer be able to login, place orders, etc. the customer must be enabled
   enabled     Boolean @default(true)
 

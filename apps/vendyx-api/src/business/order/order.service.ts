@@ -105,12 +105,11 @@ export class OrderService {
       return new NotEnoughStock();
     }
 
-    const newQuantity = input.quantity;
-    const newLinePrice = newQuantity * variant.salePrice;
-
     const lineWithTheVariant = order.lines.find(
       line => line.productVariantId === input.productVariantId
     );
+
+    const newLinePrice = (input.quantity + (lineWithTheVariant?.quantity ?? 0)) * variant.salePrice;
 
     // If a line with the variant already exists, only update the quantity and recalculate the line price, not adding a new line
     // NOTE: When updating, we replace the current quantity with the new one, not adding the new quantity to the current one
@@ -122,17 +121,20 @@ export class OrderService {
             update: {
               where: { id: lineWithTheVariant.id },
               data: {
-                quantity: newQuantity,
-                linePrice: newLinePrice,
+                // Increment the quantity because variant already exists
+                quantity: { increment: input.quantity },
+                // Recalculate the line price with the variant sale price because this can change
+                linePrice: (input.quantity + lineWithTheVariant.quantity) * variant.salePrice,
                 // Update the unit price in case the variant price has changed
                 unitPrice: variant.salePrice
               }
             }
           },
-          // Subtract the old line price and add the new line price to the total
+          // Remove the old line price and add the new one
+          subtotal: order.subtotal - lineWithTheVariant.linePrice + newLinePrice,
           total: order.total - lineWithTheVariant.linePrice + newLinePrice,
-          // Subtract the old quantity and add the new quantity to the total quantity
-          totalQuantity: order.totalQuantity - lineWithTheVariant.quantity + input.quantity
+          // Increment the quantity because variant already exists
+          totalQuantity: { increment: input.quantity }
         }
       });
     }
@@ -149,6 +151,7 @@ export class OrderService {
             unitPrice: variant.salePrice
           }
         },
+        subtotal: order.subtotal + newLinePrice,
         total: order.total + newLinePrice,
         totalQuantity: order.totalQuantity + input.quantity
       }
@@ -212,7 +215,7 @@ export class OrderService {
       include: { order: true }
     });
 
-    await this.prisma.order.update({
+    return await this.prisma.order.update({
       where: { id: line.order.id },
       data: {
         lines: {
@@ -236,17 +239,19 @@ export class OrderService {
       return new ForbidenOrderAction(order.state);
     }
 
-    const customer = await this.prisma.customer.findUniqueOrThrow({
+    const customer = await this.prisma.customer.findUnique({
       where: { email: input.email }
     });
 
-    if (customer.enabled === false) {
+    if (customer?.enabled === false) {
       return new CustomerDisabled();
     }
 
     return await this.prisma.order.update({
       where: { id: orderId },
-      data: { customer: { connectOrCreate: { where: { email: input.email }, create: customer } } }
+      data: {
+        customer: { connectOrCreate: { where: { email: input.email }, create: clean(input) } }
+      }
     });
   }
 
