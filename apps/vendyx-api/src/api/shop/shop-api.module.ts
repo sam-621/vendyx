@@ -3,6 +3,8 @@ import * as path from 'path';
 import { DynamicModule, Module } from '@nestjs/common';
 
 import { BusinessModule } from '@/business';
+import { PaymentModule } from '@/payment';
+import { ShipmentModule } from '@/shipments';
 
 import { OrderResolver, ProductResolver } from './resolvers';
 import { COMMON_RESOLVERS, GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared';
@@ -25,7 +27,7 @@ export class ShopApiModule {
 }
 
 @Module({
-  imports: [BusinessModule],
+  imports: [BusinessModule, ShipmentModule, PaymentModule],
   providers: [...COMMON_RESOLVERS, ProductResolver, OrderResolver]
 })
 class ShopModule {}

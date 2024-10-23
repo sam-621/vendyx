@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Customer, Order, OrderState, Prisma, Shipment, Variant } from '@prisma/client';
+import { Address, Customer, Order, OrderState, Prisma, Shipment, Variant } from '@prisma/client';
 
 import {
   AddCustomerToOrderInput,
@@ -13,7 +13,12 @@ import {
   UpdateOrderLineInput
 } from '@/api/shared';
 import { PaymentService } from '@/payment';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import {
+  PRISMA_FOR_ADMIN,
+  PRISMA_FOR_SHOP,
+  PrismaForAdmin,
+  PrismaForShop
+} from '@/persistance/prisma-clients';
 import { ID } from '@/persistance/types';
 import { ShipmentService } from '@/shipments';
 
@@ -71,6 +76,32 @@ export class OrderService {
     }
 
     return null;
+  }
+
+  async findAvailabelShippingMethods(orderId: ID) {
+    const order = await this.prisma.order.findUnique({ where: { id: orderId } });
+
+    const state = (order?.shippingAddress as unknown as Address).province;
+
+    return this.prisma.shippingMethod.findMany({
+      where: { enabled: true, zone: { states: { some: { state: { name: state } } } } },
+      orderBy: { createdAt: 'desc' },
+      include: { shippingHandler: true }
+    });
+  }
+
+  async findAvailablePaymentMethods() {
+    const result = await this.prisma.paymentMethod.findMany({
+      where: { enabled: true },
+      orderBy: { createdAt: 'desc' },
+      include: { paymentIntegration: { select: { icon: true, name: true } } }
+    });
+
+    return result.map(item => ({
+      ...item,
+      name: item.paymentIntegration.name,
+      icon: item.paymentIntegration.icon
+    }));
   }
 
   async create(input: CreateOrderInput) {
@@ -279,11 +310,18 @@ export class OrderService {
       return new ForbidenOrderAction(order.state);
     }
 
+    const state = (order?.shippingAddress as unknown as Address).province;
+
     const method = await this.prisma.shippingMethod.findUnique({
-      where: { id: input.methodId, enabled: true },
+      where: {
+        id: input.methodId,
+        enabled: true,
+        zone: { states: { some: { state: { name: state } } } }
+      },
       include: { shippingHandler: true }
     });
 
+    // or not available for provided state
     if (!method) {
       return new ShippingMethodNotFound();
     }

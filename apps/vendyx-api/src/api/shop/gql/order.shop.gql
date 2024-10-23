@@ -9,6 +9,11 @@ type Mutation {
   addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): OrderResult!
 }
 
+type Query {
+  availableShippingMethods(orderId: ID!): [ShippingMethod!]!
+  availablePaymentMethods(orderId: ID!): [PaymentMethod!]!
+}
+
 input CreateOrderInput {
   line: CreateOrderLineInput
 }

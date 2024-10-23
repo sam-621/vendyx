@@ -1,0 +1,25 @@
+"""
+A payment method is a way to pay for an order in your shop, like credit card, paypal, etc
+"""
+type PaymentMethod {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The payment method's name (e.g. 'Stripe')
+  """
+  name: String!
+
+  """
+  The payment method's icon
+  """
+  icon: String!
+
+  """
+  Whether the payment method is enabled or not
+  Not enabled payment methods will not be shown in the storefront
+  Useful for payment methods that are not ready to be used yet
+  """
+  enabled: Boolean!
+}

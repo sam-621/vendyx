@@ -14,11 +14,15 @@ import {
 import { OrderService } from '@/business/order/order.service';
 import { isErrorResult } from '@/business/shared';
 import { ID } from '@/persistance/types';
+import { ShipmentService } from '@/shipments';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('order')
 export class OrderResolver {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly shipmentService: ShipmentService
+  ) {}
 
   @Query('order')
   async order(@Args('id') id: ID, @Args('code') code: string) {
@@ -71,6 +75,29 @@ export class OrderResolver {
     const result = await this.orderService.addShippingAddress(orderId, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+  }
+
+  @Query('availableShippingMethods')
+  async availableShippingMethods(@Args('orderId') orderdId: ID) {
+    const shippingMethods = await this.orderService.findAvailabelShippingMethods(orderdId);
+
+    return shippingMethods.map(shippingMethod => ({
+      ...shippingMethod,
+      pricePreview: this.shipmentService.getPricePreview(
+        shippingMethod.shippingHandler.handlerCode,
+        shippingMethod.handlerMetadata as Record<string, string>
+      )
+    }));
+  }
+
+  @Query('availablePaymentMethods')
+  async availablePaymentMethods() {
+    const result = await this.orderService.findAvailablePaymentMethods();
+    console.log({
+      result
+    });
+
+    return result;
   }
 
   @Mutation('addShipmentToOrder')
