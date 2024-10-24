@@ -18,7 +18,8 @@ We know there are so many other options for e-commerce platform, so why choose u
 
 ## Roadmap
 
-> [!NOTE] > **Vendy is in development. Check marks indicate completed MVP sections; more features will be added.**
+> [!NOTE] 
+> **Vendy is in development. Check marks indicate completed MVP sections; more features will be added.**
 
 - [x] Products
 - [ ] Orders 🚧
