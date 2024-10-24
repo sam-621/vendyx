@@ -22,16 +22,15 @@ We know there are so many other options for e-commerce platform, so why choose u
 > **Vendy is in development. Check marks indicate completed MVP sections; more features will be added.**
 
 - [x] Products
-- [ ] Orders
+- [ ] Orders 🚧
 - [ ] Customers
 - [ ] Collections
-- [ ] Storefront API
-- [ ] Shipments 🚧
+- [x] Shipments 
 - [x] Payments
 - [ ] Coupons
 - [ ] Roles
 - [ ] Internationalization
-- [ ] Extensible by code
+- [ ] Storefront API
 
 ## Tech stack
 
