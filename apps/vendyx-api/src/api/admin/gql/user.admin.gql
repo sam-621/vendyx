@@ -1,0 +1,65 @@
+type User implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The user's email (unique)
+  """
+  email: String!
+
+  """
+  The user's shops
+  """
+  shops: ShopList!
+}
+
+type UserList implements List {
+  items: [User!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  user(accessToken: String!): User
+  validateAccessToken: Boolean
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): UserResult!
+  updateUser(id: ID!, input: UpdateUserInput!): UserResult!
+  generateUserAccessToken(input: GenerateUserAccessTokenInput!): UserAccessTokenResult!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+}
+
+input GenerateUserAccessTokenInput {
+  email: String!
+  password: String!
+}
+
+type UserAccessTokenResult {
+  apiErrors: [UserErrorResult!]!
+  accessToken: String
+}
+
+type UserResult {
+  user: User
+  apiErrors: [UserErrorResult!]!
+}
+
+type UserErrorResult {
+  code: UserErrorCode!
+  message: String!
+}
+
+enum UserErrorCode {
+  INVALID_CREDENTIALS
+  EMAIL_ALREADY_EXISTS
+}

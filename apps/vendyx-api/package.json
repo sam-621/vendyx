@@ -1,0 +1,91 @@
+{
+  "name": "core",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "dev": "dotenv -e .env -- nest start --watch",
+    "dev:debug": "dotenv -e .env -- nest start --debug --watch",
+    "debug:prisma": "DEBUG=prisma* dotenv -e .env -- nest start --debug --watch",
+    "start": "node dist/main",
+    "gql:generate": "ts-node ./scripts/generate-gql-types.script.ts",
+    "db:seed": "ts-node prisma/seed/seed.ts",
+    "db:clean": "ts-node prisma/clean/clean.ts",
+    "db:push": "dotenv -e .env.migration prisma db push"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.10.5",
+    "@nestjs/apollo": "^12.2.0",
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/graphql": "^12.2.0",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/passport": "^10.0.3",
+    "@nestjs/platform-express": "^10.3.10",
+    "@prisma/client": "^5.17.0",
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.4.0",
+    "graphql": "^16.9.0",
+    "graphql-type-json": "^0.3.2",
+    "multer": "^1.4.5-lts.1",
+    "nestjs-cls": "^4.4.0",
+    "nestjs-prisma": "^0.23.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.2.0",
+    "slugify": "^1.6.6",
+    "ts-morph": "^23.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^9.0.0",
+    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^9.0.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.13",
+    "@types/jest": "29.5.1",
+    "@types/multer": "^1.4.11",
+    "@types/node": "18.16.12",
+    "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "dotenv-cli": "^7.4.2",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "29.5.0",
+    "prettier": "^2.3.2",
+    "prisma": "^5.17.0",
+    "source-map-support": "^0.5.20",
+    "supertest": "^6.1.3",
+    "ts-jest": "29.1.0",
+    "ts-loader": "^9.2.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "^5.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}

@@ -1,0 +1,45 @@
+"""
+A variant is a specific version of a product.
+For example, a product can have a variant with a specific color, size, or material.
+"""
+type Variant implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The variant's SKU
+  """
+  sku: String
+  """
+  The variant's sale price
+  """
+  salePrice: Int!
+  """
+  The variant's stock
+  """
+  stock: Int!
+  """
+  The variant's comparison price.
+  Useful when you want to mark a variant as on sale. Comparison price should be higher than the sale price.
+  """
+  comparisonPrice: Int
+  """
+  The variant's cost per unit.
+  Useful when you want to calculate the profit of a variant.
+  """
+  costPerUnit: Int
+  """
+  The variant's weight
+  Useful when you want to indicate that the variant needs shipping.
+  """
+  requiresShipping: Boolean!
+
+  optionValues: [OptionValue!]!
+  product: Product!
+}
+
+type VariantList implements List {
+  items: [Variant!]!
+  count: Int!
+  pageInfo: PageInfo!
+}

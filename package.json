@@ -1,27 +1,20 @@
 {
-  "name": "ebloc",
+  "name": "vendyx",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "description": "A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.",
-  "repository": "https://github.com/sam-621/ebloc",
+  "repository": "https://github.com/sam-621/vendyx",
   "author": "Rogelio Samuel Moreno Corrales <rogeliosamuel621@gmail.com>",
-  "license": "GPL-3.0-only",
+  "license": "AGPL-3.0",
   "scripts": {
     "prepare": "husky install && yarn executable",
-    "build": "lerna run build",
-    "start": "lerna run start --scope @ebloc/server",
-    "executable": "chmod ug+x .husky/*",
-    "publish-release": "yarn build && lerna publish --no-private --no-push"
+    "executable": "chmod ug+x .husky/*"
   },
   "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "^18.5.0",
     "@commitlint/config-conventional": "^18.5.0",
-    "husky": "^8.0.0",
-    "lerna": "^8.0.2"
+    "husky": "^8.0.0"
   },
   "gacp": {
     "push": false

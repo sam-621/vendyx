@@ -1,0 +1,27 @@
+"""
+A shipping method is a method chosen by the customer to ship the order to the customer's address
+"""
+type ShippingMethod implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The shipping method's name (e.g. 'Stripe')
+  """
+  name: String!
+
+  """
+  The shipping method's description
+  """
+  description: String
+
+  """
+  Whether the shipping method is enabled or not
+  Not enabled shipping methods will not be shown in the storefront
+  Useful for shipping methods that are not ready to be used yet
+  """
+  enabled: Boolean!
+
+  pricePreview: Int!
+}

@@ -1,0 +1,11 @@
+type Shipment implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  trackingCode: String
+  carrier: String
+  amount: Int!
+  method: String!
+
+  order: Order!
+}

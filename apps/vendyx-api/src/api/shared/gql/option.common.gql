@@ -1,0 +1,14 @@
+type Option implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+
+  values: [OptionValue!]!
+}
+
+type OptionList implements List {
+  items: [Option!]!
+  count: Int!
+  pageInfo: PageInfo!
+}

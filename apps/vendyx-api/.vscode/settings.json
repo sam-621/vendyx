@@ -1,0 +1,43 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.iconTheme": "symbols",
+  // This makes editor really slow
+  // "editor.codeActionsOnSave": {
+  //   "source.fixAll.eslint": "explicit",
+  //   "source.fixAll.format": "explicit"
+  // },
+  "symbols.folders.associations": {
+    "sql": "folder-database",
+    "common": "folder-shared",
+    "api": "folder-yellow",
+    "business": "folder-red",
+    "persistance": "folder-blue",
+    "test": "folder-green",
+    "gql": "folder-purple",
+    "graphql": "folder-purple-outline",
+    "resolvers": "folder-router",
+    "scripts": "folder-gray-code",
+    "node_modules": "",
+    "dist": "folder-red"
+  },
+  "symbols.files.associations": {
+    "*.module.ts": "nest",
+    "*.service.ts": "nest-service",
+    "*.resolver.ts": "nest-controller",
+    "*.controller.ts": "nest-controller"
+  },
+  "cSpell.words": [
+    "Cloudinary",
+    "clsx",
+    "codegen",
+    "fontsource",
+    "hookform",
+    "lucide",
+    "nestjs",
+    "sonner",
+    "tailwindcss",
+    "tanstack",
+    "typeorm",
+    "vendyx"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Commented by default because of performance issues, but you can uncomment it if you want to use it
+  // "[typescript]": {
+  //   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  // },
+  // "[javascript]": {
+  //   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  // },
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+  "symbols.files.associations": {
+    "*.service.ts": ""
+  },
+  "cSpell.words": [
+    "clsx",
+    "codegen",
+    "especifictly",
+    "gacp",
+    "hookform",
+    "lucide",
+    "nprogress",
+    "sonner",
+    "tailwindcss",
+    "tanstack",
+    "VENDYX"
+  ]
+}

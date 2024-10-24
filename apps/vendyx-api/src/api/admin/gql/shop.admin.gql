@@ -1,0 +1,40 @@
+type Shop implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  """
+  The shop's name
+  """
+  name: String!
+  """
+  The shop's slug
+  """
+  slug: String!
+  """
+  The shop's owner
+  """
+  owner: User!
+}
+
+type ShopList implements List {
+  items: [Shop!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  shop(slug: String!): Shop
+  shops(input: ListInput): ShopList!
+}
+
+type Mutation {
+  createShop(input: CreateShopInput!): Shop!
+}
+
+input CreateShopInput {
+  name: String!
+}
+
+input UpdateShopInput {
+  name: String
+}

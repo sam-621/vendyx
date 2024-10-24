@@ -1,0 +1,16 @@
+type OrderLine implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  unitPrice: Int!
+  quantity: Int!
+  linePrice: Int!
+
+  productVariant: Variant!
+}
+
+type OrderLineList implements List {
+  items: [OrderLine!]!
+  count: Int!
+  pageInfo: PageInfo!
+}

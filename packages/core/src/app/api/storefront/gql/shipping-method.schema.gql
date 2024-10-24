@@ -1,7 +1,0 @@
-type Query {
-  availableShippingMethods(orderId: ID!): [ShippingMethod!]!
-}
-
-extend type ShippingMethod {
-  price: Int!
-}

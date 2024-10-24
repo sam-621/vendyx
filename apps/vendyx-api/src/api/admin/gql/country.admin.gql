@@ -1,0 +1,23 @@
+type Country implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  name: String!
+
+  states: [State!]!
+}
+
+type State implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  name: String!
+
+  country: Country!
+}
+
+type Query {
+  countries: [Country!]!
+}

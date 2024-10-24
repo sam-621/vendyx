@@ -1,0 +1,72 @@
+/// A payment is a transaction between a customer and a shop, is assigned to an order
+model Payment {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The transaction id of the payment. Is nullable because the payment might not have been processed yet.
+  transactionId String? @map("transaction_id")
+  ///The total amount of the payment
+  amount        Int
+  /// The Payment method name used for the payment
+  method        String
+
+  Order Order[]
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("payment")
+}
+
+/// A payment method is a way to pay for an order in your shop, like credit card, paypal, etc
+model PaymentMethod {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// Whether the payment method is enabled or not
+  /// Not enabled payment methods will not be shown in the storefront
+  /// Useful for payment methods that are not ready to be used yet
+  enabled             Boolean @default(true)
+  /// Specific data for the payment integration chosen
+  /// Usually, this json stores the payment integration keys
+  integrationMetadata Json    @map("integration_metadata")
+
+  paymentIntegration   PaymentIntegration @relation(fields: [paymentIntegrationId], references: [id])
+  paymentIntegrationId String             @map("payment_integration_id") @db.Uuid
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("payment_method")
+}
+
+/// A payment integration is am integration to be used in a payment method by any shop.
+model PaymentIntegration {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// Payment integration's name
+  name String
+
+  /// Payment integration's icon (show in UI)
+  icon String
+
+  /// Payment integration's handler code 
+  /// Used to identify which payment handler to use in this integration
+  /// Used to know how to render the payment form in the storefront (paypal, stripe, etc)
+  handlerCode String @unique @map("handler_code")
+
+  /// Payment integration's metadata
+  /// This metadata is usually used to store the payment integration keys
+  metadata Json
+
+  paymentMethods PaymentMethod[]
+
+  @@map("payment_integration")
+}

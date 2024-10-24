@@ -1,0 +1,81 @@
+type Mutation {
+  createOrder(input: CreateOrderInput!): OrderResult!
+  addLineToOrder(orderId: ID!, input: CreateOrderLineInput!): OrderResult!
+  updateOrderLine(lineId: ID!, input: UpdateOrderLineInput!): OrderResult!
+  removeOrderLine(lineId: ID!): OrderResult!
+  addCustomerToOrder(orderId: ID!, input: AddCustomerToOrderInput!): OrderResult!
+  addShippingAddressToOrder(orderId: ID!, input: CreateAddressInput!): OrderResult!
+  addShipmentToOrder(orderId: ID!, input: AddShipmentToOrderInput!): OrderResult!
+  addPaymentToOrder(orderId: ID!, input: AddPaymentToOrderInput!): OrderResult!
+}
+
+type Query {
+  availableShippingMethods(orderId: ID!): [ShippingMethod!]!
+  availablePaymentMethods(orderId: ID!): [PaymentMethod!]!
+}
+
+input CreateOrderInput {
+  line: CreateOrderLineInput
+}
+
+input CreateOrderLineInput {
+  productVariantId: ID!
+  quantity: Int!
+}
+
+input UpdateOrderLineInput {
+  quantity: Int!
+}
+
+input AddCustomerToOrderInput {
+  firstName: String
+  lastName: String!
+  email: String!
+  phoneNumber: String
+}
+
+input CreateAddressInput {
+  country: String!
+  streetLine1: String!
+  streetLine2: String
+  city: String!
+  province: String!
+  postalCode: String!
+  references: String
+}
+
+input AddPaymentToOrderInput {
+  methodId: ID!
+}
+
+input AddShipmentToOrderInput {
+  methodId: ID!
+}
+
+" Results "
+type OrderResult {
+  order: Order
+  apiErrors: [OrderErrorResult!]!
+}
+
+type OrderErrorResult {
+  code: OrderErrorCode!
+  message: String!
+}
+
+" Utils "
+enum OrderErrorCode {
+  NOT_ENOUGH_STOCK
+  CUSTOMER_INVALID_EMAIL
+  CUSTOMER_DISABLED
+  MISSING_SHIPPING_ADDRESS
+  SHIPPING_METHOD_NOT_FOUND
+  PAYMENT_METHOD_NOT_FOUND
+  PAYMENT_DECLINED
+  ORDER_TRANSITION_ERROR
+  """
+  Payment failed due to an unexpected error in the payment handler
+  """
+  PAYMENT_FAILED
+  FORBIDDEN_ORDER_ACTION
+}

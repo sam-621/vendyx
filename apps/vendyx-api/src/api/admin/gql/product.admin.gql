@@ -1,0 +1,55 @@
+type Query {
+  products(input: ProductListInput): ProductList!
+}
+
+type Mutation {
+  createProduct(input: CreateProductInput!): Product!
+  updateProduct(id: ID!, input: UpdateProductInput!): Product!
+  softRemoveProduct(ids: [ID!]!): Boolean!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String
+  enabled: Boolean
+  archived: Boolean
+
+  assets: [AssetInProductInput!]
+}
+
+input UpdateProductInput {
+  name: String
+  description: String
+  enabled: Boolean
+  archived: Boolean
+
+  assets: [AssetInProductInput!]
+}
+
+input AssetInProductInput {
+  id: ID!
+  order: Int!
+}
+
+input ProductListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: ProductFilters
+}
+
+input ProductFilters {
+  name: StringFilter
+  enabled: BooleanFilter
+  achived: BooleanFilter
+}

@@ -1,0 +1,52 @@
+/// A vendyx customer
+model User {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The user's email (unique)
+  email    String @unique
+  /// The user's hashed password
+  password String
+
+  /// The user's shops
+  shops Shop[]
+
+  @@map("users")
+}
+
+/// A vendyx shop
+model Shop {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// The shop's name
+  name       String
+  /// The shop's slug
+  slug       String @unique
+  /// The shop's API key which is used to authenticate requests for the shop-api
+  shopApiKey String @unique @map("shop_api_key")
+
+  product        Product[]
+  variant        Variant[]
+  option         Option[]
+  optionValue    OptionValue[]
+  asset          Asset[]
+  payment        Payment[]
+  paymentMethod  PaymentMethod[]
+  shipment       Shipment[]
+  shippingMethod ShippingMethod[]
+  zone           Zone[]
+  order          Order[]
+  orderLines     OrderLine[]
+  customer       Customer[]
+
+  /// The shop's owner
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @default(dbgenerated("(current_setting('app.current_owner_id'::text))::uuid")) @map("owner_id") @db.Uuid
+
+  @@map("shop")
+}

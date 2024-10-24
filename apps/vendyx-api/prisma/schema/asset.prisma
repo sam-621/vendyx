@@ -1,0 +1,39 @@
+enum AssetType {
+  IMAGE
+}
+
+model Asset {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  /// Asset's name
+  name String
+
+  /// Asset's source    
+  source String
+
+  /// Asset's type  
+  type AssetType @default(IMAGE)
+
+  products ProductAsset[]
+  variants Variant[]
+
+  shop   Shop   @relation(fields: [shopId], references: [id])
+  shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
+
+  @@map("asset")
+}
+
+model ProductAsset {
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @map("product_id") @db.Uuid
+  asset     Asset   @relation(fields: [assetId], references: [id])
+  assetId   String  @map("asset_id") @db.Uuid
+
+  order Int
+
+  @@id([productId, assetId])
+  @@map("product_asset")
+}
