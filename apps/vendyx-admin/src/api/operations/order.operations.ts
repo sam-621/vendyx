@@ -9,7 +9,6 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
     subtotal
     total
     totalQuantity
-    placedAt
     lines {
       items {
         id
@@ -18,14 +17,27 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
         unitPrice
         productVariant {
           id
-          salePrice
+          sku
+          optionValues {
+            id
+            name
+          }
+          product {
+            name
+            slug
+            assets {
+              items {
+                id
+                source
+              }
+            }
+          }
         }
       }
     }
     customer {
       id
       email
-      enabled
       firstName
       lastName
       phoneNumber
@@ -37,8 +49,6 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
       city
       province
       country
-      references
-      fullName
     }
     shipment {
       id

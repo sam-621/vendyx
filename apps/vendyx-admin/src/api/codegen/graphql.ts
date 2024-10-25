@@ -976,7 +976,6 @@ export type CommonOrderFragment = {
   subtotal: number;
   total: number;
   totalQuantity: number;
-  placedAt?: any | null;
   lines: {
     __typename?: 'OrderLineList';
     items: Array<{
@@ -985,14 +984,27 @@ export type CommonOrderFragment = {
       linePrice: number;
       quantity: number;
       unitPrice: number;
-      productVariant: { __typename?: 'Variant'; id: string; salePrice: number };
+      productVariant: {
+        __typename?: 'Variant';
+        id: string;
+        sku?: string | null;
+        optionValues: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
+        product: {
+          __typename?: 'Product';
+          name: string;
+          slug: string;
+          assets: {
+            __typename?: 'AssetList';
+            items: Array<{ __typename?: 'Asset'; id: string; source: string }>;
+          };
+        };
+      };
     }>;
   };
   customer?: {
     __typename?: 'Customer';
     id: string;
     email: string;
-    enabled: boolean;
     firstName?: string | null;
     lastName: string;
     phoneNumber?: string | null;
@@ -1005,8 +1017,6 @@ export type CommonOrderFragment = {
     city: string;
     province: string;
     country: string;
-    references?: string | null;
-    fullName?: string | null;
   } | null;
   shipment?: {
     __typename?: 'Shipment';
@@ -1512,7 +1522,6 @@ export const CommonOrderFragmentDoc = new TypedDocumentString(
   subtotal
   total
   totalQuantity
-  placedAt
   lines {
     items {
       id
@@ -1521,14 +1530,27 @@ export const CommonOrderFragmentDoc = new TypedDocumentString(
       unitPrice
       productVariant {
         id
-        salePrice
+        sku
+        optionValues {
+          id
+          name
+        }
+        product {
+          name
+          slug
+          assets {
+            items {
+              id
+              source
+            }
+          }
+        }
       }
     }
   }
   customer {
     id
     email
-    enabled
     firstName
     lastName
     phoneNumber
@@ -1540,8 +1562,6 @@ export const CommonOrderFragmentDoc = new TypedDocumentString(
     city
     province
     country
-    references
-    fullName
   }
   shipment {
     id
@@ -1754,7 +1774,6 @@ export const GetOrderbyIdQueryDocument = new TypedDocumentString(`
   subtotal
   total
   totalQuantity
-  placedAt
   lines {
     items {
       id
@@ -1763,14 +1782,27 @@ export const GetOrderbyIdQueryDocument = new TypedDocumentString(`
       unitPrice
       productVariant {
         id
-        salePrice
+        sku
+        optionValues {
+          id
+          name
+        }
+        product {
+          name
+          slug
+          assets {
+            items {
+              id
+              source
+            }
+          }
+        }
       }
     }
   }
   customer {
     id
     email
-    enabled
     firstName
     lastName
     phoneNumber
@@ -1782,8 +1814,6 @@ export const GetOrderbyIdQueryDocument = new TypedDocumentString(`
     city
     province
     country
-    references
-    fullName
   }
   shipment {
     id

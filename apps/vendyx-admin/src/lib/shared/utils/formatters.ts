@@ -6,7 +6,7 @@ export const formatPhoneNumber = (input: { phoneNumber?: string; phoneCountryCod
 
   const formattedNumber = input.phoneNumber?.replace(/(\d{4})(\d{3})(\d{3})/, '$1 $2 $3');
 
-  return `+ ${input.phoneCountryCode} ${formattedNumber}`;
+  return formattedNumber;
 };
 
 /**
@@ -90,4 +90,15 @@ export const formatPrice = (price: number, options?: { withCurrencyIcon?: boolea
  */
 export const add3dots = (str: string, limit: number) => {
   return str.length > limit ? str.substring(0, limit) + '...' : str;
+};
+
+/**
+ * Get the full name from a user object
+ */
+export const getFullName = (input: { firstName?: string; lastName: string }) => {
+  if (!input.firstName) {
+    return input.lastName;
+  }
+
+  return `${input.firstName} ${input.lastName}`;
 };

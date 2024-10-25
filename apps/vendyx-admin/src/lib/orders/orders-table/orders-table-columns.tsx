@@ -49,7 +49,7 @@ export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
       const customer = row.original.customer;
 
       return (
-        <Link href={`/orders/${row.original.id ?? ''}`} className="flex items-center gap-2 w-full">
+        <Link href={`orders/${row.original.id ?? ''}`} className="flex items-center gap-2 w-full">
           <UserIcon className="h-6 w-6 flex-shrink-0" />
           <span className="text-nowrap">{customer}</span>
         </Link>

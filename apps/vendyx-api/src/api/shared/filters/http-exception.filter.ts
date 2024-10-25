@@ -7,6 +7,11 @@ import { GqlExceptionFilter } from '@nestjs/graphql';
 @Catch()
 export class HttpExceptionFilter implements GqlExceptionFilter {
   catch(exception: HttpException): any {
+    // Apollo sometimes throws this error, we don't need to log it
+    if (exception.message === 'Cannot GET /favicon.ico') {
+      return null;
+    }
+
     Logger.error({
       type: 'HTTP_ERROR',
       name: exception.name,
