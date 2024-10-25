@@ -14,11 +14,12 @@ import { OrdersTableColumns } from './orders-table-columns';
 
 export const OrdersTable: FC<Props> = async props => {
   const { page, search, size } = parseDataTableSearchParams({ ...props });
+  const { state } = props;
 
   const { items: orders, pageInfo } = await OrderService.getAll({
     skip: getSkip(page, size),
     take: size,
-    filters: { code: search }
+    filters: { code: search, state }
   });
 
   if (!orders.length && !search) {
@@ -66,4 +67,6 @@ export type OrdersTableRow = {
   state: OrderState;
 };
 
-type Props = DataTableSearchParams;
+type Props = DataTableSearchParams & {
+  state?: OrderState;
+};
