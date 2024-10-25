@@ -3,6 +3,8 @@ import { type FC } from 'react';
 import { type CommonOrderFragment, OrderState } from '@/api/types';
 import { Button } from '@/lib/shared/components';
 
+import { MarkOrderAsShippedButton } from '../mark-as-shipped';
+
 export const OrderStatusTransitionButton: FC<Props> = ({ order }) => {
   const orderState = order.state;
 
@@ -19,8 +21,7 @@ export const OrderStatusTransitionButton: FC<Props> = ({ order }) => {
   }
 
   if (orderState === OrderState.PaymentAuthorized) {
-    // return <MarkOrderAsShippedOrderButton id={order.id} />;
-    return <Button type="button">Mark as sent</Button>;
+    return <MarkOrderAsShippedButton />;
   }
 
   if (orderState === OrderState.Shipped) {

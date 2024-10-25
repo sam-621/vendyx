@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
 import { OrderState } from '@/api/types';
-import { OrdersTable } from '@/lib/orders/orders-table';
+import { OrdersTable } from '@/lib/orders/components';
 import {
   AdminPageLayout,
   type DataTableSearchParams,

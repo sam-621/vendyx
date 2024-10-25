@@ -6,9 +6,9 @@ import {
   OrderCustomerCard,
   OrderItemsTable,
   OrderPaymentCard,
-  OrderShipmentCard
-} from '@/lib/orders/order-details-cards';
-import { OrderStatusTransitionButton } from '@/lib/orders/order-status';
+  OrderShipmentCard,
+  OrderStatusTransitionButton
+} from '@/lib/orders/components';
 import { AdminPageLayout } from '@/lib/shared/components';
 
 export default async function OrderDetails({ params }: { params: { id: ID } }) {
