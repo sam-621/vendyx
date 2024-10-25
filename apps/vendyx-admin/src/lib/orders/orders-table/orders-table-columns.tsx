@@ -36,7 +36,7 @@ export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [
       return <DataTableColumnHeader column={column} title="Code" />;
     },
     cell: ({ row }) => {
-      return <span className="w-20">#{row.original.code}</span>;
+      return <span className="w-20">{row.original.code}</span>;
     },
     enableSorting: false
   },

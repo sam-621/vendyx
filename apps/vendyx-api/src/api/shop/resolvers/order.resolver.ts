@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Order } from '@prisma/client';
 
 import {
   AddCustomerToOrderInput,
@@ -17,7 +18,7 @@ import { ID } from '@/persistance/types';
 import { ShipmentService } from '@/shipments';
 
 @UseGuards(ShopApiKeyGuard)
-@Resolver('order')
+@Resolver('Order')
 export class OrderResolver {
   constructor(
     private readonly orderService: OrderService,
@@ -122,5 +123,12 @@ export class OrderResolver {
     const result = await this.orderService.addPayment(orderId, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+  }
+
+  @ResolveField('code')
+  async code(@Parent() order: Order) {
+    const { code } = order;
+
+    return this.orderService.formatOrderCode(code);
   }
 }

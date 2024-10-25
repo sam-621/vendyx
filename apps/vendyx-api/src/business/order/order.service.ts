@@ -62,11 +62,11 @@ export class OrderService {
 
   async findUnique(id?: string, code?: string) {
     if (id) {
-      return this.prisma.order.findUnique({ where: { id } });
+      return await this.prisma.order.findUnique({ where: { id } });
     }
 
     if (code) {
-      return this.prisma.order.findUnique({ where: { code: this.parseOrderCode(code) } });
+      return await this.prisma.order.findUnique({ where: { code: this.parseOrderCode(code) } });
     }
 
     return null;
@@ -489,6 +489,10 @@ export class OrderService {
     return transitionStateAllowed;
   }
 
+  formatOrderCode(code: number) {
+    return `#${code.toString().padStart(4, '0')}`;
+  }
+
   /**
    * Parse order code to get the raw order code
    *
@@ -498,7 +502,8 @@ export class OrderService {
    * console.log(rawOrderCode) // 1
    */
   private parseOrderCode(code: string) {
-    return Number(code.replace('#', ''));
+    // if 0, or is NaN, return undefined, usefull for filters, if there is not valid code, don't filter by it
+    return Number(code.replace('#', '')) || undefined;
   }
 
   /**

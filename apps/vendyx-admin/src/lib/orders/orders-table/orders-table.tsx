@@ -21,7 +21,7 @@ export const OrdersTable: FC<Props> = async props => {
     filters: { code: search }
   });
 
-  if (!orders.length) {
+  if (!orders.length && !search) {
     return <DataTableEmptyState title="Your orders will appear here" />;
   }
 
