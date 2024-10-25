@@ -414,7 +414,6 @@ export type OrderLinesArgs = {
 /**  Utils  */
 export enum OrderErrorCode {
   ForbiddenOrderAction = 'FORBIDDEN_ORDER_ACTION',
-  OrderNotFound = 'ORDER_NOT_FOUND',
   OrderTransitionError = 'ORDER_TRANSITION_ERROR'
 }
 
@@ -1094,11 +1093,7 @@ export type MarkAsShippedMutation = {
   markOrderAsShipped: {
     __typename?: 'OrderResult';
     apiErrors: Array<{ __typename?: 'OrderErrorResult'; code: OrderErrorCode; message: string }>;
-    order?:
-      | ({ __typename?: 'Order' } & {
-          ' $fragmentRefs'?: { CommonOrderFragment: CommonOrderFragment };
-        })
-      | null;
+    order?: { __typename?: 'Order'; id: string } | null;
   };
 };
 
@@ -1111,11 +1106,7 @@ export type MarkAsDeliveredMutation = {
   markOrderAsDelivered: {
     __typename?: 'OrderResult';
     apiErrors: Array<{ __typename?: 'OrderErrorResult'; code: OrderErrorCode; message: string }>;
-    order?:
-      | ({ __typename?: 'Order' } & {
-          ' $fragmentRefs'?: { CommonOrderFragment: CommonOrderFragment };
-        })
-      | null;
+    order?: { __typename?: 'Order'; id: string } | null;
   };
 };
 
@@ -1128,11 +1119,7 @@ export type CancelOrderMutation = {
   cancelOrder: {
     __typename?: 'OrderResult';
     apiErrors: Array<{ __typename?: 'OrderErrorResult'; code: OrderErrorCode; message: string }>;
-    order?:
-      | ({ __typename?: 'Order' } & {
-          ' $fragmentRefs'?: { CommonOrderFragment: CommonOrderFragment };
-        })
-      | null;
+    order?: { __typename?: 'Order'; id: string } | null;
   };
 };
 
@@ -1890,73 +1877,11 @@ export const MarkAsShippedDocument = new TypedDocumentString(`
       message
     }
     order {
-      ...CommonOrder
+      id
     }
   }
 }
-    fragment CommonOrder on Order {
-  id
-  createdAt
-  code
-  state
-  subtotal
-  total
-  totalQuantity
-  lines {
-    items {
-      id
-      linePrice
-      quantity
-      unitPrice
-      productVariant {
-        id
-        sku
-        optionValues {
-          id
-          name
-        }
-        product {
-          name
-          slug
-          assets {
-            items {
-              id
-              source
-            }
-          }
-        }
-      }
-    }
-  }
-  customer {
-    id
-    email
-    firstName
-    lastName
-    phoneNumber
-  }
-  shippingAddress {
-    streetLine1
-    streetLine2
-    postalCode
-    city
-    province
-    country
-  }
-  shipment {
-    id
-    amount
-    carrier
-    method
-    trackingCode
-  }
-  payment {
-    id
-    amount
-    method
-    transactionId
-  }
-}`) as unknown as TypedDocumentString<MarkAsShippedMutation, MarkAsShippedMutationVariables>;
+    `) as unknown as TypedDocumentString<MarkAsShippedMutation, MarkAsShippedMutationVariables>;
 export const MarkAsDeliveredDocument = new TypedDocumentString(`
     mutation MarkAsDelivered($orderId: ID!) {
   markOrderAsDelivered(id: $orderId) {
@@ -1965,73 +1890,11 @@ export const MarkAsDeliveredDocument = new TypedDocumentString(`
       message
     }
     order {
-      ...CommonOrder
+      id
     }
   }
 }
-    fragment CommonOrder on Order {
-  id
-  createdAt
-  code
-  state
-  subtotal
-  total
-  totalQuantity
-  lines {
-    items {
-      id
-      linePrice
-      quantity
-      unitPrice
-      productVariant {
-        id
-        sku
-        optionValues {
-          id
-          name
-        }
-        product {
-          name
-          slug
-          assets {
-            items {
-              id
-              source
-            }
-          }
-        }
-      }
-    }
-  }
-  customer {
-    id
-    email
-    firstName
-    lastName
-    phoneNumber
-  }
-  shippingAddress {
-    streetLine1
-    streetLine2
-    postalCode
-    city
-    province
-    country
-  }
-  shipment {
-    id
-    amount
-    carrier
-    method
-    trackingCode
-  }
-  payment {
-    id
-    amount
-    method
-    transactionId
-  }
-}`) as unknown as TypedDocumentString<MarkAsDeliveredMutation, MarkAsDeliveredMutationVariables>;
+    `) as unknown as TypedDocumentString<MarkAsDeliveredMutation, MarkAsDeliveredMutationVariables>;
 export const CancelOrderDocument = new TypedDocumentString(`
     mutation CancelOrder($orderId: ID!) {
   cancelOrder(id: $orderId) {
@@ -2040,73 +1903,11 @@ export const CancelOrderDocument = new TypedDocumentString(`
       message
     }
     order {
-      ...CommonOrder
+      id
     }
   }
 }
-    fragment CommonOrder on Order {
-  id
-  createdAt
-  code
-  state
-  subtotal
-  total
-  totalQuantity
-  lines {
-    items {
-      id
-      linePrice
-      quantity
-      unitPrice
-      productVariant {
-        id
-        sku
-        optionValues {
-          id
-          name
-        }
-        product {
-          name
-          slug
-          assets {
-            items {
-              id
-              source
-            }
-          }
-        }
-      }
-    }
-  }
-  customer {
-    id
-    email
-    firstName
-    lastName
-    phoneNumber
-  }
-  shippingAddress {
-    streetLine1
-    streetLine2
-    postalCode
-    city
-    province
-    country
-  }
-  shipment {
-    id
-    amount
-    carrier
-    method
-    trackingCode
-  }
-  payment {
-    id
-    amount
-    method
-    transactionId
-  }
-}`) as unknown as TypedDocumentString<CancelOrderMutation, CancelOrderMutationVariables>;
+    `) as unknown as TypedDocumentString<CancelOrderMutation, CancelOrderMutationVariables>;
 export const GetPaymentMethodsDocument = new TypedDocumentString(`
     query GetPaymentMethods {
   paymentMethods {

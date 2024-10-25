@@ -28,11 +28,11 @@ const documents = {
     types.GetAllOrdersQueryDocument,
   '\n  query GetOrderbyIdQuery($orderId: ID) {\n    order(id: $orderId) {\n      ...CommonOrder\n    }\n  }\n':
     types.GetOrderbyIdQueryDocument,
-  '\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        ...CommonOrder\n      }\n    }\n  }\n':
+  '\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n':
     types.MarkAsShippedDocument,
-  '\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        ...CommonOrder\n      }\n    }\n  }\n':
+  '\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n':
     types.MarkAsDeliveredDocument,
-  '\n  mutation CancelOrder($orderId: ID!) {\n    cancelOrder(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        ...CommonOrder\n      }\n    }\n  }\n':
+  '\n  mutation CancelOrder($orderId: ID!) {\n    cancelOrder(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n':
     types.CancelOrderDocument,
   '\n  fragment CommonPaymentIntegration on PaymentIntegration {\n    id\n    icon\n    name\n    metadata\n  }\n':
     types.CommonPaymentIntegrationFragmentDoc,
@@ -157,19 +157,19 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        ...CommonOrder\n      }\n    }\n  }\n'
+  source: '\n  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {\n    markOrderAsShipped(id: $orderId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n'
 ): typeof import('./graphql').MarkAsShippedDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        ...CommonOrder\n      }\n    }\n  }\n'
+  source: '\n  mutation MarkAsDelivered($orderId: ID!) {\n    markOrderAsDelivered(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n'
 ): typeof import('./graphql').MarkAsDeliveredDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation CancelOrder($orderId: ID!) {\n    cancelOrder(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        ...CommonOrder\n      }\n    }\n  }\n'
+  source: '\n  mutation CancelOrder($orderId: ID!) {\n    cancelOrder(id: $orderId) {\n      apiErrors {\n        code\n        message\n      }\n      order {\n        id\n      }\n    }\n  }\n'
 ): typeof import('./graphql').CancelOrderDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

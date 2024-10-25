@@ -26,7 +26,6 @@ type OrderErrorResult {
 
 " Utils "
 enum OrderErrorCode {
-  ORDER_NOT_FOUND
   ORDER_TRANSITION_ERROR
   FORBIDDEN_ORDER_ACTION
 }

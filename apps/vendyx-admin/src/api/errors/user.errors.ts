@@ -1,7 +1,7 @@
 import { UserErrorCode, type UserErrorResult } from '../codegen/graphql';
 
 export const getUserError = (error?: UserErrorResult) => {
-  if (!error) return '';
+  if (!error) return null;
 
   if (error.code === UserErrorCode.EmailAlreadyExists) {
     return 'Email already exists';

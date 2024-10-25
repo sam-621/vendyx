@@ -112,7 +112,7 @@ export const MARK_ORDER_AS_SHIPPED_MUTATION = graphql(`
         message
       }
       order {
-        ...CommonOrder
+        id
       }
     }
   }
@@ -126,7 +126,7 @@ export const MARK_ORDER_AS_DELIVERED_MUTATION = graphql(`
         message
       }
       order {
-        ...CommonOrder
+        id
       }
     }
   }
@@ -140,7 +140,7 @@ export const CANCEL_ORDER_MUTATION = graphql(`
         message
       }
       order {
-        ...CommonOrder
+        id
       }
     }
   }
