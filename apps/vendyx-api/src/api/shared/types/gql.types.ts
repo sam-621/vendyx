@@ -125,7 +125,7 @@ export class ProductListInput {
 export class ProductFilters {
     name?: Nullable<StringFilter>;
     enabled?: Nullable<BooleanFilter>;
-    achived?: Nullable<BooleanFilter>;
+    archived?: Nullable<BooleanFilter>;
 }
 
 export class CreateShippingMethodInput {

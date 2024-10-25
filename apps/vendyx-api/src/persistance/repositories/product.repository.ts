@@ -15,7 +15,7 @@ export class ProductRepository {
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
         name: clean(input?.filters?.name ?? {}),
-        archived: clean(input?.filters?.achived ?? {}),
+        archived: clean(input?.filters?.archived ?? {}),
         enabled: clean(input?.filters?.enabled ?? {})
       },
       orderBy: { createdAt: 'desc' }
@@ -31,7 +31,7 @@ export class ProductRepository {
       where: {
         id,
         name: clean(filters?.name ?? {}),
-        archived: clean(filters?.achived ?? {}),
+        archived: clean(filters?.archived ?? {}),
         enabled: clean(filters?.enabled ?? {})
       }
     });
@@ -42,7 +42,7 @@ export class ProductRepository {
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
         name: clean(input?.filters?.name ?? {}),
-        archived: clean(input?.filters?.achived ?? {}),
+        archived: clean(input?.filters?.archived ?? {}),
         enabled: clean(input?.filters?.enabled ?? {})
       }
     });

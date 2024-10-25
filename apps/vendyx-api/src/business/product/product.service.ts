@@ -18,7 +18,7 @@ export class ProductService {
     return this.productRepository.findMany({
       ...input,
       filters: {
-        achived: { equals: false },
+        archived: { equals: false },
         ...input?.filters
       }
     });
@@ -28,7 +28,7 @@ export class ProductService {
     return this.productRepository.count({
       ...input,
       filters: {
-        achived: { equals: false },
+        archived: { equals: false },
         ...input?.filters
       }
     });
