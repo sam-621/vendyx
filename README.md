@@ -2,7 +2,7 @@
 
 A functional and scalable minimal e-commerce admin that can be adjusted to any user's requirement.
 
-Vendyx is created to provide a open source solution to ecommerce administration, and also to simplify the way you manage a e-commerce.
+Vendyx is created to provide a open source solution to e-commerce administration, and also to simplify the way you manage a e-commerce.
 
 Vendyx cannot be that sophisticated, there is only 1 person working on this project, but it will count with minimal essential features for a e-commerce management
 
@@ -18,12 +18,12 @@ We know there are so many other options for e-commerce platform, so why choose u
 
 ## Roadmap
 
-> [!NOTE] 
-> **Vendy is in development. Check marks indicate completed MVP sections; more features will be added.**
+> [!NOTE]
+> **Vendyx is in development. Check marks indicate completed MVP sections; more features will be added.**
 
 - [x] Products
-- [ ] Orders 🚧
-- [ ] Customers
+- [x] Orders
+- [ ] Customers 🚧
 - [ ] Collections
 - [x] Shipments
 - [x] Payments
