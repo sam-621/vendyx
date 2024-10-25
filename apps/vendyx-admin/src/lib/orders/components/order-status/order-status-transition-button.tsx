@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { type CommonOrderFragment, OrderState } from '@/api/types';
 import { Button } from '@/lib/shared/components';
 
-import { MarkOrderAsShippedButton } from '../mark-as-shipped';
+import { MarkOrderAsShippedButton } from '../mark-order-as-shipped';
 
 export const OrderStatusTransitionButton: FC<Props> = ({ order }) => {
   const orderState = order.state;

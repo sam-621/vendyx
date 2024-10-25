@@ -1,5 +1,9 @@
 import { getFragmentData } from '../codegen';
-import { type MarkOrderAsShippedInput, type OrderListInput } from '../codegen/graphql';
+import {
+  type MarkOrderAsShippedInput,
+  type OrderErrorCode,
+  type OrderListInput
+} from '../codegen/graphql';
 import { getOrderError } from '../errors/order.errors';
 import {
   CANCEL_ORDER_MUTATION,
@@ -40,7 +44,7 @@ export const OrderService = {
     return order;
   },
 
-  async markAsShipped(orderId: ID, input: MarkOrderAsShippedInput) {
+  async markAsShipped(orderId: ID, input: MarkOrderAsShippedInput): Promise<OrderResult> {
     const {
       markOrderAsShipped: { apiErrors, order }
     } = await fetcher(MARK_ORDER_AS_SHIPPED_MUTATION, { orderId, input });
@@ -54,7 +58,7 @@ export const OrderService = {
     return { success: true, orderId: order?.id ?? '' };
   },
 
-  async markAsDelivered(orderId: ID) {
+  async markAsDelivered(orderId: ID): Promise<OrderResult> {
     const {
       markOrderAsDelivered: { apiErrors, order }
     } = await fetcher(MARK_ORDER_AS_DELIVERED_MUTATION, { orderId });
@@ -68,7 +72,7 @@ export const OrderService = {
     return { success: true, orderId: order?.id ?? '' };
   },
 
-  async cancel(orderId: ID) {
+  async cancel(orderId: ID): Promise<OrderResult> {
     const {
       cancelOrder: { apiErrors, order }
     } = await fetcher(CANCEL_ORDER_MUTATION, { orderId });
@@ -82,3 +86,14 @@ export const OrderService = {
     return { success: true, orderId: order?.id ?? '' };
   }
 };
+
+type OrderResult =
+  | {
+      success: true;
+      orderId: ID;
+    }
+  | {
+      success: false;
+      error: string;
+      errorCode: OrderErrorCode;
+    };
