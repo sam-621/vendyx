@@ -1,0 +1,81 @@
+type Query {
+  """
+  Get the customer by the access token.
+  """
+  customer(accessToken: String!): Customer
+}
+
+type Mutation {
+  """
+  Create a new customer.
+  """
+  createCustomer(input: CreateCustomerInput!): CustomerResult!
+  """
+  Update the customer's data.
+  """
+  updateCustomer(accessToken: String!, input: UpdateCustomerInput!): CustomerResult!
+  """
+  Update the customer's password providing the current password and the new password
+  """
+  updateCustomerPassword(accessToken: String!, input: UpdateCustomerPasswordInput!): CustomerResult!
+
+  """
+  Add a new address to the customer.
+  """
+  addAddressToCustomer(accessToken: String!, input: CreateAddressInput!): CustomerResult!
+  """
+  Generate a token for the customer. This token is used to modify the customer's data.
+  """
+  generateCustomerAccessToken(email: String!, password: String!): GenerateCustomerAccessTokenResult!
+  """
+  Send an email to the customer with a link to reset the password. The link contains a token that is used to execute the recoverCustomerPassword mutation.
+  """
+  requestRecoveryCustomerPassword(email: String!): CustomerResult!
+  """
+  Change the customer's password with the token received from the request recovery password email
+  """
+  recoverCustomerPassword(urlToken: String!, password: String!): CustomerResult!
+}
+
+input CreateCustomerInput {
+  firstName: String
+  lastName: String!
+  email: String!
+  password: String!
+  phoneNumber: String
+}
+
+input UpdateCustomerInput {
+  firstName: String
+  lastName: String
+  email: String
+  phoneNumber: String
+}
+
+input UpdateCustomerPasswordInput {
+  password: String!
+  newPassword: String!
+}
+
+type GenerateCustomerAccessTokenResult {
+  accessToken: String
+  apiErrors: [CustomerErrorResult!]!
+}
+
+type CustomerResult {
+  customer: Customer
+  apiErrors: [CustomerErrorResult!]!
+}
+
+type CustomerErrorResult {
+  code: CustomerErrorCode!
+  message: String!
+}
+
+enum CustomerErrorCode {
+  INVALID_EMAIL
+  EMAIL_ALREADY_EXISTS
+  INVALID_ACCESS_TOKEN
+  PASSWORDS_DO_NOT_MATCH
+  INVALID_CREDENTIALS
+}

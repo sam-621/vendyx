@@ -1,0 +1,55 @@
+type Query {
+  customers(input: CustomerListInput): CustomerList!
+  customer(id: ID!): Customer
+}
+
+type Mutation {
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): CustomerResult!
+}
+
+input UpdateCustomerInput {
+  firstName: String
+  lastName: String
+  email: String
+  phoneNumber: String
+  enabled: Boolean
+}
+
+input CustomerListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: ProductFilters
+}
+
+input CustomerFilters {
+  firstName: StringFilter
+  lastName: StringFilter
+  email: StringFilter
+  enabled: BooleanFilter
+}
+
+type CustomerResult {
+  customer: Customer
+  apiErrors: [CustomerErrorResult!]!
+}
+
+type CustomerErrorResult {
+  code: CustomerErrorCode!
+  message: String!
+}
+
+enum CustomerErrorCode {
+  INVALID_EMAIL
+  EMAIL_ALREADY_EXISTS
+}
