@@ -22,6 +22,12 @@ const documents = {
     types.UpdateOptionDocument,
   '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n':
     types.RemoveOptionDocument,
+  '\n  fragment CommonOrder on Order {\n    id\n    createdAt\n    code\n    state\n    subtotal\n    total\n    totalQuantity\n    placedAt\n    lines {\n      items {\n        id\n        linePrice\n        quantity\n        unitPrice\n        productVariant {\n          id\n          salePrice\n        }\n      }\n    }\n    customer {\n      id\n      email\n      enabled\n      firstName\n      lastName\n      phoneNumber\n    }\n    shippingAddress {\n      streetLine1\n      streetLine2\n      postalCode\n      city\n      province\n      country\n      references\n      fullName\n    }\n    shipment {\n      id\n      amount\n      carrier\n      method\n      trackingCode\n    }\n    payment {\n      id\n      amount\n      method\n      transactionId\n    }\n  }\n':
+    types.CommonOrderFragmentDoc,
+  '\n  query GetAllOrdersQuery($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        total\n        totalQuantity\n        placedAt\n        customer {\n          id\n          firstName\n          lastName\n        }\n        shipment {\n          id\n          amount\n          trackingCode\n          method\n        }\n      }\n    }\n  }\n':
+    types.GetAllOrdersQueryDocument,
+  '\n  query GetOrderbyIdQuery($orderId: ID) {\n    order(id: $orderId) {\n      ...CommonOrder\n    }\n  }\n':
+    types.GetOrderbyIdQueryDocument,
   '\n  fragment CommonPaymentIntegration on PaymentIntegration {\n    id\n    icon\n    name\n    metadata\n  }\n':
     types.CommonPaymentIntegrationFragmentDoc,
   '\n  fragment CommonPaymentMethod on PaymentMethod {\n    id\n    name\n    icon\n    enabled\n    integrationMetadata\n  }\n':
@@ -123,6 +129,24 @@ export function graphql(
 export function graphql(
   source: '\n  mutation RemoveOption($id: ID!) {\n    softRemoveOption(id: $id) {\n      id\n    }\n  }\n'
 ): typeof import('./graphql').RemoveOptionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonOrder on Order {\n    id\n    createdAt\n    code\n    state\n    subtotal\n    total\n    totalQuantity\n    placedAt\n    lines {\n      items {\n        id\n        linePrice\n        quantity\n        unitPrice\n        productVariant {\n          id\n          salePrice\n        }\n      }\n    }\n    customer {\n      id\n      email\n      enabled\n      firstName\n      lastName\n      phoneNumber\n    }\n    shippingAddress {\n      streetLine1\n      streetLine2\n      postalCode\n      city\n      province\n      country\n      references\n      fullName\n    }\n    shipment {\n      id\n      amount\n      carrier\n      method\n      trackingCode\n    }\n    payment {\n      id\n      amount\n      method\n      transactionId\n    }\n  }\n'
+): typeof import('./graphql').CommonOrderFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllOrdersQuery($input: OrderListInput) {\n    orders(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        code\n        state\n        total\n        totalQuantity\n        placedAt\n        customer {\n          id\n          firstName\n          lastName\n        }\n        shipment {\n          id\n          amount\n          trackingCode\n          method\n        }\n      }\n    }\n  }\n'
+): typeof import('./graphql').GetAllOrdersQueryDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetOrderbyIdQuery($orderId: ID) {\n    order(id: $orderId) {\n      ...CommonOrder\n    }\n  }\n'
+): typeof import('./graphql').GetOrderbyIdQueryDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -23,6 +23,29 @@ export type Scalars = {
   JSON: { input: any; output: any };
 };
 
+export type Address = Node & {
+  __typename?: 'Address';
+  city: Scalars['String']['output'];
+  country: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  fullName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  postalCode: Scalars['String']['output'];
+  /** State or region */
+  province: Scalars['String']['output'];
+  references?: Maybe<Scalars['String']['output']>;
+  streetLine1: Scalars['String']['output'];
+  streetLine2?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type AddressList = List & {
+  __typename?: 'AddressList';
+  count: Scalars['Int']['output'];
+  items: Array<Address>;
+  pageInfo: PageInfo;
+};
+
 export type Asset = Node & {
   __typename?: 'Asset';
   createdAt: Scalars['Date']['output'];
@@ -121,6 +144,46 @@ export type CreateZoneInput = {
   stateIds: Array<Scalars['ID']['input']>;
 };
 
+export type Customer = Node & {
+  __typename?: 'Customer';
+  addresses: AddressList;
+  createdAt: Scalars['Date']['output'];
+  email: Scalars['String']['output'];
+  /** to customer be able to login, place orders, etc. the customer must be enabled */
+  enabled: Scalars['Boolean']['output'];
+  firstName?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  lastName: Scalars['String']['output'];
+  orders: OrderList;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
+};
+
+export enum CustomerErrorCode {
+  EmailAlreadyExists = 'EMAIL_ALREADY_EXISTS',
+  InvalidEmail = 'INVALID_EMAIL'
+}
+
+export type CustomerErrorResult = {
+  __typename?: 'CustomerErrorResult';
+  code: CustomerErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type CustomerList = List & {
+  __typename?: 'CustomerList';
+  count: Scalars['Int']['output'];
+  items: Array<Customer>;
+  pageInfo: PageInfo;
+};
+
+/**  Results  */
+export type CustomerResult = {
+  __typename?: 'CustomerResult';
+  apiErrors: Array<CustomerErrorResult>;
+  customer?: Maybe<Customer>;
+};
+
 export type GenerateUserAccessTokenInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -140,8 +203,14 @@ export type ListInput = {
   take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type MarkOrderAsShippedInput = {
+  carrier: Scalars['String']['input'];
+  trackingCode: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  cancelOrder: OrderResult;
   createOption: Option;
   createPaymentMethod: PaymentMethod;
   createProduct: Product;
@@ -151,6 +220,8 @@ export type Mutation = {
   createVariant: Variant;
   createZone: Zone;
   generateUserAccessToken: UserAccessTokenResult;
+  markOrderAsDelivered: OrderResult;
+  markOrderAsShipped: OrderResult;
   removePaymentMethod: Scalars['Boolean']['output'];
   removeShippingMethod: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
@@ -165,6 +236,10 @@ export type Mutation = {
   updateUser: UserResult;
   updateVariant: Variant;
   updateZone: Zone;
+};
+
+export type MutationCancelOrderArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type MutationCreateOptionArgs = {
@@ -203,6 +278,15 @@ export type MutationCreateZoneArgs = {
 
 export type MutationGenerateUserAccessTokenArgs = {
   input: GenerateUserAccessTokenInput;
+};
+
+export type MutationMarkOrderAsDeliveredArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type MutationMarkOrderAsShippedArgs = {
+  id: Scalars['ID']['input'];
+  input: MarkOrderAsShippedInput;
 };
 
 export type MutationRemovePaymentMethodArgs = {
@@ -302,9 +386,131 @@ export type OptionValue = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type Order = Node & {
+  __typename?: 'Order';
+  code: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  customer?: Maybe<Customer>;
+  id: Scalars['ID']['output'];
+  lines: OrderLineList;
+  payment?: Maybe<Payment>;
+  /** The date and time when a payment has been added to the order */
+  placedAt?: Maybe<Scalars['Date']['output']>;
+  shipment?: Maybe<Shipment>;
+  shippingAddress?: Maybe<OrderShippingAddressJson>;
+  state: OrderState;
+  /** Order lines total less discounts */
+  subtotal: Scalars['Int']['output'];
+  /** The price that will be sent to the payment provider. subtotal plus shipping price */
+  total: Scalars['Int']['output'];
+  totalQuantity: Scalars['Int']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OrderLinesArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+/**  Utils  */
+export enum OrderErrorCode {
+  ForbiddenOrderAction = 'FORBIDDEN_ORDER_ACTION',
+  OrderNotFound = 'ORDER_NOT_FOUND',
+  OrderTransitionError = 'ORDER_TRANSITION_ERROR'
+}
+
+export type OrderErrorResult = {
+  __typename?: 'OrderErrorResult';
+  code: OrderErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type OrderFilters = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<OrderState>;
+};
+
+export type OrderLine = Node & {
+  __typename?: 'OrderLine';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  linePrice: Scalars['Int']['output'];
+  productVariant: Variant;
+  quantity: Scalars['Int']['output'];
+  unitPrice: Scalars['Int']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+export type OrderLineList = List & {
+  __typename?: 'OrderLineList';
+  count: Scalars['Int']['output'];
+  items: Array<OrderLine>;
+  pageInfo: PageInfo;
+};
+
+export type OrderList = List & {
+  __typename?: 'OrderList';
+  count: Scalars['Int']['output'];
+  items: Array<Order>;
+  pageInfo: PageInfo;
+};
+
+export type OrderListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<OrderFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/**  Results  */
+export type OrderResult = {
+  __typename?: 'OrderResult';
+  apiErrors: Array<OrderErrorResult>;
+  order?: Maybe<Order>;
+};
+
+export type OrderShippingAddressJson = {
+  __typename?: 'OrderShippingAddressJson';
+  city: Scalars['String']['output'];
+  country: Scalars['String']['output'];
+  fullName?: Maybe<Scalars['String']['output']>;
+  postalCode: Scalars['String']['output'];
+  /** State or region */
+  province: Scalars['String']['output'];
+  references?: Maybe<Scalars['String']['output']>;
+  streetLine1: Scalars['String']['output'];
+  streetLine2?: Maybe<Scalars['String']['output']>;
+};
+
+export enum OrderState {
+  /** The order has been canceled by the admin */
+  Canceled = 'CANCELED',
+  /** The order has been delivered and is completes */
+  Delivered = 'DELIVERED',
+  /** The order is being modified by the customer (CRUD line actions, adding contact info and shipment info) */
+  Modifying = 'MODIFYING',
+  /** The order is ready to be paid */
+  PaymentAdded = 'PAYMENT_ADDED',
+  /** The payment has been authorized by the payment provider */
+  PaymentAuthorized = 'PAYMENT_AUTHORIZED',
+  /** The order has been shipped (carrier and tracking code added) */
+  Shipped = 'SHIPPED'
+}
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   total: Scalars['Int']['output'];
+};
+
+export type Payment = Node & {
+  __typename?: 'Payment';
+  amount: Scalars['Int']['output'];
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  method: Scalars['String']['output'];
+  transactionId?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
 };
 
 /** A payment integration is am integration to be used in a payment method by any shop. */
@@ -408,6 +614,8 @@ export type ProductListInput = {
 export type Query = {
   __typename?: 'Query';
   countries: Array<Country>;
+  order?: Maybe<Order>;
+  orders?: Maybe<OrderList>;
   paymentIntegrations: Array<PaymentIntegration>;
   paymentMethod?: Maybe<PaymentMethod>;
   paymentMethods: Array<PaymentMethod>;
@@ -420,9 +628,17 @@ export type Query = {
   user?: Maybe<User>;
   validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
-  variants: VariantList;
   zone: Zone;
   zones: Array<Zone>;
+};
+
+export type QueryOrderArgs = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type QueryOrdersArgs = {
+  input?: InputMaybe<OrderListInput>;
 };
 
 export type QueryPaymentMethodArgs = {
@@ -453,12 +669,20 @@ export type QueryVariantArgs = {
   id: Scalars['ID']['input'];
 };
 
-export type QueryVariantsArgs = {
-  input?: InputMaybe<ListInput>;
-};
-
 export type QueryZoneArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type Shipment = Node & {
+  __typename?: 'Shipment';
+  amount: Scalars['Int']['output'];
+  carrier?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  method: Scalars['String']['output'];
+  order: Order;
+  trackingCode?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Date']['output'];
 };
 
 /** A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc */
@@ -741,6 +965,112 @@ export type RemoveOptionMutationVariables = Exact<{
 export type RemoveOptionMutation = {
   __typename?: 'Mutation';
   softRemoveOption: { __typename?: 'Option'; id: string };
+};
+
+export type CommonOrderFragment = {
+  __typename?: 'Order';
+  id: string;
+  createdAt: any;
+  code: string;
+  state: OrderState;
+  subtotal: number;
+  total: number;
+  totalQuantity: number;
+  placedAt?: any | null;
+  lines: {
+    __typename?: 'OrderLineList';
+    items: Array<{
+      __typename?: 'OrderLine';
+      id: string;
+      linePrice: number;
+      quantity: number;
+      unitPrice: number;
+      productVariant: { __typename?: 'Variant'; id: string; salePrice: number };
+    }>;
+  };
+  customer?: {
+    __typename?: 'Customer';
+    id: string;
+    email: string;
+    enabled: boolean;
+    firstName?: string | null;
+    lastName: string;
+    phoneNumber?: string | null;
+  } | null;
+  shippingAddress?: {
+    __typename?: 'OrderShippingAddressJson';
+    streetLine1: string;
+    streetLine2?: string | null;
+    postalCode: string;
+    city: string;
+    province: string;
+    country: string;
+    references?: string | null;
+    fullName?: string | null;
+  } | null;
+  shipment?: {
+    __typename?: 'Shipment';
+    id: string;
+    amount: number;
+    carrier?: string | null;
+    method: string;
+    trackingCode?: string | null;
+  } | null;
+  payment?: {
+    __typename?: 'Payment';
+    id: string;
+    amount: number;
+    method: string;
+    transactionId?: string | null;
+  } | null;
+} & { ' $fragmentName'?: 'CommonOrderFragment' };
+
+export type GetAllOrdersQueryQueryVariables = Exact<{
+  input?: InputMaybe<OrderListInput>;
+}>;
+
+export type GetAllOrdersQueryQuery = {
+  __typename?: 'Query';
+  orders?: {
+    __typename?: 'OrderList';
+    count: number;
+    pageInfo: { __typename?: 'PageInfo'; total: number };
+    items: Array<{
+      __typename?: 'Order';
+      id: string;
+      code: string;
+      state: OrderState;
+      total: number;
+      totalQuantity: number;
+      placedAt?: any | null;
+      customer?: {
+        __typename?: 'Customer';
+        id: string;
+        firstName?: string | null;
+        lastName: string;
+      } | null;
+      shipment?: {
+        __typename?: 'Shipment';
+        id: string;
+        amount: number;
+        trackingCode?: string | null;
+        method: string;
+      } | null;
+    }>;
+  } | null;
+};
+
+export type GetOrderbyIdQueryQueryVariables = Exact<{
+  orderId?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+export type GetOrderbyIdQueryQuery = {
+  __typename?: 'Query';
+  order?:
+    | ({ __typename?: 'Order' } & {
+        ' $fragmentRefs'?: { CommonOrderFragment: CommonOrderFragment };
+      })
+    | null;
 };
 
 export type CommonPaymentIntegrationFragment = {
@@ -1172,6 +1502,64 @@ export const CommonCountryFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonCountry' }
 ) as unknown as TypedDocumentString<CommonCountryFragment, unknown>;
+export const CommonOrderFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonOrder on Order {
+  id
+  createdAt
+  code
+  state
+  subtotal
+  total
+  totalQuantity
+  placedAt
+  lines {
+    items {
+      id
+      linePrice
+      quantity
+      unitPrice
+      productVariant {
+        id
+        salePrice
+      }
+    }
+  }
+  customer {
+    id
+    email
+    enabled
+    firstName
+    lastName
+    phoneNumber
+  }
+  shippingAddress {
+    streetLine1
+    streetLine2
+    postalCode
+    city
+    province
+    country
+    references
+    fullName
+  }
+  shipment {
+    id
+    amount
+    carrier
+    method
+    trackingCode
+  }
+  payment {
+    id
+    amount
+    method
+    transactionId
+  }
+}
+    `,
+  { fragmentName: 'CommonOrder' }
+) as unknown as TypedDocumentString<CommonOrderFragment, unknown>;
 export const CommonPaymentIntegrationFragmentDoc = new TypedDocumentString(
   `
     fragment CommonPaymentIntegration on PaymentIntegration {
@@ -1323,6 +1711,94 @@ export const RemoveOptionDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<RemoveOptionMutation, RemoveOptionMutationVariables>;
+export const GetAllOrdersQueryDocument = new TypedDocumentString(`
+    query GetAllOrdersQuery($input: OrderListInput) {
+  orders(input: $input) {
+    count
+    pageInfo {
+      total
+    }
+    items {
+      id
+      code
+      state
+      total
+      totalQuantity
+      placedAt
+      customer {
+        id
+        firstName
+        lastName
+      }
+      shipment {
+        id
+        amount
+        trackingCode
+        method
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetAllOrdersQueryQuery, GetAllOrdersQueryQueryVariables>;
+export const GetOrderbyIdQueryDocument = new TypedDocumentString(`
+    query GetOrderbyIdQuery($orderId: ID) {
+  order(id: $orderId) {
+    ...CommonOrder
+  }
+}
+    fragment CommonOrder on Order {
+  id
+  createdAt
+  code
+  state
+  subtotal
+  total
+  totalQuantity
+  placedAt
+  lines {
+    items {
+      id
+      linePrice
+      quantity
+      unitPrice
+      productVariant {
+        id
+        salePrice
+      }
+    }
+  }
+  customer {
+    id
+    email
+    enabled
+    firstName
+    lastName
+    phoneNumber
+  }
+  shippingAddress {
+    streetLine1
+    streetLine2
+    postalCode
+    city
+    province
+    country
+    references
+    fullName
+  }
+  shipment {
+    id
+    amount
+    carrier
+    method
+    trackingCode
+  }
+  payment {
+    id
+    amount
+    method
+    transactionId
+  }
+}`) as unknown as TypedDocumentString<GetOrderbyIdQueryQuery, GetOrderbyIdQueryQueryVariables>;
 export const GetPaymentMethodsDocument = new TypedDocumentString(`
     query GetPaymentMethods {
   paymentMethods {
