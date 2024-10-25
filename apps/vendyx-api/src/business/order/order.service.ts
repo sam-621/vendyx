@@ -1,6 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Address, Customer, Order, OrderState, Prisma, Shipment, Variant } from '@prisma/client';
 
+import {
+  AddCustomerToOrderInput,
+  AddPaymentToOrderInput,
+  AddShipmentToOrderInput,
+  CreateAddressInput,
+  CreateOrderInput,
+  CreateOrderLineInput,
+  MarkOrderAsShippedInput,
+  UpdateOrderLineInput
+} from '@/api/shared';
+import { PaymentService } from '@/payment';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { ID } from '@/persistance/types';
+import { ShipmentService } from '@/shipments';
+
 import { OrderFinders } from './order-finders';
 import {
   CustomerDisabled,
@@ -16,20 +31,6 @@ import {
 } from './order.errors';
 import { ValidOrderTransitions, parseOrderCode } from './order.utils';
 import { clean, executeInSafe, validateEmail } from '../shared/utils';
-
-import {
-  AddCustomerToOrderInput,
-  AddPaymentToOrderInput,
-  AddShipmentToOrderInput,
-  CreateAddressInput,
-  CreateOrderInput,
-  CreateOrderLineInput,
-  UpdateOrderLineInput
-} from '@/api/shared';
-import { PaymentService } from '@/payment';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
-import { ID } from '@/persistance/types';
-import { ShipmentService } from '@/shipments';
 
 @Injectable()
 export class OrderService extends OrderFinders {
@@ -412,6 +413,60 @@ export class OrderService extends OrderFinders {
     );
 
     return orderToReturn;
+  }
+
+  async markAsShipped(orderId: ID, input: MarkOrderAsShippedInput) {
+    const order = await this.findOrderOrThrow(orderId);
+
+    if (!this.canPerformAction(order, 'mark_as_shipped')) {
+      return new ForbiddenOrderAction(order.state);
+    }
+
+    if (!(await this.validateOrderTransitionState(order, OrderState.SHIPPED))) {
+      return new OrderTransitionError(
+        `Unable to transition to ${OrderState.SHIPPED} state in ${order.state} state.`
+      );
+    }
+
+    return await this.prisma.order.update({
+      where: { id: orderId },
+      data: {
+        shipment: { update: { carrier: input.carrier, trackingCode: input.trackingCode } },
+        state: OrderState.SHIPPED
+      }
+    });
+  }
+
+  async markAsDelivered(orderId: ID) {
+    const order = await this.findOrderOrThrow(orderId);
+
+    if (!this.canPerformAction(order, 'mark_as_delivered')) {
+      return new ForbiddenOrderAction(order.state);
+    }
+
+    if (!(await this.validateOrderTransitionState(order, OrderState.DELIVERED))) {
+      return new OrderTransitionError(
+        `Unable to transition to ${OrderState.DELIVERED} state in ${order.state} state.`
+      );
+    }
+
+    return await this.prisma.order.update({
+      where: { id: orderId },
+      data: { state: OrderState.DELIVERED }
+    });
+  }
+
+  async cancel(orderId: ID) {
+    const order = await this.findOrderOrThrow(orderId);
+
+    if (!this.canPerformAction(order, 'cancel')) {
+      return new ForbiddenOrderAction(order.state);
+    }
+
+    return await this.prisma.order.update({
+      where: { id: orderId },
+      data: { state: OrderState.CANCELED }
+    });
   }
 
   /**

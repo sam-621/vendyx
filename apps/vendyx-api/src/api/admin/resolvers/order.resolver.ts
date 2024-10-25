@@ -1,7 +1,8 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { ListResponse, OrderListInput } from '@/api/shared';
+import { ListResponse, MarkOrderAsShippedInput, OrderListInput } from '@/api/shared';
 import { OrderService } from '@/business/order/order.service';
+import { isErrorResult } from '@/business/shared';
 import { ID } from '@/persistance/types';
 
 @Resolver('Order')
@@ -21,5 +22,26 @@ export class OrderResolver {
     ]);
 
     return new ListResponse(result, result.length, { total });
+  }
+
+  @Mutation('markOrderAsShipped')
+  async markOrderAsShipped(@Args('id') orderId: ID, @Args('input') input: MarkOrderAsShippedInput) {
+    const result = await this.orderService.markAsShipped(orderId, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+  }
+
+  @Mutation('markOrderAsDelivered')
+  async markOrderAsDelivered(@Args('id') orderId: ID) {
+    const result = await this.orderService.markAsDelivered(orderId);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
+  }
+
+  @Mutation('cancelOrder')
+  async cancelOrder(@Args('id') orderId: ID) {
+    const result = await this.orderService.cancel(orderId);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
   }
 }
