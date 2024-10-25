@@ -1,6 +1,6 @@
 import { useEffect, useState, useTransition } from 'react';
 
-import { type ID } from '@/api';
+import { type ID } from '@/api/scalars';
 import { useEntityContext } from '@/lib/shared/contexts';
 import { notification } from '@/lib/shared/notifications';
 

@@ -1,6 +1,6 @@
 import { useTransition } from 'react';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 
 import { addProductImage } from '../../actions/add-product-image';
 

@@ -2,7 +2,8 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { type CreateShippingMethodInput, ShippingMethodService, ZoneService } from '@/api';
+import { ShippingMethodService, ZoneService } from '@/api/services';
+import { type CreateShippingMethodInput } from '@/api/types';
 
 export const createShippingMethod = async (input: CreateShippingMethodInput) => {
   await ShippingMethodService.create(input);

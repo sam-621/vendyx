@@ -5,9 +5,8 @@ import { useFormContext } from 'react-hook-form';
 
 import {
   type CommonPaymentIntegrationFragment,
-  type CommonPaymentMethodFragment,
-  type Metadata
-} from '@/api';
+  type CommonPaymentMethodFragment
+} from '@/api/types';
 import {
   Input,
   Label,
@@ -28,6 +27,7 @@ import {
 
 import { RemovePaymentMethodButton } from '../remove-payment-method';
 import { type PaymentMethodFormInput } from './use-payment-method-form';
+import { Metadata } from '@/api/scalars';
 
 export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
   const defaultIntegration = method

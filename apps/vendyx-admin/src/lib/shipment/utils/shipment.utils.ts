@@ -1,4 +1,4 @@
-import { type CommonCountryFragment } from '@/api';
+import { type CommonCountryFragment } from '@/api/types';
 import { formatPrice } from '@/lib/shared/utils';
 
 export const isStateInCountry = (

@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { type CommonPaymentMethodFragment } from '@/api';
+import { type CommonPaymentMethodFragment } from '@/api/types';
 import {
   Badge,
   Button,

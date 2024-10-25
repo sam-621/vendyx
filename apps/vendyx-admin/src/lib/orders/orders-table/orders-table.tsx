@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 
-import { type OrderState } from '@/api';
-import { OrderService } from '@/api';
+import { OrderService } from '@/api/services';
+import { type OrderState } from '@/api/types';
 import {
   DataTable,
   DataTableEmptyState,

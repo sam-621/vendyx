@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { PaymentMethodService } from '@/api';
+import { PaymentMethodService } from '@/api/services';
 import { getBasePathFormHeaders } from '@/lib/shared/utils';
 
 export const createPaymentMethod = async (input: Input) => {

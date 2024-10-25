@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { ProductService } from '@/api';
+import { ProductService } from '@/api/services';
 import { getBasePathFormHeaders } from '@/lib/shared/utils';
 
 export const removeProduct = async (id: string) => {

@@ -1,4 +1,4 @@
-import { PaymentMethodService } from '@/api';
+import { PaymentMethodService } from '@/api/services';
 import { PaymentMethodsTable } from '@/lib/payment/components';
 import { SettingsPageLayout } from '@/lib/shared/components';
 

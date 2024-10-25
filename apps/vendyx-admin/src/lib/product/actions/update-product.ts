@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { OptionService, ProductService, VariantService } from '@/api';
+import { OptionService, ProductService, VariantService } from '@/api/services';
 import { isUUID } from '@/lib/shared/utils';
 
 export const updateProduct = async (productId: string, input: UpdateProductInput) => {

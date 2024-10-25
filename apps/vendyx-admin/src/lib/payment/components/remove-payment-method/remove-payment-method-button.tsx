@@ -2,7 +2,7 @@
 
 import { type FC } from 'react';
 
-import { type CommonPaymentMethodFragment } from '@/api';
+import { type CommonPaymentMethodFragment } from '@/api/types';
 import { RemoveEntityButton } from '@/lib/shared/components';
 
 import { useRemovePaymentMethod } from './use-remove-payment-method';

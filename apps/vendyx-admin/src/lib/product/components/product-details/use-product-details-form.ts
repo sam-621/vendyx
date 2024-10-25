@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 import { createProduct } from '@/lib/product/actions/create-product';
 import { updateProduct } from '@/lib/product/actions/update-product';
 import { FormMessages } from '@/lib/shared/form';

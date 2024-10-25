@@ -1,6 +1,7 @@
 import { useEffect, useState, useTransition } from 'react';
 
-import { type CommonShippingHandlersFragment, type CommonZoneFragment, type Metadata } from '@/api';
+import { type Metadata } from '@/api/scalars';
+import { type CommonShippingHandlersFragment, type CommonZoneFragment } from '@/api/types';
 import { useDialogContext } from '@/lib/shared/components';
 import { useEntityContext } from '@/lib/shared/contexts';
 import { notification } from '@/lib/shared/notifications';

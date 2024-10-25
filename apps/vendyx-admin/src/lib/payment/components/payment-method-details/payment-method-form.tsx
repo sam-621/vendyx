@@ -2,7 +2,10 @@
 
 import { type FC } from 'react';
 
-import { type CommonPaymentIntegrationFragment, type CommonPaymentMethodFragment } from '@/api';
+import {
+  type CommonPaymentIntegrationFragment,
+  type CommonPaymentMethodFragment
+} from '@/api/types';
 import { SettingsPageLayout } from '@/lib/shared/components';
 import { Form } from '@/lib/shared/form';
 

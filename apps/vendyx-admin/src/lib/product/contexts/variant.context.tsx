@@ -2,7 +2,7 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 import { formatPrice, parsePrice } from '@/lib/shared/utils';
 
 import { type ProductDetailsFormInput } from '../components/product-details/use-product-details-form';

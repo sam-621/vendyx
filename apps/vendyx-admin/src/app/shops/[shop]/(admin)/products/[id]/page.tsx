@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { ProductService } from '@/api';
+import { ProductService } from '@/api/services';
 import { ProductDetailsForm } from '@/lib/product/components';
 
 export default async function ProductPage({ params }: { params: { id: string } }) {

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 
-import { CountryService, type ID, ShippingMethodService, ZoneService } from '@/api';
+import { type ID } from '@/api/scalars';
+import { CountryService, ShippingMethodService, ZoneService } from '@/api/services';
 import { EntityProvider } from '@/lib/shared/contexts';
 import { ZoneDetailsForm } from '@/lib/shipment/components';
 

@@ -3,8 +3,8 @@
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { ShopService, UserService } from '@/api';
-import { UserErrorCode } from '@/api/codegen/graphql';
+import { ShopService, UserService } from '@/api/services';
+import { UserErrorCode } from '@/api/types';
 import { setShopId, setToken } from '@/lib/shared/cookies';
 
 export const signup = async ({ email, password, store }: Input) => {

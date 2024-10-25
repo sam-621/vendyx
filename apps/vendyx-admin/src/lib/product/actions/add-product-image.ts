@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { AssetService, ProductService } from '@/api';
+import { AssetService, ProductService } from '@/api/services';
 
 export const addProductImage = async (
   productId: string,

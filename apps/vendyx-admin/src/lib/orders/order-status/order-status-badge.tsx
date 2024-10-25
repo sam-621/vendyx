@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import { BookmarkIcon, PackageCheckIcon, TruckIcon } from 'lucide-react';
 
-import { OrderState } from '@/api/codegen/graphql';
+import { OrderState } from '@/api/types';
 import { Badge } from '@/lib/shared/components';
 
 export const OrderStatusBadge: FC<Props> = ({ status }) => {

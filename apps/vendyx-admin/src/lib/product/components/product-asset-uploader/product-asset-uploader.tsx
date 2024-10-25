@@ -1,7 +1,7 @@
 import { type FC, type MutableRefObject, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 import { FileUploader } from '@/lib/shared/components';
 import { notification } from '@/lib/shared/notifications';
 

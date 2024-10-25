@@ -2,7 +2,7 @@
 
 import { type FC } from 'react';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 import { AdminPageLayout } from '@/lib/shared/components';
 import { Form } from '@/lib/shared/form';
 

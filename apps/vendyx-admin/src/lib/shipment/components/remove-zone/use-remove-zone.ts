@@ -1,6 +1,6 @@
 import { useTransition } from 'react';
 
-import { type ID } from '@/api';
+import { type ID } from '@/api/scalars';
 import { notification } from '@/lib/shared/notifications';
 
 import { removeZone } from '../../actions/remove-zone';

@@ -2,10 +2,10 @@ import { type FC } from 'react';
 
 import { Trash2Icon } from 'lucide-react';
 
+import { type VariantContext } from '@/lib/product/contexts';
 import { Button, Input, Label } from '@/lib/shared/components';
 import { isFirst, isLast } from '@/lib/shared/utils';
 
-import { type VariantContext } from '../../variant-details';
 import { useOptionDetailsForm } from './use-option-details-form';
 
 export const OptionDetailsForm: FC<Props> = ({ option }) => {

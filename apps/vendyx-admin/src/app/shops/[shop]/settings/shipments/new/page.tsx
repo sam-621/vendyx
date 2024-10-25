@@ -1,4 +1,4 @@
-import { CountryService, ShippingMethodService } from '@/api';
+import { CountryService, ShippingMethodService } from '@/api/services';
 import { EntityProvider } from '@/lib/shared/contexts';
 import { ZoneDetailsForm } from '@/lib/shipment/components';
 

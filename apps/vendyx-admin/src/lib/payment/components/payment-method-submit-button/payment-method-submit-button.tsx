@@ -3,7 +3,10 @@
 import { type FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { type CommonPaymentIntegrationFragment, type CommonPaymentMethodFragment } from '@/api';
+import {
+  type CommonPaymentIntegrationFragment,
+  type CommonPaymentMethodFragment
+} from '@/api/types';
 import { Button } from '@/lib/shared/components';
 
 import { type PaymentMethodFormInput } from '../payment-method-details/use-payment-method-form';

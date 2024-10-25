@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { PaymentMethodService } from '@/api';
+import { PaymentMethodService } from '@/api/services';
 
 export const updatePaymentMethod = async (id: string, input: Input) => {
   const result = await PaymentMethodService.update(id, {

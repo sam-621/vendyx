@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { type CommonZoneFragment } from '@/api';
+import { type CommonZoneFragment } from '@/api/types';
 import { RemoveEntityButton } from '@/lib/shared/components';
 
 import { useRemoveZone } from './use-remove-zone';

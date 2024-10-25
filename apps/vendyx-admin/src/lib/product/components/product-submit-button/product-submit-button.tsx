@@ -3,7 +3,7 @@
 import { type FC } from 'react';
 import { type DeepPartial, useFormContext, useWatch } from 'react-hook-form';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 import { Button } from '@/lib/shared/components';
 import { clean, formatPrice } from '@/lib/shared/utils';
 

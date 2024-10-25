@@ -3,7 +3,7 @@
 import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 import { Card, CardContent, CardHeader, CardTitle, Label } from '@/lib/shared/components';
 import { FormCheckbox, FormInput, FormSwitch, FormTextarea } from '@/lib/shared/form';
 

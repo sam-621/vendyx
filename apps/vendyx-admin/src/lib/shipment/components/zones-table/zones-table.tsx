@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { type GetAllZonesQuery } from '@/api';
+import { type GetAllZonesQuery } from '@/api/types';
 import {
   Button,
   Card,

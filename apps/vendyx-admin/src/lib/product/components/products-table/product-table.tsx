@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { ProductService } from '@/api';
+import { ProductService } from '@/api/services';
 import {
   DataTable,
   DataTableEmptyState,

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { PaymentMethodService } from '@/api';
+import { PaymentMethodService } from '@/api/services';
 import { PaymentMethodForm } from '@/lib/payment/components';
 
 export default async function PaymentDetailsPage({ params }: { params: { id: string } }) {

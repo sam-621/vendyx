@@ -1,4 +1,4 @@
-import { ZoneService } from '@/api';
+import { ZoneService } from '@/api/services';
 import { SettingsPageLayout } from '@/lib/shared/components';
 import { ZonesTable } from '@/lib/shipment/components';
 

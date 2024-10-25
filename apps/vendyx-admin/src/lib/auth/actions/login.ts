@@ -2,7 +2,7 @@
 
 import { redirect } from 'next/navigation';
 
-import { ShopService, UserService } from '@/api';
+import { ShopService, UserService } from '@/api/services';
 import { setShopId, setToken } from '@/lib/shared/cookies';
 
 export const login = async (email: string, password: string) => {

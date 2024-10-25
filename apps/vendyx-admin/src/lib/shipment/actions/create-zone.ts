@@ -3,7 +3,8 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { type ID, ZoneService } from '@/api';
+import { type ID } from '@/api/scalars';
+import { ZoneService } from '@/api/services';
 import { getBasePathFormHeaders } from '@/lib/shared/utils';
 
 export const createZone = async (input: Input) => {

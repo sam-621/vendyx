@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { type CommonZoneFragment } from '@/api';
+import { type CommonZoneFragment } from '@/api/types';
 import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
 

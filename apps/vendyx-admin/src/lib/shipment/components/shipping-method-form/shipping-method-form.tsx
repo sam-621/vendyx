@@ -1,6 +1,7 @@
 import { type FC, useEffect, useMemo } from 'react';
 
-import { type CommonShippingHandlersFragment, type CommonZoneFragment, type Metadata } from '@/api';
+import { type Metadata } from '@/api/scalars';
+import { type CommonShippingHandlersFragment, type CommonZoneFragment } from '@/api/types';
 import {
   Button,
   DialogClose,

@@ -4,7 +4,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { type CommonPaymentIntegrationFragment, type CommonPaymentMethodFragment } from '@/api';
+import {
+  type CommonPaymentIntegrationFragment,
+  type CommonPaymentMethodFragment
+} from '@/api/types';
 import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
 

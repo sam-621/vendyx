@@ -1,6 +1,6 @@
 'use server';
 
-import { UserService } from '@/api';
+import { UserService } from '@/api/services';
 import { getToken } from '@/lib/shared/cookies';
 
 export const validateAccessToken = async () => {

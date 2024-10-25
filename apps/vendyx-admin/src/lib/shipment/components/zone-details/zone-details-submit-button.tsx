@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { type DeepPartial, useFormContext, useWatch } from 'react-hook-form';
 
-import { type CommonZoneFragment } from '@/api';
+import { type CommonZoneFragment } from '@/api/types';
 import { Button } from '@/lib/shared/components';
 
 import { type ZoneDetailsFormInput } from './use-zone-details-form';

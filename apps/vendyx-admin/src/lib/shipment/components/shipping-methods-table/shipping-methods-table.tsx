@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { type CommonZoneFragment } from '@/api';
+import { type CommonZoneFragment } from '@/api/types';
 import {
   Badge,
   Card,

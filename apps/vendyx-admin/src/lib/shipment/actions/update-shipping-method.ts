@@ -2,7 +2,9 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { type ID, ShippingMethodService, type UpdateShippingMethodInput, ZoneService } from '@/api';
+import { type ID } from '@/api/scalars';
+import { ShippingMethodService, ZoneService } from '@/api/services';
+import { type UpdateShippingMethodInput } from '@/api/types';
 
 export const updateShippingMethod = async (
   zoneId: ID,

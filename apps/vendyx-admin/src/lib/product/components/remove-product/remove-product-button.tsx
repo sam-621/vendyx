@@ -2,7 +2,7 @@
 
 import { type FC } from 'react';
 
-import { type CommonProductFragment } from '@/api';
+import { type CommonProductFragment } from '@/api/types';
 import { RemoveEntityButton } from '@/lib/shared/components';
 
 import { useRemoveProduct } from './use-remove-product';

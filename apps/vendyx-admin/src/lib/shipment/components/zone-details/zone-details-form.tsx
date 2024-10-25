@@ -2,7 +2,7 @@
 
 import { type FC } from 'react';
 
-import { type CommonZoneFragment } from '@/api';
+import { type CommonZoneFragment } from '@/api/types';
 import { SettingsPageLayout } from '@/lib/shared/components';
 import { Form } from '@/lib/shared/form';
 import { formatDate } from '@/lib/shared/utils';

@@ -3,7 +3,7 @@
 import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type CommonZoneFragment } from '@/api';
+import { type CommonZoneFragment } from '@/api/types';
 import { FormInput } from '@/lib/shared/form';
 
 import { RemoveZoneButton } from '../remove-zone';

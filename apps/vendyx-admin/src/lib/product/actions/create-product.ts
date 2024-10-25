@@ -8,7 +8,7 @@ import {
   ProductService,
   VariantService,
   type VendyxAsset
-} from '@/api';
+} from '@/api/services';
 
 export const createProduct = async (input: CreateProductInput) => {
   if (!input.variants.length) {

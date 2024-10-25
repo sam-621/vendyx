@@ -2,7 +2,7 @@ import {
   type CommonCountryFragment,
   type CommonShippingHandlersFragment,
   type CommonZoneFragment
-} from '@/api';
+} from '@/api/types';
 
 export type ShipmentContext = {
   countries: CommonCountryFragment[];

@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 
-import { type VariantContext } from '../variant-details';
+import { type VariantContext } from '../../contexts';
 import { OptionDetailsForm } from './option-details-form';
 import { OptionDetailsPreview } from './option-details-preview';
 

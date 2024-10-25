@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { PlusIcon } from 'lucide-react';
 
-import { type CommonCountryFragment } from '@/api';
+import { type CommonCountryFragment } from '@/api/types';
 import {
   Accordion,
   AccordionContent,
