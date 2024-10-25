@@ -1,9 +1,22 @@
-import { AdminPageLayout, DataTableEmptyState } from '@/lib/shared/components';
+import { Suspense } from 'react';
 
-export default function OrdersPage() {
+import { OrdersTable } from '@/lib/orders/orders-table';
+import {
+  AdminPageLayout,
+  type DataTableSearchParams,
+  DataTableSkeleton
+} from '@/lib/shared/components';
+
+export default function OrdersPage({ searchParams }: Props) {
   return (
     <AdminPageLayout title="Orders">
-      <DataTableEmptyState title="Your orders will appear here" />
+      <Suspense fallback={<DataTableSkeleton />}>
+        <OrdersTable {...searchParams} />
+      </Suspense>
     </AdminPageLayout>
   );
 }
+
+type Props = {
+  searchParams: DataTableSearchParams;
+};

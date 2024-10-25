@@ -172,7 +172,7 @@ export const DataTable = <TData, TValue>({
   );
 };
 
-export type DataTableProps<TData, TValue> = ConfigurableTable & {
+type DataTableProps<TData, TValue> = ConfigurableTable & {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   /**
@@ -189,7 +189,7 @@ export type DataTableProps<TData, TValue> = ConfigurableTable & {
  * @description
  * Type for a table that accepts configuration for pagination and filters
  */
-export type ConfigurableTable = {
+type ConfigurableTable = {
   /**
    * TODO: Make this required
    */

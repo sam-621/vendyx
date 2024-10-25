@@ -615,7 +615,7 @@ export type Query = {
   __typename?: 'Query';
   countries: Array<Country>;
   order?: Maybe<Order>;
-  orders?: Maybe<OrderList>;
+  orders: OrderList;
   paymentIntegrations: Array<PaymentIntegration>;
   paymentMethod?: Maybe<PaymentMethod>;
   paymentMethods: Array<PaymentMethod>;
@@ -1031,7 +1031,7 @@ export type GetAllOrdersQueryQueryVariables = Exact<{
 
 export type GetAllOrdersQueryQuery = {
   __typename?: 'Query';
-  orders?: {
+  orders: {
     __typename?: 'OrderList';
     count: number;
     pageInfo: { __typename?: 'PageInfo'; total: number };
@@ -1057,7 +1057,7 @@ export type GetAllOrdersQueryQuery = {
         method: string;
       } | null;
     }>;
-  } | null;
+  };
 };
 
 export type GetOrderbyIdQueryQueryVariables = Exact<{
