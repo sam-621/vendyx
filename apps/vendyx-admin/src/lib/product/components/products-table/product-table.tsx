@@ -15,13 +15,13 @@ import { ProductTableColumns } from './products-table-columns';
 export const ProductTable: FC<Props> = async props => {
   const { page, search, size } = parseDataTableSearchParams({ ...props });
 
-  const products = await ProductService.getAll({
+  const { items: products, pageInfo } = await ProductService.getAll({
     skip: getSkip(page, size),
     take: size,
     filters: { name: { contains: search } }
   });
 
-  if (!products.items.length) {
+  if (!products.length && !search) {
     return (
       <DataTableEmptyState
         title="You have no products"
@@ -32,7 +32,7 @@ export const ProductTable: FC<Props> = async props => {
   }
 
   const data: ProductsTableRow[] =
-    products.items?.map(p => {
+    products?.map(p => {
       const totalStock = p.variants.items.reduce((acc, v) => acc + v.stock, 0);
       const image = DEFAULT_PRODUCT_IMAGE;
 
@@ -52,7 +52,7 @@ export const ProductTable: FC<Props> = async props => {
       columns={ProductTableColumns}
       data={data}
       defaults={{ page, search, size }}
-      totalRows={products.pageInfo.total}
+      totalRows={pageInfo.total}
     />
   );
 };

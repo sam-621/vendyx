@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import NextTopLoader from 'nextjs-toploader';
 
 import { ThemeProvider } from '@/lib/shared/components';
 import { Notification } from '@/lib/shared/notifications';
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           <Notification />
+          <NextTopLoader color="hsl(var(--primary))" />
           {children}
         </ThemeProvider>
       </body>
