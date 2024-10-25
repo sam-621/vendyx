@@ -74,7 +74,9 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
 
             <TableRow className="border-transparent">
               <TableCell>Subtotal</TableCell>
-              <TableCell>{order.totalQuantity} Products</TableCell>
+              <TableCell>
+                {order.totalQuantity} {order.totalQuantity === 1 ? 'Product' : 'Products'}
+              </TableCell>
               <TableCell></TableCell>
               <TableCell>{formatPrice(order.subtotal)}</TableCell>
             </TableRow>
