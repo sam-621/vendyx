@@ -21,6 +21,7 @@ export default function OrdersPage({ searchParams }: Props) {
           <TabsTrigger value="paid">Paid</TabsTrigger>
           <TabsTrigger value="sent">Sent</TabsTrigger>
           <TabsTrigger value="complete">Complete</TabsTrigger>
+          <TabsTrigger value="cancelled">Cancelled</TabsTrigger>
         </TabsList>
         <TabsContent value="all">
           <Suspense fallback={<DataTableSkeleton />}>
@@ -43,6 +44,12 @@ export default function OrdersPage({ searchParams }: Props) {
         <TabsContent value="complete">
           <Suspense fallback={<DataTableSkeleton />}>
             <OrdersTable state={OrderState.Delivered} {...searchParams} />
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="cancelled">
+          <Suspense fallback={<DataTableSkeleton />}>
+            <OrdersTable state={OrderState.Canceled} {...searchParams} />
           </Suspense>
         </TabsContent>
       </Tabs>

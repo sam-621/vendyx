@@ -26,7 +26,9 @@ export const OrdersTable: FC<Props> = async props => {
     }
   });
 
-  if (!orders.length && !search) {
+  const filtersApplied = Boolean(state) || Boolean(search);
+
+  if (!orders.length && !filtersApplied) {
     return <DataTableEmptyState title="Your orders will appear here" />;
   }
 

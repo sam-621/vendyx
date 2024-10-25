@@ -1,10 +1,10 @@
 import { OrderState } from '@prisma/client';
 
-import { parseOrderCode } from './order.utils';
-import { clean } from '../shared';
-
 import { OrderListInput } from '@/api/shared';
 import { PrismaForShop } from '@/persistance/prisma-clients';
+
+import { parseOrderCode } from './order.utils';
+import { clean } from '../shared';
 
 /**
  * Helper class to store methods related to find many orders managing the filters
@@ -16,7 +16,9 @@ export class OrderFinders {
     return this._prisma.order.findMany({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
-        state: input?.filters?.state ? input?.filters?.state : { not: OrderState.MODIFYING },
+        state: input?.filters?.state
+          ? input?.filters?.state
+          : { notIn: [OrderState.MODIFYING, OrderState.CANCELED] },
         ...(input?.filters?.customer
           ? {
               OR: [
@@ -49,6 +51,9 @@ export class OrderFinders {
     return this._prisma.order.count({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
+        state: input?.filters?.state
+          ? input?.filters?.state
+          : { notIn: [OrderState.MODIFYING, OrderState.CANCELED] },
         ...(input?.filters?.customer
           ? {
               OR: [
@@ -70,8 +75,7 @@ export class OrderFinders {
               ]
             }
           : {
-              code: input?.filters?.code ? parseOrderCode(input?.filters?.code) : undefined,
-              state: input?.filters?.state ? input?.filters?.state : { not: OrderState.MODIFYING }
+              code: input?.filters?.code ? parseOrderCode(input?.filters?.code) : undefined
             })
       },
       orderBy: { createdAt: 'desc' }
