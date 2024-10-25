@@ -1,6 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Order } from '@prisma/client';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
   AddCustomerToOrderInput,
@@ -98,9 +97,6 @@ export class OrderResolver {
   @Query('availablePaymentMethods')
   async availablePaymentMethods() {
     const result = await this.orderService.findAvailablePaymentMethods();
-    console.log({
-      result
-    });
 
     return result;
   }
@@ -123,12 +119,5 @@ export class OrderResolver {
     const result = await this.orderService.addPayment(orderId, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { order: result, apiErrors: [] };
-  }
-
-  @ResolveField('code')
-  async code(@Parent() order: Order) {
-    const { code } = order;
-
-    return this.orderService.formatOrderCode(code);
   }
 }
