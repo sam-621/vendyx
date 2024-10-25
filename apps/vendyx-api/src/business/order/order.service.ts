@@ -8,17 +8,11 @@ import {
   CreateAddressInput,
   CreateOrderInput,
   CreateOrderLineInput,
-  ListInput,
   OrderListInput,
   UpdateOrderLineInput
 } from '@/api/shared';
 import { PaymentService } from '@/payment';
-import {
-  PRISMA_FOR_ADMIN,
-  PRISMA_FOR_SHOP,
-  PrismaForAdmin,
-  PrismaForShop
-} from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 import { ID } from '@/persistance/types';
 import { ShipmentService } from '@/shipments';
 
@@ -81,7 +75,11 @@ export class OrderService {
   async findAvailabelShippingMethods(orderId: ID) {
     const order = await this.prisma.order.findUnique({ where: { id: orderId } });
 
-    const state = (order?.shippingAddress as unknown as Address).province;
+    const state = (order?.shippingAddress as unknown as Address | null)?.province;
+
+    if (!state) {
+      return new MissingShippingAddress();
+    }
 
     return this.prisma.shippingMethod.findMany({
       where: { enabled: true, zone: { states: { some: { state: { name: state } } } } },
@@ -246,6 +244,10 @@ export class OrderService {
       include: { order: true }
     });
 
+    if (!this.canPerformAction(line.order, 'modify')) {
+      return new ForbidenOrderAction(line.order.state);
+    }
+
     return await this.prisma.order.update({
       where: { id: line.order.id },
       data: {
@@ -344,7 +346,7 @@ export class OrderService {
   async addPayment(orderId: ID, input: AddPaymentToOrderInput) {
     const order = await this.prisma.order.findUniqueOrThrow({
       where: { id: orderId },
-      include: { customer: true, lines: { include: { productVariant: true } } }
+      include: { customer: true, shipment: true, lines: { include: { productVariant: true } } }
     });
 
     if (!this.canPerformAction(order, 'add_payment')) {
@@ -428,7 +430,7 @@ export class OrderService {
   /**
    * Validates if the order can perform the given action
    */
-  private async canPerformAction(
+  private canPerformAction(
     order: Order & { customer?: Customer | null; shipment?: Shipment | null },
     action: OrderAction
   ) {

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Order } from '@prisma/client';
 
 import { PaypalService, StripeService } from './handlers';
 import { PaymentHandler } from './handlers/payment-handler';
@@ -10,9 +11,9 @@ export class PaymentService {
     private readonly stripeService: StripeService
   ) {}
 
-  async create(order: any, handlerCode: string, metadata: Record<string, string>) {
+  async create(order: Order, handlerCode: string, metadata: Record<string, string>) {
     const handler = this.getHandler(handlerCode);
-    return handler.createPayment(order, order.totalAmount, metadata);
+    return handler.createPayment(order, order.total, metadata);
   }
 
   async authorize(order: any, handlerCode: string) {

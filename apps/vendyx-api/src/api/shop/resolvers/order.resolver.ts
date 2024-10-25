@@ -81,6 +81,10 @@ export class OrderResolver {
   async availableShippingMethods(@Args('orderId') orderdId: ID) {
     const shippingMethods = await this.orderService.findAvailabelShippingMethods(orderdId);
 
+    if (isErrorResult(shippingMethods)) {
+      return [];
+    }
+
     return shippingMethods.map(shippingMethod => ({
       ...shippingMethod,
       pricePreview: this.shipmentService.getPricePreview(
