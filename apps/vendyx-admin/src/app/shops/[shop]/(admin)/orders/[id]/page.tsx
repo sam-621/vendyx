@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { type ID } from '@/api/scalars';
 import { OrderService } from '@/api/services';
 import {
+  OrderActionsButton,
   OrderCustomerCard,
   OrderItemsTable,
   OrderPaymentCard,
@@ -26,6 +27,7 @@ export default async function OrderDetails({ params }: { params: { id: ID } }) {
         actions={
           <div className="flex gap-2 lg:gap-4 items-center">
             <OrderStatusTransitionButton order={order} />
+            <OrderActionsButton order={order} />
           </div>
         }
       >

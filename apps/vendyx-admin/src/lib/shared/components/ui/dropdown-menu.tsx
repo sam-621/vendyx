@@ -7,7 +7,24 @@ import { CheckIcon, ChevronRightIcon, DotFilledIcon } from '@radix-ui/react-icon
 
 import { cn } from '../../utils';
 
-const DropdownMenu = DropdownMenuPrimitive.Root;
+const DropdownContext = React.createContext({
+  isOpen: false,
+  setIsOpen: (_: boolean) => {}
+});
+
+export const useDropdownMenuContext = () => React.useContext(DropdownContext);
+
+const DropdownMenu: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
+      <DropdownMenuPrimitive.Root open={isOpen} onOpenChange={open => setIsOpen(open)}>
+        {children}
+      </DropdownMenuPrimitive.Root>
+    </DropdownContext.Provider>
+  );
+};
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
 

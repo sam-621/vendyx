@@ -1,13 +1,17 @@
+'use client';
+
 import { type FC } from 'react';
 
 import Link from 'next/link';
 
 import { type CommonOrderFragment } from '@/api/types';
 import { Card, CardContent, CardHeader, CardTitle, Label } from '@/lib/shared/components';
+import { useBase } from '@/lib/shared/hooks';
 import { clean, formatPhoneNumber, getFullName } from '@/lib/shared/utils';
 
 export const OrderCustomerCard: FC<Props> = ({ order }) => {
   const { customer, shippingAddress } = order;
+  const base = useBase();
 
   return (
     <Card>
@@ -19,7 +23,7 @@ export const OrderCustomerCard: FC<Props> = ({ order }) => {
         {customer ? (
           <div className="flex flex-col gap-2">
             <Link
-              href={`customers/${customer.id}`}
+              href={`${base}/customers/${customer.id}`}
               className="font-medium text-distinct hover:underline"
             >
               {getFullName(clean(customer))}
