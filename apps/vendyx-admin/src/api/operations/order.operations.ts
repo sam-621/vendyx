@@ -103,3 +103,45 @@ export const GET_ORDER_BY_ID_QUERY = graphql(`
     }
   }
 `);
+
+export const MARK_ORDER_AS_SHIPPED_MUTATION = graphql(`
+  mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {
+    markOrderAsShipped(id: $orderId, input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        ...CommonOrder
+      }
+    }
+  }
+`);
+
+export const MARK_ORDER_AS_DELIVERED_MUTATION = graphql(`
+  mutation MarkAsDelivered($orderId: ID!) {
+    markOrderAsDelivered(id: $orderId) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        ...CommonOrder
+      }
+    }
+  }
+`);
+
+export const CANCEL_ORDER_MUTATION = graphql(`
+  mutation CancelOrder($orderId: ID!) {
+    cancelOrder(id: $orderId) {
+      apiErrors {
+        code
+        message
+      }
+      order {
+        ...CommonOrder
+      }
+    }
+  }
+`);

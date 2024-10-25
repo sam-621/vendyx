@@ -1084,6 +1084,58 @@ export type GetOrderbyIdQueryQuery = {
     | null;
 };
 
+export type MarkAsShippedMutationVariables = Exact<{
+  orderId: Scalars['ID']['input'];
+  input: MarkOrderAsShippedInput;
+}>;
+
+export type MarkAsShippedMutation = {
+  __typename?: 'Mutation';
+  markOrderAsShipped: {
+    __typename?: 'OrderResult';
+    apiErrors: Array<{ __typename?: 'OrderErrorResult'; code: OrderErrorCode; message: string }>;
+    order?:
+      | ({ __typename?: 'Order' } & {
+          ' $fragmentRefs'?: { CommonOrderFragment: CommonOrderFragment };
+        })
+      | null;
+  };
+};
+
+export type MarkAsDeliveredMutationVariables = Exact<{
+  orderId: Scalars['ID']['input'];
+}>;
+
+export type MarkAsDeliveredMutation = {
+  __typename?: 'Mutation';
+  markOrderAsDelivered: {
+    __typename?: 'OrderResult';
+    apiErrors: Array<{ __typename?: 'OrderErrorResult'; code: OrderErrorCode; message: string }>;
+    order?:
+      | ({ __typename?: 'Order' } & {
+          ' $fragmentRefs'?: { CommonOrderFragment: CommonOrderFragment };
+        })
+      | null;
+  };
+};
+
+export type CancelOrderMutationVariables = Exact<{
+  orderId: Scalars['ID']['input'];
+}>;
+
+export type CancelOrderMutation = {
+  __typename?: 'Mutation';
+  cancelOrder: {
+    __typename?: 'OrderResult';
+    apiErrors: Array<{ __typename?: 'OrderErrorResult'; code: OrderErrorCode; message: string }>;
+    order?:
+      | ({ __typename?: 'Order' } & {
+          ' $fragmentRefs'?: { CommonOrderFragment: CommonOrderFragment };
+        })
+      | null;
+  };
+};
+
 export type CommonPaymentIntegrationFragment = {
   __typename?: 'PaymentIntegration';
   id: string;
@@ -1830,6 +1882,231 @@ export const GetOrderbyIdQueryDocument = new TypedDocumentString(`
     transactionId
   }
 }`) as unknown as TypedDocumentString<GetOrderbyIdQueryQuery, GetOrderbyIdQueryQueryVariables>;
+export const MarkAsShippedDocument = new TypedDocumentString(`
+    mutation MarkAsShipped($orderId: ID!, $input: MarkOrderAsShippedInput!) {
+  markOrderAsShipped(id: $orderId, input: $input) {
+    apiErrors {
+      code
+      message
+    }
+    order {
+      ...CommonOrder
+    }
+  }
+}
+    fragment CommonOrder on Order {
+  id
+  createdAt
+  code
+  state
+  subtotal
+  total
+  totalQuantity
+  lines {
+    items {
+      id
+      linePrice
+      quantity
+      unitPrice
+      productVariant {
+        id
+        sku
+        optionValues {
+          id
+          name
+        }
+        product {
+          name
+          slug
+          assets {
+            items {
+              id
+              source
+            }
+          }
+        }
+      }
+    }
+  }
+  customer {
+    id
+    email
+    firstName
+    lastName
+    phoneNumber
+  }
+  shippingAddress {
+    streetLine1
+    streetLine2
+    postalCode
+    city
+    province
+    country
+  }
+  shipment {
+    id
+    amount
+    carrier
+    method
+    trackingCode
+  }
+  payment {
+    id
+    amount
+    method
+    transactionId
+  }
+}`) as unknown as TypedDocumentString<MarkAsShippedMutation, MarkAsShippedMutationVariables>;
+export const MarkAsDeliveredDocument = new TypedDocumentString(`
+    mutation MarkAsDelivered($orderId: ID!) {
+  markOrderAsDelivered(id: $orderId) {
+    apiErrors {
+      code
+      message
+    }
+    order {
+      ...CommonOrder
+    }
+  }
+}
+    fragment CommonOrder on Order {
+  id
+  createdAt
+  code
+  state
+  subtotal
+  total
+  totalQuantity
+  lines {
+    items {
+      id
+      linePrice
+      quantity
+      unitPrice
+      productVariant {
+        id
+        sku
+        optionValues {
+          id
+          name
+        }
+        product {
+          name
+          slug
+          assets {
+            items {
+              id
+              source
+            }
+          }
+        }
+      }
+    }
+  }
+  customer {
+    id
+    email
+    firstName
+    lastName
+    phoneNumber
+  }
+  shippingAddress {
+    streetLine1
+    streetLine2
+    postalCode
+    city
+    province
+    country
+  }
+  shipment {
+    id
+    amount
+    carrier
+    method
+    trackingCode
+  }
+  payment {
+    id
+    amount
+    method
+    transactionId
+  }
+}`) as unknown as TypedDocumentString<MarkAsDeliveredMutation, MarkAsDeliveredMutationVariables>;
+export const CancelOrderDocument = new TypedDocumentString(`
+    mutation CancelOrder($orderId: ID!) {
+  cancelOrder(id: $orderId) {
+    apiErrors {
+      code
+      message
+    }
+    order {
+      ...CommonOrder
+    }
+  }
+}
+    fragment CommonOrder on Order {
+  id
+  createdAt
+  code
+  state
+  subtotal
+  total
+  totalQuantity
+  lines {
+    items {
+      id
+      linePrice
+      quantity
+      unitPrice
+      productVariant {
+        id
+        sku
+        optionValues {
+          id
+          name
+        }
+        product {
+          name
+          slug
+          assets {
+            items {
+              id
+              source
+            }
+          }
+        }
+      }
+    }
+  }
+  customer {
+    id
+    email
+    firstName
+    lastName
+    phoneNumber
+  }
+  shippingAddress {
+    streetLine1
+    streetLine2
+    postalCode
+    city
+    province
+    country
+  }
+  shipment {
+    id
+    amount
+    carrier
+    method
+    trackingCode
+  }
+  payment {
+    id
+    amount
+    method
+    transactionId
+  }
+}`) as unknown as TypedDocumentString<CancelOrderMutation, CancelOrderMutationVariables>;
 export const GetPaymentMethodsDocument = new TypedDocumentString(`
     query GetPaymentMethods {
   paymentMethods {

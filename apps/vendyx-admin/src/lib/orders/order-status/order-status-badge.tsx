@@ -43,6 +43,10 @@ export const OrderStatusBadge: FC<Props> = ({ status }) => {
     );
   }
 
+  if (status === OrderState.Canceled) {
+    return <Badge variant="outline">Canceled</Badge>;
+  }
+
   return <Badge>Adding</Badge>;
 };
 
