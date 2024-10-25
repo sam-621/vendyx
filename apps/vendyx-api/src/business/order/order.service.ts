@@ -19,7 +19,7 @@ import { ShipmentService } from '@/shipments';
 import {
   CustomerDisabled,
   CustomerInvalidEmail,
-  ForbidenOrderAction,
+  ForbiddenOrderAction,
   MissingShippingAddress,
   NotEnoughStock,
   OrderTransitionError,
@@ -72,7 +72,7 @@ export class OrderService {
     return null;
   }
 
-  async findAvailabelShippingMethods(orderId: ID) {
+  async findAvailableShippingMethods(orderId: ID) {
     const order = await this.prisma.order.findUnique({ where: { id: orderId } });
 
     const state = (order?.shippingAddress as unknown as Address | null)?.province;
@@ -125,7 +125,7 @@ export class OrderService {
     });
 
     if (!this.canPerformAction(order, 'modify')) {
-      return new ForbidenOrderAction(order.state);
+      return new ForbiddenOrderAction(order.state);
     }
 
     const variant = await this.findVariantOrThrow(input.productVariantId);
@@ -143,6 +143,12 @@ export class OrderService {
     // If a line with the variant already exists, only update the quantity and recalculate the line price, not adding a new line
     // NOTE: When updating, we replace the current quantity with the new one, not adding the new quantity to the current one
     if (lineWithTheVariant) {
+      const newQuantity = input.quantity + lineWithTheVariant.quantity;
+
+      if (variant.stock < newQuantity) {
+        return new NotEnoughStock();
+      }
+
       return await this.prisma.order.update({
         where: { id: orderId },
         data: {
@@ -196,7 +202,7 @@ export class OrderService {
     const { order, productVariant } = line;
 
     if (!this.canPerformAction(order, 'modify')) {
-      return new ForbidenOrderAction(order.state);
+      return new ForbiddenOrderAction(order.state);
     }
 
     // If the quantity 0, remove the line and recalculate the order stats
@@ -245,7 +251,7 @@ export class OrderService {
     });
 
     if (!this.canPerformAction(line.order, 'modify')) {
-      return new ForbidenOrderAction(line.order.state);
+      return new ForbiddenOrderAction(line.order.state);
     }
 
     return await this.prisma.order.update({
@@ -269,7 +275,7 @@ export class OrderService {
     const order = await this.findOrderOrThrow(orderId);
 
     if (!this.canPerformAction(order, 'add_customer')) {
-      return new ForbidenOrderAction(order.state);
+      return new ForbiddenOrderAction(order.state);
     }
 
     const customer = await this.prisma.customer.findUnique({
@@ -292,7 +298,7 @@ export class OrderService {
     const order = await this.findOrderOrThrow(orderId);
 
     if (!this.canPerformAction(order, 'add_shipping_address')) {
-      return new ForbidenOrderAction(order.state);
+      return new ForbiddenOrderAction(order.state);
     }
 
     return await this.prisma.order.update({
@@ -309,7 +315,7 @@ export class OrderService {
     }
 
     if (!this.canPerformAction(order, 'add_shipment')) {
-      return new ForbidenOrderAction(order.state);
+      return new ForbiddenOrderAction(order.state);
     }
 
     const state = (order?.shippingAddress as unknown as Address).province;
@@ -350,7 +356,7 @@ export class OrderService {
     });
 
     if (!this.canPerformAction(order, 'add_payment')) {
-      return new ForbidenOrderAction(order.state);
+      return new ForbiddenOrderAction(order.state);
     }
 
     if (!(await this.validateOrderTransitionState(order, OrderState.PAYMENT_ADDED))) {
@@ -502,7 +508,7 @@ export class OrderService {
    * console.log(rawOrderCode) // 1
    */
   private parseOrderCode(code: string) {
-    // if 0, or is NaN, return undefined, usefull for filters, if there is not valid code, don't filter by it
+    // if 0, or is NaN, return undefined, useful for filters, if there is not valid code, don't filter by it
     return Number(code.replace('#', '')) || undefined;
   }
 

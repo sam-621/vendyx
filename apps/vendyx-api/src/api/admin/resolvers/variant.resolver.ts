@@ -1,7 +1,7 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreateVariantInput, UpdateVariantInput, UserJwtAuthGuard, Variant } from '@/api/shared';
+import { CreateVariantInput, UpdateVariantInput, UserJwtAuthGuard } from '@/api/shared';
 import { VariantService } from '@/business/variant';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
@@ -31,22 +31,5 @@ export class VariantResolver {
   @Mutation('softRemoveVariant')
   async softRemoveVariant(@Args('id') id: string) {
     return await this.variantService.softRemove(id);
-  }
-
-  @ResolveField('product')
-  async variants(@Parent() variant: Variant) {
-    return await this.prisma.variant.findUnique({ where: { id: variant.id } }).product();
-  }
-
-  @ResolveField('optionValues')
-  async optionValues(@Parent() variant: Variant) {
-    const result = await this.prisma.variantOptionValue.findMany({
-      where: { variantId: variant.id, optionValue: { deletedAt: null } },
-      select: { optionValue: true }
-    });
-
-    return result
-      .map(({ optionValue }) => optionValue)
-      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   }
 }

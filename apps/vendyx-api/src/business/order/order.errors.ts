@@ -16,7 +16,7 @@ export class OrderTransitionError extends ErrorResult<OrderErrorCode> {
 /**
  * Error thrown when trying to perform an action on an order with an invalid state
  */
-export class ForbidenOrderAction extends ErrorResult<OrderErrorCode> {
+export class ForbiddenOrderAction extends ErrorResult<OrderErrorCode> {
   constructor(state: OrderState) {
     super(OrderErrorCode.FORBIDDEN_ORDER_ACTION, `Forbidden action on order with state ${state}`);
   }

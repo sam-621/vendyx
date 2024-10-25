@@ -79,8 +79,8 @@ export class OrderResolver {
   }
 
   @Query('availableShippingMethods')
-  async availableShippingMethods(@Args('orderId') orderdId: ID) {
-    const shippingMethods = await this.orderService.findAvailabelShippingMethods(orderdId);
+  async availableShippingMethods(@Args('orderId') orderId: ID) {
+    const shippingMethods = await this.orderService.findAvailableShippingMethods(orderId);
 
     if (isErrorResult(shippingMethods)) {
       return [];
