@@ -51,4 +51,5 @@ input OrderListInput {
 input OrderFilters {
   code: String
   state: OrderState
+  customer: StringFilter
 }

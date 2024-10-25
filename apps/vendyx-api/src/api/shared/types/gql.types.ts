@@ -82,6 +82,7 @@ export class OrderListInput {
 export class OrderFilters {
     code?: Nullable<string>;
     state?: Nullable<OrderState>;
+    customer?: Nullable<StringFilter>;
 }
 
 export class CreatePaymentMethodInput {
@@ -279,7 +280,7 @@ export class State implements Node {
 export abstract class IQuery {
     abstract countries(): Country[] | Promise<Country[]>;
 
-    abstract orders(input?: Nullable<OrderListInput>): Nullable<OrderList> | Promise<Nullable<OrderList>>;
+    abstract orders(input?: Nullable<OrderListInput>): OrderList | Promise<OrderList>;
 
     abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
 
@@ -310,6 +311,10 @@ export abstract class IQuery {
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
+
+    abstract availablePaymentMethods(orderId: string): PaymentMethod[] | Promise<PaymentMethod[]>;
 }
 
 export class Option implements Node {

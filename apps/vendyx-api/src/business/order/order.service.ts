@@ -1,21 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Address, Customer, Order, OrderState, Prisma, Shipment, Variant } from '@prisma/client';
 
-import {
-  AddCustomerToOrderInput,
-  AddPaymentToOrderInput,
-  AddShipmentToOrderInput,
-  CreateAddressInput,
-  CreateOrderInput,
-  CreateOrderLineInput,
-  OrderListInput,
-  UpdateOrderLineInput
-} from '@/api/shared';
-import { PaymentService } from '@/payment';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
-import { ID } from '@/persistance/types';
-import { ShipmentService } from '@/shipments';
-
+import { OrderFinders } from './order-finders';
 import {
   CustomerDisabled,
   CustomerInvalidEmail,
@@ -28,36 +14,31 @@ import {
   PaymentMethodNotFound,
   ShippingMethodNotFound
 } from './order.errors';
-import { ValidOrderTransitions } from './order.utils';
+import { ValidOrderTransitions, parseOrderCode } from './order.utils';
 import { clean, executeInSafe, validateEmail } from '../shared/utils';
 
+import {
+  AddCustomerToOrderInput,
+  AddPaymentToOrderInput,
+  AddShipmentToOrderInput,
+  CreateAddressInput,
+  CreateOrderInput,
+  CreateOrderLineInput,
+  UpdateOrderLineInput
+} from '@/api/shared';
+import { PaymentService } from '@/payment';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { ID } from '@/persistance/types';
+import { ShipmentService } from '@/shipments';
+
 @Injectable()
-export class OrderService {
+export class OrderService extends OrderFinders {
   constructor(
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
     private readonly shipmentService: ShipmentService,
     private readonly paymentService: PaymentService
-  ) {}
-
-  async find(input?: OrderListInput) {
-    return this.prisma.order.findMany({
-      ...clean({ skip: input?.skip, take: input?.take }),
-      where: {
-        code: input?.filters?.code ? this.parseOrderCode(input?.filters?.code) : undefined,
-        state: input?.filters?.state ? input?.filters?.state : { not: OrderState.MODIFYING }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
-  }
-
-  async count(input?: OrderListInput) {
-    return this.prisma.order.count({
-      where: {
-        code: input?.filters?.code ? this.parseOrderCode(input?.filters?.code) : undefined,
-        state: input?.filters?.state ? input?.filters?.state : { not: OrderState.MODIFYING }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
+  ) {
+    super(prisma);
   }
 
   async findUnique(id?: string, code?: string) {
@@ -66,7 +47,7 @@ export class OrderService {
     }
 
     if (code) {
-      return await this.prisma.order.findUnique({ where: { code: this.parseOrderCode(code) } });
+      return await this.prisma.order.findUnique({ where: { code: parseOrderCode(code) } });
     }
 
     return null;
@@ -493,23 +474,6 @@ export class OrderService {
     }
 
     return transitionStateAllowed;
-  }
-
-  formatOrderCode(code: number) {
-    return `#${code.toString().padStart(4, '0')}`;
-  }
-
-  /**
-   * Parse order code to get the raw order code
-   *
-   * @example
-   * const orderCode = '#0001'
-   * const rawOrderCode = parseOrderCode(orderCode)
-   * console.log(rawOrderCode) // 1
-   */
-  private parseOrderCode(code: string) {
-    // if 0, or is NaN, return undefined, useful for filters, if there is not valid code, don't filter by it
-    return Number(code.replace('#', '')) || undefined;
   }
 
   /**

@@ -19,7 +19,11 @@ export const OrdersTable: FC<Props> = async props => {
   const { items: orders, pageInfo } = await OrderService.getAll({
     skip: getSkip(page, size),
     take: size,
-    filters: { code: search, state }
+    filters: {
+      code: search,
+      state,
+      customer: { contains: search }
+    }
   });
 
   if (!orders.length && !search) {

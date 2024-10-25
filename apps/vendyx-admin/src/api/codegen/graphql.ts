@@ -426,6 +426,7 @@ export type OrderErrorResult = {
 
 export type OrderFilters = {
   code?: InputMaybe<Scalars['String']['input']>;
+  customer?: InputMaybe<StringFilter>;
   state?: InputMaybe<OrderState>;
 };
 
