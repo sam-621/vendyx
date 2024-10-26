@@ -29,6 +29,9 @@ export const GET_ALL_CUSTOMERS_QUERY = graphql(`
   query GetAllCustomersQuery($input: CustomerListInput) {
     customers(input: $input) {
       count
+      pageInfo {
+        total
+      }
       items {
         id
         firstName

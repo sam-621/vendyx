@@ -1009,6 +1009,7 @@ export type GetAllCustomersQueryQuery = {
   customers: {
     __typename?: 'CustomerList';
     count: number;
+    pageInfo: { __typename?: 'PageInfo'; total: number };
     items: Array<{
       __typename?: 'Customer';
       id: string;
@@ -1899,6 +1900,9 @@ export const GetAllCustomersQueryDocument = new TypedDocumentString(`
     query GetAllCustomersQuery($input: CustomerListInput) {
   customers(input: $input) {
     count
+    pageInfo {
+      total
+    }
     items {
       id
       firstName

@@ -18,7 +18,7 @@ const documents = {
     types.GetCountriesDocument,
   '\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    orders {\n      count\n      items {\n        id\n        code\n        placedAt\n        state\n        total\n        shipment {\n          method\n        }\n      }\n    }\n  }\n':
     types.CommonCustomerFragmentDoc,
-  '\n  query GetAllCustomersQuery($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      items {\n        id\n        firstName\n        lastName\n        email\n        enabled\n        orders {\n          count\n          items {\n            total\n          }\n        }\n      }\n    }\n  }\n':
+  '\n  query GetAllCustomersQuery($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        firstName\n        lastName\n        email\n        enabled\n        orders {\n          count\n          items {\n            total\n          }\n        }\n      }\n    }\n  }\n':
     types.GetAllCustomersQueryDocument,
   '\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n':
     types.GetCustomerByIdQueryDocument,
@@ -135,7 +135,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetAllCustomersQuery($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      items {\n        id\n        firstName\n        lastName\n        email\n        enabled\n        orders {\n          count\n          items {\n            total\n          }\n        }\n      }\n    }\n  }\n'
+  source: '\n  query GetAllCustomersQuery($input: CustomerListInput) {\n    customers(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        firstName\n        lastName\n        email\n        enabled\n        orders {\n          count\n          items {\n            total\n          }\n        }\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetAllCustomersQueryDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
