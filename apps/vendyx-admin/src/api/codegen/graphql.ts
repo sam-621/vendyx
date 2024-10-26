@@ -159,6 +159,14 @@ export type Customer = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type CustomerAddressesArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+export type CustomerOrdersArgs = {
+  input?: InputMaybe<OrderListInput>;
+};
+
 export enum CustomerErrorCode {
   EmailAlreadyExists = 'EMAIL_ALREADY_EXISTS',
   InvalidEmail = 'INVALID_EMAIL'
@@ -170,11 +178,27 @@ export type CustomerErrorResult = {
   message: Scalars['String']['output'];
 };
 
+export type CustomerFilters = {
+  email?: InputMaybe<StringFilter>;
+  enabled?: InputMaybe<BooleanFilter>;
+  firstName?: InputMaybe<StringFilter>;
+  lastName?: InputMaybe<StringFilter>;
+};
+
 export type CustomerList = List & {
   __typename?: 'CustomerList';
   count: Scalars['Int']['output'];
   items: Array<Customer>;
   pageInfo: PageInfo;
+};
+
+export type CustomerListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<CustomerFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /**  Results  */
@@ -229,6 +253,7 @@ export type Mutation = {
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProduct: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
+  updateCustomer: CustomerResult;
   updateOption: Option;
   updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
@@ -315,6 +340,11 @@ export type MutationSoftRemoveProductArgs = {
 
 export type MutationSoftRemoveVariantArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type MutationUpdateCustomerArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCustomerInput;
 };
 
 export type MutationUpdateOptionArgs = {
@@ -590,7 +620,7 @@ export type ProductVariantsArgs = {
 };
 
 export type ProductFilters = {
-  achived?: InputMaybe<BooleanFilter>;
+  archived?: InputMaybe<BooleanFilter>;
   enabled?: InputMaybe<BooleanFilter>;
   name?: InputMaybe<StringFilter>;
 };
@@ -614,6 +644,8 @@ export type ProductListInput = {
 export type Query = {
   __typename?: 'Query';
   countries: Array<Country>;
+  customer?: Maybe<Customer>;
+  customers: CustomerList;
   order?: Maybe<Order>;
   orders: OrderList;
   paymentIntegrations: Array<PaymentIntegration>;
@@ -630,6 +662,14 @@ export type Query = {
   variant?: Maybe<Variant>;
   zone: Zone;
   zones: Array<Zone>;
+};
+
+export type QueryCustomerArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type QueryCustomersArgs = {
+  input?: InputMaybe<CustomerListInput>;
 };
 
 export type QueryOrderArgs = {
@@ -757,6 +797,14 @@ export type State = Node & {
 export type StringFilter = {
   contains?: InputMaybe<Scalars['String']['input']>;
   equals?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateCustomerInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateOptionInput = {
@@ -926,6 +974,88 @@ export type GetCountriesQuery = {
       ' $fragmentRefs'?: { CommonCountryFragment: CommonCountryFragment };
     }
   >;
+};
+
+export type CommonCustomerFragment = {
+  __typename?: 'Customer';
+  id: string;
+  createdAt: any;
+  firstName?: string | null;
+  lastName: string;
+  email: string;
+  phoneNumber?: string | null;
+  enabled: boolean;
+  orders: {
+    __typename?: 'OrderList';
+    count: number;
+    items: Array<{
+      __typename?: 'Order';
+      id: string;
+      code: string;
+      placedAt?: any | null;
+      state: OrderState;
+      total: number;
+      shipment?: { __typename?: 'Shipment'; method: string } | null;
+    }>;
+  };
+} & { ' $fragmentName'?: 'CommonCustomerFragment' };
+
+export type GetAllCustomersQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAllCustomersQueryQuery = {
+  __typename?: 'Query';
+  customers: {
+    __typename?: 'CustomerList';
+    count: number;
+    items: Array<{
+      __typename?: 'Customer';
+      id: string;
+      firstName?: string | null;
+      lastName: string;
+      email: string;
+      enabled: boolean;
+      orders: {
+        __typename?: 'OrderList';
+        count: number;
+        items: Array<{ __typename?: 'Order'; total: number }>;
+      };
+    }>;
+  };
+};
+
+export type GetCustomerByIdQueryQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type GetCustomerByIdQueryQuery = {
+  __typename?: 'Query';
+  customer?:
+    | ({ __typename?: 'Customer' } & {
+        ' $fragmentRefs'?: { CommonCustomerFragment: CommonCustomerFragment };
+      })
+    | null;
+};
+
+export type UpdateCustomerMutationMutationVariables = Exact<{
+  customerId: Scalars['ID']['input'];
+  input: UpdateCustomerInput;
+}>;
+
+export type UpdateCustomerMutationMutation = {
+  __typename?: 'Mutation';
+  updateCustomer: {
+    __typename?: 'CustomerResult';
+    apiErrors: Array<{
+      __typename?: 'CustomerErrorResult';
+      code: CustomerErrorCode;
+      message: string;
+    }>;
+    customer?:
+      | ({ __typename?: 'Customer' } & {
+          ' $fragmentRefs'?: { CommonCustomerFragment: CommonCustomerFragment };
+        })
+      | null;
+  };
 };
 
 export type CreateOptionMutationVariables = Exact<{
@@ -1552,6 +1682,33 @@ export const CommonCountryFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonCountry' }
 ) as unknown as TypedDocumentString<CommonCountryFragment, unknown>;
+export const CommonCustomerFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonCustomer on Customer {
+  id
+  createdAt
+  firstName
+  lastName
+  email
+  phoneNumber
+  enabled
+  orders {
+    count
+    items {
+      id
+      code
+      placedAt
+      state
+      total
+      shipment {
+        method
+      }
+    }
+  }
+}
+    `,
+  { fragmentName: 'CommonCustomer' }
+) as unknown as TypedDocumentString<CommonCustomerFragment, unknown>;
 export const CommonOrderFragmentDoc = new TypedDocumentString(
   `
     fragment CommonOrder on Order {
@@ -1740,6 +1897,97 @@ export const GetCountriesDocument = new TypedDocumentString(`
     name
   }
 }`) as unknown as TypedDocumentString<GetCountriesQuery, GetCountriesQueryVariables>;
+export const GetAllCustomersQueryDocument = new TypedDocumentString(`
+    query GetAllCustomersQuery {
+  customers {
+    count
+    items {
+      id
+      firstName
+      lastName
+      email
+      enabled
+      orders {
+        count
+        items {
+          total
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<
+  GetAllCustomersQueryQuery,
+  GetAllCustomersQueryQueryVariables
+>;
+export const GetCustomerByIdQueryDocument = new TypedDocumentString(`
+    query GetCustomerByIdQuery($id: ID!) {
+  customer(id: $id) {
+    ...CommonCustomer
+  }
+}
+    fragment CommonCustomer on Customer {
+  id
+  createdAt
+  firstName
+  lastName
+  email
+  phoneNumber
+  enabled
+  orders {
+    count
+    items {
+      id
+      code
+      placedAt
+      state
+      total
+      shipment {
+        method
+      }
+    }
+  }
+}`) as unknown as TypedDocumentString<
+  GetCustomerByIdQueryQuery,
+  GetCustomerByIdQueryQueryVariables
+>;
+export const UpdateCustomerMutationDocument = new TypedDocumentString(`
+    mutation UpdateCustomerMutation($customerId: ID!, $input: UpdateCustomerInput!) {
+  updateCustomer(id: $customerId, input: $input) {
+    apiErrors {
+      code
+      message
+    }
+    customer {
+      ...CommonCustomer
+    }
+  }
+}
+    fragment CommonCustomer on Customer {
+  id
+  createdAt
+  firstName
+  lastName
+  email
+  phoneNumber
+  enabled
+  orders {
+    count
+    items {
+      id
+      code
+      placedAt
+      state
+      total
+      shipment {
+        method
+      }
+    }
+  }
+}`) as unknown as TypedDocumentString<
+  UpdateCustomerMutationMutation,
+  UpdateCustomerMutationMutationVariables
+>;
 export const CreateOptionDocument = new TypedDocumentString(`
     mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {
   createOption(productId: $productId, input: $input) {

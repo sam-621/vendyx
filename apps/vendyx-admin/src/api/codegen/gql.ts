@@ -16,6 +16,14 @@ const documents = {
     types.CommonCountryFragmentDoc,
   '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n':
     types.GetCountriesDocument,
+  '\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    orders {\n      count\n      items {\n        id\n        code\n        placedAt\n        state\n        total\n        shipment {\n          method\n        }\n      }\n    }\n  }\n':
+    types.CommonCustomerFragmentDoc,
+  '\n  query GetAllCustomersQuery {\n    customers {\n      count\n      items {\n        id\n        firstName\n        lastName\n        email\n        enabled\n        orders {\n          count\n          items {\n            total\n          }\n        }\n      }\n    }\n  }\n':
+    types.GetAllCustomersQueryDocument,
+  '\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n':
+    types.GetCustomerByIdQueryDocument,
+  '\n  mutation UpdateCustomerMutation($customerId: ID!, $input: UpdateCustomerInput!) {\n    updateCustomer(id: $customerId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      customer {\n        ...CommonCustomer\n      }\n    }\n  }\n':
+    types.UpdateCustomerMutationDocument,
   '\n  mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {\n    createOption(productId: $productId, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
     types.CreateOptionDocument,
   '\n  mutation UpdateOption($id: ID!, $input: UpdateOptionInput!) {\n    updateOption(id: $id, input: $input) {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n  }\n':
@@ -117,6 +125,30 @@ export function graphql(
 export function graphql(
   source: '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n'
 ): typeof import('./graphql').GetCountriesDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment CommonCustomer on Customer {\n    id\n    createdAt\n    firstName\n    lastName\n    email\n    phoneNumber\n    enabled\n    orders {\n      count\n      items {\n        id\n        code\n        placedAt\n        state\n        total\n        shipment {\n          method\n        }\n      }\n    }\n  }\n'
+): typeof import('./graphql').CommonCustomerFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetAllCustomersQuery {\n    customers {\n      count\n      items {\n        id\n        firstName\n        lastName\n        email\n        enabled\n        orders {\n          count\n          items {\n            total\n          }\n        }\n      }\n    }\n  }\n'
+): typeof import('./graphql').GetAllCustomersQueryDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCustomerByIdQuery($id: ID!) {\n    customer(id: $id) {\n      ...CommonCustomer\n    }\n  }\n'
+): typeof import('./graphql').GetCustomerByIdQueryDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateCustomerMutation($customerId: ID!, $input: UpdateCustomerInput!) {\n    updateCustomer(id: $customerId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      customer {\n        ...CommonCustomer\n      }\n    }\n  }\n'
+): typeof import('./graphql').UpdateCustomerMutationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
