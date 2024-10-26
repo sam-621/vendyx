@@ -9,6 +9,7 @@ export const COMMON_CUSTOMER_FRAGMENT = graphql(`
     email
     phoneNumber
     enabled
+    totalSpent
     orders {
       count
       items {
@@ -38,6 +39,7 @@ export const GET_ALL_CUSTOMERS_QUERY = graphql(`
         lastName
         email
         enabled
+        totalSpent
         orders {
           count
           items {

@@ -35,7 +35,7 @@ export const CustomersTable: FC<Props> = async props => {
     name: `${c.firstName} ${c.lastName}`,
     email: c.email,
     orders: c.orders.count,
-    totalSpent: c.orders.items.reduce((acc, order) => acc + order.total, 0),
+    totalSpent: c.totalSpent,
     enabled: c.enabled
   }));
 

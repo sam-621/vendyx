@@ -156,6 +156,7 @@ export type Customer = Node & {
   lastName: Scalars['String']['output'];
   orders: OrderList;
   phoneNumber?: Maybe<Scalars['String']['output']>;
+  totalSpent: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -985,6 +986,7 @@ export type CommonCustomerFragment = {
   email: string;
   phoneNumber?: string | null;
   enabled: boolean;
+  totalSpent: number;
   orders: {
     __typename?: 'OrderList';
     count: number;
@@ -1017,6 +1019,7 @@ export type GetAllCustomersQueryQuery = {
       lastName: string;
       email: string;
       enabled: boolean;
+      totalSpent: number;
       orders: {
         __typename?: 'OrderList';
         count: number;
@@ -1691,6 +1694,7 @@ export const CommonCustomerFragmentDoc = new TypedDocumentString(
   email
   phoneNumber
   enabled
+  totalSpent
   orders {
     count
     items {
@@ -1909,6 +1913,7 @@ export const GetAllCustomersQueryDocument = new TypedDocumentString(`
       lastName
       email
       enabled
+      totalSpent
       orders {
         count
         items {
@@ -1936,6 +1941,7 @@ export const GetCustomerByIdQueryDocument = new TypedDocumentString(`
   email
   phoneNumber
   enabled
+  totalSpent
   orders {
     count
     items {
