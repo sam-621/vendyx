@@ -15,9 +15,11 @@ import {
   TableRow
 } from '@/lib/shared/components';
 import { useEntityContext } from '@/lib/shared/contexts';
+import { useBase } from '@/lib/shared/hooks';
 import { formatDate, formatPrice } from '@/lib/shared/utils';
 
 export const CustomerOrdersTableCard = () => {
+  const base = useBase();
   const { entity: customer } = useEntityContext<CommonCustomerFragment>();
 
   const orders = customer.orders.items;
@@ -47,7 +49,7 @@ export const CustomerOrdersTableCard = () => {
             {orders.map(order => (
               <TableRow key={order.id}>
                 <TableCell>
-                  <Link href={`orders/${order.id}`} className="w-full hover:underline">
+                  <Link href={`${base}/orders/${order.id}`} className="w-full hover:underline">
                     {order.code}
                   </Link>
                 </TableCell>
