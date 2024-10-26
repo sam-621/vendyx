@@ -26,8 +26,8 @@ export const COMMON_CUSTOMER_FRAGMENT = graphql(`
 `);
 
 export const GET_ALL_CUSTOMERS_QUERY = graphql(`
-  query GetAllCustomersQuery {
-    customers {
+  query GetAllCustomersQuery($input: CustomerListInput) {
+    customers(input: $input) {
       count
       items {
         id
@@ -62,7 +62,7 @@ export const UPDATE_CUSTOMER_MUTATION = graphql(`
         message
       }
       customer {
-        ...CommonCustomer
+        id
       }
     }
   }

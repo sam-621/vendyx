@@ -1000,7 +1000,9 @@ export type CommonCustomerFragment = {
   };
 } & { ' $fragmentName'?: 'CommonCustomerFragment' };
 
-export type GetAllCustomersQueryQueryVariables = Exact<{ [key: string]: never }>;
+export type GetAllCustomersQueryQueryVariables = Exact<{
+  input?: InputMaybe<CustomerListInput>;
+}>;
 
 export type GetAllCustomersQueryQuery = {
   __typename?: 'Query';
@@ -1050,11 +1052,7 @@ export type UpdateCustomerMutationMutation = {
       code: CustomerErrorCode;
       message: string;
     }>;
-    customer?:
-      | ({ __typename?: 'Customer' } & {
-          ' $fragmentRefs'?: { CommonCustomerFragment: CommonCustomerFragment };
-        })
-      | null;
+    customer?: { __typename?: 'Customer'; id: string } | null;
   };
 };
 
@@ -1898,8 +1896,8 @@ export const GetCountriesDocument = new TypedDocumentString(`
   }
 }`) as unknown as TypedDocumentString<GetCountriesQuery, GetCountriesQueryVariables>;
 export const GetAllCustomersQueryDocument = new TypedDocumentString(`
-    query GetAllCustomersQuery {
-  customers {
+    query GetAllCustomersQuery($input: CustomerListInput) {
+  customers(input: $input) {
     count
     items {
       id
@@ -1959,32 +1957,11 @@ export const UpdateCustomerMutationDocument = new TypedDocumentString(`
       message
     }
     customer {
-      ...CommonCustomer
+      id
     }
   }
 }
-    fragment CommonCustomer on Customer {
-  id
-  createdAt
-  firstName
-  lastName
-  email
-  phoneNumber
-  enabled
-  orders {
-    count
-    items {
-      id
-      code
-      placedAt
-      state
-      total
-      shipment {
-        method
-      }
-    }
-  }
-}`) as unknown as TypedDocumentString<
+    `) as unknown as TypedDocumentString<
   UpdateCustomerMutationMutation,
   UpdateCustomerMutationMutationVariables
 >;
