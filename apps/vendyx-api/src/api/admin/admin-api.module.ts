@@ -7,6 +7,7 @@ import { ShipmentModule } from '@/shipments';
 
 import {
   CountryResolver,
+  CustomerResolver,
   OptionResolver,
   OrderResolver,
   PaymentMethodResolver,
@@ -51,7 +52,8 @@ export class AdminApiModule {
     CountryResolver,
     ZoneResolver,
     StateResolver,
-    OrderResolver
+    OrderResolver,
+    CustomerResolver
   ]
 })
 class AdminModule {}

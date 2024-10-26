@@ -11,8 +11,8 @@ type Customer implements Node {
   """
   enabled: Boolean!
 
-  orders: OrderList!
-  addresses: AddressList!
+  orders(input: OrderListInput): OrderList!
+  addresses(input: ListInput): AddressList!
 }
 
 type CustomerList implements List {
@@ -30,4 +30,25 @@ type CustomerResult {
 type CustomerErrorResult {
   code: CustomerErrorCode!
   message: String!
+}
+
+input OrderListInput {
+  """
+  Skip the first n results
+  """
+  skip: Int
+
+  """
+  takes n result from where the skip position is
+  """
+  take: Int
+
+  """
+  Filters to apply
+  """
+  filters: OrderFilters
+}
+
+input OrderFilters {
+  code: String
 }

@@ -104,9 +104,9 @@ export class OrderListInput {
 }
 
 export class OrderFilters {
-    code?: Nullable<string>;
     state?: Nullable<OrderState>;
     customer?: Nullable<StringFilter>;
+    code?: Nullable<string>;
 }
 
 export class CreatePaymentMethodInput {
@@ -621,7 +621,7 @@ export class Customer implements Node {
     email: string;
     phoneNumber?: Nullable<string>;
     enabled: boolean;
-    orders: OrderList;
+    orders?: OrderList;
     addresses: AddressList;
 }
 

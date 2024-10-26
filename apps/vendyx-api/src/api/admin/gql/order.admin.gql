@@ -47,8 +47,7 @@ input OrderListInput {
   filters: OrderFilters
 }
 
-input OrderFilters {
-  code: String
+extend input OrderFilters {
   state: OrderState
   customer: StringFilter
 }

@@ -2,6 +2,7 @@ import { OrderState } from '@prisma/client';
 
 import { OrderListInput } from '@/api/shared';
 import { PrismaForShop } from '@/persistance/prisma-clients';
+import { ID } from '@/persistance/types';
 
 import { parseOrderCode } from './order.utils';
 import { clean } from '../shared';
@@ -12,10 +13,11 @@ import { clean } from '../shared';
 export class OrderFinders {
   constructor(private readonly _prisma: PrismaForShop) {}
 
-  async find(input?: OrderListInput) {
+  async find(input?: OrderListInput, customerId?: ID) {
     return this._prisma.order.findMany({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
+        customerId: customerId,
         state: input?.filters?.state
           ? input?.filters?.state
           : { notIn: [OrderState.MODIFYING, OrderState.CANCELED] },
@@ -47,10 +49,11 @@ export class OrderFinders {
     });
   }
 
-  async count(input?: OrderListInput) {
+  async count(input?: OrderListInput, customerId?: ID) {
     return this._prisma.order.count({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
+        customerId: customerId,
         state: input?.filters?.state
           ? input?.filters?.state
           : { notIn: [OrderState.MODIFYING, OrderState.CANCELED] },
