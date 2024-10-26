@@ -1,13 +1,16 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
   CreateCustomerInput,
+  ShopApiKeyGuard,
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
 } from '@/api/shared';
 import { CustomerService } from '@/business/customer';
 import { isErrorResult } from '@/business/shared';
 
+@UseGuards(ShopApiKeyGuard)
 @Resolver('Customer')
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}

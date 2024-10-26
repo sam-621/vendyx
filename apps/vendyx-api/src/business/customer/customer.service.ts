@@ -49,7 +49,7 @@ export class CustomerService extends CustomerFinder {
       return new InvalidEmail();
     }
 
-    const customerExists = await this.findByEmailOrThrow(input.email);
+    const customerExists = await this.prisma.customer.findUnique({ where: { email: input.email } });
 
     // Customer could exist without a password because we save the customer when
     // addCustomerToOrder mutation is called and we don't save the password in that case,
@@ -65,9 +65,13 @@ export class CustomerService extends CustomerFinder {
 
     const hashedPassword = await this.authService.hash(input.password);
 
-    return await this.prisma.customer.create({
-      data: {
-        ...customerExists,
+    return await this.prisma.customer.upsert({
+      where: { email: input.email },
+      create: {
+        ...clean(input),
+        password: hashedPassword
+      },
+      update: {
         ...clean(input),
         password: hashedPassword
       }
@@ -110,11 +114,12 @@ export class CustomerService extends CustomerFinder {
   }
 
   async generateAccessToken(email: string, password: string) {
-    const customer = await this.findByEmailOrThrow(email);
+    const customer = await this.prisma.customer.findUnique({ where: { email } });
 
     // Customer exists but has no password because it was created when adding the customer to an order
     // So the customer needs to create an account first to be able to login
-    if (!customer.password) {
+    // or just the customer was not found
+    if (!customer?.password) {
       return new InvalidCredentials();
     }
 
@@ -146,7 +151,7 @@ export class CustomerService extends CustomerFinder {
       return new DisabledCustomer();
     }
 
-    if (input.email && !validateEmail(input.email)) {
+    if (input.email) {
       if (!validateEmail(input.email)) {
         return new InvalidEmail();
       }

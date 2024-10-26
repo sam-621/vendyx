@@ -4,7 +4,7 @@ import { GqlExceptionFilter } from '@nestjs/graphql';
 /**
  * Catch any Http error, log it and throw it again because most of them are thrown by us intentionally
  */
-@Catch()
+@Catch(HttpException)
 export class HttpExceptionFilter implements GqlExceptionFilter {
   catch(exception: HttpException): any {
     // Apollo sometimes throws this error, we don't need to log it

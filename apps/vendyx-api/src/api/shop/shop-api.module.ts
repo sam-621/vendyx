@@ -6,7 +6,7 @@ import { BusinessModule } from '@/business';
 import { PaymentModule } from '@/payment';
 import { ShipmentModule } from '@/shipments';
 
-import { OrderResolver, ProductResolver } from './resolvers';
+import { CustomerResolver, OrderResolver, ProductResolver } from './resolvers';
 import { COMMON_RESOLVERS, GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared';
 
 const SHOP_API_SCHEMA_PATH = './src/api/shop/gql/**/*.gql';
@@ -28,6 +28,6 @@ export class ShopApiModule {
 
 @Module({
   imports: [BusinessModule, ShipmentModule, PaymentModule],
-  providers: [...COMMON_RESOLVERS, ProductResolver, OrderResolver]
+  providers: [...COMMON_RESOLVERS, ProductResolver, OrderResolver, CustomerResolver]
 })
 class ShopModule {}
