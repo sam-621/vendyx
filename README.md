@@ -23,14 +23,15 @@ We know there are so many other options for e-commerce platform, so why choose u
 
 - [x] Products
 - [x] Orders
-- [ ] Customers 🚧
-- [ ] Collections
+- [x] Customers
+- [x] Storefront API
 - [x] Shipments
 - [x] Payments
+- [ ] Multi-tenant 🚧
+- [ ] Collections
 - [ ] Coupons
 - [ ] Roles
 - [ ] Internationalization
-- [ ] Storefront API
 
 ## Tech stack
 
