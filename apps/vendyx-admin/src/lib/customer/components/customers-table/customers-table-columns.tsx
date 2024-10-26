@@ -1,7 +1,6 @@
 'use client';
 
 import { type ColumnDef } from '@tanstack/react-table';
-import { UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge, Checkbox, DataTableColumnHeader } from '@/lib/shared/components';
@@ -29,6 +28,7 @@ export const CustomersTableColumns: ColumnDef<CustomersTableRow>[] = [
     enableSorting: false,
     enableHiding: false
   },
+
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -38,23 +38,15 @@ export const CustomersTableColumns: ColumnDef<CustomersTableRow>[] = [
       return (
         <Link
           href={`customers/${row.original.id}`}
-          className="flex items-center gap-2 w-full text-nowrap"
+          className="flex flex-col gap-2 w-full text-nowrap"
         >
-          <UserIcon className="flex-shrink-0" size={24} />
-          <span>{row.original.name}</span>
+          <span className="text-sm font-normal">{row.original.name}</span>
+          <span className="text-sm font-normal text-muted-foreground">{row.original.email}</span>
         </Link>
       );
     }
   },
-  {
-    accessorKey: 'email',
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Email" />;
-    },
-    cell: ({ row }) => {
-      return <span>{row.original.email}</span>;
-    }
-  },
+
   {
     accessorKey: 'orders',
     header: ({ column }) => {
@@ -68,6 +60,7 @@ export const CustomersTableColumns: ColumnDef<CustomersTableRow>[] = [
       );
     }
   },
+
   {
     accessorKey: 'totalSpent',
     header: ({ column }) => {
