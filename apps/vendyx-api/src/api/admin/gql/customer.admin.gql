@@ -29,7 +29,7 @@ input CustomerListInput {
   """
   Filters to apply
   """
-  filters: ProductFilters
+  filters: CustomerFilters
 }
 
 input CustomerFilters {

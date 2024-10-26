@@ -8,6 +8,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum CustomerErrorCode {
+    INVALID_EMAIL = "INVALID_EMAIL",
+    EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS",
+    INVALID_ACCESS_TOKEN = "INVALID_ACCESS_TOKEN",
+    PASSWORDS_DO_NOT_MATCH = "PASSWORDS_DO_NOT_MATCH",
+    INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
+    DISABLED_CUSTOMER = "DISABLED_CUSTOMER"
+}
+
 export enum OrderErrorCode {
     NOT_ENOUGH_STOCK = "NOT_ENOUGH_STOCK",
     CUSTOMER_INVALID_EMAIL = "CUSTOMER_INVALID_EMAIL",
@@ -30,11 +39,6 @@ export enum AssetType {
     IMAGE = "IMAGE"
 }
 
-export enum CustomerErrorCode {
-    INVALID_EMAIL = "INVALID_EMAIL",
-    EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
-}
-
 export enum OrderState {
     MODIFYING = "MODIFYING",
     PAYMENT_ADDED = "PAYMENT_ADDED",
@@ -42,6 +46,27 @@ export enum OrderState {
     SHIPPED = "SHIPPED",
     DELIVERED = "DELIVERED",
     CANCELED = "CANCELED"
+}
+
+export class UpdateCustomerInput {
+    firstName?: Nullable<string>;
+    lastName?: Nullable<string>;
+    email?: Nullable<string>;
+    phoneNumber?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+}
+
+export class CustomerListInput {
+    skip?: Nullable<number>;
+    take?: Nullable<number>;
+    filters?: Nullable<CustomerFilters>;
+}
+
+export class CustomerFilters {
+    firstName?: Nullable<StringFilter>;
+    lastName?: Nullable<StringFilter>;
+    email?: Nullable<StringFilter>;
+    enabled?: Nullable<BooleanFilter>;
 }
 
 export class CreateOptionInput {
@@ -210,6 +235,19 @@ export class BooleanFilter {
     equals?: Nullable<boolean>;
 }
 
+export class CreateCustomerInput {
+    firstName?: Nullable<string>;
+    lastName: string;
+    email: string;
+    password: string;
+    phoneNumber?: Nullable<string>;
+}
+
+export class UpdateCustomerPasswordInput {
+    password: string;
+    newPassword: string;
+}
+
 export class CreateOrderInput {
     line?: Nullable<CreateOrderLineInput>;
 }
@@ -279,6 +317,10 @@ export class State implements Node {
 export abstract class IQuery {
     abstract countries(): Country[] | Promise<Country[]>;
 
+    abstract customers(input?: Nullable<CustomerListInput>): CustomerList | Promise<CustomerList>;
+
+    abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
+
     abstract orders(input?: Nullable<OrderListInput>): OrderList | Promise<OrderList>;
 
     abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
@@ -316,25 +358,9 @@ export abstract class IQuery {
     abstract availablePaymentMethods(orderId: string): PaymentMethod[] | Promise<PaymentMethod[]>;
 }
 
-export class Option implements Node {
-    order: number;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    values: OptionValue[];
-}
-
-export class OptionValue implements Node {
-    order: number;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    option: Option;
-}
-
 export abstract class IMutation {
+    abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
+
     abstract createOption(productId: string, input: CreateOptionInput): Option | Promise<Option>;
 
     abstract updateOption(id: string, input: UpdateOptionInput): Option | Promise<Option>;
@@ -387,6 +413,18 @@ export abstract class IMutation {
 
     abstract removeZone(id: string): boolean | Promise<boolean>;
 
+    abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
+
+    abstract updateCustomerPassword(accessToken: string, input: UpdateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
+
+    abstract addAddressToCustomer(accessToken: string, input: CreateAddressInput): CustomerResult | Promise<CustomerResult>;
+
+    abstract generateCustomerAccessToken(email: string, password: string): GenerateCustomerAccessTokenResult | Promise<GenerateCustomerAccessTokenResult>;
+
+    abstract requestRecoveryCustomerPassword(email: string): CustomerResult | Promise<CustomerResult>;
+
+    abstract recoverCustomerPassword(urlToken: string, password: string): CustomerResult | Promise<CustomerResult>;
+
     abstract createOrder(input: CreateOrderInput): OrderResult | Promise<OrderResult>;
 
     abstract addLineToOrder(orderId: string, input: CreateOrderLineInput): OrderResult | Promise<OrderResult>;
@@ -402,6 +440,34 @@ export abstract class IMutation {
     abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): OrderResult | Promise<OrderResult>;
 
     abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
+}
+
+export class CustomerResult {
+    customer?: Nullable<Customer>;
+    apiErrors: CustomerErrorResult[];
+}
+
+export class CustomerErrorResult {
+    code: CustomerErrorCode;
+    message: string;
+}
+
+export class Option implements Node {
+    order: number;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    values: OptionValue[];
+}
+
+export class OptionValue implements Node {
+    order: number;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    option: Option;
 }
 
 export class OrderResult {
@@ -565,16 +631,6 @@ export class CustomerList implements List {
     pageInfo: PageInfo;
 }
 
-export class CustomerResult {
-    customer?: Nullable<Customer>;
-    apiErrors: CustomerErrorResult[];
-}
-
-export class CustomerErrorResult {
-    code: CustomerErrorCode;
-    message: string;
-}
-
 export class OptionList implements List {
     items: Option[];
     count: number;
@@ -689,6 +745,11 @@ export class VariantList implements List {
     items: Variant[];
     count: number;
     pageInfo: PageInfo;
+}
+
+export class GenerateCustomerAccessTokenResult {
+    accessToken?: Nullable<string>;
+    apiErrors: CustomerErrorResult[];
 }
 
 export type JSON = any;

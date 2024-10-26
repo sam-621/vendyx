@@ -31,8 +31,3 @@ type CustomerErrorResult {
   code: CustomerErrorCode!
   message: String!
 }
-
-enum CustomerErrorCode {
-  INVALID_EMAIL
-  EMAIL_ALREADY_EXISTS
-}
