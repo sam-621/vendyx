@@ -20,7 +20,7 @@ export const FormSwitch = <
           <FormControl>
             <Switch checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
-          {label && <FormLabel className="m-0">Active</FormLabel>}
+          {label && <FormLabel className="m-0">{label}</FormLabel>}
         </FormItem>
       )}
     />

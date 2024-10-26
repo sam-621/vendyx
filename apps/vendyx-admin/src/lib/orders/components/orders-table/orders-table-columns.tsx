@@ -4,10 +4,9 @@ import { type ColumnDef } from '@tanstack/react-table';
 import { UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { Checkbox, DataTableColumnHeader } from '@/lib/shared/components';
+import { Checkbox, DataTableColumnHeader, OrderStatusBadge } from '@/lib/shared/components';
 import { formatDate, formatPrice } from '@/lib/shared/utils';
 
-import { OrderStatusBadge } from '../order-status';
 import { type OrdersTableRow } from './orders-table';
 
 export const OrdersTableColumns: ColumnDef<OrdersTableRow>[] = [

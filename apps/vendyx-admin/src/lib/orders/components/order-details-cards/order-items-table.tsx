@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  OrderStatusBadge,
   Table,
   TableBody,
   TableCaption,
@@ -16,8 +17,6 @@ import {
   TableRow
 } from '@/lib/shared/components';
 import { cn, DEFAULT_PRODUCT_IMAGE, formatPrice } from '@/lib/shared/utils';
-
-import { OrderStatusBadge } from '../order-status';
 
 export const OrderItemsTable: FC<Props> = ({ order }) => {
   const lines = order.lines.items;

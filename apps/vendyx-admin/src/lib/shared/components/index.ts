@@ -7,6 +7,7 @@ export * from './layout';
 export * from './logo';
 export * from './remove-entity';
 export * from './skeletons';
+export * from './status-badges';
 export * from './theme-provider';
 export * from './theme-switcher';
 export * from './ui';
