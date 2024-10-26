@@ -1,5 +1,6 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Inject, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Customer } from '@prisma/client';
 
 import {
   CustomerListInput,
@@ -9,12 +10,16 @@ import {
 } from '@/api/shared';
 import { CustomerService } from '@/business/customer';
 import { isErrorResult } from '@/business/shared';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 import { ID } from '@/persistance/types';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Customer')
 export class CustomerResolver {
-  constructor(private readonly customerService: CustomerService) {}
+  constructor(
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
+    private readonly customerService: CustomerService
+  ) {}
 
   @Query('customer')
   async customer(@Args('id') id: ID) {
@@ -36,5 +41,18 @@ export class CustomerResolver {
     const result = await this.customerService.updateById(id, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { customer: result, apiErrors: [] };
+  }
+
+  @ResolveField('totalSpent')
+  async totalSpent(@Parent() customer: Customer) {
+    const aggregation = await this.prisma.order.groupBy({
+      by: ['customerId'],
+      where: { customerId: customer.id },
+      _sum: { total: true }
+    });
+
+    const result = aggregation.find(agg => agg.customerId === customer.id);
+
+    return result?._sum.total ?? 0;
   }
 }

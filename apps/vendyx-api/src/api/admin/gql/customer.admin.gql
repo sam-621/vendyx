@@ -1,3 +1,7 @@
+extend type Customer {
+  totalSpent: Int!
+}
+
 type Query {
   customers(input: CustomerListInput): CustomerList!
   customer(id: ID!): Customer
