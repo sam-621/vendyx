@@ -80,11 +80,13 @@ const documents = {
     types.UpdateShippingMethodDocument,
   '\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n':
     types.RemoveShippingMethodDocument,
-  '\n  query getShops {\n    shops {\n      count\n      items {\n        id\n        slug\n      }\n    }\n  }\n':
+  '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n  }\n':
+    types.CommonShopFragmentDoc,
+  '\n  query getShops {\n    shops {\n      items {\n        ...CommonShop\n      }\n    }\n  }\n':
     types.GetShopsDocument,
-  '\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      id\n      name\n      slug\n    }\n  }\n':
+  '\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      ...CommonShop\n    }\n  }\n':
     types.ShopDocument,
-  '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      name\n      slug\n    }\n  }\n':
+  '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      slug\n    }\n  }\n':
     types.CreateShopDocument,
   '\n  query GetUser($accessToken: String!) {\n    user(accessToken: $accessToken) {\n      id\n    }\n  }\n':
     types.GetUserDocument,
@@ -321,19 +323,25 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query getShops {\n    shops {\n      count\n      items {\n        id\n        slug\n      }\n    }\n  }\n'
+  source: '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n  }\n'
+): typeof import('./graphql').CommonShopFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query getShops {\n    shops {\n      items {\n        ...CommonShop\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetShopsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      id\n      name\n      slug\n    }\n  }\n'
+  source: '\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      ...CommonShop\n    }\n  }\n'
 ): typeof import('./graphql').ShopDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      name\n      slug\n    }\n  }\n'
+  source: '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      slug\n    }\n  }\n'
 ): typeof import('./graphql').CreateShopDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

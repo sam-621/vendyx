@@ -1485,14 +1485,19 @@ export type RemoveShippingMethodMutation = {
   removeShippingMethod: boolean;
 };
 
+export type CommonShopFragment = { __typename?: 'Shop'; id: string; name: string; slug: string } & {
+  ' $fragmentName'?: 'CommonShopFragment';
+};
+
 export type GetShopsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetShopsQuery = {
   __typename?: 'Query';
   shops: {
     __typename?: 'ShopList';
-    count: number;
-    items: Array<{ __typename?: 'Shop'; id: string; slug: string }>;
+    items: Array<
+      { __typename?: 'Shop' } & { ' $fragmentRefs'?: { CommonShopFragment: CommonShopFragment } }
+    >;
   };
 };
 
@@ -1502,7 +1507,9 @@ export type ShopQueryVariables = Exact<{
 
 export type ShopQuery = {
   __typename?: 'Query';
-  shop?: { __typename?: 'Shop'; id: string; name: string; slug: string } | null;
+  shop?:
+    | ({ __typename?: 'Shop' } & { ' $fragmentRefs'?: { CommonShopFragment: CommonShopFragment } })
+    | null;
 };
 
 export type CreateShopMutationVariables = Exact<{
@@ -1511,7 +1518,7 @@ export type CreateShopMutationVariables = Exact<{
 
 export type CreateShopMutation = {
   __typename?: 'Mutation';
-  createShop: { __typename?: 'Shop'; id: string; name: string; slug: string };
+  createShop: { __typename?: 'Shop'; id: string; slug: string };
 };
 
 export type GetUserQueryVariables = Exact<{
@@ -1857,6 +1864,16 @@ export const CommonShippingHandlersFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonShippingHandlers' }
 ) as unknown as TypedDocumentString<CommonShippingHandlersFragment, unknown>;
+export const CommonShopFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonShop on Shop {
+  id
+  name
+  slug
+}
+    `,
+  { fragmentName: 'CommonShop' }
+) as unknown as TypedDocumentString<CommonShopFragment, unknown>;
 export const CommonZoneFragmentDoc = new TypedDocumentString(
   `
     fragment CommonZone on Zone {
@@ -2349,28 +2366,31 @@ export const RemoveShippingMethodDocument = new TypedDocumentString(`
 export const GetShopsDocument = new TypedDocumentString(`
     query getShops {
   shops {
-    count
     items {
-      id
-      slug
+      ...CommonShop
     }
   }
 }
-    `) as unknown as TypedDocumentString<GetShopsQuery, GetShopsQueryVariables>;
+    fragment CommonShop on Shop {
+  id
+  name
+  slug
+}`) as unknown as TypedDocumentString<GetShopsQuery, GetShopsQueryVariables>;
 export const ShopDocument = new TypedDocumentString(`
     query Shop($slug: String!) {
   shop(slug: $slug) {
-    id
-    name
-    slug
+    ...CommonShop
   }
 }
-    `) as unknown as TypedDocumentString<ShopQuery, ShopQueryVariables>;
+    fragment CommonShop on Shop {
+  id
+  name
+  slug
+}`) as unknown as TypedDocumentString<ShopQuery, ShopQueryVariables>;
 export const CreateShopDocument = new TypedDocumentString(`
     mutation CreateShop($input: CreateShopInput!) {
   createShop(input: $input) {
     id
-    name
     slug
   }
 }

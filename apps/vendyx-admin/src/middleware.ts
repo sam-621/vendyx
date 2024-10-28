@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { ShopService } from './api/services';
 import { validateAccessToken } from './lib/auth/actions/validate-access-token';
 
 const ALLOWED_PATHS = ['/login', '/signup'];
@@ -12,10 +11,6 @@ export async function middleware(request: NextRequest) {
   const isAuth = await validateAccessToken();
   const isInAllowedPaths = ALLOWED_PATHS.includes(pathname);
 
-  console.log({
-    isAuth
-  });
-
   // Redirect to login if not authenticated and not in allowed paths
   if (!isAuth && !isInAllowedPaths) {
     return NextResponse.redirect(new URL('/login', request.url));
@@ -24,13 +19,6 @@ export async function middleware(request: NextRequest) {
   // Do nothing if not authenticated and in allowed paths
   if (!isAuth && isInAllowedPaths) {
     return NextResponse.next();
-  }
-
-  const shops = await ShopService.getAll();
-  const shop = shops.items[0];
-
-  if (isAuth && !pathname.startsWith(`/shops/${shop.slug}`)) {
-    return NextResponse.redirect(new URL(`/shops/${shop.slug}`, request.url));
   }
 
   return NextResponse.next();
