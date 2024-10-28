@@ -1,6 +1,7 @@
 'use client';
 
-import { LaptopIcon, MoonIcon, SunIcon, SunMoonIcon } from 'lucide-react';
+import { LaptopIcon, MoonIcon, StoreIcon, SunIcon, SunMoonIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useTheme } from 'next-themes';
 
 import { logout } from '@/lib/auth/actions/logout';
@@ -28,6 +29,12 @@ export const UserAvatar = () => {
         <div className="text-foreground-primary-negative flex shrink-0 justify-center items-center bg-gradient-to-r from-orange-400 to-green-500 rounded-full w-6 h-6"></div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
+        <Link href="/shops">
+          <DropdownMenuItem>
+            <StoreIcon size={16} className="mr-2" />
+            Shops
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuGroup>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
