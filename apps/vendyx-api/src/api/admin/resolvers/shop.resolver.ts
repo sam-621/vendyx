@@ -6,6 +6,7 @@ import { CreateShopInput, ListInput, ListResponse, UserJwtAuthGuard } from '@/ap
 import { ShopService } from '@/business/shop';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
+@UseGuards(UserJwtAuthGuard)
 @Resolver('Shop')
 export class ShopResolver {
   constructor(
@@ -13,13 +14,11 @@ export class ShopResolver {
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {}
 
-  @UseGuards(UserJwtAuthGuard)
   @Query('shop')
   async shop(@Args('slug') slug: string) {
     return this.shopService.findBySlug(slug);
   }
 
-  @UseGuards(UserJwtAuthGuard)
   @Query('shops')
   async shops(@Args('input') input: ListInput) {
     const [result, total] = await Promise.all([
@@ -30,7 +29,6 @@ export class ShopResolver {
     return new ListResponse(result, result.length, { total });
   }
 
-  @UseGuards(UserJwtAuthGuard)
   @Mutation('createShop')
   async createShop(@Args('input') input: CreateShopInput) {
     return this.shopService.create(input);

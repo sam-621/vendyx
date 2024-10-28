@@ -14,6 +14,7 @@ import { clean, isErrorResult } from '@/business/shared';
 import { UserService } from '@/business/user';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
+@UseGuards(UserJwtAuthGuard)
 @Resolver('User')
 export class UserResolver {
   constructor(
@@ -21,13 +22,11 @@ export class UserResolver {
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {}
 
-  @UseGuards(UserJwtAuthGuard)
   @Query('user')
   async user(@Args('accessToken') accessToken: string) {
     return this.userService.findByAccessToken(accessToken);
   }
 
-  @UseGuards(UserJwtAuthGuard)
   @Query('validateAccessToken')
   async validateAccessToken() {
     return true;
@@ -40,7 +39,6 @@ export class UserResolver {
     return isErrorResult(result) ? { apiErrors: [result] } : { user: result, apiErrors: [] };
   }
 
-  @UseGuards(UserJwtAuthGuard)
   @Mutation('updateUser')
   async updateUser(@Args('id') id: string, @Args('input') input: UpdateUserInput) {
     const result = await this.userService.update(id, input);

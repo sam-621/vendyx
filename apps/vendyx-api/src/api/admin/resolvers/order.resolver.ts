@@ -1,10 +1,17 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { ListResponse, MarkOrderAsShippedInput, OrderListInput } from '@/api/shared';
+import {
+  ListResponse,
+  MarkOrderAsShippedInput,
+  OrderListInput,
+  UserJwtAuthGuard
+} from '@/api/shared';
 import { OrderService } from '@/business/order/order.service';
 import { isErrorResult } from '@/business/shared';
 import { ID } from '@/persistance/types';
 
+@UseGuards(UserJwtAuthGuard)
 @Resolver('Order')
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
