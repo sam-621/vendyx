@@ -1,6 +1,8 @@
 import { getCustomerError } from '../errors';
 import {
   COMMON_CUSTOMER_FRAGMENT,
+  COMMON_CUSTOMER_ORDER_FRAGMENT,
+  GET_ALL_CUSTOMER_ORDERS_QUERY,
   GET_ALL_CUSTOMERS_QUERY,
   GET_CUSTOMER_BY_ID_QUERY,
   UPDATE_CUSTOMER_MUTATION
@@ -17,7 +19,8 @@ import { fetcher } from './fetcher';
 export const CustomerService = {
   Tags: {
     customers: 'customers',
-    customer: (id: string) => `customers-${id}`
+    customer: (id: string) => `customers-${id}`,
+    customerOrders: (id: string) => `customer-orders-${id}`
   },
 
   async getAll(input?: CustomerListInput) {
@@ -40,6 +43,20 @@ export const CustomerService = {
     const customer = getFragmentData(COMMON_CUSTOMER_FRAGMENT, result.customer);
 
     return customer;
+  },
+
+  async getOrders(id: ID) {
+    const { customer } = await fetcher(
+      GET_ALL_CUSTOMER_ORDERS_QUERY,
+      { id },
+      { tags: [CustomerService.Tags.customerOrders(id)] }
+    );
+
+    const orders = customer?.orders.items.map(order =>
+      getFragmentData(COMMON_CUSTOMER_ORDER_FRAGMENT, order)
+    );
+
+    return orders;
   },
 
   async update(customerId: ID, input: UpdateCustomerInput): Promise<CustomerResult> {

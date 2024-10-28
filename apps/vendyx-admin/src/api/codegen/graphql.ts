@@ -1002,6 +1002,16 @@ export type CommonCustomerFragment = {
   };
 } & { ' $fragmentName'?: 'CommonCustomerFragment' };
 
+export type CommonCustomerOrderFragment = {
+  __typename?: 'Order';
+  id: string;
+  code: string;
+  placedAt?: any | null;
+  state: OrderState;
+  total: number;
+  shipment?: { __typename?: 'Shipment'; method: string } | null;
+} & { ' $fragmentName'?: 'CommonCustomerOrderFragment' };
+
 export type GetAllCustomersQueryQueryVariables = Exact<{
   input?: InputMaybe<CustomerListInput>;
 }>;
@@ -1020,13 +1030,28 @@ export type GetAllCustomersQueryQuery = {
       email: string;
       enabled: boolean;
       totalSpent: number;
-      orders: {
-        __typename?: 'OrderList';
-        count: number;
-        items: Array<{ __typename?: 'Order'; total: number }>;
-      };
     }>;
   };
+};
+
+export type GetAllCustomerOrdersQueryQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type GetAllCustomerOrdersQueryQuery = {
+  __typename?: 'Query';
+  customer?: {
+    __typename?: 'Customer';
+    orders: {
+      __typename?: 'OrderList';
+      count: number;
+      items: Array<
+        { __typename?: 'Order' } & {
+          ' $fragmentRefs'?: { CommonCustomerOrderFragment: CommonCustomerOrderFragment };
+        }
+      >;
+    };
+  } | null;
 };
 
 export type GetCustomerByIdQueryQueryVariables = Exact<{
@@ -1719,6 +1744,21 @@ export const CommonCustomerFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonCustomer' }
 ) as unknown as TypedDocumentString<CommonCustomerFragment, unknown>;
+export const CommonCustomerOrderFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonCustomerOrder on Order {
+  id
+  code
+  placedAt
+  state
+  total
+  shipment {
+    method
+  }
+}
+    `,
+  { fragmentName: 'CommonCustomerOrder' }
+) as unknown as TypedDocumentString<CommonCustomerOrderFragment, unknown>;
 export const CommonOrderFragmentDoc = new TypedDocumentString(
   `
     fragment CommonOrder on Order {
@@ -1931,18 +1971,36 @@ export const GetAllCustomersQueryDocument = new TypedDocumentString(`
       email
       enabled
       totalSpent
-      orders {
-        count
-        items {
-          total
-        }
-      }
     }
   }
 }
     `) as unknown as TypedDocumentString<
   GetAllCustomersQueryQuery,
   GetAllCustomersQueryQueryVariables
+>;
+export const GetAllCustomerOrdersQueryDocument = new TypedDocumentString(`
+    query GetAllCustomerOrdersQuery($id: ID!) {
+  customer(id: $id) {
+    orders {
+      count
+      items {
+        ...CommonCustomerOrder
+      }
+    }
+  }
+}
+    fragment CommonCustomerOrder on Order {
+  id
+  code
+  placedAt
+  state
+  total
+  shipment {
+    method
+  }
+}`) as unknown as TypedDocumentString<
+  GetAllCustomerOrdersQueryQuery,
+  GetAllCustomerOrdersQueryQueryVariables
 >;
 export const GetCustomerByIdQueryDocument = new TypedDocumentString(`
     query GetCustomerByIdQuery($id: ID!) {
