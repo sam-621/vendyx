@@ -1,4 +1,4 @@
-import { getShopId, getToken } from '@/lib/shared/cookies';
+import { getActiveShop, getToken } from '@/lib/shared/cookies';
 
 import { type TypedDocumentString } from '../codegen/graphql';
 
@@ -16,7 +16,7 @@ export const fetcher = async <R, V>(
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${getToken()}`,
-        shop_id: getShopId() ?? ''
+        shop_id: getActiveShop()?.id ?? ''
       },
       body: JSON.stringify({
         query: query.toString(),

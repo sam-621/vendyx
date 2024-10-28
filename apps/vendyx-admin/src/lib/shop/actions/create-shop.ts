@@ -5,12 +5,12 @@ import { redirect } from 'next/navigation';
 
 import { ShopService } from '@/api/services';
 import { type CreateShopInput } from '@/api/types';
-import { setShopId } from '@/lib/shared/cookies';
+import { setActiveShop } from '@/lib/shared/cookies';
 
 export const createShop = async (input: CreateShopInput) => {
   const { id: shopId, slug: shopSlug } = await ShopService.create(input);
 
-  setShopId(shopId);
+  setActiveShop({ id: shopId, slug: shopSlug });
 
   revalidateTag(ShopService.Tags.shops);
   redirect(`/shops/${shopSlug}`);

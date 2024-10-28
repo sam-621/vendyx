@@ -2,11 +2,11 @@
 
 import { redirect } from 'next/navigation';
 
-import { removeShopId, removeToken } from '@/lib/shared/cookies';
+import { removeActiveShop, removeToken } from '@/lib/shared/cookies';
 
 export const logout = () => {
   removeToken();
-  removeShopId();
+  removeActiveShop();
 
   redirect('/login');
 };

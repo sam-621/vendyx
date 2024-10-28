@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { ShopService, UserService } from '@/api/services';
 import { UserErrorCode } from '@/api/types';
-import { setShopId, setToken } from '@/lib/shared/cookies';
+import { setActiveShop, setToken } from '@/lib/shared/cookies';
 
 export const signup = async ({ email, password, store }: Input) => {
   const createUserResult = await UserService.create({ email, password });
@@ -27,7 +27,7 @@ export const signup = async ({ email, password, store }: Input) => {
 
   const { id: shopId, slug: shopSlug } = await ShopService.create({ name: store });
 
-  setShopId(shopId);
+  setActiveShop({ id: shopId, slug: shopSlug });
 
   revalidateTag(ShopService.Tags.shops);
   redirect(`/shops/${shopSlug}`);

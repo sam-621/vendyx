@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import { validateAccessToken } from './lib/auth/actions/validate-access-token';
+import { getActiveShop } from './lib/shared/cookies';
 
 const ALLOWED_PATHS = ['/login', '/signup'];
 
@@ -14,6 +15,21 @@ export async function middleware(request: NextRequest) {
   // Redirect to login if not authenticated and not in allowed paths
   if (!isAuth && !isInAllowedPaths) {
     return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // Redirect to shops if authenticated and in home
+  if (isAuth && pathname === '/') {
+    return NextResponse.redirect(new URL('/shops', request.url));
+  }
+
+  const [, , shopSlug] = pathname.split('/');
+  const activeShop = getActiveShop();
+
+  // Redirect to shops if active shop is not the same as the shop in the URL
+  // Petitions works depending on the active shop in cookies, so
+  // we need to make sure that the active shop in cookies is the same as the shop in the URL
+  if (shopSlug && activeShop?.slug !== shopSlug) {
+    return NextResponse.redirect(new URL('/shops', request.url));
   }
 
   // Do nothing if not authenticated and in allowed paths

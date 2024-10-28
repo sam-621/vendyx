@@ -20,7 +20,7 @@ export const ShopsList: FC<Props> = ({ shops }) => {
           </Button>
         </Link>
       </CardHeader>
-      <CardContent className="px-0">
+      <CardContent className="px-0 flex flex-col">
         {shops.map(shop => (
           <ShopCard key={shop.id} shop={shop} />
         ))}

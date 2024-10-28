@@ -1,6 +1,7 @@
 export const CookiesNames = {
   AdminToken: 'x-user-vendyx-token',
-  ShopId: 'x-user-vendyx-shop-id'
+  ShopId: 'x-user-vendyx-shop-id',
+  ActiveShop: 'x-user-vendyx-active-shop'
 };
 
 export const CookiesDurations = {

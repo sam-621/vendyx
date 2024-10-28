@@ -1,11 +1,11 @@
-import { getShopId, getToken } from '@/lib/shared/cookies';
+import { getActiveShop, getToken } from '@/lib/shared/cookies';
 
 const upload = async (formData: FormData) => {
   const response = await fetch(`${process.env.VENDYX_ADMIN_BASE_API_URL}/upload`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${getToken()}`,
-      shop_id: getShopId() ?? ''
+      shop_id: getActiveShop()?.id ?? ''
     },
     body: formData
   });
