@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import Link from 'next/link';
 
-import { type CommonCustomerFragment } from '@/api/types';
+import { CustomerService } from '@/api/services';
+import { type CommonCustomerFragment, type CommonCustomerOrderFragment } from '@/api/types';
+import { type InternalApiResponse } from '@/api/utils';
 import {
   Card,
   CardContent,
@@ -22,11 +26,30 @@ export const CustomerOrdersTableCard = () => {
   const base = useBase();
   const { entity: customer } = useEntityContext<CommonCustomerFragment>();
 
-  const orders = customer.orders.items;
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [orders, setOrders] = useState<CommonCustomerOrderFragment[]>([]);
 
-  if (orders.length === 0) {
-    return null;
-  }
+  useEffect(() => {
+    void (async () => {
+      const searchParams = new URLSearchParams({
+        page: page.toString(),
+        size: '10',
+        search,
+        customerId: customer.id
+      }).toString();
+
+      const result = await fetch(`/api/customer/orders?${searchParams}`, {
+        method: 'GET'
+      });
+
+      const { data: orders } = (await result.json()) as InternalApiResponse<
+        CommonCustomerOrderFragment[]
+      >;
+
+      setOrders(orders);
+    })();
+  }, []);
 
   return (
     <Card>

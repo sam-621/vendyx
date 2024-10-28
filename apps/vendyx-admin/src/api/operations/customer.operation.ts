@@ -12,16 +12,6 @@ export const COMMON_CUSTOMER_FRAGMENT = graphql(`
     totalSpent
     orders {
       count
-      items {
-        id
-        code
-        placedAt
-        state
-        total
-        shipment {
-          method
-        }
-      }
     }
   }
 `);
@@ -53,15 +43,18 @@ export const GET_ALL_CUSTOMERS_QUERY = graphql(`
         email
         enabled
         totalSpent
+        orders {
+          count
+        }
       }
     }
   }
 `);
 
 export const GET_ALL_CUSTOMER_ORDERS_QUERY = graphql(`
-  query GetAllCustomerOrdersQuery($id: ID!) {
+  query GetAllCustomerOrdersQuery($id: ID!, $input: OrderListInput) {
     customer(id: $id) {
-      orders {
+      orders(input: $input) {
         count
         items {
           ...CommonCustomerOrder

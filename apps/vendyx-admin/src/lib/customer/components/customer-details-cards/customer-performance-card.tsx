@@ -14,7 +14,7 @@ export const CustomerPerformanceCard = () => {
 
       <CardContent className="flex flex-col gap-2">
         <p>
-          Orders: <span>{customer.orders.items.length}</span>
+          Orders: <span>{customer.orders.count}</span>
         </p>
         <p>
           Total spent: <span>{<span>{formatPrice(customer.totalSpent)}</span>}</span>

@@ -987,19 +987,7 @@ export type CommonCustomerFragment = {
   phoneNumber?: string | null;
   enabled: boolean;
   totalSpent: number;
-  orders: {
-    __typename?: 'OrderList';
-    count: number;
-    items: Array<{
-      __typename?: 'Order';
-      id: string;
-      code: string;
-      placedAt?: any | null;
-      state: OrderState;
-      total: number;
-      shipment?: { __typename?: 'Shipment'; method: string } | null;
-    }>;
-  };
+  orders: { __typename?: 'OrderList'; count: number };
 } & { ' $fragmentName'?: 'CommonCustomerFragment' };
 
 export type CommonCustomerOrderFragment = {
@@ -1030,12 +1018,14 @@ export type GetAllCustomersQueryQuery = {
       email: string;
       enabled: boolean;
       totalSpent: number;
+      orders: { __typename?: 'OrderList'; count: number };
     }>;
   };
 };
 
 export type GetAllCustomerOrdersQueryQueryVariables = Exact<{
   id: Scalars['ID']['input'];
+  input?: InputMaybe<OrderListInput>;
 }>;
 
 export type GetAllCustomerOrdersQueryQuery = {
@@ -1729,16 +1719,6 @@ export const CommonCustomerFragmentDoc = new TypedDocumentString(
   totalSpent
   orders {
     count
-    items {
-      id
-      code
-      placedAt
-      state
-      total
-      shipment {
-        method
-      }
-    }
   }
 }
     `,
@@ -1971,6 +1951,9 @@ export const GetAllCustomersQueryDocument = new TypedDocumentString(`
       email
       enabled
       totalSpent
+      orders {
+        count
+      }
     }
   }
 }
@@ -1979,9 +1962,9 @@ export const GetAllCustomersQueryDocument = new TypedDocumentString(`
   GetAllCustomersQueryQueryVariables
 >;
 export const GetAllCustomerOrdersQueryDocument = new TypedDocumentString(`
-    query GetAllCustomerOrdersQuery($id: ID!) {
+    query GetAllCustomerOrdersQuery($id: ID!, $input: OrderListInput) {
   customer(id: $id) {
-    orders {
+    orders(input: $input) {
       count
       items {
         ...CommonCustomerOrder
@@ -2019,16 +2002,6 @@ export const GetCustomerByIdQueryDocument = new TypedDocumentString(`
   totalSpent
   orders {
     count
-    items {
-      id
-      code
-      placedAt
-      state
-      total
-      shipment {
-        method
-      }
-    }
   }
 }`) as unknown as TypedDocumentString<
   GetCustomerByIdQueryQuery,

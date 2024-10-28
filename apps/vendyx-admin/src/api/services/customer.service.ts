@@ -12,6 +12,7 @@ import {
   type CustomerErrorCode,
   type CustomerListInput,
   getFragmentData,
+  type OrderListInput,
   type UpdateCustomerInput
 } from '../types';
 import { fetcher } from './fetcher';
@@ -45,10 +46,10 @@ export const CustomerService = {
     return customer;
   },
 
-  async getOrders(id: ID) {
+  async getOrders(id: ID, input: OrderListInput) {
     const { customer } = await fetcher(
       GET_ALL_CUSTOMER_ORDERS_QUERY,
-      { id },
+      { id, input },
       { tags: [CustomerService.Tags.customerOrders(id)] }
     );
 
@@ -56,7 +57,7 @@ export const CustomerService = {
       getFragmentData(COMMON_CUSTOMER_ORDER_FRAGMENT, order)
     );
 
-    return orders;
+    return orders ?? [];
   },
 
   async update(customerId: ID, input: UpdateCustomerInput): Promise<CustomerResult> {
