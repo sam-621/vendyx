@@ -1,22 +1,19 @@
-import { getActiveShop, getToken } from '@/lib/shared/cookies';
-
 import { type TypedDocumentString } from '../codegen/graphql';
 
 /**
  * A wrapper around the fetch API that makes graphql typed request and manage errors
  */
-export const fetcher = async <R, V>(
+export const gqlFetcher = async <R, V>(
   query: TypedDocumentString<R, V>,
   variables?: V,
-  options?: Options
+  options?: GqlFetcherOptions
 ): Promise<R> => {
   try {
     const result = await fetch(`${process.env.VENDYX_ADMIN_BASE_API_URL}/admin-api`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getToken()}`,
-        shop_id: getActiveShop()?.id ?? ''
+        ...options?.headers
       },
       body: JSON.stringify({
         query: query.toString(),
@@ -43,8 +40,9 @@ export const fetcher = async <R, V>(
   }
 };
 
-type Options = {
+export type GqlFetcherOptions = {
   tags?: string[];
   cache?: RequestCache | null;
   revalidate?: number;
+  headers?: Record<string, string>;
 };

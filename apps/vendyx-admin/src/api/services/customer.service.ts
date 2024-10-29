@@ -15,7 +15,7 @@ import {
   type OrderListInput,
   type UpdateCustomerInput
 } from '../types';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const CustomerService = {
   Tags: {
@@ -25,7 +25,7 @@ export const CustomerService = {
   },
 
   async getAll(input?: CustomerListInput) {
-    const { customers } = await fetcher(
+    const { customers } = await serviceGqlFetcher(
       GET_ALL_CUSTOMERS_QUERY,
       { input },
       { tags: [CustomerService.Tags.customers] }
@@ -35,7 +35,7 @@ export const CustomerService = {
   },
 
   async getById(id: ID) {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_CUSTOMER_BY_ID_QUERY,
       { id },
       { tags: [CustomerService.Tags.customer(id)] }
@@ -47,7 +47,7 @@ export const CustomerService = {
   },
 
   async getOrders(id: ID, input: OrderListInput) {
-    const { customer } = await fetcher(
+    const { customer } = await serviceGqlFetcher(
       GET_ALL_CUSTOMER_ORDERS_QUERY,
       { id, input },
       { tags: [CustomerService.Tags.customerOrders(id)] }
@@ -63,7 +63,7 @@ export const CustomerService = {
   async update(customerId: ID, input: UpdateCustomerInput): Promise<CustomerResult> {
     const {
       updateCustomer: { apiErrors, customer }
-    } = await fetcher(UPDATE_CUSTOMER_MUTATION, { customerId, input });
+    } = await serviceGqlFetcher(UPDATE_CUSTOMER_MUTATION, { customerId, input });
 
     const error = getCustomerError(apiErrors[0]);
 

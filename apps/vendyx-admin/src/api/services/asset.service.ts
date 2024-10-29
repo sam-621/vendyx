@@ -1,18 +1,12 @@
-import { getActiveShop, getToken } from '@/lib/shared/cookies';
+import { serviceRestFetcher } from './service-fetchers';
 
 const upload = async (formData: FormData) => {
-  const response = await fetch(`${process.env.VENDYX_ADMIN_BASE_API_URL}/upload`, {
+  const assets = await serviceRestFetcher<Omit<VendyxAsset, 'order'>[]>('/upload', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-      shop_id: getActiveShop()?.id ?? ''
-    },
     body: formData
   });
 
-  const data = (await response.json()) as Omit<VendyxAsset, 'order'>[];
-
-  return data;
+  return assets;
 };
 
 export const AssetService = {

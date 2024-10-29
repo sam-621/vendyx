@@ -14,7 +14,7 @@ import {
   MARK_ORDER_AS_SHIPPED_MUTATION
 } from '../operations';
 import { type ID } from '../scalars';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const OrderService = {
   Tags: {
@@ -23,7 +23,7 @@ export const OrderService = {
   },
 
   async getAll(input?: OrderListInput) {
-    const { orders } = await fetcher(
+    const { orders } = await serviceGqlFetcher(
       GET_ALL_ORDERS_QUERY,
       { input },
       { tags: [OrderService.Tags.orders] }
@@ -33,7 +33,7 @@ export const OrderService = {
   },
 
   async getById(id: ID) {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_ORDER_BY_ID_QUERY,
       { orderId: id },
       { tags: [OrderService.Tags.order(id)] }
@@ -47,7 +47,7 @@ export const OrderService = {
   async markAsShipped(orderId: ID, input: MarkOrderAsShippedInput): Promise<OrderResult> {
     const {
       markOrderAsShipped: { apiErrors, order }
-    } = await fetcher(MARK_ORDER_AS_SHIPPED_MUTATION, { orderId, input });
+    } = await serviceGqlFetcher(MARK_ORDER_AS_SHIPPED_MUTATION, { orderId, input });
 
     const error = getOrderError(apiErrors[0]);
 
@@ -61,7 +61,7 @@ export const OrderService = {
   async markAsDelivered(orderId: ID): Promise<OrderResult> {
     const {
       markOrderAsDelivered: { apiErrors, order }
-    } = await fetcher(MARK_ORDER_AS_DELIVERED_MUTATION, { orderId });
+    } = await serviceGqlFetcher(MARK_ORDER_AS_DELIVERED_MUTATION, { orderId });
 
     const error = getOrderError(apiErrors[0]);
 
@@ -75,7 +75,7 @@ export const OrderService = {
   async cancel(orderId: ID): Promise<OrderResult> {
     const {
       cancelOrder: { apiErrors, order }
-    } = await fetcher(CANCEL_ORDER_MUTATION, { orderId });
+    } = await serviceGqlFetcher(CANCEL_ORDER_MUTATION, { orderId });
 
     const error = getOrderError(apiErrors[0]);
 

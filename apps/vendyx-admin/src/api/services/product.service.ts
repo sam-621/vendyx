@@ -12,7 +12,7 @@ import {
   REMOVE_PRODUCT_MUTATION,
   UPDATE_PRODUCT_MUTATION
 } from '../operations';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const ProductService = {
   Tags: {
@@ -21,7 +21,7 @@ export const ProductService = {
   },
 
   async getAll(input?: ProductListInput) {
-    const { products } = await fetcher(
+    const { products } = await serviceGqlFetcher(
       GET_ALL_PRODUCTS_QUERY,
       { input },
       { tags: [ProductService.Tags.products] }
@@ -31,7 +31,7 @@ export const ProductService = {
   },
 
   async getById(id: string) {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_PRODUCT_BY_ID_QUERY,
       { id },
       { tags: [ProductService.Tags.product(id)] }
@@ -42,19 +42,19 @@ export const ProductService = {
   },
 
   async create(input: CreateProductInput) {
-    const { createProduct } = await fetcher(CREATE_PRODUCT_MUTATION, { input });
+    const { createProduct } = await serviceGqlFetcher(CREATE_PRODUCT_MUTATION, { input });
 
     return createProduct;
   },
 
   async update(id: string, input: UpdateProductInput) {
-    const { updateProduct } = await fetcher(UPDATE_PRODUCT_MUTATION, { id, input });
+    const { updateProduct } = await serviceGqlFetcher(UPDATE_PRODUCT_MUTATION, { id, input });
 
     return updateProduct;
   },
 
   async massiveRemove(ids: string[]) {
-    const { softRemoveProduct } = await fetcher(REMOVE_PRODUCT_MUTATION, { ids });
+    const { softRemoveProduct } = await serviceGqlFetcher(REMOVE_PRODUCT_MUTATION, { ids });
 
     return softRemoveProduct;
   }

@@ -34,8 +34,12 @@ export const ShopCard: FC<Props> = ({ shop }) => {
             <span className="text-background">{firstShopLetter}</span>
           </div>
           <div className="flex flex-col gap-1">
-            <Label>{shop.name}</Label>
-            <Label className="text-muted-foreground">{shop.slug}.com</Label>
+            <Label asChild>
+              <p>{shop.name}</p>
+            </Label>
+            <Label asChild className="text-muted-foreground">
+              <p>{shop.slug}.com</p>
+            </Label>
           </div>
         </div>
         <div>

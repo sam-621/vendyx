@@ -4,23 +4,26 @@ import {
   REMOVE_VARIANT_MUTATION,
   UPDATE_VARIANT_MUTATION
 } from '../operations';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const VariantService = {
   async create(productId: string, input: CreateVariantInput) {
-    const { createVariant } = await fetcher(CREATE_VARIANT_MUTATION, { productId, input });
+    const { createVariant } = await serviceGqlFetcher(CREATE_VARIANT_MUTATION, {
+      productId,
+      input
+    });
 
     return createVariant;
   },
 
   async update(id: string, input: UpdateVariantInput) {
-    const { updateVariant } = await fetcher(UPDATE_VARIANT_MUTATION, { id, input });
+    const { updateVariant } = await serviceGqlFetcher(UPDATE_VARIANT_MUTATION, { id, input });
 
     return updateVariant;
   },
 
   async remove(id: string) {
-    const { softRemoveVariant } = await fetcher(REMOVE_VARIANT_MUTATION, { id });
+    const { softRemoveVariant } = await serviceGqlFetcher(REMOVE_VARIANT_MUTATION, { id });
 
     return softRemoveVariant;
   }

@@ -11,7 +11,7 @@ import {
   GET_USER_QUERY,
   VALIDATE_ACCESS_TOKEN_QUERY
 } from '../operations';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const UserService = {
   Tags: {
@@ -19,7 +19,7 @@ export const UserService = {
   },
 
   async get(accessToken: string) {
-    const { user } = await fetcher(
+    const { user } = await serviceGqlFetcher(
       GET_USER_QUERY,
       { accessToken },
       { tags: [UserService.Tags.user(accessToken)] }
@@ -30,7 +30,7 @@ export const UserService = {
   async create(input: CreateUserInput): Promise<UserResult> {
     const {
       createUser: { apiErrors, user }
-    } = await fetcher(CREATE_USER_MUTATION, { input });
+    } = await serviceGqlFetcher(CREATE_USER_MUTATION, { input });
 
     const error = getUserError(apiErrors[0]);
 
@@ -46,7 +46,7 @@ export const UserService = {
   ): Promise<GenerateAccessTokenResult> {
     const {
       generateUserAccessToken: { apiErrors, accessToken }
-    } = await fetcher(GENERATE_ACCESS_TOKEN_MUTATION, { input });
+    } = await serviceGqlFetcher(GENERATE_ACCESS_TOKEN_MUTATION, { input });
 
     const error = getUserError(apiErrors[0]);
 
@@ -58,7 +58,7 @@ export const UserService = {
   },
 
   async validateAccessToken() {
-    const result = await fetcher(VALIDATE_ACCESS_TOKEN_QUERY);
+    const result = await serviceGqlFetcher(VALIDATE_ACCESS_TOKEN_QUERY);
 
     return result.validateAccessToken;
   }

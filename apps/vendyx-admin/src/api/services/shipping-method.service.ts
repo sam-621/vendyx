@@ -7,7 +7,7 @@ import {
   REMOVE_SHIPPING_METHOD_MUTATION,
   UPDATE_SHIPPING_METHOD_MUTATION
 } from '../operations/shipping-method.operations';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const ShippingMethodService = {
   Tags: {
@@ -15,7 +15,7 @@ export const ShippingMethodService = {
   },
 
   async getHandlers() {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_ALL_SHIPPING_HANDLERS_QUERY,
       {},
       { tags: [ShippingMethodService.Tags.handlers] }
@@ -30,19 +30,26 @@ export const ShippingMethodService = {
   },
 
   async create(input: CreateShippingMethodInput) {
-    const { createShippingMethod } = await fetcher(CREATE_SHIPPING_METHOD_MUTATION, { input });
+    const { createShippingMethod } = await serviceGqlFetcher(CREATE_SHIPPING_METHOD_MUTATION, {
+      input
+    });
 
     return createShippingMethod;
   },
 
   async update(id: string, input: UpdateShippingMethodInput) {
-    const { updateShippingMethod } = await fetcher(UPDATE_SHIPPING_METHOD_MUTATION, { id, input });
+    const { updateShippingMethod } = await serviceGqlFetcher(UPDATE_SHIPPING_METHOD_MUTATION, {
+      id,
+      input
+    });
 
     return updateShippingMethod;
   },
 
   async remove(id: string) {
-    const { removeShippingMethod } = await fetcher(REMOVE_SHIPPING_METHOD_MUTATION, { id });
+    const { removeShippingMethod } = await serviceGqlFetcher(REMOVE_SHIPPING_METHOD_MUTATION, {
+      id
+    });
 
     return removeShippingMethod;
   }

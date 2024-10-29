@@ -10,7 +10,7 @@ import {
   REMOVE_PAYMENT_METHOD,
   UPDATE_PAYMENT_METHOD
 } from '../operations';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const PaymentMethodService = {
   Tags: {
@@ -20,7 +20,7 @@ export const PaymentMethodService = {
   },
 
   async getAll() {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_ALL_PAYMENT_METHODS,
       {},
       { tags: [PaymentMethodService.Tags.methods] }
@@ -32,7 +32,7 @@ export const PaymentMethodService = {
   },
 
   async getAllIntegrations() {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_ALL_PAYMENT_INTEGRATIONS,
       {},
       { tags: [PaymentMethodService.Tags.integrations] }
@@ -47,7 +47,7 @@ export const PaymentMethodService = {
   },
 
   async getById(id: string) {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_PAYMENT_METHOD,
       { id },
       { tags: [PaymentMethodService.Tags.method(id)] }
@@ -59,19 +59,19 @@ export const PaymentMethodService = {
   },
 
   async create(input: CreatePaymentMethodInput) {
-    const { createPaymentMethod } = await fetcher(CREATE_PAYMENT_METHOD, { input });
+    const { createPaymentMethod } = await serviceGqlFetcher(CREATE_PAYMENT_METHOD, { input });
 
     return createPaymentMethod;
   },
 
   async update(id: string, input: UpdatePaymentMethodInput) {
-    const { updatePaymentMethod } = await fetcher(UPDATE_PAYMENT_METHOD, { id, input });
+    const { updatePaymentMethod } = await serviceGqlFetcher(UPDATE_PAYMENT_METHOD, { id, input });
 
     return updatePaymentMethod;
   },
 
   async remove(id: string) {
-    const result = await fetcher(REMOVE_PAYMENT_METHOD, { id });
+    const result = await serviceGqlFetcher(REMOVE_PAYMENT_METHOD, { id });
 
     return result;
   }

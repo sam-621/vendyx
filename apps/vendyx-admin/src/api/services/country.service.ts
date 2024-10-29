@@ -1,6 +1,6 @@
 import { getFragmentData } from '../codegen';
 import { COMMON_COUNTRY_FRAGMENT, GET_ALL_COUNTRIES_QUERY } from '../operations/country.operations';
-import { fetcher } from './fetcher';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const CountryService = {
   Tags: {
@@ -8,7 +8,7 @@ export const CountryService = {
   },
 
   async getAll() {
-    const result = await fetcher(
+    const result = await serviceGqlFetcher(
       GET_ALL_COUNTRIES_QUERY,
       {},
       { revalidate: Infinity, cache: null }
