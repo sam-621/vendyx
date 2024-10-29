@@ -1,9 +1,9 @@
 import {
   CustomerContactInfoCard,
-  CustomerOrdersTableCard,
   CustomerPerformanceCard,
   CustomerStatusSwitchCard
 } from '../customer-details-cards';
+import { CustomerOrdersTable } from '../customer-orders-table';
 
 export const CustomerDetails = () => {
   return (
@@ -11,7 +11,7 @@ export const CustomerDetails = () => {
       <div className="col-span-3 flex flex-col gap-6">
         <CustomerContactInfoCard />
 
-        <CustomerOrdersTableCard />
+        <CustomerOrdersTable />
       </div>
       <div className="col-span-1 flex flex-col gap-6">
         <CustomerStatusSwitchCard />
