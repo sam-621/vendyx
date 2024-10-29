@@ -6,7 +6,6 @@ import { getActiveShop, getToken } from '@/lib/shared/cookies';
  */
 export const serviceRestFetcher = async <R>(url: string, options?: Options) =>
   await restFetcher<R>(url, {
-    method: options?.method ?? 'GET',
     ...options,
     headers: {
       Authorization: `Bearer ${getToken()}`,
