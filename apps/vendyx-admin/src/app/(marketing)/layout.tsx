@@ -5,7 +5,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from '@/lib/shared/components';
 import { Notification } from '@/lib/shared/notifications';
 
-import './globals.css';
+import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -22,10 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          forcedTheme="dark"
+          storageKey="vendyx-marketing-theme"
+          disableTransitionOnChange
+        >
           <Notification />
           <NextTopLoader color="hsl(var(--primary))" />
-          {children}
+          <div className="mx-20">{children}</div>
         </ThemeProvider>
       </body>
     </html>
