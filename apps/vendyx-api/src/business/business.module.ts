@@ -8,6 +8,7 @@ import { StorageModule } from '@/storage';
 import { AssetService } from './asset';
 import { CountryService } from './country';
 import { CustomerService } from './customer';
+import { MetricsService } from './metrics';
 import { OptionService } from './option';
 import { OrderService } from './order';
 import { PaymentMethodService } from './payment-method';
@@ -30,7 +31,8 @@ const SERVICES = [
   ZoneService,
   CountryService,
   OrderService,
-  CustomerService
+  CustomerService,
+  MetricsService
 ];
 
 @Module({

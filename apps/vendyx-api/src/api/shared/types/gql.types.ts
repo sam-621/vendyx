@@ -69,6 +69,11 @@ export class CustomerFilters {
     enabled?: Nullable<BooleanFilter>;
 }
 
+export class MetricInput {
+    startsAt: Date;
+    endsAt: Date;
+}
+
 export class CreateOptionInput {
     order: number;
     name: string;
@@ -321,6 +326,8 @@ export abstract class IQuery {
 
     abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
+    abstract totalSales(input: MetricInput): TotalSalesResult | Promise<TotalSalesResult>;
+
     abstract orders(input?: Nullable<OrderListInput>): OrderList | Promise<OrderList>;
 
     abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
@@ -356,6 +363,20 @@ export abstract class IQuery {
     abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
 
     abstract availablePaymentMethods(orderId: string): PaymentMethod[] | Promise<PaymentMethod[]>;
+}
+
+export class Customer implements Node {
+    totalSpent: number;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    firstName?: Nullable<string>;
+    lastName: string;
+    email: string;
+    phoneNumber?: Nullable<string>;
+    enabled: boolean;
+    orders?: OrderList;
+    addresses?: AddressList;
 }
 
 export abstract class IMutation {
@@ -450,6 +471,16 @@ export class CustomerResult {
 export class CustomerErrorResult {
     code: CustomerErrorCode;
     message: string;
+}
+
+export class Metric {
+    key: string;
+    value: string;
+}
+
+export class TotalSalesResult {
+    metrics: Metric[];
+    totalSales: number;
 }
 
 export class Option implements Node {
@@ -610,19 +641,6 @@ export class AssetList implements List {
 
 export class PageInfo {
     total: number;
-}
-
-export class Customer implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    firstName?: Nullable<string>;
-    lastName: string;
-    email: string;
-    phoneNumber?: Nullable<string>;
-    enabled: boolean;
-    orders?: OrderList;
-    addresses: AddressList;
 }
 
 export class CustomerList implements List {

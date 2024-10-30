@@ -95,14 +95,7 @@ export default function Home() {
   });
 
   return (
-    <AdminPageLayout
-      title="Products"
-      actions={
-        <Link href="/products/new">
-          <Button>Add product</Button>
-        </Link>
-      }
-    >
+    <AdminPageLayout title="Dashboard">
       <div className="flex flex-col gap-8">
         <main>
           <Tabs defaultValue="sales" className="flex flex-col gap-4">

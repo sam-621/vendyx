@@ -1,0 +1,18 @@
+type Metric {
+  key: String!
+  value: String!
+}
+
+input MetricInput {
+  startsAt: Date!
+  endsAt: Date!
+}
+
+type Query {
+  totalSales(input: MetricInput!): TotalSalesResult!
+}
+
+type TotalSalesResult {
+  metrics: [Metric!]!
+  totalSales: Int!
+}
