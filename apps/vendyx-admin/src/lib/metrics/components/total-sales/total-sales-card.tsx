@@ -1,23 +1,23 @@
 import { type FC } from 'react';
-import { type DateRange } from 'react-day-picker';
 
 import { format } from 'date-fns';
 
+import { type MetricRange } from '@/api/scalars';
 import { type CommonTotalSalesMetricsFragment } from '@/api/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/shared/components';
 import { formatPrice } from '@/lib/shared/utils';
 
 import { TotalSalesChart } from './total-sales-chart';
 
-export const TotalSalesCard: FC<Props> = ({ date, totalSales }) => {
+export const TotalSalesCard: FC<Props> = ({ range, totalSales }) => {
   return (
     <Card>
       <CardHeader className="pl-8">
         <CardTitle>{formatPrice(totalSales.totalSales, { withCurrencyIcon: true })}</CardTitle>
         <CardDescription>
-          {!date.from || !date.to
+          {!range.startsAt || !range.endsAt
             ? '--- - ---'
-            : `${format(date?.from, 'dd MMM yyyy')} - ${format(date?.to, 'dd MMM yyyy')}`}
+            : `${format(range.startsAt, 'dd MMM yyyy')} - ${format(range.endsAt, 'dd MMM yyyy')}`}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -28,6 +28,6 @@ export const TotalSalesCard: FC<Props> = ({ date, totalSales }) => {
 };
 
 type Props = {
-  date: DateRange;
+  range: MetricRange;
   totalSales: CommonTotalSalesMetricsFragment;
 };

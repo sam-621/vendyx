@@ -1,3 +1,5 @@
+'use client';
+
 import { type FC } from 'react';
 
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
