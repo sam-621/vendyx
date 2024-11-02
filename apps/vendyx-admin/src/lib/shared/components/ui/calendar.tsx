@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { DayPicker } from 'react-day-picker';
+import { type DateRange, DayPicker } from 'react-day-picker';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
@@ -9,6 +9,8 @@ import { buttonVariants } from '@/lib/shared/components/ui/button';
 import { cn } from '@/lib/shared/utils';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+
+export const useDateRange = (input: DateRange) => React.useState<DateRange>(input);
 
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
   return (

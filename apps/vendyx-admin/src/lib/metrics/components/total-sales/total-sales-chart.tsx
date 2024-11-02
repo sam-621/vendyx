@@ -13,57 +13,6 @@ import {
 } from '@/lib/shared/components';
 import { formatPrice } from '@/lib/shared/utils';
 
-// const data2 = [
-//   {
-//     key: 'Jan',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Feb',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Mar',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Apr',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'May',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Jun',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Jul',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Aug',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Sep',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Oct',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Nov',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   },
-//   {
-//     key: 'Dec',
-//     value: Math.floor(Math.random() * 5000) + 1000
-//   }
-// ];
-
 const chartConfig = {
   value: {
     label: 'total',
