@@ -1,4 +1,5 @@
 export * from './arrays';
+export * from './dates';
 export * from './defaults';
 export * from './formatters';
 export * from './obj';

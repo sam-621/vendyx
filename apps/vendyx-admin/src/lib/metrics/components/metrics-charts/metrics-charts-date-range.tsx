@@ -3,7 +3,6 @@
 import { type FC, useState } from 'react';
 import { type DateRange } from 'react-day-picker';
 
-import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -17,7 +16,7 @@ import {
   TabsList,
   TabsTrigger
 } from '@/lib/shared/components';
-import { cn } from '@/lib/shared/utils';
+import { cn, formatDateForCalendar } from '@/lib/shared/utils';
 
 export const MetricsChartsDateRange: FC<Props> = ({ defaults }) => {
   const searchParams = useSearchParams();
@@ -53,10 +52,10 @@ export const MetricsChartsDateRange: FC<Props> = ({ defaults }) => {
               {date?.from ? (
                 date.to ? (
                   <>
-                    {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
+                    {formatDateForCalendar(date.from)} - {formatDateForCalendar(date.to)}
                   </>
                 ) : (
-                  format(date.from, 'LLL dd, y')
+                  formatDateForCalendar(date.from)
                 )
               ) : (
                 <span>Pick a date</span>

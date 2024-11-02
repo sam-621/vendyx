@@ -11,6 +11,8 @@ export const formatPhoneNumber = (input: { phoneNumber?: string; phoneCountryCod
 
 /**
  * Format dates to Aug 21 at 9:32 am
+ *
+ * @deprecated New methods are in dates.ts file
  */
 export const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-US', {

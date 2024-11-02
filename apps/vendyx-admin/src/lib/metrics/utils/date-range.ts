@@ -1,6 +1,5 @@
-import { getDaysInMonth } from 'date-fns';
-
 import { type MetricRange } from '@/api/scalars';
+import { getDaysInMonth } from '@/lib/shared/utils';
 
 /**
  * Returns the default date range for metrics in dashboard

@@ -1,11 +1,9 @@
 import { type FC } from 'react';
 
-import { format } from 'date-fns';
-
 import { type MetricRange } from '@/api/scalars';
 import { type CommonTotalSalesMetricsFragment } from '@/api/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/lib/shared/components';
-import { formatPrice } from '@/lib/shared/utils';
+import { formatDateForMetricCard, formatPrice } from '@/lib/shared/utils';
 
 import { TotalSalesChart } from './total-sales-chart';
 
@@ -17,7 +15,7 @@ export const TotalSalesCard: FC<Props> = ({ range, totalSales }) => {
         <CardDescription>
           {!range.startsAt || !range.endsAt
             ? '--- - ---'
-            : `${format(range.startsAt, 'dd MMM yyyy')} - ${format(range.endsAt, 'dd MMM yyyy')}`}
+            : `${formatDateForMetricCard(range.startsAt)} - ${formatDateForMetricCard(range.endsAt)}`}
         </CardDescription>
       </CardHeader>
       <CardContent>
