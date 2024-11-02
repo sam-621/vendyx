@@ -1,6 +1,7 @@
 export * from './asset.service';
 export * from './country.service';
 export * from './customer.service';
+export * from './metrics.service';
 export * from './option.services';
 export * from './order.service';
 export * from './payment-method.service';

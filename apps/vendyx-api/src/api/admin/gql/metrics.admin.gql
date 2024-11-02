@@ -1,15 +1,15 @@
 type Metric {
   key: String!
-  value: String!
+  value: Int!
 }
 
-input MetricInput {
+input MetricsInput {
   startsAt: Date!
   endsAt: Date!
 }
 
 type Query {
-  totalSales(input: MetricInput!): TotalSalesResult!
+  totalSales(input: MetricsInput!): TotalSalesResult!
 }
 
 type TotalSalesResult {

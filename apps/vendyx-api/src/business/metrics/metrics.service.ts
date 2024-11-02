@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { differenceInDays, format, startOfMonth, startOfWeek } from 'date-fns';
 
-import { MetricInput } from '@/api/shared';
+import { MetricsInput } from '@/api/shared';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
 @Injectable()
 export class MetricsService {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  async getTotalSales(input: MetricInput) {
+  async getTotalSales(input: MetricsInput) {
     const aggregate = await this.prisma.order.aggregate({
       where: {
         createdAt: {
@@ -21,10 +21,10 @@ export class MetricsService {
       }
     });
 
-    return aggregate._sum.total;
+    return aggregate._sum.total ?? 0;
   }
 
-  async getTotalSalesMetrics(input: MetricInput) {
+  async getTotalSalesMetrics(input: MetricsInput) {
     const startsAt = new Date(input.startsAt);
     const endsAt = new Date(input.endsAt);
 
@@ -44,10 +44,16 @@ export class MetricsService {
     const interval = this.getInterval(startsAt, endsAt);
     const groupedData = this.groupByInterval(result, interval);
 
-    return Object.entries(groupedData).map(([key, value]) => ({
+    const metrics = Object.entries(groupedData).map(([key, value]) => ({
       key,
       value
     }));
+
+    return [
+      { key: format(startsAt, this.getFormatDateByInterval(interval)), value: 0 },
+      ...metrics,
+      { key: format(endsAt, this.getFormatDateByInterval(interval)), value: 0 }
+    ];
   }
 
   private groupByInterval(data: { createdAt: Date; total: number }[], interval: MetricsInterval) {
@@ -55,11 +61,11 @@ export class MetricsService {
       let key = '';
 
       if (interval === 'day') {
-        key = format(createdAt, 'yyyy-MM-dd');
+        key = format(createdAt, this.getFormatDateByInterval(interval));
       } else if (interval === 'week') {
-        key = format(startOfWeek(createdAt), 'yyyy-MM-dd');
+        key = format(startOfWeek(createdAt), this.getFormatDateByInterval(interval));
       } else if (interval === 'month') {
-        key = format(startOfMonth(createdAt), 'yyyy-MM');
+        key = format(startOfMonth(createdAt), this.getFormatDateByInterval(interval));
       }
 
       if (!acc[key]) {
@@ -81,6 +87,18 @@ export class MetricsService {
     } else {
       return 'month';
     }
+  }
+
+  private getFormatDateByInterval(interval: MetricsInterval): string {
+    if (interval === 'day') {
+      return 'dd MMM';
+    } else if (interval === 'week') {
+      return 'dd MMM';
+    } else if (interval === 'month') {
+      return 'MMM';
+    }
+
+    return 'dd MMM';
   }
 }
 

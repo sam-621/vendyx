@@ -69,7 +69,7 @@ export class CustomerFilters {
     enabled?: Nullable<BooleanFilter>;
 }
 
-export class MetricInput {
+export class MetricsInput {
     startsAt: Date;
     endsAt: Date;
 }
@@ -326,7 +326,7 @@ export abstract class IQuery {
 
     abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
-    abstract totalSales(input: MetricInput): TotalSalesResult | Promise<TotalSalesResult>;
+    abstract totalSales(input: MetricsInput): TotalSalesResult | Promise<TotalSalesResult>;
 
     abstract orders(input?: Nullable<OrderListInput>): OrderList | Promise<OrderList>;
 
@@ -475,7 +475,7 @@ export class CustomerErrorResult {
 
 export class Metric {
     key: string;
-    value: string;
+    value: number;
 }
 
 export class TotalSalesResult {

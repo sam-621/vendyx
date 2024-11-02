@@ -1,5 +1,6 @@
 export * from './country.operations';
 export * from './customer.operation';
+export * from './metrics.operations';
 export * from './option.operations';
 export * from './order.operations';
 export * from './payment-methods.operations';

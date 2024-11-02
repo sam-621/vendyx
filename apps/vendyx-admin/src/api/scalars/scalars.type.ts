@@ -4,3 +4,8 @@ export type Metadata = {
   label: string;
   type: 'text' | 'price';
 };
+
+export type MetricRange = {
+  startsAt: Date;
+  endsAt: Date;
+};
