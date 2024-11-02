@@ -12,6 +12,7 @@ export default async function Home({ searchParams }: { searchParams: MetricRange
     : getDefaultDateRange();
 
   const totalSales = await MetricsService.getTotalSales(range);
+  const totalOrders = await MetricsService.getTotalOrders(range);
 
   return (
     <AdminPageLayout title="Dashboard">

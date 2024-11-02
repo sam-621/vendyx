@@ -4,7 +4,7 @@ import { type FC } from 'react';
 
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { type CommonTotalSalesMetricsFragment } from '@/api/types';
+import { type CommonMetricsResultFragment } from '@/api/types';
 import {
   type ChartConfig,
   ChartContainer,
@@ -61,5 +61,5 @@ export const TotalSalesChart: FC<Props> = ({ data }) => {
 };
 
 type Props = {
-  data: CommonTotalSalesMetricsFragment;
+  data: CommonMetricsResultFragment;
 };

@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 
 import { type MetricRange } from '@/api/scalars';
-import { type CommonTotalSalesMetricsFragment } from '@/api/types';
+import { type CommonMetricsResultFragment } from '@/api/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/shared/components';
 
 import { TotalSalesCard } from '../total-sales';
@@ -29,5 +29,5 @@ export const MetricsCharts: FC<Props> = ({ range, totalSales }) => {
 
 type Props = {
   range: MetricRange;
-  totalSales: CommonTotalSalesMetricsFragment;
+  totalSales: CommonMetricsResultFragment;
 };

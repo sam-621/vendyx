@@ -1102,11 +1102,11 @@ export type UpdateCustomerMutationMutation = {
   };
 };
 
-export type CommonTotalSalesMetricsFragment = {
+export type CommonMetricsResultFragment = {
   __typename?: 'MetricsResult';
   total: number;
   metrics: Array<{ __typename?: 'Metric'; key: string; value: number }>;
-} & { ' $fragmentName'?: 'CommonTotalSalesMetricsFragment' };
+} & { ' $fragmentName'?: 'CommonMetricsResultFragment' };
 
 export type GetTotalSalesQueryVariables = Exact<{
   input: MetricsInput;
@@ -1115,7 +1115,18 @@ export type GetTotalSalesQueryVariables = Exact<{
 export type GetTotalSalesQuery = {
   __typename?: 'Query';
   totalSales: { __typename?: 'MetricsResult' } & {
-    ' $fragmentRefs'?: { CommonTotalSalesMetricsFragment: CommonTotalSalesMetricsFragment };
+    ' $fragmentRefs'?: { CommonMetricsResultFragment: CommonMetricsResultFragment };
+  };
+};
+
+export type GetTotalOrdersQueryVariables = Exact<{
+  input: MetricsInput;
+}>;
+
+export type GetTotalOrdersQuery = {
+  __typename?: 'Query';
+  totalOrders: { __typename?: 'MetricsResult' } & {
+    ' $fragmentRefs'?: { CommonMetricsResultFragment: CommonMetricsResultFragment };
   };
 };
 
@@ -1783,9 +1794,9 @@ export const CommonCustomerOrderFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonCustomerOrder' }
 ) as unknown as TypedDocumentString<CommonCustomerOrderFragment, unknown>;
-export const CommonTotalSalesMetricsFragmentDoc = new TypedDocumentString(
+export const CommonMetricsResultFragmentDoc = new TypedDocumentString(
   `
-    fragment CommonTotalSalesMetrics on MetricsResult {
+    fragment CommonMetricsResult on MetricsResult {
   metrics {
     key
     value
@@ -1793,8 +1804,8 @@ export const CommonTotalSalesMetricsFragmentDoc = new TypedDocumentString(
   total
 }
     `,
-  { fragmentName: 'CommonTotalSalesMetrics' }
-) as unknown as TypedDocumentString<CommonTotalSalesMetricsFragment, unknown>;
+  { fragmentName: 'CommonMetricsResult' }
+) as unknown as TypedDocumentString<CommonMetricsResultFragment, unknown>;
 export const CommonOrderFragmentDoc = new TypedDocumentString(
   `
     fragment CommonOrder on Order {
@@ -2082,16 +2093,29 @@ export const UpdateCustomerMutationDocument = new TypedDocumentString(`
 export const GetTotalSalesDocument = new TypedDocumentString(`
     query GetTotalSales($input: MetricsInput!) {
   totalSales(input: $input) {
-    ...CommonTotalSalesMetrics
+    ...CommonMetricsResult
   }
 }
-    fragment CommonTotalSalesMetrics on MetricsResult {
+    fragment CommonMetricsResult on MetricsResult {
   metrics {
     key
     value
   }
   total
 }`) as unknown as TypedDocumentString<GetTotalSalesQuery, GetTotalSalesQueryVariables>;
+export const GetTotalOrdersDocument = new TypedDocumentString(`
+    query GetTotalOrders($input: MetricsInput!) {
+  totalOrders(input: $input) {
+    ...CommonMetricsResult
+  }
+}
+    fragment CommonMetricsResult on MetricsResult {
+  metrics {
+    key
+    value
+  }
+  total
+}`) as unknown as TypedDocumentString<GetTotalOrdersQuery, GetTotalOrdersQueryVariables>;
 export const CreateOptionDocument = new TypedDocumentString(`
     mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {
   createOption(productId: $productId, input: $input) {
