@@ -1,12 +1,12 @@
 import { graphql } from '../codegen';
 
 export const COMMON_TOTAL_SALES_METRICS_FRAGMENT = graphql(`
-  fragment CommonTotalSalesMetrics on TotalSalesResult {
+  fragment CommonTotalSalesMetrics on MetricsResult {
     metrics {
       key
       value
     }
-    totalSales
+    total
   }
 `);
 

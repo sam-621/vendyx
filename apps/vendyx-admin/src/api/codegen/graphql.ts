@@ -244,6 +244,12 @@ export type MetricsInput = {
   startsAt: Scalars['Date']['input'];
 };
 
+export type MetricsResult = {
+  __typename?: 'MetricsResult';
+  metrics: Array<Metric>;
+  total: Scalars['Int']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   cancelOrder: OrderResult;
@@ -669,7 +675,8 @@ export type Query = {
   shippingMethods: Array<ShippingMethod>;
   shop?: Maybe<Shop>;
   shops: ShopList;
-  totalSales: TotalSalesResult;
+  totalOrders: MetricsResult;
+  totalSales: MetricsResult;
   user?: Maybe<User>;
   validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
@@ -712,6 +719,10 @@ export type QueryShopArgs = {
 
 export type QueryShopsArgs = {
   input?: InputMaybe<ListInput>;
+};
+
+export type QueryTotalOrdersArgs = {
+  input: MetricsInput;
 };
 
 export type QueryTotalSalesArgs = {
@@ -814,12 +825,6 @@ export type State = Node & {
 export type StringFilter = {
   contains?: InputMaybe<Scalars['String']['input']>;
   equals?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type TotalSalesResult = {
-  __typename?: 'TotalSalesResult';
-  metrics: Array<Metric>;
-  totalSales: Scalars['Int']['output'];
 };
 
 export type UpdateCustomerInput = {
@@ -1098,8 +1103,8 @@ export type UpdateCustomerMutationMutation = {
 };
 
 export type CommonTotalSalesMetricsFragment = {
-  __typename?: 'TotalSalesResult';
-  totalSales: number;
+  __typename?: 'MetricsResult';
+  total: number;
   metrics: Array<{ __typename?: 'Metric'; key: string; value: number }>;
 } & { ' $fragmentName'?: 'CommonTotalSalesMetricsFragment' };
 
@@ -1109,7 +1114,7 @@ export type GetTotalSalesQueryVariables = Exact<{
 
 export type GetTotalSalesQuery = {
   __typename?: 'Query';
-  totalSales: { __typename?: 'TotalSalesResult' } & {
+  totalSales: { __typename?: 'MetricsResult' } & {
     ' $fragmentRefs'?: { CommonTotalSalesMetricsFragment: CommonTotalSalesMetricsFragment };
   };
 };
@@ -1780,12 +1785,12 @@ export const CommonCustomerOrderFragmentDoc = new TypedDocumentString(
 ) as unknown as TypedDocumentString<CommonCustomerOrderFragment, unknown>;
 export const CommonTotalSalesMetricsFragmentDoc = new TypedDocumentString(
   `
-    fragment CommonTotalSalesMetrics on TotalSalesResult {
+    fragment CommonTotalSalesMetrics on MetricsResult {
   metrics {
     key
     value
   }
-  totalSales
+  total
 }
     `,
   { fragmentName: 'CommonTotalSalesMetrics' }
@@ -2080,12 +2085,12 @@ export const GetTotalSalesDocument = new TypedDocumentString(`
     ...CommonTotalSalesMetrics
   }
 }
-    fragment CommonTotalSalesMetrics on TotalSalesResult {
+    fragment CommonTotalSalesMetrics on MetricsResult {
   metrics {
     key
     value
   }
-  totalSales
+  total
 }`) as unknown as TypedDocumentString<GetTotalSalesQuery, GetTotalSalesQueryVariables>;
 export const CreateOptionDocument = new TypedDocumentString(`
     mutation CreateOption($productId: ID!, $input: CreateOptionInput!) {

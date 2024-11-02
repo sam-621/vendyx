@@ -9,10 +9,11 @@ input MetricsInput {
 }
 
 type Query {
-  totalSales(input: MetricsInput!): TotalSalesResult!
+  totalSales(input: MetricsInput!): MetricsResult!
+  totalOrders(input: MetricsInput!): MetricsResult!
 }
 
-type TotalSalesResult {
+type MetricsResult {
   metrics: [Metric!]!
-  totalSales: Int!
+  total: Int!
 }

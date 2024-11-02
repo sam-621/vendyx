@@ -28,7 +28,7 @@ const documents = {
     types.GetCustomerByIdQueryDocument,
   '\n  mutation UpdateCustomerMutation($customerId: ID!, $input: UpdateCustomerInput!) {\n    updateCustomer(id: $customerId, input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      customer {\n        id\n      }\n    }\n  }\n':
     types.UpdateCustomerMutationDocument,
-  '\n  fragment CommonTotalSalesMetrics on TotalSalesResult {\n    metrics {\n      key\n      value\n    }\n    totalSales\n  }\n':
+  '\n  fragment CommonTotalSalesMetrics on MetricsResult {\n    metrics {\n      key\n      value\n    }\n    total\n  }\n':
     types.CommonTotalSalesMetricsFragmentDoc,
   '\n  query GetTotalSales($input: MetricsInput!) {\n    totalSales(input: $input) {\n      ...CommonTotalSalesMetrics\n    }\n  }\n':
     types.GetTotalSalesDocument,
@@ -175,7 +175,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonTotalSalesMetrics on TotalSalesResult {\n    metrics {\n      key\n      value\n    }\n    totalSales\n  }\n'
+  source: '\n  fragment CommonTotalSalesMetrics on MetricsResult {\n    metrics {\n      key\n      value\n    }\n    total\n  }\n'
 ): typeof import('./graphql').CommonTotalSalesMetricsFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

@@ -326,7 +326,9 @@ export abstract class IQuery {
 
     abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
-    abstract totalSales(input: MetricsInput): TotalSalesResult | Promise<TotalSalesResult>;
+    abstract totalSales(input: MetricsInput): MetricsResult | Promise<MetricsResult>;
+
+    abstract totalOrders(input: MetricsInput): MetricsResult | Promise<MetricsResult>;
 
     abstract orders(input?: Nullable<OrderListInput>): OrderList | Promise<OrderList>;
 
@@ -478,9 +480,9 @@ export class Metric {
     value: number;
 }
 
-export class TotalSalesResult {
+export class MetricsResult {
     metrics: Metric[];
-    totalSales: number;
+    total: number;
 }
 
 export class Option implements Node {

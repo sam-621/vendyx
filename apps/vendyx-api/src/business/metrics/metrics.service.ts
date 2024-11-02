@@ -56,7 +56,73 @@ export class MetricsService {
     ];
   }
 
-  private groupByInterval(data: { createdAt: Date; total: number }[], interval: MetricsInterval) {
+  async getTotalOrders(input: MetricsInput) {
+    const totalOrders = await this.prisma.order.count({
+      where: {
+        createdAt: {
+          gte: new Date(input.startsAt),
+          lte: new Date(input.endsAt)
+        }
+      }
+    });
+
+    return totalOrders;
+  }
+
+  /**
+   * get total orders grouped by date
+   */
+  async getTotalOrdersMetrics(input: MetricsInput) {
+    const startsAt = new Date(input.startsAt);
+    const endsAt = new Date(input.endsAt);
+
+    const result = await this.prisma.order.groupBy({
+      by: ['createdAt'],
+      _count: {
+        _all: true
+      },
+      having: {
+        createdAt: {
+          gte: startsAt,
+          lte: endsAt
+        }
+      },
+      orderBy: {
+        createdAt: 'asc'
+      }
+    });
+
+    const formattedResult = result.map(({ createdAt, _count }) => ({
+      createdAt,
+      total: _count._all
+    }));
+
+    const interval = this.getInterval(startsAt, endsAt);
+    const groupedData = this.groupByInterval(formattedResult, interval, { accumulate: true });
+
+    const metrics = Object.entries(groupedData).map(([key, value]) => ({
+      key,
+      value
+    }));
+
+    return [
+      { key: format(startsAt, this.getFormatDateByInterval(interval)), value: 0 },
+      ...metrics,
+      { key: format(endsAt, this.getFormatDateByInterval(interval)), value: 0 }
+    ];
+  }
+
+  /**
+   * Group data by an interval of time
+   *
+   * If options.accumulate is true, the function will accumulate the total value making the sum of all previous values.
+   * If options.accumulate is false, the function will return the total value of the current interval.
+   */
+  private groupByInterval(
+    data: { createdAt: Date; total: number }[],
+    interval: MetricsInterval,
+    options?: { accumulate?: boolean }
+  ) {
     return data.reduce((acc, { total, createdAt }) => {
       let key = '';
 
@@ -71,8 +137,13 @@ export class MetricsService {
       if (!acc[key]) {
         acc[key] = 0;
       }
-      acc[key] += total;
 
+      if (options?.accumulate) {
+        acc[key] += total;
+        return acc;
+      }
+
+      acc[key] += total;
       return acc;
     }, {});
   }

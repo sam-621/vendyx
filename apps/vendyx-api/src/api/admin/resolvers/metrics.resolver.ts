@@ -9,14 +9,27 @@ export class MetricsResolver {
 
   @Query('totalSales')
   async totalSales(@Args('input') input: MetricsInput) {
-    const [totalSales, metrics] = await Promise.all([
+    const [total, metrics] = await Promise.all([
       this.metricsService.getTotalSales(input),
       this.metricsService.getTotalSalesMetrics(input)
     ]);
 
     return {
       metrics,
-      totalSales
+      total
+    };
+  }
+
+  @Query('totalOrders')
+  async totalOrders(@Args('input') input: MetricsInput) {
+    const [total, metrics] = await Promise.all([
+      this.metricsService.getTotalOrders(input),
+      this.metricsService.getTotalOrdersMetrics(input)
+    ]);
+
+    return {
+      metrics,
+      total
     };
   }
 }
