@@ -11,8 +11,10 @@ export default async function Home({ searchParams }: { searchParams: MetricRange
     ? { startsAt: new Date(searchParams.startsAt), endsAt: new Date(searchParams.endsAt) }
     : getDefaultDateRange();
 
-  const totalSales = await MetricsService.getTotalSales(range);
-  const totalOrders = await MetricsService.getTotalOrders(range);
+  const [totalSales, totalOrders] = await Promise.all([
+    MetricsService.getTotalSales(range),
+    MetricsService.getTotalOrders(range)
+  ]);
 
   return (
     <AdminPageLayout title="Dashboard">
