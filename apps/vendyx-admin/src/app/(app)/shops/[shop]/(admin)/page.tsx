@@ -18,7 +18,7 @@ export default async function Home({ searchParams }: { searchParams: MetricRange
     <AdminPageLayout title="Dashboard">
       <div className="flex flex-col gap-8">
         <main>
-          <MetricsCharts range={range} totalSales={totalSales} />
+          <MetricsCharts range={range} totalSales={totalSales} totalOrders={totalOrders} />
         </main>
         {/* <div className="flex flex-col gap-4">
           <div className="flex items-center">
