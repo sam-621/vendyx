@@ -34,7 +34,7 @@ export const ProductTable: FC<Props> = async props => {
   const data: ProductsTableRow[] =
     products?.map(p => {
       const totalStock = p.variants.items.reduce((acc, v) => acc + v.stock, 0);
-      const image = p.assets.items[0].source ?? DEFAULT_PRODUCT_IMAGE;
+      const image = p.assets.items[0]?.source ?? DEFAULT_PRODUCT_IMAGE;
 
       return {
         id: p.id,

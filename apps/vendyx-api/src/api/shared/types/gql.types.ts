@@ -203,6 +203,7 @@ export class CreateVariantInput {
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
     requiresShipping?: Nullable<boolean>;
+    assetId?: Nullable<string>;
     optionValues?: Nullable<string[]>;
 }
 
@@ -213,6 +214,7 @@ export class UpdateVariantInput {
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
     requiresShipping?: Nullable<boolean>;
+    assetId?: Nullable<string>;
     optionValues?: Nullable<string[]>;
 }
 
@@ -757,6 +759,7 @@ export class Variant implements Node {
     comparisonPrice?: Nullable<number>;
     costPerUnit?: Nullable<number>;
     requiresShipping: boolean;
+    asset?: Nullable<Asset>;
     optionValues: OptionValue[];
     product: Product;
 }

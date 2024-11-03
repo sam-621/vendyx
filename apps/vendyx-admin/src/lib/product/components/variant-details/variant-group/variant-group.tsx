@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC } from 'react';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import {
@@ -7,28 +7,27 @@ import {
   AccordionItem,
   AccordionTrigger,
   Checkbox,
-  Dropzone,
   Input
 } from '@/lib/shared/components';
 
-import { VariantImage } from '../variant-image';
+import {
+  useRemoveAssetVariant,
+  useVariantAssetUploader,
+  VariantAssetUploader
+} from '../../variant-asset-uploader';
 import { VariantItem } from '../variant-item';
 
 export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
-  const { variants: AllVariants, updateVariants } = useVariantContext();
-  const [file, setFile] = useState<File | null>(null);
+  const { variants: AllVariants, updateVariants, product } = useVariantContext();
+  const { addVariantImage, isLoading } = useVariantAssetUploader();
+  const { removeVariantImage, isLoading: removeLoading } = useRemoveAssetVariant();
 
-  useEffect(() => {
-    updateVariants(
-      AllVariants.map(v => {
-        if (variants.some(variant => variant.id === v.id)) {
-          return { ...v, image: file ?? undefined };
-        }
+  const defaultGroupImage = variants.filter(v => v.image?.url).map(v => v.image?.url ?? '')[0];
+  const groupNewImage = variants.find(v => v.image?.newImage);
 
-        return v;
-      })
-    );
-  }, [file]);
+  const groupImage = groupNewImage?.image?.newImage
+    ? URL.createObjectURL(groupNewImage.image?.newImage)
+    : defaultGroupImage ?? null;
 
   if (!variants.length) return null;
 
@@ -53,22 +52,44 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
                 )
               }
             />
-            {file ? (
-              <VariantImage
-                image={URL.createObjectURL(file)}
-                size="md"
-                onRemove={() => {
-                  setFile(null);
-                }}
-              />
-            ) : (
-              <Dropzone
-                size={'md'}
-                onAcceptFiles={files => {
-                  setFile(files[0]);
-                }}
-              />
-            )}
+            <VariantAssetUploader
+              isLoading={isLoading || removeLoading}
+              size="md"
+              image={groupImage}
+              onRemove={() => {
+                if (product) {
+                  removeVariantImage(variants.map(v => v.id));
+                } else {
+                  // updateVariants(
+                  //   AllVariants.map(v => {
+                  //     if (variants.some(variant => variant.id === v.id)) {
+                  //       return { ...v, image: groupNewImage ? undefined : { id: null } };
+                  //     }
+                  //     return v;
+                  //   })
+                  // );
+                }
+              }}
+              onUpload={file => {
+                if (product) {
+                  addVariantImage(
+                    variants.map(v => v.id),
+                    file
+                  );
+                }
+
+                // updateVariants(
+                //   AllVariants.map(v => {
+                //     if (variants.some(variant => variant.id === v.id)) {
+                //       return { ...v, image: { newImage: file } };
+                //     }
+
+                //     return v;
+                //   })
+                // );
+              }}
+            />
+
             <div className="flex flex-col gap-2 items-start">
               <p className="w-fit">{groupName}</p>
               <AccordionTrigger className="py-0">

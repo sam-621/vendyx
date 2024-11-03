@@ -1,14 +1,25 @@
 import { type FC } from 'react';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
-import { Checkbox, Dropzone, Input } from '@/lib/shared/components';
+import { Checkbox, Input } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
-import { VariantImage } from '../variant-image';
+import {
+  useRemoveAssetVariant,
+  useVariantAssetUploader,
+  VariantAssetUploader
+} from '../../variant-asset-uploader';
 
 export const VariantItem: FC<Props> = ({ variant, groupName }) => {
-  const { variants, updateVariants } = useVariantContext();
+  const { variants, updateVariants, product } = useVariantContext();
+  const { addVariantImage, isLoading } = useVariantAssetUploader();
+  const { removeVariantImage, isLoading: removeLoading } = useRemoveAssetVariant();
+
   const inGroup = Boolean(groupName);
+
+  const variantImage = variant.image?.newImage
+    ? URL.createObjectURL(variant.image?.newImage)
+    : variant.image?.url ?? '';
 
   const variantName = inGroup
     ? variant.values
@@ -28,26 +39,31 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
             )
           }
         />
-        {variant.image ? (
-          <VariantImage
-            image={URL.createObjectURL(variant.image)}
-            size="sm"
-            onRemove={() => {
-              updateVariants(
-                variants.map(v => (v.id === variant.id ? { ...v, image: undefined } : v))
-              );
-            }}
-          />
-        ) : (
-          <Dropzone
-            size={inGroup ? 'sm' : 'md'}
-            onAcceptFiles={files => {
-              updateVariants(
-                variants.map(v => (v.id === variant.id ? { ...v, image: files[0] } : v))
-              );
-            }}
-          />
-        )}
+        <VariantAssetUploader
+          isLoading={isLoading || removeLoading}
+          size={inGroup ? 'sm' : 'md'}
+          image={variantImage}
+          onRemove={() => {
+            if (variant.image?.newImage) {
+              // updateVariants(
+              //   variants.map(v => (v.id === variant.id ? { ...v, image: undefined } : v))
+              // );
+            } else {
+              removeVariantImage([variant.id]);
+            }
+          }}
+          onUpload={file => {
+            if (product) {
+              addVariantImage([variant.id], file);
+            }
+
+            // updateVariants(
+            //   variants.map(v =>
+            //     v.id === variant.id ? { ...v, image: { newImage: file ?? undefined } } : v
+            //   )
+            // );
+          }}
+        />
         <span>{variantName}</span>
       </div>
       <div className="flex items-center gap-2 w-full">

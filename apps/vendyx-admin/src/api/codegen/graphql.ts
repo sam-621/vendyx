@@ -130,6 +130,7 @@ export type CreateUserInput = {
 };
 
 export type CreateVariantInput = {
+  assetId?: InputMaybe<Scalars['ID']['input']>;
   comparisonPrice?: InputMaybe<Scalars['Int']['input']>;
   costPerUnit?: InputMaybe<Scalars['Int']['input']>;
   optionValues?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -880,6 +881,7 @@ export type UpdateUserInput = {
 };
 
 export type UpdateVariantInput = {
+  assetId?: InputMaybe<Scalars['ID']['input']>;
   comparisonPrice?: InputMaybe<Scalars['Int']['input']>;
   costPerUnit?: InputMaybe<Scalars['Int']['input']>;
   optionValues?: InputMaybe<Array<Scalars['ID']['input']>>;
@@ -941,6 +943,7 @@ export type UserResult = {
  */
 export type Variant = Node & {
   __typename?: 'Variant';
+  asset?: Maybe<Asset>;
   /**
    * The variant's comparison price.
    * Useful when you want to mark a variant as on sale. Comparison price should be higher than the sale price.
@@ -1422,6 +1425,7 @@ export type CommonProductFragment = {
       costPerUnit?: number | null;
       requiresShipping: boolean;
       optionValues: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
+      asset?: { __typename?: 'Asset'; id: string; source: string } | null;
     }>;
   };
   options: Array<{
@@ -1919,6 +1923,10 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
         id
         name
       }
+      asset {
+        id
+        source
+      }
     }
   }
   options {
@@ -2409,6 +2417,10 @@ export const GetProductDocument = new TypedDocumentString(`
       optionValues {
         id
         name
+      }
+      asset {
+        id
+        source
       }
     }
   }

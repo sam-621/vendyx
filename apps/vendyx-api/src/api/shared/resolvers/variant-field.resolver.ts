@@ -37,4 +37,17 @@ export class VariantFieldResolver {
       .map(({ optionValue }) => optionValue)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
   }
+
+  @ResolveField('asset')
+  async asset(@Parent() variant: Variant) {
+    return await this.prisma.variant
+      .findUnique({
+        where: {
+          id: variant.id,
+          // For this query we don`t need to check if the record has been deleted
+          deletedAt: undefined
+        }
+      })
+      .asset();
+  }
 }

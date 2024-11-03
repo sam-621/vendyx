@@ -6,24 +6,48 @@ import { useDropzone } from 'react-dropzone';
 import { UploadIcon } from 'lucide-react';
 
 import { cn } from '../../utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui';
 
-export const Dropzone: FC<Props> = ({ size, onAcceptFiles }) => {
+export const Dropzone: FC<Props> = ({ size, disabled, onAcceptFiles }) => {
   const { getRootProps, getInputProps } = useDropzone({
     onDropAccepted(files) {
       onAcceptFiles(files);
     }
   });
 
+  if (disabled) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <div className={cn(getSize(size), 'opacity-50')}>
+              <label
+                className={cn(
+                  'rounded-md border border-dashed flex items-center justify-center w-full h-full cursor-not-allowed'
+                )}
+              >
+                <UploadIcon size={size === 'lg' ? 24 : 16} />
+              </label>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Create variant before adding a photo</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
   return (
-    <div className={getSize(size)}>
+    <div className={cn(getSize(size), disabled && 'opacity-50')}>
       <label
         className={cn(
-          'rounded-md border border-dashed hover:bg-muted/50 cursor-pointer flex items-center justify-center w-full h-full'
-          // getSize(size)
+          'rounded-md border border-dashed cursor-pointer flex items-center justify-center w-full h-full',
+          !disabled && 'hover:bg-muted/50'
         )}
         {...getRootProps()}
       >
-        <input {...getInputProps()} type="file" className="hidden" />
+        <input {...getInputProps()} type="file" className="hidden" disabled={disabled} />
         <UploadIcon size={size === 'lg' ? 24 : 16} />
       </label>
     </div>
@@ -32,6 +56,7 @@ export const Dropzone: FC<Props> = ({ size, onAcceptFiles }) => {
 
 type Props = {
   size: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
   onAcceptFiles: (files: File[]) => void;
 };
 

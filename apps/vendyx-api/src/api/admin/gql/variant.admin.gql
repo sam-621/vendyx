@@ -15,6 +15,7 @@ input CreateVariantInput {
   comparisonPrice: Int
   costPerUnit: Int
   requiresShipping: Boolean
+  assetId: ID
 
   optionValues: [ID!]
 }
@@ -26,6 +27,7 @@ input UpdateVariantInput {
   comparisonPrice: Int
   costPerUnit: Int
   requiresShipping: Boolean
+  assetId: ID
 
   optionValues: [ID!]
 }
