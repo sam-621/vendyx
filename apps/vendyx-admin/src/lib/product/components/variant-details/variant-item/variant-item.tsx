@@ -4,6 +4,8 @@ import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { Checkbox, Dropzone, Input } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
+import { VariantImage } from '../variant-image';
+
 export const VariantItem: FC<Props> = ({ variant, groupName }) => {
   const { variants, updateVariants } = useVariantContext();
   const inGroup = Boolean(groupName);
@@ -26,7 +28,26 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
             )
           }
         />
-        <Dropzone size={inGroup ? 'sm' : 'md'} onAcceptFiles={files => console.log(files)} />
+        {variant.image ? (
+          <VariantImage
+            image={URL.createObjectURL(variant.image)}
+            size="sm"
+            onRemove={() => {
+              updateVariants(
+                variants.map(v => (v.id === variant.id ? { ...v, image: undefined } : v))
+              );
+            }}
+          />
+        ) : (
+          <Dropzone
+            size={inGroup ? 'sm' : 'md'}
+            onAcceptFiles={files => {
+              updateVariants(
+                variants.map(v => (v.id === variant.id ? { ...v, image: files[0] } : v))
+              );
+            }}
+          />
+        )}
         <span>{variantName}</span>
       </div>
       <div className="flex items-center gap-2 w-full">

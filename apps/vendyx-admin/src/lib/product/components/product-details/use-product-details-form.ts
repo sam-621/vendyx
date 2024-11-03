@@ -25,9 +25,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
       comparisonPrice: defaultVariant?.comparisonPrice
         ? formatPrice(defaultVariant.comparisonPrice)
         : '',
-      revenue: '',
-      margin: '',
-      costPerUnit: defaultVariant?.costPerUnit ? formatPrice(defaultVariant.costPerUnit) : '',
       stock: defaultVariant?.stock ?? 0,
       sku: defaultVariant?.sku ?? '',
       requiresShipping: defaultVariant?.requiresShipping ?? false,
@@ -64,9 +61,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
         comparisonPrice: defaultVariant?.comparisonPrice
           ? formatPrice(defaultVariant.comparisonPrice)
           : '',
-        revenue: '',
-        margin: '',
-        costPerUnit: defaultVariant?.costPerUnit ? formatPrice(defaultVariant.costPerUnit) : '',
         stock: defaultVariant?.stock ?? 0,
         sku: defaultVariant?.sku ?? '',
         requiresShipping: defaultVariant?.requiresShipping ?? false,
@@ -93,6 +87,7 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
           })) ?? []
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [product]
   );
 
@@ -113,7 +108,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
                   id: defaultVariant?.id ?? '',
                   salePrice: values.price ? parsePrice(values.price) : 0,
                   comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
-                  costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
                   stock: values.stock,
                   sku: values.sku,
                   requiresShipping: values.requiresShipping
@@ -147,7 +141,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
                 {
                   salePrice: values.price ? parsePrice(values.price) : 0,
                   comparisonPrice: values.comparisonPrice ? parsePrice(values.comparisonPrice) : 0,
-                  costPerUnit: values.costPerUnit ? parsePrice(values.costPerUnit) : 0,
                   stock: values.stock,
                   sku: values.sku,
                   requiresShipping: values.requiresShipping
@@ -170,13 +163,10 @@ const schema = z.object({
   description: z.string().optional(),
   price: z.string().optional(),
   comparisonPrice: z.string().optional(),
-  costPerUnit: z.string().optional(),
   stock: z.preprocess(val => Number(val ?? 0), z.number().int().min(0).default(0)),
   sku: z.string().optional(),
   requiresShipping: z.boolean(),
   enabled: z.boolean().default(true),
-  margin: z.string().optional(),
-  revenue: z.string().optional(),
   images: z.array(z.instanceof(File)).optional(),
   options: z.array(
     z.object({

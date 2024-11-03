@@ -5,7 +5,8 @@ import { generateVariants } from '@/lib/product/utils';
 import { isUUID } from '@/lib/shared/utils';
 
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
-  const { updateOption, removeOption, options, variants, updateVariants } = useVariantContext();
+  const { updateOption, removeOption, options, variants, updateVariants, product } =
+    useVariantContext();
   const [name, setName] = useState(option.name);
   const [values, setValues] = useState<{ name: string; id: string }[]>(option.values);
 
@@ -24,8 +25,6 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       onNewOption();
       return;
     }
-
-    // An option already created being updated
 
     // get values without empty ones
     const _values = values.filter(v => v.name);
@@ -56,11 +55,11 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
         return o;
       });
 
-      // generate variants with the latest options and the varianst already in db (to determine which ones to create and update)
-      newVariants = generateVariants(newOptions, variants);
+      // generate variants with the latest options and the variants already in db (to determine which ones to create and update)
+      newVariants = generateVariants(newOptions, variants, product);
     }
 
-    // wheter the variants have been regenerated or not,
+    // whether the variants have been regenerated or not,
     // update the state in VariantsContext adding the new option and variants
     updateOption(option.id, {
       ...option,
@@ -100,7 +99,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const onRemove = () => {
     const newOptions = options.filter(o => o.id !== option.id);
 
-    const generatedVariants = generateVariants(newOptions, variants);
+    const generatedVariants = generateVariants(newOptions, variants, product);
 
     removeOption(option.id);
     updateVariants(generatedVariants);
@@ -122,7 +121,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     });
 
     // Generate the new variants with this new option
-    const generatedVariants = generateVariants(newOptions, variants);
+    const generatedVariants = generateVariants(newOptions, variants, product);
 
     // Update the state in VariantsContext adding the new option and variants
     updateOption(option.id, {

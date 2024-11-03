@@ -53,17 +53,6 @@ export const ProductDetails: FC<Props> = ({ product }) => {
                       placeholder="$ 0.00"
                     />
                   </div>
-                  <div className="flex gap-3">
-                    <FormInput
-                      isPrice
-                      control={control}
-                      name="costPerUnit"
-                      label="Cost per unit"
-                      placeholder="$ 0.00"
-                    />
-                    <FormInput control={control} name="revenue" label="Revenue" placeholder="--" />
-                    <FormInput control={control} name="margin" label="Margin" placeholder="--" />
-                  </div>
                 </CardContent>
               </Card>
 

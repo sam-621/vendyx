@@ -1,3 +1,5 @@
+import { formatPrice } from '@/lib/shared/utils';
+
 import { type VariantContext } from '../contexts/variant.context';
 
 /**
@@ -33,7 +35,8 @@ import { type VariantContext } from '../contexts/variant.context';
  */
 export const generateVariants = (
   options: VariantContext['options'],
-  existingVariants: VariantContext['variants']
+  existingVariants: VariantContext['variants'],
+  product?: VariantContext['product']
 ): GenerateVariantsReturn => {
   if (!options.length) return [];
 
@@ -52,8 +55,12 @@ export const generateVariants = (
             {
               id: variantAlreadyExists ? variantAlreadyExists.id : Math.random().toString(),
               values: [value],
-              price: variantAlreadyExists ? variantAlreadyExists.price : '0',
-              stock: variantAlreadyExists ? variantAlreadyExists.stock : 0,
+              price: variantAlreadyExists
+                ? variantAlreadyExists.price
+                : formatPrice(product?.variants.items[0].salePrice ?? 0),
+              stock: variantAlreadyExists
+                ? variantAlreadyExists.stock
+                : product?.variants.items[0].stock ?? 0,
               selected: false,
               action: (variantAlreadyExists ? 'none' : 'create') as 'create' | 'update' | 'none'
             }
@@ -96,7 +103,7 @@ export const generateVariants = (
               .includes(base)
           );
 
-          // The persistes variant could be
+          // The persisted variant could be
           // A variant that already exists in the existing variants,
           // A variant that only need to be updated not create
           const persistedVariant =
@@ -118,8 +125,9 @@ export const generateVariants = (
           const variantToCreate = {
             id: persistedVariant?.id ?? Math.random().toString(),
             values: [value, ...variant.values],
-            price: persistedVariant?.price ?? '0',
-            stock: persistedVariant?.stock ?? 0,
+            price:
+              persistedVariant?.price ?? formatPrice(product?.variants.items[0].salePrice ?? 0),
+            stock: persistedVariant?.stock ?? product?.variants.items[0].stock ?? 0,
             selected: false,
             action: getActionForVariantGenerated(
               Boolean(variantAlreadyExists),

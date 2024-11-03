@@ -41,9 +41,6 @@ export const valuesHasChanged = (
     comparisonPrice: defaultVariant.comparisonPrice
       ? formatPrice(defaultVariant.comparisonPrice)
       : '',
-    revenue: '',
-    margin: '',
-    costPerUnit: defaultVariant.costPerUnit ? formatPrice(defaultVariant.costPerUnit) : '',
     stock: _product.variants.items[0]?.stock,
     sku: _product.variants.items[0]?.sku,
     requiresShipping: _product.variants.items[0]?.requiresShipping,

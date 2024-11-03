@@ -30,7 +30,7 @@ export const FormTextarea = <
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Textarea placeholder={placeholder} className="resize-none" {...field} />
+            <Textarea placeholder={placeholder} className="resize-none" rows={5} {...field} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

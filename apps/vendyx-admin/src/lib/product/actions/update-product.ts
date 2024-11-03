@@ -70,7 +70,6 @@ const createVariants = async (productId: string, variants: UpdateProductInput['v
     await VariantService.create(productId, {
       salePrice: variant.salePrice,
       comparisonPrice: variant.comparisonPrice,
-      costPerUnit: variant.costPerUnit,
       stock: variant.stock,
       sku: variant.sku,
       requiresShipping: variant.requiresShipping,
@@ -104,7 +103,6 @@ const updateVariants = async (variants: UpdateProductInput['variants']) => {
     await VariantService.update(variant.id, {
       salePrice: variant.salePrice,
       comparisonPrice: variant.comparisonPrice,
-      costPerUnit: variant.costPerUnit,
       stock: variant.stock,
       sku: variant.sku,
       requiresShipping: variant.requiresShipping,
@@ -144,7 +142,6 @@ type UpdateProductInput = {
     id: string;
     salePrice: number;
     comparisonPrice?: number;
-    costPerUnit?: number;
     stock?: number;
     sku?: string;
     requiresShipping?: boolean;

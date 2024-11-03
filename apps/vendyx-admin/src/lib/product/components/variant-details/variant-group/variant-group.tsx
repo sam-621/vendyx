@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, useEffect, useState } from 'react';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import {
@@ -7,15 +7,32 @@ import {
   AccordionItem,
   AccordionTrigger,
   Checkbox,
+  Dropzone,
   Input
 } from '@/lib/shared/components';
 
+import { VariantImage } from '../variant-image';
 import { VariantItem } from '../variant-item';
 
 export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
   const { variants: AllVariants, updateVariants } = useVariantContext();
+  const [file, setFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    updateVariants(
+      AllVariants.map(v => {
+        if (variants.some(variant => variant.id === v.id)) {
+          return { ...v, image: file ?? undefined };
+        }
+
+        return v;
+      })
+    );
+  }, [file]);
 
   if (!variants.length) return null;
+
+  const totalStock = variants.reduce((acc, variant) => acc + variant.stock, 0);
 
   return (
     <Accordion type="single" collapsible className="w-full pt-3">
@@ -36,6 +53,22 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
                 )
               }
             />
+            {file ? (
+              <VariantImage
+                image={URL.createObjectURL(file)}
+                size="md"
+                onRemove={() => {
+                  setFile(null);
+                }}
+              />
+            ) : (
+              <Dropzone
+                size={'md'}
+                onAcceptFiles={files => {
+                  setFile(files[0]);
+                }}
+              />
+            )}
             <div className="flex flex-col gap-2 items-start">
               <p className="w-fit">{groupName}</p>
               <AccordionTrigger className="py-0">
@@ -44,8 +77,24 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
             </div>
           </div>
           <div className="flex gap-2 items-center w-full">
-            <Input placeholder="$ 0.00" onFocus={e => e.target.select()} />
-            <Input placeholder="0" disabled />
+            <Input
+              placeholder="$ 0.00"
+              isPrice
+              onChange={e => {
+                const price = e.target.value;
+
+                updateVariants(
+                  AllVariants.map(v => {
+                    if (variants.some(variant => variant.id === v.id)) {
+                      return { ...v, price };
+                    }
+
+                    return v;
+                  })
+                );
+              }}
+            />
+            <Input placeholder="0" disabled value={totalStock} />
           </div>
         </div>
 

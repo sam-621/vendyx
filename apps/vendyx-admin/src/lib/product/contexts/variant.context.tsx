@@ -20,8 +20,10 @@ export type VariantContext = {
     values: { name: string; id: string }[];
     price: string;
     stock: number;
+    image?: File;
     selected: boolean;
   }[];
+  product?: CommonProductFragment;
   updateVariants: (variants: VariantContext['variants']) => void;
   removeVariants: (ids: string[]) => void;
   appendOption: (option?: VariantContext['options'][0]) => void;
@@ -32,6 +34,7 @@ export type VariantContext = {
 const Context = createContext<VariantContext>({
   options: [],
   variants: [],
+  product: undefined,
   updateVariants: () => {},
   removeVariants: () => {},
   appendOption: () => {},
@@ -159,7 +162,8 @@ export const VariantContextProvider = ({
         removeOption,
         variants,
         updateVariants,
-        removeVariants
+        removeVariants,
+        product
       }}
     >
       {children}
