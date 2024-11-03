@@ -15,6 +15,6 @@ export class OrderLineFieldResolver {
       select: { productVariant: true }
     });
 
-    return result?.productVariant;
+    return { ...result?.productVariant, fromOrders: true };
   }
 }
