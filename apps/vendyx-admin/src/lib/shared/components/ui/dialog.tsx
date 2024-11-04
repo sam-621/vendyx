@@ -14,12 +14,19 @@ const DialogContext = React.createContext({
 
 export const useDialogContext = () => React.useContext(DialogContext);
 
-const Dialog: React.FC<React.PropsWithChildren> = ({ children }) => {
+const Dialog: React.FC<
+  React.PropsWithChildren & { isOpen?: boolean; setIsOpen?: (_: boolean) => void }
+> = ({ children, isOpen: isOpenProp, setIsOpen: setIsOpenProp }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <DialogContext.Provider value={{ isOpen, setIsOpen }}>
-      <DialogPrimitive.Root open={isOpen} onOpenChange={open => setIsOpen(open)}>
+    <DialogContext.Provider
+      value={{ isOpen: isOpenProp ?? isOpen, setIsOpen: setIsOpenProp ?? setIsOpen }}
+    >
+      <DialogPrimitive.Root
+        open={isOpenProp ?? isOpen}
+        onOpenChange={open => (setIsOpenProp ? setIsOpenProp(open) : setIsOpen(open))}
+      >
         {children}
       </DialogPrimitive.Root>
     </DialogContext.Provider>

@@ -19,7 +19,10 @@ export type VariantContext = {
     id: string;
     values: { name: string; id: string }[];
     price: string;
+    comparisonPrice?: string;
     stock: number;
+    sku?: string;
+    requiresShipping?: boolean;
     image?: string;
     selected: boolean;
   }[];
@@ -64,7 +67,10 @@ export const VariantContextProvider = ({
         id: v.id,
         values: v.optionValues.map(v => ({ id: v.id, name: v.name })),
         price: formatPrice(v.salePrice),
+        comparisonPrice: v.comparisonPrice ? formatPrice(v.comparisonPrice) : undefined,
+        sku: v.sku ? v.sku : undefined,
         stock: v.stock,
+        requiresShipping: v.requiresShipping,
         image: v.asset?.source ?? undefined,
         selected: false
       }))
@@ -96,6 +102,9 @@ export const VariantContextProvider = ({
           id: v.id,
           stock: v.stock,
           salePrice: parsePrice(v.price),
+          comparisonPrice: v.comparisonPrice ? parsePrice(v.comparisonPrice) : undefined,
+          sku: v.sku,
+          requiresShipping: v.requiresShipping,
           optionValues: v.values
         }))
       );

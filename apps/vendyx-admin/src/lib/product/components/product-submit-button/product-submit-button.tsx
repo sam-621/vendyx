@@ -69,13 +69,22 @@ const getVariantsHasChanged = (
     if (!v) return false;
 
     const persistedVariant = defaultVariants.find(dv => dv.id === v?.id);
-    const { salePrice, stock } = v;
+    const { salePrice, stock, comparisonPrice, requiresShipping, sku } = v;
 
-    const inMemoryVariant = { salePrice: (salePrice ?? 0) * 100, stock };
+    const inMemoryVariant = {
+      salePrice: (salePrice ?? 0) * 100,
+      stock,
+      comparisonPrice: comparisonPrice ? comparisonPrice * 100 : null,
+      sku: sku ?? null,
+      requiresShipping
+    };
 
     return (
       inMemoryVariant.salePrice !== persistedVariant?.salePrice ||
-      inMemoryVariant.stock !== persistedVariant?.stock
+      inMemoryVariant.stock !== persistedVariant?.stock ||
+      inMemoryVariant.comparisonPrice !== persistedVariant?.comparisonPrice ||
+      inMemoryVariant.requiresShipping !== persistedVariant?.requiresShipping ||
+      inMemoryVariant.sku !== persistedVariant?.sku
     );
   });
 };

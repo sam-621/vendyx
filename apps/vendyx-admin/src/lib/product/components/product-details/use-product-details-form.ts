@@ -33,10 +33,10 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
         product?.variants.items.map(variant => ({
           id: variant.id,
           salePrice: variant.salePrice,
-          comparisonPrice: variant.comparisonPrice,
+          comparisonPrice: variant.comparisonPrice ?? undefined,
           costPerUnit: variant.costPerUnit,
           stock: variant.stock,
-          sku: variant.sku,
+          sku: variant.sku ?? '',
           requiresShipping: variant.requiresShipping,
           optionValues: variant.optionValues
         })) ?? [],
@@ -69,10 +69,10 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
           product?.variants.items.map(variant => ({
             id: variant.id,
             salePrice: variant.salePrice,
-            comparisonPrice: variant.comparisonPrice,
+            comparisonPrice: variant.comparisonPrice ?? undefined,
             costPerUnit: variant.costPerUnit,
             stock: variant.stock,
-            sku: variant.sku,
+            sku: variant.sku ?? '',
             requiresShipping: variant.requiresShipping,
             optionValues: variant.optionValues
           })) ?? [],
@@ -185,6 +185,9 @@ const schema = z.object({
       id: z.string(),
       salePrice: z.number().int().min(0),
       stock: z.number().int().optional(),
+      comparisonPrice: z.number().int().optional(),
+      sku: z.string().optional(),
+      requiresShipping: z.boolean().optional(),
       optionValues: z.array(
         z.object({
           id: z.string(),
