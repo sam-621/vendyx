@@ -5,7 +5,7 @@ import { validateAccessToken } from './lib/auth/actions/validate-access-token';
 import { getActiveShop } from './lib/shared/cookies';
 
 const AUTH_PATHS = ['/login', '/signup'];
-const ALLOWED_PATHS = [...AUTH_PATHS, '/'];
+const ALLOWED_PATHS = [...AUTH_PATHS, '/shops/new'];
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -13,6 +13,10 @@ export async function middleware(request: NextRequest) {
   const isAuth = await validateAccessToken();
   const isInAllowedPaths = ALLOWED_PATHS.includes(pathname);
   const isInAuthPaths = AUTH_PATHS.includes(pathname);
+
+  if (isInAllowedPaths) {
+    return NextResponse.next();
+  }
 
   // Redirect to login if not authenticated and not in allowed paths
   if (!isAuth && !isInAllowedPaths) {
@@ -31,11 +35,6 @@ export async function middleware(request: NextRequest) {
   // we need to make sure that the active shop in cookies is the same as the shop in the URL
   if (shopSlug && activeShop?.slug !== shopSlug) {
     return NextResponse.redirect(new URL('/shops', request.url));
-  }
-
-  // Do nothing if not authenticated and in allowed paths
-  if (!isAuth && isInAllowedPaths) {
-    return NextResponse.next();
   }
 
   return NextResponse.next();
