@@ -1,4 +1,4 @@
-import { PaymentMethodService } from '@/api';
+import { PaymentMethodService } from '@/api/services';
 import { PaymentMethodForm } from '@/lib/payment/components';
 
 export default async function NewPaymentMethodPage() {

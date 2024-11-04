@@ -4,6 +4,11 @@
 import * as React from 'react';
 
 import * as RechartsPrimitive from 'recharts';
+import {
+  type NameType,
+  type Payload,
+  type ValueType
+} from 'recharts/types/component/DefaultTooltipContent';
 
 import { cn } from '@/lib/shared/utils';
 
@@ -183,7 +188,13 @@ const ChartTooltipContent = React.forwardRef<
                 )}
               >
                 {formatter && item?.value !== undefined && item.name ? (
-                  formatter(item.value, item.name, item, index, item.payload)
+                  formatter(
+                    item.value,
+                    item.name,
+                    item,
+                    index,
+                    item.payload as Payload<ValueType, NameType>[]
+                  )
                 ) : (
                   <>
                     {itemConfig?.icon ? (
@@ -201,12 +212,11 @@ const ChartTooltipContent = React.forwardRef<
                               'my-0.5': nestLabel && indicator === 'dashed'
                             }
                           )}
-                          style={
-                            {
-                              '--color-bg': indicatorColor,
-                              '--color-border': indicatorColor
-                            } satisfies React.CSSProperties
-                          }
+                          style={{
+                            // @ts-expect-error Component from shadcn
+                            '--color-bg': indicatorColor,
+                            '--color-border': indicatorColor
+                          }}
                         />
                       )
                     )}
@@ -266,7 +276,7 @@ const ChartLegendContent = React.forwardRef<
       )}
     >
       {payload.map(item => {
-        const key = `${nameKey || item.dataKey || 'value'}`;
+        const key = `${nameKey || String(item.dataKey) || 'value'}`;
         const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
         return (

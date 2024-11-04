@@ -3,6 +3,7 @@
 import { type FC, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { type Metadata } from '@/api/scalars';
 import {
   type CommonPaymentIntegrationFragment,
   type CommonPaymentMethodFragment
@@ -27,7 +28,6 @@ import {
 
 import { RemovePaymentMethodButton } from '../remove-payment-method';
 import { type PaymentMethodFormInput } from './use-payment-method-form';
-import { Metadata } from '@/api/scalars';
 
 export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
   const defaultIntegration = method
