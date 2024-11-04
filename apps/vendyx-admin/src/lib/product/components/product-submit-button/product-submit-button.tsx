@@ -3,16 +3,19 @@
 import { type FC } from 'react';
 import { type DeepPartial, useFormContext, useWatch } from 'react-hook-form';
 
+import { type VariantProps } from 'class-variance-authority';
+
 import { type CommonProductFragment } from '@/api/types';
-import { Button } from '@/lib/shared/components';
+import { Button, type buttonVariants } from '@/lib/shared/components';
 import { clean, formatPrice } from '@/lib/shared/utils';
 
 import { type ProductDetailsFormInput } from '../product-details/use-product-details-form';
 
-export const ProductSubmitButton: FC<Props> = ({ isLoading, product }) => {
+export const ProductSubmitButton: FC<Props> = ({ product, size = 'default' }) => {
   const form = useFormContext<ProductDetailsFormInput>();
   const values = useWatch({ defaultValue: form.getValues() });
 
+  const isLoading = (form as any).isLoading as boolean; // This exists in every form, i just need to add it to the type but i'm lazy
   const hasChanged = product ? valuesHasChanged(values, product) : true; // is creating a new product;
   const withRequiredValues = Boolean(values.name?.length);
 
@@ -21,6 +24,7 @@ export const ProductSubmitButton: FC<Props> = ({ isLoading, product }) => {
       isLoading={isLoading}
       disabled={!withRequiredValues || isLoading || !hasChanged}
       type="submit"
+      size={size}
     >
       Save
     </Button>
@@ -111,6 +115,6 @@ const getOptionsHasChanged = (
 };
 
 type Props = {
-  isLoading: boolean;
   product?: CommonProductFragment;
+  size?: VariantProps<typeof buttonVariants>['size'];
 };

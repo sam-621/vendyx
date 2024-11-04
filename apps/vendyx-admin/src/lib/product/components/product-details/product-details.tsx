@@ -9,6 +9,7 @@ import { FormCheckbox, FormInput, FormSwitch, FormTextarea } from '@/lib/shared/
 
 import { VariantContextProvider } from '../../contexts';
 import { ProductAssetUploader } from '../product-asset-uploader';
+import { ProductSubmitButton } from '../product-submit-button';
 import { RemoveProductButton } from '../remove-product';
 import { VariantDetails } from '../variant-details';
 import { type ProductDetailsFormInput } from './use-product-details-form';
@@ -103,8 +104,9 @@ export const ProductDetails: FC<Props> = ({ product }) => {
         </div>
       </div>
       {product && (
-        <div className="flex justify-end">
+        <div className="flex gap-3 justify-end">
           <RemoveProductButton product={product} />
+          <ProductSubmitButton product={product} size="sm" />
         </div>
       )}
     </div>
@@ -113,4 +115,5 @@ export const ProductDetails: FC<Props> = ({ product }) => {
 
 type Props = {
   product?: CommonProductFragment;
+  isLoading?: boolean;
 };

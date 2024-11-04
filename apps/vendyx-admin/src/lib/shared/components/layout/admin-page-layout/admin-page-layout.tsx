@@ -18,7 +18,7 @@ export const AdminPageLayout: FC<Props> = ({ title, actions, maxWidth, children 
       </header>
       <section
         className={cn(
-          'p-6 pt-0 flex-1 flex flex-col gap-4',
+          'p-6 pt-0 flex-1 flex flex-col gap-4 sticky top-16',
           maxWidth && 'max-w-6xl w-full mx-auto'
         )}
       >
