@@ -2,7 +2,6 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type ID } from '@/api/scalars';
 import { type CommonProductFragment } from '@/api/types';
 import { formatPrice, parsePrice } from '@/lib/shared/utils';
 
@@ -21,7 +20,7 @@ export type VariantContext = {
     values: { name: string; id: string }[];
     price: string;
     stock: number;
-    image?: { id?: ID | null; url?: string; newImage?: File };
+    image?: string;
     selected: boolean;
   }[];
   product?: CommonProductFragment;
@@ -66,7 +65,7 @@ export const VariantContextProvider = ({
         values: v.optionValues.map(v => ({ id: v.id, name: v.name })),
         price: formatPrice(v.salePrice),
         stock: v.stock,
-        image: v.asset ? { id: v.asset.id, url: v.asset.source } : undefined,
+        image: v.asset?.source ?? undefined,
         selected: false
       }))
       .filter(v => v.values.length) ?? [];

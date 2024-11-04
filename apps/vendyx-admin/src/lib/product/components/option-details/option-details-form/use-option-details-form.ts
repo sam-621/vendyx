@@ -1,12 +1,17 @@
 import { useMemo, useState } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { generateVariants } from '@/lib/product/utils';
 import { isUUID } from '@/lib/shared/utils';
 
+import { type ProductDetailsFormInput } from '../../product-details/use-product-details-form';
+
 export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
-  const { updateOption, removeOption, options, variants, updateVariants, product } =
-    useVariantContext();
+  const { updateOption, removeOption, options, variants, updateVariants } = useVariantContext();
+  const form = useFormContext<ProductDetailsFormInput>();
+  const formValues = useWatch({ defaultValue: form.getValues() });
+
   const [name, setName] = useState(option.name);
   const [values, setValues] = useState<{ name: string; id: string }[]>(option.values);
 
@@ -56,7 +61,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
       });
 
       // generate variants with the latest options and the variants already in db (to determine which ones to create and update)
-      newVariants = generateVariants(newOptions, variants, product);
+      newVariants = generateVariants(newOptions, variants, formValues);
     }
 
     // whether the variants have been regenerated or not,
@@ -99,7 +104,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
   const onRemove = () => {
     const newOptions = options.filter(o => o.id !== option.id);
 
-    const generatedVariants = generateVariants(newOptions, variants, product);
+    const generatedVariants = generateVariants(newOptions, variants, formValues);
 
     removeOption(option.id);
     updateVariants(generatedVariants);
@@ -121,7 +126,7 @@ export const useOptionDetailsForm = (option: VariantContext['options'][0]) => {
     });
 
     // Generate the new variants with this new option
-    const generatedVariants = generateVariants(newOptions, variants, product);
+    const generatedVariants = generateVariants(newOptions, variants, formValues);
 
     // Update the state in VariantsContext adding the new option and variants
     updateOption(option.id, {

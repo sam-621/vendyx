@@ -73,7 +73,6 @@ const createVariants = async (productId: string, variants: UpdateProductInput['v
       stock: variant.stock,
       sku: variant.sku,
       requiresShipping: variant.requiresShipping,
-      assetId: variant.image?.id,
       optionValues: variant.optionValues?.map(value => value.id)
     });
   }
@@ -109,7 +108,6 @@ const updateVariants = async (variants: UpdateProductInput['variants']) => {
           stock: variant.stock,
           sku: variant.sku,
           requiresShipping: variant.requiresShipping,
-          assetId: variant.image?.id,
           optionValues: variant.optionValues?.map(value => value.id)
         })
     )
@@ -150,24 +148,6 @@ type UpdateProductInput = {
     stock?: number;
     sku?: string;
     requiresShipping?: boolean;
-    image?: {
-      /**
-       * The id of the variant's image already uploaded to the server.
-       * Represents that the variants already have an image
-       *
-       * Null represents image has been removed
-       */
-      id?: string | null;
-
-      /**
-       * A FormData object that contains the images that will be uploaded to the server.
-       * Represents that the variants will have a new image
-       *
-       * If present, the image will be uploaded to the server and the URL will be saved in the variant
-       * Overwriting the id field
-       */
-      newImage?: FormData;
-    };
     optionValues?: { id: string; name: string }[];
   }[];
   variantsToRemove: string[];

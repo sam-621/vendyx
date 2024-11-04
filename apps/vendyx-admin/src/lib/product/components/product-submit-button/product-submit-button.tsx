@@ -42,7 +42,7 @@ export const valuesHasChanged = (
       ? formatPrice(defaultVariant.comparisonPrice)
       : '',
     stock: _product.variants.items[0]?.stock,
-    sku: _product.variants.items[0]?.sku,
+    sku: _product.variants.items[0]?.sku ?? '',
     requiresShipping: _product.variants.items[0]?.requiresShipping,
     enabled: _product.enabled,
     options: _product.options,

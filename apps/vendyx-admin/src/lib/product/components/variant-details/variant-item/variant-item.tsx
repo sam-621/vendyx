@@ -11,15 +11,13 @@ import {
 } from '../../variant-asset-uploader';
 
 export const VariantItem: FC<Props> = ({ variant, groupName }) => {
-  const { variants, updateVariants, product } = useVariantContext();
+  const { variants, updateVariants } = useVariantContext();
   const { addVariantImage, isLoading } = useVariantAssetUploader();
   const { removeVariantImage, isLoading: removeLoading } = useRemoveAssetVariant();
 
   const inGroup = Boolean(groupName);
 
-  const variantImage = variant.image?.newImage
-    ? URL.createObjectURL(variant.image?.newImage)
-    : variant.image?.url ?? '';
+  const variantImage = variant.image ?? '';
 
   const variantName = inGroup
     ? variant.values
@@ -44,24 +42,10 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
           size={inGroup ? 'sm' : 'md'}
           image={variantImage}
           onRemove={() => {
-            if (variant.image?.newImage) {
-              // updateVariants(
-              //   variants.map(v => (v.id === variant.id ? { ...v, image: undefined } : v))
-              // );
-            } else {
-              removeVariantImage([variant.id]);
-            }
+            removeVariantImage([variant.id]);
           }}
           onUpload={file => {
-            if (product) {
-              addVariantImage([variant.id], file);
-            }
-
-            // updateVariants(
-            //   variants.map(v =>
-            //     v.id === variant.id ? { ...v, image: { newImage: file ?? undefined } } : v
-            //   )
-            // );
+            addVariantImage([variant.id], file);
           }}
         />
         <span>{variantName}</span>

@@ -1,5 +1,6 @@
-import { formatPrice } from '@/lib/shared/utils';
+import { type DeepPartial } from 'react-hook-form';
 
+import { type ProductDetailsFormInput } from '../components/product-details/use-product-details-form';
 import { type VariantContext } from '../contexts/variant.context';
 
 /**
@@ -36,7 +37,7 @@ import { type VariantContext } from '../contexts/variant.context';
 export const generateVariants = (
   options: VariantContext['options'],
   existingVariants: VariantContext['variants'],
-  product?: VariantContext['product']
+  formValues?: DeepPartial<ProductDetailsFormInput>
 ): GenerateVariantsReturn => {
   if (!options.length) return [];
 
@@ -55,12 +56,11 @@ export const generateVariants = (
             {
               id: variantAlreadyExists ? variantAlreadyExists.id : Math.random().toString(),
               values: [value],
-              price: variantAlreadyExists
-                ? variantAlreadyExists.price
-                : formatPrice(product?.variants.items[0].salePrice ?? 0),
+              price: variantAlreadyExists ? variantAlreadyExists.price : formValues?.price ?? '0',
               stock: variantAlreadyExists
                 ? variantAlreadyExists.stock
-                : product?.variants.items[0].stock ?? 0,
+                : Number(formValues?.stock) ?? 0,
+              image: variantAlreadyExists ? variantAlreadyExists.image : undefined,
               selected: false,
               action: (variantAlreadyExists ? 'none' : 'create') as 'create' | 'update' | 'none'
             }
@@ -125,9 +125,9 @@ export const generateVariants = (
           const variantToCreate = {
             id: persistedVariant?.id ?? Math.random().toString(),
             values: [value, ...variant.values],
-            price:
-              persistedVariant?.price ?? formatPrice(product?.variants.items[0].salePrice ?? 0),
-            stock: persistedVariant?.stock ?? product?.variants.items[0].stock ?? 0,
+            price: persistedVariant?.price ?? formValues?.price ?? '0',
+            stock: persistedVariant?.stock ?? Number(formValues?.stock) ?? 0,
+            image: persistedVariant?.image ?? undefined,
             selected: false,
             action: getActionForVariantGenerated(
               Boolean(variantAlreadyExists),

@@ -18,16 +18,11 @@ import {
 import { VariantItem } from '../variant-item';
 
 export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
-  const { variants: AllVariants, updateVariants, product } = useVariantContext();
+  const { variants: AllVariants, updateVariants } = useVariantContext();
   const { addVariantImage, isLoading } = useVariantAssetUploader();
   const { removeVariantImage, isLoading: removeLoading } = useRemoveAssetVariant();
 
-  const defaultGroupImage = variants.filter(v => v.image?.url).map(v => v.image?.url ?? '')[0];
-  const groupNewImage = variants.find(v => v.image?.newImage);
-
-  const groupImage = groupNewImage?.image?.newImage
-    ? URL.createObjectURL(groupNewImage.image?.newImage)
-    : defaultGroupImage ?? null;
+  const groupImage = variants.filter(v => v.image).map(v => v.image ?? '')[0] ?? null;
 
   if (!variants.length) return null;
 
@@ -57,36 +52,13 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
               size="md"
               image={groupImage}
               onRemove={() => {
-                if (product) {
-                  removeVariantImage(variants.map(v => v.id));
-                } else {
-                  // updateVariants(
-                  //   AllVariants.map(v => {
-                  //     if (variants.some(variant => variant.id === v.id)) {
-                  //       return { ...v, image: groupNewImage ? undefined : { id: null } };
-                  //     }
-                  //     return v;
-                  //   })
-                  // );
-                }
+                removeVariantImage(variants.map(v => v.id));
               }}
               onUpload={file => {
-                if (product) {
-                  addVariantImage(
-                    variants.map(v => v.id),
-                    file
-                  );
-                }
-
-                // updateVariants(
-                //   AllVariants.map(v => {
-                //     if (variants.some(variant => variant.id === v.id)) {
-                //       return { ...v, image: { newImage: file } };
-                //     }
-
-                //     return v;
-                //   })
-                // );
+                addVariantImage(
+                  variants.map(v => v.id),
+                  file
+                );
               }}
             />
 
