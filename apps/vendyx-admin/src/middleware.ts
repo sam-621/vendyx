@@ -14,8 +14,8 @@ export async function middleware(request: NextRequest) {
   const isInAllowedPaths = ALLOWED_PATHS.includes(pathname);
   const isInAuthPaths = AUTH_PATHS.includes(pathname);
 
-  if (isInAllowedPaths) {
-    return NextResponse.next();
+  if (isAuth && isInAuthPaths) {
+    return NextResponse.redirect(new URL('/shops', request.url));
   }
 
   // Redirect to login if not authenticated and not in allowed paths
@@ -23,17 +23,18 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  if (isAuth && isInAuthPaths) {
-    return NextResponse.redirect(new URL('/shops', request.url));
-  }
-
   const [, , shopSlug] = pathname.split('/');
   const activeShop = getActiveShop();
+
+  console.log({
+    activeShop,
+    shopSlug
+  });
 
   // Redirect to shops if active shop is not the same as the shop in the URL
   // Petitions works depending on the active shop in cookies, so
   // we need to make sure that the active shop in cookies is the same as the shop in the URL
-  if (shopSlug && activeShop?.slug !== shopSlug) {
+  if (shopSlug && shopSlug !== 'new' && activeShop?.slug !== shopSlug) {
     return NextResponse.redirect(new URL('/shops', request.url));
   }
 
