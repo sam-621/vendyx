@@ -12,13 +12,6 @@ export const GET = async (request: NextRequest) => {
   const size = Number(searchParams.get('size'));
   const search = searchParams.get('search');
 
-  console.log({
-    customerId,
-    page,
-    size,
-    search
-  });
-
   const result = await CustomerService.getOrders(customerId ?? '', {
     skip: getSkip(page, size),
     take: size,

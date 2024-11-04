@@ -26,11 +26,6 @@ export async function middleware(request: NextRequest) {
   const [, , shopSlug] = pathname.split('/');
   const activeShop = getActiveShop();
 
-  console.log({
-    activeShop,
-    shopSlug
-  });
-
   // Redirect to shops if active shop is not the same as the shop in the URL
   // Petitions works depending on the active shop in cookies, so
   // we need to make sure that the active shop in cookies is the same as the shop in the URL
