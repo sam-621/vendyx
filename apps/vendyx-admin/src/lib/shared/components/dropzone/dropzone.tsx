@@ -20,7 +20,7 @@ export const Dropzone: FC<Props> = ({ size, disabled, onAcceptFiles }) => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <div className={cn(getSize(size), 'opacity-50')}>
+            <div className={cn(getSize(size), 'opacity-50 flex-shrink-0')}>
               <label
                 className={cn(
                   'rounded-md border border-dashed flex items-center justify-center w-full h-full cursor-not-allowed'
@@ -39,7 +39,7 @@ export const Dropzone: FC<Props> = ({ size, disabled, onAcceptFiles }) => {
   }
 
   return (
-    <div className={cn(getSize(size), disabled && 'opacity-50')}>
+    <div className={cn(getSize(size), 'flex-shrink-0')}>
       <label
         className={cn(
           'rounded-md border border-dashed cursor-pointer flex items-center justify-center w-full h-full',

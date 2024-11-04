@@ -66,7 +66,7 @@ CREATE POLICY bypass_rls_policy ON "payment_method" USING (current_setting('app.
 CREATE POLICY bypass_rls_policy ON "shipment" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "shipping_method" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "zone" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
-CREATE POLICY bypass_rls_policy ON "order" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "orders" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "order_line" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "customer" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "address" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');

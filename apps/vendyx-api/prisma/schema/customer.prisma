@@ -21,6 +21,7 @@ model Customer {
   @@map("customer")
 }
 
+// TODO: Add shop_isolation_policy
 model Address {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now()) @map("created_at")

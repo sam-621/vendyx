@@ -60,6 +60,13 @@ export const generateVariants = (
               stock: variantAlreadyExists
                 ? variantAlreadyExists.stock
                 : Number(formValues?.stock) ?? 0,
+              comparisonPrice: variantAlreadyExists
+                ? variantAlreadyExists.comparisonPrice
+                : formValues?.comparisonPrice ?? '0',
+              sku: variantAlreadyExists ? variantAlreadyExists.sku : formValues?.sku ?? '',
+              requiresShipping: variantAlreadyExists
+                ? variantAlreadyExists.requiresShipping
+                : formValues?.requiresShipping ?? false,
               image: variantAlreadyExists ? variantAlreadyExists.image : undefined,
               selected: false,
               action: (variantAlreadyExists ? 'none' : 'create') as 'create' | 'update' | 'none'
@@ -127,6 +134,11 @@ export const generateVariants = (
             values: [value, ...variant.values],
             price: persistedVariant?.price ?? formValues?.price ?? '0',
             stock: persistedVariant?.stock ?? Number(formValues?.stock) ?? 0,
+            comparisonPrice:
+              persistedVariant?.comparisonPrice ?? formValues?.comparisonPrice ?? '0',
+            sku: persistedVariant?.sku ?? formValues?.sku ?? '',
+            requiresShipping:
+              persistedVariant?.requiresShipping ?? formValues?.requiresShipping ?? false,
             image: persistedVariant?.image ?? undefined,
             selected: false,
             action: getActionForVariantGenerated(

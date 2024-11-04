@@ -28,58 +28,54 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
     : variant.values.map(v => v.name).join(' / ');
 
   return (
-    <VariantItemDialogWrapper variant={variant}>
-      <div className="flex items-center px-6 py-4 hover:bg-muted/50 cursor-pointer">
-        <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
-          <Checkbox
-            checked={variant.selected}
-            onCheckedChange={checked =>
-              updateVariants(
-                variants.map(v => (v.id === variant.id ? { ...v, selected: Boolean(checked) } : v))
-              )
-            }
-          />
-          <VariantAssetUploader
-            isLoading={isLoading || removeLoading}
-            size={inGroup ? 'sm' : 'md'}
-            image={variantImage}
-            onRemove={() => {
-              removeVariantImage([variant.id]);
-            }}
-            onUpload={file => {
-              addVariantImage([variant.id], file);
-            }}
-          />
-          <span>{variantName}</span>
-        </div>
-        <div className="flex items-center gap-2 w-full">
-          <Input
-            isPrice
-            onClick={e => e.stopPropagation()} // Avoid open dialog
-            onChange={e =>
-              updateVariants(
-                variants.map(v => (v.id === variant.id ? { ...v, price: e.target.value } : v))
-              )
-            }
-            value={variant.price}
-            placeholder="$ 0.00"
-          />
-          <Input
-            value={variant.stock}
-            onClick={e => e.stopPropagation()} // Avoid open dialog
-            onChange={e =>
-              updateVariants(
-                variants.map(v =>
-                  v.id === variant.id ? { ...v, stock: Number(e.target.value) } : v
-                )
-              )
-            }
-            type="number"
-            placeholder="0"
-          />
-        </div>
+    <div className="flex items-center px-6 py-4 hover:bg-muted/50">
+      <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
+        <Checkbox
+          checked={variant.selected}
+          onCheckedChange={checked =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, selected: Boolean(checked) } : v))
+            )
+          }
+        />
+        <VariantAssetUploader
+          isLoading={isLoading || removeLoading}
+          size={inGroup ? 'sm' : 'md'}
+          image={variantImage}
+          onRemove={() => {
+            removeVariantImage([variant.id]);
+          }}
+          onUpload={file => {
+            addVariantImage([variant.id], file);
+          }}
+        />
+        <VariantItemDialogWrapper variant={variant}>
+          <span className="hover:underline w-full cursor-pointer">{variantName}</span>
+        </VariantItemDialogWrapper>
       </div>
-    </VariantItemDialogWrapper>
+      <div className="flex items-center gap-2 w-full">
+        <Input
+          isPrice
+          onChange={e =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, price: e.target.value } : v))
+            )
+          }
+          value={variant.price}
+          placeholder="$ 0.00"
+        />
+        <Input
+          value={variant.stock}
+          onChange={e =>
+            updateVariants(
+              variants.map(v => (v.id === variant.id ? { ...v, stock: Number(e.target.value) } : v))
+            )
+          }
+          type="number"
+          placeholder="0"
+        />
+      </div>
+    </div>
   );
 };
 
