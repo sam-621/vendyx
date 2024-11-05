@@ -10,7 +10,9 @@ import { AppModule } from './app.module';
 import { AuthService } from './auth';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    rawBody: true // Required for Stripe webhook
+  });
 
   const authService = app.get(AuthService);
 

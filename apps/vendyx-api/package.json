@@ -21,6 +21,7 @@
     "@apollo/server": "^4.10.5",
     "@nestjs/apollo": "^12.2.0",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/graphql": "^12.2.0",
     "@nestjs/jwt": "^10.2.0",
