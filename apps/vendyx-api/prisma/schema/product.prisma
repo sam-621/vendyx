@@ -95,7 +95,7 @@ model Option {
   /// The option's name
   name String
 
-  /// The option's order
+  /// The option's order. This is used to sort the options in the storefront.
   order Int
 
   /// the option's values

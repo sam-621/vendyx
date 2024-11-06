@@ -27,7 +27,9 @@ model Order {
   subtotal        Int        @default(0)
   /// The date and time when a payment has been added to the order
   placedAt        DateTime?  @map("placed_at")
+  /// Total quantity of all items in the order
   totalQuantity   Int        @default(0) @map("total_quantity") @db.SmallInt
+  /// Shipping address where this order will be shipped
   shippingAddress Json?      @map("shipping_address")
 
   lines OrderLine[]
