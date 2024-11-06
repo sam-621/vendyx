@@ -11,7 +11,7 @@ dist
 .env.development
 .env.production
 .env
-.env.migration
+.env.*.migration
 
 # Trash files
 uploads

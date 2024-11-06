@@ -6,9 +6,11 @@ model User {
   deletedAt DateTime? @map("deleted_at")
 
   /// The user's email (unique)
-  email    String @unique
+  email            String  @unique
   /// The user's hashed password
-  password String
+  password         String
+  /// The user's stripe customer id
+  stripeCustomerId String? @map("stripe_customer_id")
 
   /// The user's shops
   shops Shop[]
