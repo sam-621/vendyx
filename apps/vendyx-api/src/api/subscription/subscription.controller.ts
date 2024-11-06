@@ -2,19 +2,22 @@ import { Body, Controller, Headers, Post, RawBodyRequest, Req } from '@nestjs/co
 
 import { SubscriptionService } from '@/business/subscription';
 
+import { CheckoutWithStripeInput } from './subscription-api.types';
+
 @Controller('/subscription')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
   @Post('/create-checkout-session')
-  createCheckoutSession(@Body() input: { lookupKey: string }) {
-    return this.subscriptionService.createCheckoutSession(input);
+  createCheckoutSession(@Body() input: CheckoutWithStripeInput) {
+    return this.subscriptionService.checkoutWithStripe(input);
   }
 
-  @Post('/create-portal-session')
-  createPortalSession(@Body() input: { sessionId: string }) {
-    return this.subscriptionService.createPortalSession(input);
-  }
+  // @Post('/create-portal-session')
+  // createPortalSession(@Body() input: { sessionId: string }) {
+  //   // return this.subscriptionService.createPortalSession(input);
+  //   return { data: '' };
+  // }
 
   @Post('/webhook')
   webhook(@Req() req: RawBodyRequest<Request>, @Headers() headers: any) {

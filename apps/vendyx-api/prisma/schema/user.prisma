@@ -67,5 +67,7 @@ model Subscription {
 
   /// The user that the subscription belongs to
   user   User   @relation(fields: [userId], references: [id])
-  userId String @unique @map("user_id") @db.Uuid
+  userId String @unique @default(dbgenerated("(current_setting('app.current_owner_id'::text))::uuid")) @map("user_id") @db.Uuid
+
+  @@map("subscription")
 }

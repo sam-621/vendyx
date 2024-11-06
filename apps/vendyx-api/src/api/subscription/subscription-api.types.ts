@@ -1,7 +1,9 @@
-export type CreateCheckoutSessionInput = {
-  lookupKey: string;
-};
+import { SubscriptionPlan } from '@prisma/client';
 
-export type CreatePortalSessionInput = {
-  sessionId: string;
+import { ID } from '@/persistance/types';
+
+export type CheckoutWithStripeInput = {
+  lookupKey: string;
+  plan: SubscriptionPlan;
+  userId: ID;
 };
