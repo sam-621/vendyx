@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
+import { CreateCheckoutSessionInput, CreatePortalSessionInput } from '@/api/subscription';
+
 @Injectable()
 export class SubscriptionService {
   stripe: Stripe;
@@ -9,7 +11,7 @@ export class SubscriptionService {
     this.stripe = new Stripe(this.configService.get('STRIPE_SECRET_KEY') ?? '');
   }
 
-  async createCheckoutSession(input: { lookupKey: string }) {
+  async createCheckoutSession(input: CreateCheckoutSessionInput) {
     const prices = await this.stripe.prices.list({
       lookup_keys: [input.lookupKey],
       expand: ['data.product']
@@ -36,10 +38,7 @@ export class SubscriptionService {
     };
   }
 
-  async createPortalSession({ sessionId }: { sessionId: string }) {
-    // For demonstration purposes, we're using the Checkout session to retrieve the customer ID.
-    // Typically this is stored alongside the authenticated user in your database.
-
+  async createPortalSession({ sessionId }: CreatePortalSessionInput) {
     const checkoutSession = await this.stripe.checkout.sessions.retrieve(sessionId);
 
     const portalSession = await this.stripe.billingPortal.sessions.create({
@@ -53,19 +52,7 @@ export class SubscriptionService {
   }
 
   async webhook(event: any, signature: string) {
-    // console.log({
-    //   event,
-    //   signature
-    // });
-
-    // Replace this endpoint secret with your endpoint's unique secret
-    // If you are testing with the CLI, find the secret by running 'stripe listen'
-    // If you are using an endpoint defined with the API or dashboard, look in your webhook settings
-    // at https://dashboard.stripe.com/webhooks
     const endpointSecret = this.configService.get('STRIPE_WEBHOOK_SIGNING_SECRET');
-    // console.log({
-    //   endpointSecret
-    // });
 
     // Only verify the event if you have an endpoint secret defined.
     // Otherwise use the basic event deserialized with JSON.parse
