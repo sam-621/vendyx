@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { SubscriptionPlan, SubscriptionStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
 import { CheckoutWithStripeInput } from '@/api/subscription';
@@ -43,74 +44,40 @@ export class SubscriptionService {
         console.log(`⚠️  Webhook signature verification failed.`, err.message);
       }
     }
-    let subscription;
-    let status;
+    const stripeEvent = event as Stripe.Event;
 
     // Handle the event
-    switch (event.type) {
-      case 'customer.subscription.trial_will_end':
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        // Then define and call a method to handle the subscription trial ending.
-        // handleSubscriptionTrialEnding(subscription);
-        break;
-      case 'customer.subscription.deleted':
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        // Then define and call a method to handle the subscription deleted.
-        // handleSubscriptionDeleted(subscriptionDeleted);
-        break;
-      case 'customer.subscription.created':
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        console.log({
-          dataSubCreated: subscription
-        });
-
-        // Then define and call a method to handle the subscription created.
-        // handleSubscriptionCreated(subscription);
-        break;
+    switch (stripeEvent.type) {
+      // case 'customer.subscription.trial_will_end':
+      //   subscription = event.data.object;
+      //   status = subscription.status;
+      //   console.log(`Subscription status is ${status}.`);
+      //   // Then define and call a method to handle the subscription trial ending.
+      //   // handleSubscriptionTrialEnding(subscription);
+      //   break;
       case 'customer.subscription.updated':
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        console.log({
-          dataSubUpdated: subscription
+      case 'customer.subscription.created':
+      case 'customer.subscription.deleted':
+        const subscription = stripeEvent.data.object as Stripe.Subscription;
+        await this.manageSubscriptionStatusChange({
+          stripeCustomerId: subscription.customer as string,
+          subscriptionId: subscription.id
         });
-        // Then define and call a method to handle the subscription update.
-        // handleSubscriptionUpdated(subscription);
-        break;
-      case 'entitlements.active_entitlement_summary.updated':
-        subscription = event.data.object;
-        console.log(`Active entitlement summary updated for ${subscription}.`);
-        console.log({
-          data: subscription
-        });
-        // Then define and call a method to handle active entitlement summary updated
-        // handleEntitlementUpdated(subscription);
-        break;
+      // case 'entitlements.active_entitlement_summary.updated':
+      //   subscription = event.data.object;
+      //   console.log(`Active entitlement summary updated for ${subscription}.`);
+      //   console.log({
+      //     data: subscription
+      //   });
+      //   // Then define and call a method to handle active entitlement summary updated
+      //   // handleEntitlementUpdated(subscription);
+      //   break;
       default:
         // Unexpected event type
         console.log(`Unhandled event type ${event.type}.`);
     }
     // Return a 200 response to acknowledge receipt of the event
     return { received: true };
-  }
-
-  private async createPortalSession({ sessionId }: CreatePortalSessionInput) {
-    const checkoutSession = await this.stripe.checkout.sessions.retrieve(sessionId);
-
-    const portalSession = await this.stripe.billingPortal.sessions.create({
-      customer: checkoutSession.customer as string,
-      return_url: `${this.configService.get('CLIENT_DOMAIN')}/account`
-    });
-
-    return {
-      data: portalSession
-    };
   }
 
   private async createCheckoutSession(input: CreateCheckoutSessionInput) {
@@ -138,6 +105,19 @@ export class SubscriptionService {
 
     return {
       sessionId: session.id
+    };
+  }
+
+  private async createPortalSession({ sessionId }: CreatePortalSessionInput) {
+    const checkoutSession = await this.stripe.checkout.sessions.retrieve(sessionId);
+
+    const portalSession = await this.stripe.billingPortal.sessions.create({
+      customer: checkoutSession.customer as string,
+      return_url: `${this.configService.get('CLIENT_DOMAIN')}/account`
+    });
+
+    return {
+      data: portalSession
     };
   }
 
@@ -179,6 +159,52 @@ export class SubscriptionService {
       stripeCustomerId
     };
   }
+
+  private async manageSubscriptionStatusChange(input: ManageSubscriptionStatusChangeInput) {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: { stripeCustomerId: input.stripeCustomerId },
+      include: { subscription: true }
+    });
+
+    const stripeSubscription = await this.stripe.subscriptions.retrieve(input.subscriptionId);
+
+    await this.prisma.subscription.upsert({
+      where: { id: user.subscription?.id },
+      create: {
+        status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
+        plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
+        currentPeriodStart: new Date(stripeSubscription.current_period_start),
+        currentPeriodEnd: new Date(stripeSubscription.current_period_end)
+      },
+      update: {
+        status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
+        plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
+        currentPeriodStart: new Date(stripeSubscription.current_period_start),
+        currentPeriodEnd: new Date(stripeSubscription.current_period_end)
+      }
+    });
+  }
+
+  private parseStripeSubscriptionStatus(status: Stripe.Subscription.Status) {
+    switch (status) {
+      case 'active':
+        return SubscriptionStatus.ACTIVE;
+      case 'canceled':
+        return SubscriptionStatus.CANCELED;
+      case 'incomplete':
+        return SubscriptionStatus.INCOMPLETE;
+      case 'incomplete_expired':
+        return SubscriptionStatus.INCOMPLETE_EXPIRED;
+      case 'past_due':
+        return SubscriptionStatus.PAST_DUE;
+      case 'trialing':
+        return SubscriptionStatus.TRIALING;
+      case 'unpaid':
+        return SubscriptionStatus.UNPAID;
+      default:
+        return SubscriptionStatus.CANCELED;
+    }
+  }
 }
 
 type CreateCheckoutSessionInput = {
@@ -188,4 +214,9 @@ type CreateCheckoutSessionInput = {
 
 export type CreatePortalSessionInput = {
   sessionId: string;
+};
+
+type ManageSubscriptionStatusChangeInput = {
+  subscriptionId: string;
+  stripeCustomerId: string;
 };
