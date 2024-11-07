@@ -25,4 +25,4 @@ import { uploadController } from './upload.controller';
   ],
   controllers: [uploadController]
 })
-export class UploadModule {}
+export class UploadApiModule {}

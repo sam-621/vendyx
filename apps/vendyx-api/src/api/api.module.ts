@@ -3,11 +3,11 @@ import { Module } from '@nestjs/common';
 import { AdminApiModule } from './admin/admin-api.module';
 import { ShopApiModule } from './shop/shop-api.module';
 import { SubscriptionApiModule } from './subscription';
-import { UploadModule } from './upload';
+import { UploadApiModule } from './upload';
 
 @Module({
   imports: [
-    UploadModule,
+    UploadApiModule,
     SubscriptionApiModule,
     AdminApiModule.register(),
     ShopApiModule.register()

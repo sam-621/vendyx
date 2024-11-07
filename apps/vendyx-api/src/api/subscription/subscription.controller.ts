@@ -2,7 +2,7 @@ import { Body, Controller, Headers, Post, RawBodyRequest, Req } from '@nestjs/co
 
 import { SubscriptionService } from '@/business/subscription';
 
-import { CheckoutWithStripeInput } from './subscription-api.types';
+import { CheckoutWithStripeInput } from './subscription.types';
 
 @Controller('/subscription')
 export class SubscriptionController {

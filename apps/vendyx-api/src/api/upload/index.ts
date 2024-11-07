@@ -1,1 +1,1 @@
-export * from './upload.module';
+export * from './upload-api.module';
