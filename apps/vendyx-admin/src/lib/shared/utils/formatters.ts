@@ -30,9 +30,18 @@ export const formatDate = (date: Date) => {
  * getFormattedPrice('$1,234.56') // 123456
  */
 export const parsePrice = (price: string) => {
+  console.log({
+    price
+  });
+
   const parsedPrice = price;
 
   const decimals = Number(price.split('.')[1]);
+
+  console.log({
+    decimals,
+    parsedPrice
+  });
 
   if (!decimals) {
     // if decimals are zero, remove them and remove all non-numeric characters (, . $)
