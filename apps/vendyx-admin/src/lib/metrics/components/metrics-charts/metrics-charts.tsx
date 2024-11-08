@@ -1,14 +1,19 @@
 import { type FC } from 'react';
 
 import { type MetricRange } from '@/api/scalars';
-import { type CommonMetricsResultFragment } from '@/api/types';
+import { MetricsService } from '@/api/services';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/lib/shared/components';
 
 import { TotalOrdersCard } from '../total-orders';
 import { TotalSalesCard } from '../total-sales';
 import { MetricsChartsDateRange } from './metrics-charts-date-range';
 
-export const MetricsCharts: FC<Props> = ({ range, totalSales, totalOrders }) => {
+export const MetricsCharts: FC<Props> = async ({ range }) => {
+  const [totalSales, totalOrders] = await Promise.all([
+    MetricsService.getTotalSales(range),
+    MetricsService.getTotalOrders(range)
+  ]);
+
   return (
     <Tabs defaultValue="sales" className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
@@ -33,6 +38,4 @@ export const MetricsCharts: FC<Props> = ({ range, totalSales, totalOrders }) => 
 
 type Props = {
   range: MetricRange;
-  totalSales: CommonMetricsResultFragment;
-  totalOrders: CommonMetricsResultFragment;
 };

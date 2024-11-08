@@ -1,8 +1,9 @@
+import { Suspense } from 'react';
+
 import { type MetricRange } from '@/api/scalars';
-import { MetricsService } from '@/api/services';
 import { MetricsCharts } from '@/lib/metrics/components';
 import { getDefaultDateRange } from '@/lib/metrics/utils';
-import { AdminPageLayout } from '@/lib/shared/components';
+import { AdminPageLayout, MetricsSkeleton } from '@/lib/shared/components';
 
 export default async function Home({ searchParams }: { searchParams: MetricRange }) {
   const isRangeInSearchParams = searchParams.startsAt && searchParams.endsAt;
@@ -11,16 +12,13 @@ export default async function Home({ searchParams }: { searchParams: MetricRange
     ? { startsAt: new Date(searchParams.startsAt), endsAt: new Date(searchParams.endsAt) }
     : getDefaultDateRange();
 
-  const [totalSales, totalOrders] = await Promise.all([
-    MetricsService.getTotalSales(range),
-    MetricsService.getTotalOrders(range)
-  ]);
-
   return (
     <AdminPageLayout title="Dashboard">
       <div className="flex flex-col gap-8">
         <main>
-          <MetricsCharts range={range} totalSales={totalSales} totalOrders={totalOrders} />
+          <Suspense fallback={<MetricsSkeleton />}>
+            <MetricsCharts range={range} />
+          </Suspense>
         </main>
         {/* <div className="flex flex-col gap-4">
           <div className="flex items-center">
