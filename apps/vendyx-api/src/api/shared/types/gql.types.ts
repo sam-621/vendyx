@@ -30,6 +30,23 @@ export enum OrderErrorCode {
     FORBIDDEN_ORDER_ACTION = "FORBIDDEN_ORDER_ACTION"
 }
 
+export enum SubscriptionStatus {
+    INCOMPLETE = "INCOMPLETE",
+    INCOMPLETE_EXPIRED = "INCOMPLETE_EXPIRED",
+    TRIALING = "TRIALING",
+    ACTIVE = "ACTIVE",
+    PAST_DUE = "PAST_DUE",
+    CANCELED = "CANCELED",
+    UNPAID = "UNPAID",
+    PAUSED = "PAUSED"
+}
+
+export enum SubscriptionPlan {
+    BASIC = "BASIC",
+    ESSENTIAL = "ESSENTIAL",
+    ENTERPRISE = "ENTERPRISE"
+}
+
 export enum UserErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
@@ -180,6 +197,11 @@ export class CreateShopInput {
 
 export class UpdateShopInput {
     name?: Nullable<string>;
+}
+
+export class CreateCheckoutSessionInput {
+    lookupKey: string;
+    userId: string;
 }
 
 export class CreateUserInput {
@@ -420,6 +442,8 @@ export abstract class IMutation {
 
     abstract createShop(input: CreateShopInput): Shop | Promise<Shop>;
 
+    abstract createCheckoutSession(input: CreateCheckoutSessionInput): CheckoutSession | Promise<CheckoutSession>;
+
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
 
     abstract updateUser(id: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
@@ -569,12 +593,27 @@ export class ShopList implements List {
     pageInfo: PageInfo;
 }
 
+export class UserSubscription implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    status: SubscriptionStatus;
+    plan: SubscriptionPlan;
+    currentPeriodStart: Date;
+    currentPeriodEnd: Date;
+}
+
+export class CheckoutSession {
+    sessionId: string;
+}
+
 export class User implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
     email: string;
     shops: ShopList;
+    subscription?: Nullable<UserSubscription>;
 }
 
 export class UserList implements List {

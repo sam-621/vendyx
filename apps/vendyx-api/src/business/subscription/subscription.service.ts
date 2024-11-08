@@ -1,26 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SubscriptionPlan, SubscriptionStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
-import { CheckoutWithStripeInput } from '@/api/subscription';
-import { PrismaForShop } from '@/persistance/prisma-clients';
+import { CreateCheckoutSessionInput } from '@/api/shared';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 import { ID } from '@/persistance/types';
 
 @Injectable()
 export class SubscriptionService {
-  stripe: Stripe;
+  private readonly stripe: Stripe;
+
   constructor(
     private readonly configService: ConfigService,
-    private readonly prisma: PrismaForShop
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {
     this.stripe = new Stripe(this.configService.get('STRIPE_SECRET_KEY') ?? '');
   }
 
-  async checkoutWithStripe(input: CheckoutWithStripeInput) {
+  async createCheckoutSession(input: CreateCheckoutSessionInput) {
     const { stripeCustomerId } = await this.findOrCreateStripeCustomer(input.userId);
 
-    const { sessionId } = await this.createCheckoutSession({
+    const { sessionId } = await this.createCheckoutSessionWithStripe({
       lookupKey: input.lookupKey,
       stripeCustomerId
     });
@@ -80,7 +81,7 @@ export class SubscriptionService {
     return { received: true };
   }
 
-  private async createCheckoutSession(input: CreateCheckoutSessionInput) {
+  private async createCheckoutSessionWithStripe(input: CreateCheckoutSessionInputWithStripe) {
     const prices = await this.stripe.prices.list({
       lookup_keys: [input.lookupKey],
       expand: ['data.product']
@@ -207,7 +208,7 @@ export class SubscriptionService {
   }
 }
 
-type CreateCheckoutSessionInput = {
+type CreateCheckoutSessionInputWithStripe = {
   lookupKey: string;
   stripeCustomerId: string;
 };

@@ -11,6 +11,8 @@ type User implements Node {
   The user's shops
   """
   shops: ShopList!
+
+  subscription: UserSubscription
 }
 
 type UserList implements List {
