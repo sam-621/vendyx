@@ -19,12 +19,12 @@ export const ProductSubmitButton: FC<Props> = ({ product, size = 'default' }) =>
   const hasChanged = product ? valuesHasChanged(values, product) : true; // is creating a new product;
   const withRequiredValues = Boolean(values.name?.length);
 
-  console.log({
-    values,
-    isLoading,
-    hasChanged,
-    withRequiredValues
-  });
+  // console.log({
+  //   values,
+  //   isLoading,
+  //   hasChanged,
+  //   withRequiredValues
+  // });
 
   return (
     <Button
@@ -62,14 +62,14 @@ export const valuesHasChanged = (
   const { variants, options, ..._values } = values;
   const { variants: defaultVariants, options: defaultOptions, ..._defaultValues } = defaultForm;
 
-  console.log({
-    _values,
-    _defaultValues,
-    options,
-    defaultOptions,
-    variants,
-    defaultVariants
-  });
+  // console.log({
+  //   _values,
+  //   _defaultValues,
+  //   options,
+  //   defaultOptions,
+  //   variants,
+  //   defaultVariants
+  // });
 
   const formValuesHasChanged = Object.keys(_values).some(
     key => (_values as any)[key] !== (_defaultValues as any)[key]
@@ -91,6 +91,11 @@ const getVariantsHasChanged = (
   variants: DeepPartial<ProductDetailsFormInput['variants']> | undefined,
   defaultVariants: ProductDetailsFormInput['variants']
 ) => {
+  console.log({
+    variants,
+    defaultVariants
+  });
+
   return variants?.some(v => {
     if (!v) return false;
 
@@ -104,6 +109,19 @@ const getVariantsHasChanged = (
       sku: sku ?? null,
       requiresShipping
     };
+
+    console.log({
+      inMemoryVariant,
+      persistedVariant
+    });
+
+    console.log({
+      '1': inMemoryVariant.salePrice !== persistedVariant?.salePrice,
+      '2': inMemoryVariant.stock !== persistedVariant?.stock,
+      '3': inMemoryVariant.comparisonPrice !== persistedVariant?.comparisonPrice,
+      '4': inMemoryVariant.requiresShipping !== persistedVariant?.requiresShipping,
+      '5': inMemoryVariant.sku !== persistedVariant?.sku
+    });
 
     return (
       inMemoryVariant.salePrice !== persistedVariant?.salePrice ||
