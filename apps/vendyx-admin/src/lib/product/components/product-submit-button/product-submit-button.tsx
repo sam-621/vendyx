@@ -103,9 +103,9 @@ const getVariantsHasChanged = (
     const { salePrice, stock, comparisonPrice, requiresShipping, sku } = v;
 
     const inMemoryVariant = {
-      salePrice: (salePrice ?? 0) * 100,
+      salePrice,
       stock,
-      comparisonPrice: comparisonPrice ? comparisonPrice * 100 : null,
+      comparisonPrice,
       sku: sku ?? null,
       requiresShipping
     };
