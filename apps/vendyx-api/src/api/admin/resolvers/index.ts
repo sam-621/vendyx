@@ -11,3 +11,4 @@ export * from './state.resolver';
 export * from './order.resolver';
 export * from './customer.resolver';
 export * from './metrics.resolver';
+export * from './subscription.resolver';

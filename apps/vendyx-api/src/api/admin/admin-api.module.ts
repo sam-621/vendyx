@@ -16,6 +16,7 @@ import {
   ShippingMethodResolver,
   ShopResolver,
   StateResolver,
+  SubscriptionResolver,
   UserResolver,
   VariantResolver,
   ZoneResolver
@@ -55,7 +56,8 @@ export class AdminApiModule {
     StateResolver,
     OrderResolver,
     CustomerResolver,
-    MetricsResolver
+    MetricsResolver,
+    SubscriptionResolver
   ]
 })
 class AdminModule {}
