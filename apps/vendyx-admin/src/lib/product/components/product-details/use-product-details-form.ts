@@ -93,6 +93,9 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
 
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
+    console.log({
+      values
+    });
 
     startTransition(async () => {
       if (product?.id) {
