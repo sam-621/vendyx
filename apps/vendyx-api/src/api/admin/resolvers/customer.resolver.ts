@@ -1,6 +1,6 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Customer } from '@prisma/client';
+import { Customer, OrderState } from '@prisma/client';
 
 import {
   CustomerListInput,
@@ -47,7 +47,10 @@ export class CustomerResolver {
   async totalSpent(@Parent() customer: Customer) {
     const aggregation = await this.prisma.order.groupBy({
       by: ['customerId'],
-      where: { customerId: customer.id },
+      where: {
+        customerId: customer.id,
+        state: { notIn: [OrderState.MODIFYING, OrderState.CANCELED] }
+      },
       _sum: { total: true }
     });
 

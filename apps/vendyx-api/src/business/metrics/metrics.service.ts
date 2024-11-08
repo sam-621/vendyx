@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { OrderState } from '@prisma/client';
 import { differenceInDays, format, startOfMonth, startOfWeek } from 'date-fns';
 
 import { MetricsInput } from '@/api/shared';
@@ -14,7 +15,8 @@ export class MetricsService {
         createdAt: {
           gte: new Date(input.startsAt),
           lte: new Date(input.endsAt)
-        }
+        },
+        state: { notIn: [OrderState.MODIFYING, OrderState.CANCELED] }
       },
       _sum: {
         total: true
@@ -29,12 +31,13 @@ export class MetricsService {
     const endsAt = new Date(input.endsAt);
 
     const result = await this.prisma.order.groupBy({
-      by: ['createdAt', 'total'],
+      by: ['createdAt', 'total', 'state'],
       having: {
         createdAt: {
           gte: startsAt,
           lte: endsAt
-        }
+        },
+        state: { notIn: [OrderState.MODIFYING, OrderState.CANCELED] }
       },
       orderBy: {
         createdAt: 'asc'
@@ -62,7 +65,8 @@ export class MetricsService {
         createdAt: {
           gte: new Date(input.startsAt),
           lte: new Date(input.endsAt)
-        }
+        },
+        state: { notIn: [OrderState.MODIFYING, OrderState.CANCELED] }
       }
     });
 
@@ -77,7 +81,7 @@ export class MetricsService {
     const endsAt = new Date(input.endsAt);
 
     const result = await this.prisma.order.groupBy({
-      by: ['createdAt'],
+      by: ['createdAt', 'state'],
       _count: {
         _all: true
       },
@@ -85,7 +89,8 @@ export class MetricsService {
         createdAt: {
           gte: startsAt,
           lte: endsAt
-        }
+        },
+        state: { notIn: [OrderState.MODIFYING, OrderState.CANCELED] }
       },
       orderBy: {
         createdAt: 'asc'

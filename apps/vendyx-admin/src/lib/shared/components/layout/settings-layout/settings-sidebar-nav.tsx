@@ -15,9 +15,9 @@ export const SettingsSidebarNav = () => {
 
   const [isInPayments, isInShipments, isInShopDetails] = useMemo(
     () => [
-      pathname.includes('/settings/shop-details'),
       pathname.includes('/settings/payments'),
-      pathname.includes('/settings/shipments')
+      pathname.includes('/settings/shipments'),
+      pathname.includes('/settings/shop-details')
     ],
     [pathname]
   );
