@@ -16,8 +16,8 @@ export class ProductResolver {
   @Query('products')
   async products(@Args('input') input: ListInput) {
     const [result, total] = await Promise.all([
-      this.productService.find(input),
-      this.productService.count()
+      this.productService.find({ ...input, filters: { enabled: { equals: true } } }),
+      this.productService.count({ ...input, filters: { enabled: { equals: true } } })
     ]);
 
     return new ListResponse(result, result.length, { total });

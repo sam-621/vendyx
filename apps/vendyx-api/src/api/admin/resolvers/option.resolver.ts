@@ -1,7 +1,7 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { CreateOptionInput, Option, UpdateOptionInput, UserJwtAuthGuard } from '@/api/shared';
+import { CreateOptionInput, UpdateOptionInput, UserJwtAuthGuard } from '@/api/shared';
 import { OptionService } from '@/business/option';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
@@ -34,13 +34,5 @@ export class OptionResolver {
   @Mutation('softRemoveOptionValues')
   async softRemoveOptionValues(@Args('ids') ids: string[]) {
     return this.service.softRemoveValues(ids);
-  }
-
-  @ResolveField('values')
-  values(@Parent() option: Option) {
-    return this.prisma.optionValue.findMany({
-      where: { optionId: option.id },
-      orderBy: { order: 'asc' }
-    });
   }
 }
