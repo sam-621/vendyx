@@ -1,6 +1,6 @@
 'use client';
 
-import { BoxesIcon, PackageIcon, SettingsIcon, ShoppingCartIcon, UserIcon } from 'lucide-react';
+import { PackageIcon, SettingsIcon, ShoppingCartIcon, UserIcon } from 'lucide-react';
 import { useParams, usePathname } from 'next/navigation';
 
 import { AdminSidebarNavItem } from './admin-sidebar-nav-item';
@@ -12,7 +12,7 @@ export const AdminLayoutNav = () => {
   const shop = Array.isArray(params.shop) ? params.shop[0] : params.shop;
 
   const isInProducts = pathname.includes('/products');
-  const isInCollections = pathname.includes('/collections');
+  // const isInCollections = pathname.includes('/collections');
   const isInOrders = pathname.includes('/orders');
   const isInCustomers = pathname.includes('/customers');
   const isInSettings = pathname.includes('/settings');
@@ -24,12 +24,12 @@ export const AdminLayoutNav = () => {
       label: 'Products',
       isActive: isInProducts
     },
-    {
-      icon: BoxesIcon,
-      to: `/shops/${shop}/collections`,
-      label: 'Collections',
-      isActive: isInCollections
-    },
+    // {
+    //   icon: BoxesIcon,
+    //   to: `/shops/${shop}/collections`,
+    //   label: 'Collections',
+    //   isActive: isInCollections
+    // },
     {
       icon: ShoppingCartIcon,
       to: `/shops/${shop}/orders`,
