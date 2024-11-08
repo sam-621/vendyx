@@ -78,6 +78,12 @@ export const valuesHasChanged = (
   const optionsHasChanged = getOptionsHasChanged(options, defaultOptions);
   const variantsHasChanged = getVariantsHasChanged(variants, defaultVariants);
 
+  console.log({
+    optionsHasChanged,
+    variantsHasChanged,
+    formValuesHasChanged
+  });
+
   return formValuesHasChanged || optionsHasChanged || variantsHasChanged;
 };
 
