@@ -10,11 +10,8 @@ export class AuthService {
 
   generateShopApiKey() {
     const rawApiKey = crypto.randomBytes(48).toString('hex');
-    console.log({
-      rawApiKey
-    });
 
-    return this.hash(rawApiKey);
+    return rawApiKey;
   }
 
   async generateToken<TPayload extends object>(payload: TPayload) {

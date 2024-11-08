@@ -27,7 +27,7 @@ export class ShopService {
 
   async create(input: CreateShopInput) {
     const slug = await this.validateAndParseSlug(input.name);
-    const shopApiKey = await this.authService.generateShopApiKey();
+    const shopApiKey = this.authService.generateShopApiKey();
 
     return this.shopRepository.insert({
       name: input.name,
@@ -46,7 +46,7 @@ export class ShopService {
       };
     }
 
-    const isValidApiKey = await this.authService.compare(shopApiKey, shop.shopApiKey);
+    const isValidApiKey = shopApiKey === shop.shopApiKey;
 
     return {
       isValid: isValidApiKey,
