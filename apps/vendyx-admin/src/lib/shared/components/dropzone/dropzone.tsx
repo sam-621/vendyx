@@ -8,7 +8,7 @@ import { UploadIcon } from 'lucide-react';
 import { cn } from '../../utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui';
 
-export const Dropzone: FC<Props> = ({ size, disabled, onAcceptFiles }) => {
+export const Dropzone: FC<Props> = ({ size, disabled, disabledMessage, onAcceptFiles }) => {
   const { getRootProps, getInputProps } = useDropzone({
     onDropAccepted(files) {
       onAcceptFiles(files);
@@ -31,7 +31,7 @@ export const Dropzone: FC<Props> = ({ size, disabled, onAcceptFiles }) => {
             </div>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Create variant before adding a photo</p>
+            <p>{disabledMessage}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -57,6 +57,7 @@ export const Dropzone: FC<Props> = ({ size, disabled, onAcceptFiles }) => {
 type Props = {
   size: 'sm' | 'md' | 'lg';
   disabled?: boolean;
+  disabledMessage?: string;
   onAcceptFiles: (files: File[]) => void;
 };
 

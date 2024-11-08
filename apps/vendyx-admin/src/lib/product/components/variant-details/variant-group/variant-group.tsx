@@ -9,6 +9,7 @@ import {
   Checkbox,
   Input
 } from '@/lib/shared/components';
+import { isUUID } from '@/lib/shared/utils';
 
 import {
   useRemoveAssetVariant,
@@ -27,6 +28,7 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
   if (!variants.length) return null;
 
   const totalStock = variants.reduce((acc, variant) => acc + variant.stock, 0);
+  const thereAreNewVariants = variants.some(v => !isUUID(v.id));
 
   return (
     <Accordion type="single" collapsible className="w-full pt-3">
@@ -50,6 +52,7 @@ export const VariantGroup: FC<Props> = ({ variants, groupName }) => {
             <VariantAssetUploader
               isLoading={isLoading || removeLoading}
               size="md"
+              disabled={thereAreNewVariants} // can upload images only when all variants are saved
               image={groupImage}
               onRemove={() => {
                 removeVariantImage(variants.map(v => v.id));

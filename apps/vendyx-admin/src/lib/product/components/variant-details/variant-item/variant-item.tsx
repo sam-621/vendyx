@@ -2,7 +2,7 @@ import { type FC } from 'react';
 
 import { useVariantContext, type VariantContext } from '@/lib/product/contexts';
 import { Checkbox, Input } from '@/lib/shared/components';
-import { cn } from '@/lib/shared/utils';
+import { cn, isUUID } from '@/lib/shared/utils';
 
 import {
   useRemoveAssetVariant,
@@ -27,6 +27,8 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
         .join('/')
     : variant.values.map(v => v.name).join(' / ');
 
+  const isPersistedVariant = isUUID(variant.id);
+
   return (
     <div className="flex items-center px-6 py-4 hover:bg-muted/50">
       <div className={cn('flex items-center gap-4 w-full', inGroup && 'pl-8')}>
@@ -41,6 +43,7 @@ export const VariantItem: FC<Props> = ({ variant, groupName }) => {
         <VariantAssetUploader
           isLoading={isLoading || removeLoading}
           size={inGroup ? 'sm' : 'md'}
+          disabled={!isPersistedVariant} // can upload images only when the variant is saved
           image={variantImage}
           onRemove={() => {
             removeVariantImage([variant.id]);

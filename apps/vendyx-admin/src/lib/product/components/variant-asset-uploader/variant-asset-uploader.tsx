@@ -7,7 +7,14 @@ import { cn } from '@/lib/shared/utils';
 
 import { useVariantContext } from '../../contexts';
 
-export const VariantAssetUploader: FC<Props> = ({ image, onRemove, onUpload, size, isLoading }) => {
+export const VariantAssetUploader: FC<Props> = ({
+  image,
+  onRemove,
+  onUpload,
+  size,
+  isLoading,
+  disabled
+}) => {
   const { variants, product } = useVariantContext();
   const [file, setFile] = useState<File | null>(null);
 
@@ -51,7 +58,8 @@ export const VariantAssetUploader: FC<Props> = ({ image, onRemove, onUpload, siz
 
   return (
     <Dropzone
-      disabled={!product}
+      disabled={!product || disabled}
+      disabledMessage="Create variant before adding a photo"
       size={size}
       onAcceptFiles={files => {
         const file = files[0];
@@ -76,6 +84,7 @@ const getSize = (size: Size) => {
 type Props = {
   image?: string;
   size: Size;
+  disabled?: boolean;
   onRemove: () => void;
   onUpload: (file: File) => void;
   isLoading?: boolean;

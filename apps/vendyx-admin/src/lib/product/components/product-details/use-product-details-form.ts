@@ -30,16 +30,18 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
       requiresShipping: defaultVariant?.requiresShipping ?? false,
       enabled: product?.enabled ?? true,
       variants:
-        product?.variants.items.map(variant => ({
-          id: variant.id,
-          salePrice: variant.salePrice,
-          comparisonPrice: variant.comparisonPrice ?? undefined,
-          costPerUnit: variant.costPerUnit,
-          stock: variant.stock,
-          sku: variant.sku ?? '',
-          requiresShipping: variant.requiresShipping,
-          optionValues: variant.optionValues
-        })) ?? [],
+        product?.variants.items
+          .map(variant => ({
+            id: variant.id,
+            salePrice: variant.salePrice,
+            comparisonPrice: variant.comparisonPrice ?? undefined,
+            costPerUnit: variant.costPerUnit,
+            stock: variant.stock,
+            sku: variant.sku ?? '',
+            requiresShipping: variant.requiresShipping,
+            optionValues: variant.optionValues
+          }))
+          .filter(v => v.optionValues.length) ?? [],
       options:
         product?.options.map(option => ({
           id: option.id,
@@ -66,16 +68,18 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
         requiresShipping: defaultVariant?.requiresShipping ?? false,
         enabled: product?.enabled ?? true,
         variants:
-          product?.variants.items.map(variant => ({
-            id: variant.id,
-            salePrice: variant.salePrice,
-            comparisonPrice: variant.comparisonPrice ?? undefined,
-            costPerUnit: variant.costPerUnit,
-            stock: variant.stock,
-            sku: variant.sku ?? '',
-            requiresShipping: variant.requiresShipping,
-            optionValues: variant.optionValues
-          })) ?? [],
+          product?.variants.items
+            .map(variant => ({
+              id: variant.id,
+              salePrice: variant.salePrice,
+              comparisonPrice: variant.comparisonPrice ?? undefined,
+              costPerUnit: variant.costPerUnit,
+              stock: variant.stock,
+              sku: variant.sku ?? '',
+              requiresShipping: variant.requiresShipping,
+              optionValues: variant.optionValues
+            }))
+            .filter(v => v.optionValues.length) ?? [],
         options:
           product?.options.map(option => ({
             id: option.id,
@@ -93,9 +97,6 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
 
   async function onSubmit(values: ProductDetailsFormInput) {
     const { variants, options } = values;
-    console.log({
-      values
-    });
 
     startTransition(async () => {
       if (product?.id) {
