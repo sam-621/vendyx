@@ -2,6 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
+import { type ID } from '@/api/scalars';
 import { OptionService, ProductService, VariantService } from '@/api/services';
 import { isUUID } from '@/lib/shared/utils';
 
@@ -12,6 +13,10 @@ export const updateProduct = async (productId: string, input: UpdateProductInput
 
   const optionsToCreate = input.options?.filter(o => !isUUID(o.id));
   const optionsToUpdate = input.options?.filter(o => isUUID(o.id));
+
+  if (optionsToCreate?.length && input.defaultVariant) {
+    await VariantService.remove(input.defaultVariant);
+  }
 
   const optionsUpdated = await updateOptions(optionsToUpdate);
   const optionsCreated = await createOptions(productId, optionsToCreate);
@@ -152,4 +157,10 @@ type UpdateProductInput = {
   }[];
   variantsToRemove: string[];
   optionsToRemove: string[];
+  /**
+   * Indicates that the product has a default variant
+   * Used to determine if the default variant needs to be removed
+   * If present, and options are present too, the default variant will be removed
+   */
+  defaultVariant: ID | null;
 };

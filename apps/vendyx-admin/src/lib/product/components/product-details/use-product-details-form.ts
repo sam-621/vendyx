@@ -100,11 +100,14 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
 
     startTransition(async () => {
       if (product?.id) {
+        const productHasDefaultVariant = product.variants.items[0].optionValues.length === 0;
+
         await updateProduct(product.id, {
           name: values.name,
           description: values.description,
           enabled: values.enabled,
           options,
+          defaultVariant: productHasDefaultVariant ? product.variants.items[0].id : null,
           variants: variants.length
             ? variants
             : [
