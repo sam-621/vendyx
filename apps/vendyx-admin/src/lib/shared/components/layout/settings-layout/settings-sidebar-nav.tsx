@@ -1,6 +1,8 @@
 'use client';
 
-import { CreditCardIcon, TruckIcon } from 'lucide-react';
+import { useMemo } from 'react';
+
+import { CreditCardIcon, StoreIcon, TruckIcon } from 'lucide-react';
 import { useParams, usePathname } from 'next/navigation';
 
 import { LayoutSidebarItem } from '../layout-sidebar-item';
@@ -11,10 +13,22 @@ export const SettingsSidebarNav = () => {
 
   const shop = Array.isArray(params.shop) ? params.shop[0] : params.shop;
 
-  const isInPayments = pathname.includes('/settings/payments');
-  const isInShipments = pathname.includes('/settings/shipments');
+  const [isInPayments, isInShipments, isInShopDetails] = useMemo(
+    () => [
+      pathname.includes('/settings/shop-details'),
+      pathname.includes('/settings/payments'),
+      pathname.includes('/settings/shipments')
+    ],
+    [pathname]
+  );
 
   const SIDEBAR_ITEMS = [
+    {
+      icon: StoreIcon,
+      to: `/shops/${shop}/settings/shop-details`,
+      label: 'Shop Details',
+      isActive: isInShopDetails
+    },
     {
       icon: CreditCardIcon,
       to: `/shops/${shop}/settings/payments`,
