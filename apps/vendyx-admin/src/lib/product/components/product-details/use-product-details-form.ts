@@ -33,8 +33,8 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
         product?.variants.items
           .map(variant => ({
             id: variant.id,
-            salePrice: variant.salePrice,
-            comparisonPrice: variant.comparisonPrice ?? undefined,
+            salePrice: variant.salePrice / 100,
+            comparisonPrice: variant.comparisonPrice ? variant.comparisonPrice / 100 : undefined,
             costPerUnit: variant.costPerUnit,
             stock: variant.stock,
             sku: variant.sku ?? '',
@@ -71,8 +71,8 @@ export const useProductDetailsForm = (product?: CommonProductFragment) => {
           product?.variants.items
             .map(variant => ({
               id: variant.id,
-              salePrice: variant.salePrice,
-              comparisonPrice: variant.comparisonPrice ?? undefined,
+              salePrice: variant.salePrice / 100,
+              comparisonPrice: variant.comparisonPrice ? variant.comparisonPrice / 100 : undefined,
               costPerUnit: variant.costPerUnit,
               stock: variant.stock,
               sku: variant.sku ?? '',

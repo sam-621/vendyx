@@ -67,8 +67,14 @@ export const valuesHasChanged = (
 
 const getVariantsHasChanged = (
   variants: DeepPartial<ProductDetailsFormInput['variants']> | undefined,
-  defaultVariants: ProductDetailsFormInput['variants']
+  defaultVariantsProp: ProductDetailsFormInput['variants']
 ) => {
+  const defaultVariants = defaultVariantsProp.map(v => ({
+    ...v,
+    comparisonPrice: v.comparisonPrice ? v.comparisonPrice / 100 : null,
+    salePrice: v.salePrice / 100
+  }));
+
   return variants?.some(v => {
     if (!v) return false;
 
@@ -78,8 +84,8 @@ const getVariantsHasChanged = (
     const inMemoryVariant = {
       salePrice,
       stock,
-      comparisonPrice,
-      sku: sku ?? null,
+      comparisonPrice: comparisonPrice ?? null,
+      sku: sku ?? '',
       requiresShipping
     };
 
