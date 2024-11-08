@@ -9,6 +9,7 @@ export * from './chart';
 export * from './checkbox';
 export * from './dialog';
 export * from './dropdown-menu';
+export * from './hover-card';
 export * from './input';
 export * from './label';
 export * from './popover';
