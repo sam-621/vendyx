@@ -3,7 +3,12 @@
 import { type ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 
-import { Badge, Checkbox, DataTableColumnHeader } from '@/lib/shared/components';
+import {
+  Badge,
+  Checkbox,
+  DataTableColumnHeader,
+  DefaultProductImage
+} from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
 import { type ProductsTableRow } from './product-table';
@@ -36,12 +41,14 @@ export const ProductTableColumns: ColumnDef<ProductsTableRow>[] = [
     cell: ({ row }) => {
       return (
         <Link href={`products/${row.original.id ?? ''}`} className="flex items-center gap-2 w-max">
-          {row.original.image && (
+          {row.original.image ? (
             <img
               src={row.original.image}
               alt={row.getValue('name')}
               className="h-12 w-12 object-cover rounded-md flex-shrink-0"
             />
+          ) : (
+            <DefaultProductImage initial={row.original.name} />
           )}
           <span className="text-nowrap">{row.original.name}</span>
         </Link>

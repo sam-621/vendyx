@@ -1,4 +1,5 @@
 export * from './data-table';
+export * from './defaults';
 export * from './dropzone';
 export * from './empty-states';
 export * from './file-uploader';

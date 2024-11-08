@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  DefaultProductImage,
   OrderStatusBadge,
   Table,
   TableBody,
@@ -44,13 +45,17 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
             {lines.map(line => (
               <TableRow key={line.id}>
                 <TableCell className="flex items-center gap-2 w-max">
-                  <img
-                    src={
-                      line.productVariant.product.assets.items[0]?.source ?? DEFAULT_PRODUCT_IMAGE
-                    }
-                    alt={line.productVariant.product.name}
-                    className="h-12 w-12 object-cover rounded-md"
-                  />
+                  {line.productVariant.product.assets.items[0]?.source ? (
+                    <img
+                      src={
+                        line.productVariant.product.assets.items[0]?.source ?? DEFAULT_PRODUCT_IMAGE
+                      }
+                      alt={line.productVariant.product.name}
+                      className="h-12 w-12 object-cover rounded-md"
+                    />
+                  ) : (
+                    <DefaultProductImage initial={line.productVariant.product.name} />
+                  )}
                   <div
                     className={cn(
                       'flex flex-col justify-between',
