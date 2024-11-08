@@ -19,6 +19,13 @@ export const ProductSubmitButton: FC<Props> = ({ product, size = 'default' }) =>
   const hasChanged = product ? valuesHasChanged(values, product) : true; // is creating a new product;
   const withRequiredValues = Boolean(values.name?.length);
 
+  console.log({
+    values,
+    isLoading,
+    hasChanged,
+    withRequiredValues
+  });
+
   return (
     <Button
       isLoading={isLoading}
@@ -54,6 +61,15 @@ export const valuesHasChanged = (
   };
   const { variants, options, ..._values } = values;
   const { variants: defaultVariants, options: defaultOptions, ..._defaultValues } = defaultForm;
+
+  console.log({
+    _values,
+    _defaultValues,
+    options,
+    defaultOptions,
+    variants,
+    defaultVariants
+  });
 
   const formValuesHasChanged = Object.keys(_values).some(
     key => (_values as any)[key] !== (_defaultValues as any)[key]
