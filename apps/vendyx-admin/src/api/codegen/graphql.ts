@@ -77,6 +77,11 @@ export type BooleanFilter = {
   equals?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type CheckoutSession = {
+  __typename?: 'CheckoutSession';
+  sessionId: Scalars['String']['output'];
+};
+
 export type Country = Node & {
   __typename?: 'Country';
   createdAt: Scalars['Date']['output'];
@@ -84,6 +89,11 @@ export type Country = Node & {
   name: Scalars['String']['output'];
   states: Array<State>;
   updatedAt: Scalars['Date']['output'];
+};
+
+export type CreateCheckoutSessionInput = {
+  lookupKey: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 export type CreateOptionInput = {
@@ -254,6 +264,7 @@ export type MetricsResult = {
 export type Mutation = {
   __typename?: 'Mutation';
   cancelOrder: OrderResult;
+  createCheckoutSession: CheckoutSession;
   createOption: Option;
   createPaymentMethod: PaymentMethod;
   createProduct: Product;
@@ -284,6 +295,10 @@ export type Mutation = {
 
 export type MutationCancelOrderArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type MutationCreateCheckoutSessionArgs = {
+  input: CreateCheckoutSessionInput;
 };
 
 export type MutationCreateOptionArgs = {
@@ -828,6 +843,38 @@ export type StringFilter = {
   equals?: InputMaybe<Scalars['String']['input']>;
 };
 
+export enum SubscriptionPlan {
+  Basic = 'BASIC',
+  Enterprise = 'ENTERPRISE',
+  Essential = 'ESSENTIAL'
+}
+
+/**
+ * The subscription status enum values are directly from the Stripe API
+ * https://stripe.com/docs/api/subscriptions/object#subscription_object-status
+ */
+export enum SubscriptionStatus {
+  /** Indicates that the current invoice has been paid */
+  Active = 'ACTIVE',
+  /** Indicates that the subscription has been canceled */
+  Canceled = 'CANCELED',
+  /** Indicates that the initial payment attempt fails */
+  Incomplete = 'INCOMPLETE',
+  /** Indicates the first invoice has not been paid within 23 hours */
+  IncompleteExpired = 'INCOMPLETE_EXPIRED',
+  /**
+   * Indicates that the subscription requires payment but cannot be paid (due to failed payment or awaiting additional user actions)
+   * Once Stripe has exhausted all payment retry attempts, the subscription will become canceled or unpaid
+   */
+  PastDue = 'PAST_DUE',
+  /** Indicates that the trial period has ended without a payment method to make the first payment */
+  Paused = 'PAUSED',
+  /** Indicate that the subscription is currently in a trial period and moves to active when the trial period is over */
+  Trialing = 'TRIALING',
+  /** Indicates that the subscription has been unpaid */
+  Unpaid = 'UNPAID'
+}
+
 export type UpdateCustomerInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
@@ -904,6 +951,7 @@ export type User = Node & {
   id: Scalars['ID']['output'];
   /** The user's shops */
   shops: ShopList;
+  subscription?: Maybe<UserSubscription>;
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -935,6 +983,21 @@ export type UserResult = {
   __typename?: 'UserResult';
   apiErrors: Array<UserErrorResult>;
   user?: Maybe<User>;
+};
+
+export type UserSubscription = Node & {
+  __typename?: 'UserSubscription';
+  createdAt: Scalars['Date']['output'];
+  /** End of the current period that the subscription has been invoiced for. */
+  currentPeriodEnd: Scalars['Date']['output'];
+  /** Start of the current period that the subscription has been invoiced for. */
+  currentPeriodStart: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  /** The plan that the subscription was created with */
+  plan: SubscriptionPlan;
+  /** The status of the subscription */
+  status: SubscriptionStatus;
+  updatedAt: Scalars['Date']['output'];
 };
 
 /**
@@ -1194,15 +1257,8 @@ export type CommonOrderFragment = {
         id: string;
         sku?: string | null;
         optionValues: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
-        product: {
-          __typename?: 'Product';
-          name: string;
-          slug: string;
-          assets: {
-            __typename?: 'AssetList';
-            items: Array<{ __typename?: 'Asset'; id: string; source: string }>;
-          };
-        };
+        asset?: { __typename?: 'Asset'; id: string; source: string } | null;
+        product: { __typename?: 'Product'; name: string; slug: string };
       };
     }>;
   };
@@ -1833,15 +1889,13 @@ export const CommonOrderFragmentDoc = new TypedDocumentString(
           id
           name
         }
+        asset {
+          id
+          source
+        }
         product {
           name
           slug
-          assets {
-            items {
-              id
-              source
-            }
-          }
         }
       }
     }
@@ -2211,15 +2265,13 @@ export const GetOrderbyIdQueryDocument = new TypedDocumentString(`
           id
           name
         }
+        asset {
+          id
+          source
+        }
         product {
           name
           slug
-          assets {
-            items {
-              id
-              source
-            }
-          }
         }
       }
     }

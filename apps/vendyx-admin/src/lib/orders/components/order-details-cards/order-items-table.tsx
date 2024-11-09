@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow
 } from '@/lib/shared/components';
-import { cn, DEFAULT_PRODUCT_IMAGE, formatPrice } from '@/lib/shared/utils';
+import { cn, formatPrice } from '@/lib/shared/utils';
 
 export const OrderItemsTable: FC<Props> = ({ order }) => {
   const lines = order.lines.items;
@@ -45,11 +45,9 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
             {lines.map(line => (
               <TableRow key={line.id}>
                 <TableCell className="flex items-center gap-2 w-max">
-                  {line.productVariant.product.assets.items[0]?.source ? (
+                  {line.productVariant.asset?.source ? (
                     <img
-                      src={
-                        line.productVariant.product.assets.items[0]?.source ?? DEFAULT_PRODUCT_IMAGE
-                      }
+                      src={line.productVariant.asset.source}
                       alt={line.productVariant.product.name}
                       className="h-12 w-12 object-cover rounded-md"
                     />
