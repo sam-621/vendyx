@@ -17,8 +17,9 @@ model Asset {
   /// Asset's type  
   type AssetType @default(IMAGE)
 
-  products ProductAsset[]
-  variants Variant[]
+  products    ProductAsset[]
+  collections CollectionAsset[]
+  variants    Variant[]
 
   shop   Shop   @relation(fields: [shopId], references: [id])
   shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
@@ -36,4 +37,16 @@ model ProductAsset {
 
   @@id([productId, assetId])
   @@map("product_asset")
+}
+
+model CollectionAsset {
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String     @map("collection_id") @db.Uuid
+  asset        Asset      @relation(fields: [assetId], references: [id])
+  assetId      String     @map("asset_id") @db.Uuid
+
+  order Int @db.SmallInt
+
+  @@id([collectionId, assetId])
+  @@map("collection_asset")
 }

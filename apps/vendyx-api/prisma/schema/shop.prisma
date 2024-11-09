@@ -12,19 +12,20 @@ model Shop {
   /// The shop's API key which is used to authenticate requests for the shop-api
   shopApiKey String @unique @map("shop_api_key")
 
-  product        Product[]
-  variant        Variant[]
-  option         Option[]
-  optionValue    OptionValue[]
-  asset          Asset[]
-  payment        Payment[]
-  paymentMethod  PaymentMethod[]
-  shipment       Shipment[]
-  shippingMethod ShippingMethod[]
-  zone           Zone[]
-  order          Order[]
-  orderLines     OrderLine[]
-  customer       Customer[]
+  product             Product[]
+  variant             Variant[]
+  option              Option[]
+  optionValue         OptionValue[]
+  asset               Asset[]
+  payment             Payment[]
+  paymentMethod       PaymentMethod[]
+  shipment            Shipment[]
+  shippingMethod      ShippingMethod[]
+  zone                Zone[]
+  order               Order[]
+  orderLines          OrderLine[]
+  customer            Customer[]
+  customercollections Collection[]
 
   /// The shop's owner
   owner   User   @relation(fields: [ownerId], references: [id])
