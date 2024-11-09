@@ -10,7 +10,7 @@ export class CustomerFinder {
     return this._prisma.customer.findMany({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
-        enabled: input?.filters?.enabled ? clean(input?.filters?.enabled) : { equals: true },
+        enabled: input?.filters?.enabled ? clean(input?.filters?.enabled) : undefined,
         OR: [
           {
             firstName: {

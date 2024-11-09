@@ -1,6 +1,12 @@
 import { Inject } from '@nestjs/common';
+import { PrismaPromise } from '@prisma/client';
 
-import { CreateCollectionInput, ListInput, UpdateCollectionInput } from '@/api/shared';
+import {
+  CollectionFilters,
+  CollectionListInput,
+  CreateCollectionInput,
+  UpdateCollectionInput
+} from '@/api/shared';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 import { ID } from '@/persistance/types';
 
@@ -9,15 +15,27 @@ import { clean, getSlugBy } from '../shared';
 export class CollectionService {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  async find(input?: ListInput) {
+  async find(input?: CollectionListInput) {
     return this.prisma.collection.findMany({
-      ...clean(input ?? {}),
+      ...clean({ skip: input?.skip, take: input?.take }),
+      where: {
+        ...clean(input?.filters ?? {})
+      },
       orderBy: { createdAt: 'desc' }
     });
   }
 
-  async findById(id: ID) {
-    return this.prisma.collection.findUnique({ where: { id } });
+  async count(input?: CollectionListInput) {
+    return this.prisma.collection.count({
+      ...clean({ skip: input?.skip, take: input?.take }),
+      where: {
+        ...clean(input?.filters ?? {})
+      }
+    });
+  }
+
+  async findById(id: ID, filters?: CollectionFilters) {
+    return this.prisma.collection.findUnique({ where: { id, ...clean(filters ?? {}) } });
   }
 
   async create(input: CreateCollectionInput) {
@@ -41,30 +59,53 @@ export class CollectionService {
   async update(id: ID, input: UpdateCollectionInput) {
     const { assets, products, ...rest } = input;
 
-    return this.prisma.collection.update({
-      where: { id },
-      data: {
-        ...clean(rest),
-        slug: input.name ? await this.validateAndParseSlug(input.name) : undefined,
-        assets: assets
-          ? {
-              upsert: assets.map(asset => ({
-                where: { collectionId_assetId: { assetId: asset.id, collectionId: id } },
-                create: { assetId: asset.id, collectionId: id, order: 0 },
-                update: { order: 0 }
-              }))
-            }
-          : undefined,
-        products: products
-          ? {
-              connectOrCreate: products.map(product => ({
-                where: { productId_collectionId: { productId: product, collectionId: id } },
-                create: { productId: product, collectionId: id }
-              }))
-            }
-          : undefined
-      }
-    });
+    const transaction: PrismaPromise<any>[] = [
+      this.prisma.collection.update({
+        where: { id },
+        data: {
+          ...clean(rest),
+          slug: input.name ? await this.validateAndParseSlug(input.name) : undefined,
+          assets: assets
+            ? {
+                upsert: assets.map(asset => ({
+                  where: { collectionId_assetId: { assetId: asset.id, collectionId: id } },
+                  create: { assetId: asset.id, order: 0 },
+                  update: { order: 0 }
+                }))
+              }
+            : undefined,
+          products: products
+            ? {
+                connectOrCreate: products.map(product => ({
+                  where: { productId_collectionId: { productId: product, collectionId: id } },
+                  create: { productId: product }
+                }))
+              }
+            : undefined
+        }
+      })
+    ];
+
+    if (Array.isArray(products)) {
+      transaction.unshift(
+        this.prisma.productCollection.deleteMany({
+          where: { productId: { notIn: products ?? [] }, collectionId: id }
+        })
+      );
+    }
+
+    if (Array.isArray(assets)) {
+      transaction.unshift(
+        this.prisma.collectionAsset.deleteMany({
+          where: { assetId: { notIn: assets?.map(a => a.id) ?? [] }, collectionId: id }
+        })
+      );
+    }
+
+    const result = await this.prisma.$transaction(transaction);
+
+    // always the last result is the updated collection
+    return result[result.length - 1];
   }
 
   async remove(id: ID) {

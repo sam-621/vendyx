@@ -85,6 +85,17 @@ export class AssetInCollectionInput {
     id: string;
 }
 
+export class CollectionListInput {
+    skip?: Nullable<number>;
+    take?: Nullable<number>;
+    filters?: Nullable<CollectionFilters>;
+}
+
+export class CollectionFilters {
+    name?: Nullable<StringFilter>;
+    enabled?: Nullable<BooleanFilter>;
+}
+
 export class UpdateCustomerInput {
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;

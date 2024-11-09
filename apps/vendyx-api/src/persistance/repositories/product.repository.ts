@@ -5,18 +5,22 @@ import { ListInput, ProductFilters, ProductListInput } from '@/api/shared';
 import { clean } from '@/business/shared';
 
 import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
+import { ID } from '../types';
 
 @Injectable()
 export class ProductRepository {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  findMany(input?: ProductListInput) {
+  findMany(input?: ProductListInput & { collectionId?: ID }) {
     return this.prisma.product.findMany({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
         name: clean(input?.filters?.name ?? {}),
         archived: clean(input?.filters?.archived ?? {}),
-        enabled: clean(input?.filters?.enabled ?? {})
+        enabled: clean(input?.filters?.enabled ?? {}),
+        ProductCollection: input?.collectionId
+          ? { some: { collectionId: input?.collectionId } }
+          : undefined
       },
       orderBy: { createdAt: 'desc' }
     });
@@ -37,13 +41,16 @@ export class ProductRepository {
     });
   }
 
-  count(input?: ProductListInput) {
+  count(input?: ProductListInput & { collectionId?: ID }) {
     return this.prisma.product.count({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
         name: clean(input?.filters?.name ?? {}),
         archived: clean(input?.filters?.archived ?? {}),
-        enabled: clean(input?.filters?.enabled ?? {})
+        enabled: clean(input?.filters?.enabled ?? {}),
+        ProductCollection: input?.collectionId
+          ? { some: { collectionId: input?.collectionId } }
+          : undefined
       }
     });
   }

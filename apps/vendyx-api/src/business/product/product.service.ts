@@ -7,6 +7,7 @@ import {
   UpdateProductInput
 } from '@/api/shared';
 import { ProductRepository } from '@/persistance/repositories';
+import { ID } from '@/persistance/types';
 
 import { clean, getSlugBy } from '../shared';
 
@@ -14,9 +15,10 @@ import { clean, getSlugBy } from '../shared';
 export class ProductService {
   constructor(private readonly productRepository: ProductRepository) {}
 
-  async find(input?: ProductListInput) {
+  async find(input?: ProductListInput, byCollectionId?: ID) {
     return this.productRepository.findMany({
       ...input,
+      collectionId: byCollectionId,
       filters: {
         archived: { equals: false },
         ...input?.filters
@@ -24,9 +26,10 @@ export class ProductService {
     });
   }
 
-  async count(input?: ProductListInput) {
+  async count(input?: ProductListInput, byCollectionId?: ID) {
     return this.productRepository.count({
       ...input,
+      collectionId: byCollectionId,
       filters: {
         archived: { equals: false },
         ...input?.filters

@@ -4,6 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateCollectionInput,
   ListInput,
+  ListResponse,
   UpdateCollectionInput,
   UserJwtAuthGuard
 } from '@/api/shared';
@@ -17,7 +18,12 @@ export class CollectionResolver {
 
   @Query('collections')
   async collections(@Args('input') input?: ListInput) {
-    return this.collectionService.find(input);
+    const [collections, total] = await Promise.all([
+      await this.collectionService.find(input),
+      await this.collectionService.count(input)
+    ]);
+
+    return new ListResponse(collections, collections.length, { total });
   }
 
   @Query('collection')
