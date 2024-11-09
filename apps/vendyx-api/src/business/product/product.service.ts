@@ -82,7 +82,9 @@ export class ProductService {
   private async validateAndParseSlug(name: string) {
     const slug = getSlugBy(name);
 
-    const productNameCount = await this.productRepository.count();
+    const productNameCount = await this.productRepository.count({
+      filters: { name: { equals: name } }
+    });
 
     if (!productNameCount) return slug;
 
