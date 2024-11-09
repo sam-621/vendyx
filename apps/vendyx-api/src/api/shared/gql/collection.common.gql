@@ -1,0 +1,39 @@
+"""
+A collection is a group of products that are displayed together in the storefront.
+"""
+type Collection implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The collection's name
+  """
+  name: String!
+  """
+  The collection's slug used in the URL
+  """
+  slug: String!
+  """
+  The collection's description
+  """
+  description: String!
+  """
+  The collection's order user to decide to show the collection in the storefront
+  """
+  enabled: Boolean!
+
+  assets(input: ListInput): AssetList!
+  products(input: ProductListInput): ProductList!
+}
+
+type CollectionList implements List {
+  items: [Collection!]!
+  count: Int!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  collection(id: ID): Collection
+  collections(input: ListInput): CollectionList!
+}

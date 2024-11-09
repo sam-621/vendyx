@@ -65,6 +65,26 @@ export enum OrderState {
     CANCELED = "CANCELED"
 }
 
+export class CreateCollectionInput {
+    name: string;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+    products?: Nullable<string[]>;
+    assets?: Nullable<AssetInCollectionInput[]>;
+}
+
+export class UpdateCollectionInput {
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    enabled?: Nullable<boolean>;
+    products?: Nullable<string[]>;
+    assets?: Nullable<AssetInCollectionInput[]>;
+}
+
+export class AssetInCollectionInput {
+    id: string;
+}
+
 export class UpdateCustomerInput {
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
@@ -327,85 +347,13 @@ export interface List {
     pageInfo: PageInfo;
 }
 
-export class Country implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    states: State[];
-}
-
-export class State implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    country: Country;
-}
-
-export abstract class IQuery {
-    abstract countries(): Country[] | Promise<Country[]>;
-
-    abstract customers(input?: Nullable<CustomerListInput>): CustomerList | Promise<CustomerList>;
-
-    abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
-
-    abstract totalSales(input: MetricsInput): MetricsResult | Promise<MetricsResult>;
-
-    abstract totalOrders(input: MetricsInput): MetricsResult | Promise<MetricsResult>;
-
-    abstract orders(input?: Nullable<OrderListInput>): OrderList | Promise<OrderList>;
-
-    abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
-
-    abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
-
-    abstract paymentIntegrations(): PaymentIntegration[] | Promise<PaymentIntegration[]>;
-
-    abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
-
-    abstract shippingMethods(): ShippingMethod[] | Promise<ShippingMethod[]>;
-
-    abstract shippingHandlers(): ShippingHandler[] | Promise<ShippingHandler[]>;
-
-    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
-
-    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
-
-    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
-
-    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
-
-    abstract zones(): Zone[] | Promise<Zone[]>;
-
-    abstract zone(id: string): Zone | Promise<Zone>;
-
-    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
-
-    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
-
-    abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
-
-    abstract availablePaymentMethods(orderId: string): PaymentMethod[] | Promise<PaymentMethod[]>;
-}
-
-export class Customer implements Node {
-    totalSpent: number;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    firstName?: Nullable<string>;
-    lastName: string;
-    email: string;
-    phoneNumber?: Nullable<string>;
-    enabled: boolean;
-    orders?: OrderList;
-    addresses?: AddressList;
-}
-
 export abstract class IMutation {
+    abstract createCollection(input: CreateCollectionInput): Collection | Promise<Collection>;
+
+    abstract updateCollection(id: string, input: UpdateCollectionInput): Collection | Promise<Collection>;
+
+    abstract removeCollection(id: string): boolean | Promise<boolean>;
+
     abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOption(productId: string, input: CreateOptionInput): Option | Promise<Option>;
@@ -489,6 +437,88 @@ export abstract class IMutation {
     abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): OrderResult | Promise<OrderResult>;
 
     abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
+}
+
+export class Country implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    states: State[];
+}
+
+export class State implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    country: Country;
+}
+
+export abstract class IQuery {
+    abstract countries(): Country[] | Promise<Country[]>;
+
+    abstract customers(input?: Nullable<CustomerListInput>): CustomerList | Promise<CustomerList>;
+
+    abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
+
+    abstract totalSales(input: MetricsInput): MetricsResult | Promise<MetricsResult>;
+
+    abstract totalOrders(input: MetricsInput): MetricsResult | Promise<MetricsResult>;
+
+    abstract orders(input?: Nullable<OrderListInput>): OrderList | Promise<OrderList>;
+
+    abstract paymentMethod(id: string): Nullable<PaymentMethod> | Promise<Nullable<PaymentMethod>>;
+
+    abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
+
+    abstract paymentIntegrations(): PaymentIntegration[] | Promise<PaymentIntegration[]>;
+
+    abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
+
+    abstract shippingMethods(): ShippingMethod[] | Promise<ShippingMethod[]>;
+
+    abstract shippingHandlers(): ShippingHandler[] | Promise<ShippingHandler[]>;
+
+    abstract shop(slug: string): Nullable<Shop> | Promise<Nullable<Shop>>;
+
+    abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
+
+    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
+
+    abstract variant(id: string): Nullable<Variant> | Promise<Nullable<Variant>>;
+
+    abstract zones(): Zone[] | Promise<Zone[]>;
+
+    abstract zone(id: string): Zone | Promise<Zone>;
+
+    abstract collection(id?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
+
+    abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
+
+    abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
+
+    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
+
+    abstract availablePaymentMethods(orderId: string): PaymentMethod[] | Promise<PaymentMethod[]>;
+}
+
+export class Customer implements Node {
+    totalSpent: number;
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    firstName?: Nullable<string>;
+    lastName: string;
+    email: string;
+    phoneNumber?: Nullable<string>;
+    enabled: boolean;
+    orders?: OrderList;
+    addresses?: AddressList;
 }
 
 export class CustomerResult {
@@ -678,6 +708,24 @@ export class Asset implements Node {
 
 export class AssetList implements List {
     items: Asset[];
+    count: number;
+    pageInfo: PageInfo;
+}
+
+export class Collection implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    slug: string;
+    description: string;
+    enabled: boolean;
+    assets?: AssetList;
+    products?: ProductList;
+}
+
+export class CollectionList implements List {
+    items: Collection[];
     count: number;
     pageInfo: PageInfo;
 }
