@@ -12,3 +12,4 @@ export * from './order.resolver';
 export * from './customer.resolver';
 export * from './metrics.resolver';
 export * from './subscription.resolver';
+export * from './collection.resolver';

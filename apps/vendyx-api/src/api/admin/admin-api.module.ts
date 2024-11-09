@@ -6,6 +6,7 @@ import { BusinessModule } from '@/business';
 import { ShipmentModule } from '@/shipments';
 
 import {
+  CollectionResolver,
   CountryResolver,
   CustomerResolver,
   MetricsResolver,
@@ -57,7 +58,8 @@ export class AdminApiModule {
     OrderResolver,
     CustomerResolver,
     MetricsResolver,
-    SubscriptionResolver
+    SubscriptionResolver,
+    CollectionResolver
   ]
 })
 class AdminModule {}
