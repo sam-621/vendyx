@@ -12,20 +12,22 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui';
 export const FileUploader: FC<Props> = ({
   onAcceptFiles,
   defaultPreviews,
-  dissabledState,
-  title = 'Images'
+  disabledState,
+  title = 'Images',
+  max
 }) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  const previews = useMemo(
-    () => [...(defaultPreviews ?? []), ...files.map(file => URL.createObjectURL(file))],
-    [files, defaultPreviews]
-  );
+  const previews = useMemo(() => {
+    const previews = [...(defaultPreviews ?? []), ...files.map(file => URL.createObjectURL(file))];
+
+    return max ? previews.slice(0, max) : previews;
+  }, [files, defaultPreviews, max]);
 
   const _onAcceptFiles = (acceptedFiles: File[]) => {
     const newFiles = [...files, ...acceptedFiles];
 
-    !dissabledState && setFiles(newFiles);
+    !disabledState && setFiles(newFiles);
     onAcceptFiles(newFiles);
   };
 
@@ -47,7 +49,11 @@ export const FileUploader: FC<Props> = ({
                 />
               </div>
             ))}
-            <Dropzone size="lg" onAcceptFiles={_onAcceptFiles} />
+            {max ? (
+              previews.length < max && <Dropzone size="lg" onAcceptFiles={_onAcceptFiles} />
+            ) : (
+              <Dropzone size="lg" onAcceptFiles={_onAcceptFiles} />
+            )}
           </div>
         )}
       </CardContent>
@@ -57,7 +63,8 @@ export const FileUploader: FC<Props> = ({
 
 type Props = {
   onAcceptFiles: (files: File[]) => void;
-  title?: string;
   defaultPreviews?: string[];
-  dissabledState?: boolean;
+  disabledState?: boolean;
+  title?: string;
+  max?: number;
 };

@@ -39,7 +39,8 @@ export const CollectionAssetUploader = () => {
       }}
       // defaultPreviews={product?.assets.items.map(asset => asset.source)}
       defaultPreviews={[]}
-      dissabledState={Boolean(collection)}
+      disabledState={Boolean(collection)}
+      max={1}
     />
   );
 };

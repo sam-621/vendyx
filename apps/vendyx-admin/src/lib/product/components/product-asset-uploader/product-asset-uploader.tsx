@@ -35,7 +35,7 @@ export const ProductAssetUploader: FC<Props> = ({ product }) => {
         addProductImage(product, files[0]);
       }}
       defaultPreviews={product?.assets.items.map(asset => asset.source)}
-      dissabledState={Boolean(product)}
+      disabledState={Boolean(product)}
     />
   );
 };
