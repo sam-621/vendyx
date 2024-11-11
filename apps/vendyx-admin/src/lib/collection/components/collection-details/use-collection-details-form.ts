@@ -36,7 +36,8 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment) 
 const schema = z.object({
   name: z.string().min(1, FormMessages.required),
   description: z.string().optional(),
-  enabled: z.boolean()
+  enabled: z.boolean(),
+  image: z.instanceof(File).optional()
 });
 
 export type CollectionDetailsFormInput = z.infer<typeof schema>;

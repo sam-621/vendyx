@@ -9,7 +9,12 @@ import { cn, isFirst } from '@/lib/shared/utils';
 import { Dropzone } from '../dropzone';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui';
 
-export const FileUploader: FC<Props> = ({ onAcceptFiles, defaultPreviews, dissabledState }) => {
+export const FileUploader: FC<Props> = ({
+  onAcceptFiles,
+  defaultPreviews,
+  dissabledState,
+  title = 'Images'
+}) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const previews = useMemo(
@@ -27,7 +32,7 @@ export const FileUploader: FC<Props> = ({ onAcceptFiles, defaultPreviews, dissab
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Images</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {!previews.length && <Dropzone size="lg" onAcceptFiles={_onAcceptFiles} />}
@@ -52,6 +57,7 @@ export const FileUploader: FC<Props> = ({ onAcceptFiles, defaultPreviews, dissab
 
 type Props = {
   onAcceptFiles: (files: File[]) => void;
+  title?: string;
   defaultPreviews?: string[];
   dissabledState?: boolean;
 };

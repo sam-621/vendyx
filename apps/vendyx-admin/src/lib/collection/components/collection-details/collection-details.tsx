@@ -1,3 +1,4 @@
+import { CollectionAssetUploader } from '../collection-asset-uploader';
 import { CollectionGeneralInfoCard, CollectionStatusSwitchCard } from '../collection-details-cards';
 
 export const CollectionDetails = () => {
@@ -16,6 +17,7 @@ export const CollectionDetails = () => {
       </div>
       <div className="col-span-1 flex flex-col gap-6">
         <CollectionStatusSwitchCard />
+        <CollectionAssetUploader />
       </div>
     </div>
   );
