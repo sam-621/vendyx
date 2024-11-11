@@ -27,6 +27,9 @@ export const COMMON_COLLECTION_FRAGMENT = graphql(`
 export const GET_ALL_COLLECTIONS_QUERY = graphql(`
   query GetAllCollections($input: CollectionListInput) {
     collections(input: $input) {
+      pageInfo {
+        total
+      }
       items {
         id
         name

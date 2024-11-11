@@ -14,7 +14,7 @@ import * as types from './graphql';
 const documents = {
   '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n    products {\n      items {\n        id\n        name\n        slug\n        enabled\n      }\n    }\n  }\n':
     types.CommonCollectionFragmentDoc,
-  '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      items {\n        id\n        name\n        slug\n        enabled\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        products {\n          count\n        }\n      }\n    }\n  }\n':
+  '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        name\n        slug\n        enabled\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        products {\n          count\n        }\n      }\n    }\n  }\n':
     types.GetAllCollectionsDocument,
   '\n  query GetCollection($id: ID) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n':
     types.GetCollectionDocument,
@@ -147,7 +147,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      items {\n        id\n        name\n        slug\n        enabled\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        products {\n          count\n        }\n      }\n    }\n  }\n'
+  source: '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      pageInfo {\n        total\n      }\n      items {\n        id\n        name\n        slug\n        enabled\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        products {\n          count\n        }\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetAllCollectionsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

@@ -1177,6 +1177,7 @@ export type GetAllCollectionsQuery = {
   __typename?: 'Query';
   collections: {
     __typename?: 'CollectionList';
+    pageInfo: { __typename?: 'PageInfo'; total: number };
     items: Array<{
       __typename?: 'Collection';
       id: string;
@@ -2257,6 +2258,9 @@ export const CommonZoneFragmentDoc = new TypedDocumentString(
 export const GetAllCollectionsDocument = new TypedDocumentString(`
     query GetAllCollections($input: CollectionListInput) {
   collections(input: $input) {
+    pageInfo {
+      total
+    }
     items {
       id
       name
