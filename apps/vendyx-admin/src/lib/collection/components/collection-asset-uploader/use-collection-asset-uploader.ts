@@ -2,16 +2,17 @@ import { useTransition } from 'react';
 
 import { type CommonCollectionFragment } from '@/api/types';
 
+import { addCollectionImage } from '../../actions/add-collection-image';
+
 export const useCollectionAssetUploader = () => {
   const [isLoading, startTransition] = useTransition();
 
   const execute = (collection: CommonCollectionFragment, file: File) => {
     startTransition(async () => {
-      const newImage = new FormData();
-      newImage.append('files', file);
+      const image = new FormData();
+      image.append('files', file);
 
-      // await addProductImage(product.id, product.assets.items, newImage);
-      console.log(collection);
+      await addCollectionImage(collection.id, image);
     });
   };
 

@@ -1,7 +1,11 @@
+import { type FC } from 'react';
+
+import { type CommonCollectionFragment } from '@/api/types';
+
 import { CollectionAssetUploader } from '../collection-asset-uploader';
 import { CollectionGeneralInfoCard, CollectionStatusSwitchCard } from '../collection-details-cards';
 
-export const CollectionDetails = () => {
+export const CollectionDetails: FC<Props> = ({ collection }) => {
   return (
     <div className="flex flex-col lg:grid grid-cols-4 gap-6">
       <div className="col-span-3 flex flex-col gap-6">
@@ -17,8 +21,12 @@ export const CollectionDetails = () => {
       </div>
       <div className="col-span-1 flex flex-col gap-6">
         <CollectionStatusSwitchCard />
-        <CollectionAssetUploader />
+        <CollectionAssetUploader collection={collection} />
       </div>
     </div>
   );
+};
+
+type Props = {
+  collection?: CommonCollectionFragment;
 };

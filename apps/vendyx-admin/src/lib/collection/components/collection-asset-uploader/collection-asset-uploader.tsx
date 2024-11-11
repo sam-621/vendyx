@@ -1,14 +1,14 @@
-import { type MutableRefObject, useEffect, useRef } from 'react';
+import { type FC, type MutableRefObject, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { type CommonCollectionFragment } from '@/api/types';
 import { FileUploader } from '@/lib/shared/components';
 import { notification } from '@/lib/shared/notifications';
 
 import { type CollectionDetailsFormInput } from '../collection-details';
 import { useCollectionAssetUploader } from './use-collection-asset-uploader';
 
-export const CollectionAssetUploader = () => {
-  const collection = null;
+export const CollectionAssetUploader: FC<Props> = ({ collection }) => {
   const { setValue } = useFormContext<CollectionDetailsFormInput>();
   const { isLoading, addCollectionImage } = useCollectionAssetUploader();
   const notificationRef: MutableRefObject<string | number | null> = useRef(null);
@@ -33,14 +33,15 @@ export const CollectionAssetUploader = () => {
           return;
         }
 
-        console.log('Persist');
-
         addCollectionImage(collection, files[0]);
       }}
-      // defaultPreviews={product?.assets.items.map(asset => asset.source)}
-      defaultPreviews={[]}
+      defaultPreviews={collection?.assets.items.length ? [collection.assets.items[0]?.source] : []}
       disabledState={Boolean(collection)}
       max={1}
     />
   );
+};
+
+type Props = {
+  collection?: CommonCollectionFragment;
 };

@@ -11,6 +11,7 @@ import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
 
 import { createCollection } from '../../actions/create-collection';
+import { updateCollection } from '../../actions/update-collection';
 
 export const useCollectionDetailsForm = (collection?: CommonCollectionFragment) => {
   const [isLoading, startTransition] = useTransition();
@@ -34,7 +35,7 @@ export const useCollectionDetailsForm = (collection?: CommonCollectionFragment) 
   async function onSubmit(input: CollectionDetailsFormInput) {
     startTransition(async () => {
       if (collection) {
-        // Update collection
+        await updateCollection(collection.id, input);
         setIsSuccess(true);
       } else {
         const { image, ...rest } = input;
