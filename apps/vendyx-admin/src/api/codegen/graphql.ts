@@ -1147,6 +1147,28 @@ export type Zone = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type CommonCollectionFragment = {
+  __typename?: 'Collection';
+  id: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  assets: {
+    __typename?: 'AssetList';
+    items: Array<{ __typename?: 'Asset'; id: string; name: string; source: string }>;
+  };
+  products: {
+    __typename?: 'ProductList';
+    items: Array<{
+      __typename?: 'Product';
+      id: string;
+      name: string;
+      slug: string;
+      enabled: boolean;
+    }>;
+  };
+} & { ' $fragmentName'?: 'CommonCollectionFragment' };
+
 export type GetAllCollectionsQueryVariables = Exact<{
   input?: InputMaybe<CollectionListInput>;
 }>;
@@ -1169,6 +1191,44 @@ export type GetAllCollectionsQuery = {
     }>;
   };
 };
+
+export type GetCollectionQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+export type GetCollectionQuery = {
+  __typename?: 'Query';
+  collection?:
+    | ({ __typename?: 'Collection' } & {
+        ' $fragmentRefs'?: { CommonCollectionFragment: CommonCollectionFragment };
+      })
+    | null;
+};
+
+export type CreateCollectionMutationVariables = Exact<{
+  input: CreateCollectionInput;
+}>;
+
+export type CreateCollectionMutation = {
+  __typename?: 'Mutation';
+  createCollection: { __typename?: 'Collection'; id: string };
+};
+
+export type UpdateCollectionMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpdateCollectionInput;
+}>;
+
+export type UpdateCollectionMutation = {
+  __typename?: 'Mutation';
+  updateCollection: { __typename?: 'Collection'; id: string };
+};
+
+export type RemoveCollectionMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+export type RemoveCollectionMutation = { __typename?: 'Mutation'; removeCollection: boolean };
 
 export type CommonCountryFragment = {
   __typename?: 'Country';
@@ -1925,6 +1985,32 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+export const CommonCollectionFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonCollection on Collection {
+  id
+  name
+  description
+  enabled
+  assets(input: {take: 1}) {
+    items {
+      id
+      name
+      source
+    }
+  }
+  products {
+    items {
+      id
+      name
+      slug
+      enabled
+    }
+  }
+}
+    `,
+  { fragmentName: 'CommonCollection' }
+) as unknown as TypedDocumentString<CommonCollectionFragment, unknown>;
 export const CommonCountryFragmentDoc = new TypedDocumentString(
   `
     fragment CommonCountry on Country {
@@ -2189,6 +2275,61 @@ export const GetAllCollectionsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetAllCollectionsQuery, GetAllCollectionsQueryVariables>;
+export const GetCollectionDocument = new TypedDocumentString(`
+    query GetCollection($id: ID) {
+  collection(id: $id) {
+    ...CommonCollection
+  }
+}
+    fragment CommonCollection on Collection {
+  id
+  name
+  description
+  enabled
+  assets(input: {take: 1}) {
+    items {
+      id
+      name
+      source
+    }
+  }
+  products {
+    items {
+      id
+      name
+      slug
+      enabled
+    }
+  }
+}`) as unknown as TypedDocumentString<GetCollectionQuery, GetCollectionQueryVariables>;
+export const CreateCollectionDocument = new TypedDocumentString(`
+    mutation CreateCollection($input: CreateCollectionInput!) {
+  createCollection(input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<
+  CreateCollectionMutation,
+  CreateCollectionMutationVariables
+>;
+export const UpdateCollectionDocument = new TypedDocumentString(`
+    mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {
+  updateCollection(id: $id, input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<
+  UpdateCollectionMutation,
+  UpdateCollectionMutationVariables
+>;
+export const RemoveCollectionDocument = new TypedDocumentString(`
+    mutation RemoveCollection($id: ID!) {
+  removeCollection(id: $id)
+}
+    `) as unknown as TypedDocumentString<
+  RemoveCollectionMutation,
+  RemoveCollectionMutationVariables
+>;
 export const GetCountriesDocument = new TypedDocumentString(`
     query GetCountries {
   countries {

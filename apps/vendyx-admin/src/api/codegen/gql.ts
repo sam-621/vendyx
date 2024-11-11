@@ -12,8 +12,18 @@ import * as types from './graphql';
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+  '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n    products {\n      items {\n        id\n        name\n        slug\n        enabled\n      }\n    }\n  }\n':
+    types.CommonCollectionFragmentDoc,
   '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      items {\n        id\n        name\n        slug\n        enabled\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        products {\n          count\n        }\n      }\n    }\n  }\n':
     types.GetAllCollectionsDocument,
+  '\n  query GetCollection($id: ID) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n':
+    types.GetCollectionDocument,
+  '\n  mutation CreateCollection($input: CreateCollectionInput!) {\n    createCollection(input: $input) {\n      id\n    }\n  }\n':
+    types.CreateCollectionDocument,
+  '\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      id\n    }\n  }\n':
+    types.UpdateCollectionDocument,
+  '\n  mutation RemoveCollection($id: ID!) {\n    removeCollection(id: $id)\n  }\n':
+    types.RemoveCollectionDocument,
   '\n  fragment CommonCountry on Country {\n    id\n    name\n    states {\n      id\n      name\n    }\n  }\n':
     types.CommonCountryFragmentDoc,
   '\n  query GetCountries {\n    countries {\n      ...CommonCountry\n    }\n  }\n':
@@ -131,8 +141,38 @@ const documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: '\n  fragment CommonCollection on Collection {\n    id\n    name\n    description\n    enabled\n    assets(input: { take: 1 }) {\n      items {\n        id\n        name\n        source\n      }\n    }\n    products {\n      items {\n        id\n        name\n        slug\n        enabled\n      }\n    }\n  }\n'
+): typeof import('./graphql').CommonCollectionFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: '\n  query GetAllCollections($input: CollectionListInput) {\n    collections(input: $input) {\n      items {\n        id\n        name\n        slug\n        enabled\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n        products {\n          count\n        }\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetAllCollectionsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetCollection($id: ID) {\n    collection(id: $id) {\n      ...CommonCollection\n    }\n  }\n'
+): typeof import('./graphql').GetCollectionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateCollection($input: CreateCollectionInput!) {\n    createCollection(input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').CreateCollectionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {\n    updateCollection(id: $id, input: $input) {\n      id\n    }\n  }\n'
+): typeof import('./graphql').UpdateCollectionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation RemoveCollection($id: ID!) {\n    removeCollection(id: $id)\n  }\n'
+): typeof import('./graphql').RemoveCollectionDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

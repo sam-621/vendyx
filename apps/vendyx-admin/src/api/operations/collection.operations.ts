@@ -1,5 +1,29 @@
 import { graphql } from '../codegen';
 
+export const COMMON_COLLECTION_FRAGMENT = graphql(`
+  fragment CommonCollection on Collection {
+    id
+    name
+    description
+    enabled
+    assets(input: { take: 1 }) {
+      items {
+        id
+        name
+        source
+      }
+    }
+    products {
+      items {
+        id
+        name
+        slug
+        enabled
+      }
+    }
+  }
+`);
+
 export const GET_ALL_COLLECTIONS_QUERY = graphql(`
   query GetAllCollections($input: CollectionListInput) {
     collections(input: $input) {
@@ -19,5 +43,35 @@ export const GET_ALL_COLLECTIONS_QUERY = graphql(`
         }
       }
     }
+  }
+`);
+
+export const GET_COLLECTION_BY_ID_QUERY = graphql(`
+  query GetCollection($id: ID) {
+    collection(id: $id) {
+      ...CommonCollection
+    }
+  }
+`);
+
+export const CREATE_COLLECTION_MUTATION = graphql(`
+  mutation CreateCollection($input: CreateCollectionInput!) {
+    createCollection(input: $input) {
+      id
+    }
+  }
+`);
+
+export const UPDATE_COLLECTION_MUTATION = graphql(`
+  mutation UpdateCollection($id: ID!, $input: UpdateCollectionInput!) {
+    updateCollection(id: $id, input: $input) {
+      id
+    }
+  }
+`);
+
+export const REMOVE_COLLECTION_MUTATION = graphql(`
+  mutation RemoveCollection($id: ID!) {
+    removeCollection(id: $id)
   }
 `);
