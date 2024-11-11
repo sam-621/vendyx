@@ -3,11 +3,12 @@
 import { type FC } from 'react';
 
 import { type CommonCollectionFragment } from '@/api/types';
-import { AdminPageLayout, Button } from '@/lib/shared/components';
+import { AdminPageLayout } from '@/lib/shared/components';
 import { EntityProvider } from '@/lib/shared/contexts';
 import { Form } from '@/lib/shared/form';
 
 import { CollectionDetails } from './collection-details';
+import { CollectionDetailsSubmitButton } from './collection-details-submit-button';
 import { useCollectionDetailsForm } from './use-collection-details-form';
 
 export const CollectionDetailsForm: FC<Props> = ({ collection }) => {
@@ -19,11 +20,7 @@ export const CollectionDetailsForm: FC<Props> = ({ collection }) => {
         <form onSubmit={form.onSubmit}>
           <AdminPageLayout
             title={collection?.name ?? 'New Collection'}
-            actions={
-              <Button type="submit" isLoading={form.isLoading}>
-                Save
-              </Button>
-            }
+            actions={<CollectionDetailsSubmitButton collection={collection} />}
           >
             <CollectionDetails collection={collection} />
           </AdminPageLayout>
