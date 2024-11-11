@@ -4,6 +4,10 @@ type Mutation {
   removeCollection(id: ID!): Boolean!
 }
 
+type Query {
+  collections(input: CollectionListInput): CollectionList!
+}
+
 input CreateCollectionInput {
   name: String!
   description: String

@@ -450,23 +450,9 @@ export abstract class IMutation {
     abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
 }
 
-export class Country implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    states: State[];
-}
-
-export class State implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    country: Country;
-}
-
 export abstract class IQuery {
+    abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
+
     abstract countries(): Country[] | Promise<Country[]>;
 
     abstract customers(input?: Nullable<CustomerListInput>): CustomerList | Promise<CustomerList>;
@@ -507,8 +493,6 @@ export abstract class IQuery {
 
     abstract collection(id?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
 
-    abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
-
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
@@ -516,6 +500,22 @@ export abstract class IQuery {
     abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
 
     abstract availablePaymentMethods(orderId: string): PaymentMethod[] | Promise<PaymentMethod[]>;
+}
+
+export class Country implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    states: State[];
+}
+
+export class State implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    country: Country;
 }
 
 export class Customer implements Node {

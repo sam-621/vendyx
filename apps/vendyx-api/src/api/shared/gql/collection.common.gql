@@ -35,5 +35,4 @@ type CollectionList implements List {
 
 type Query {
   collection(id: ID): Collection
-  collections(input: ListInput): CollectionList!
 }
