@@ -15,7 +15,7 @@ export default function CollectionsPage({ searchParams }: Props) {
     <AdminPageLayout
       title="Collections"
       actions={
-        <Link href="products/new">
+        <Link href="collections/new">
           <Button>Add Collection</Button>
         </Link>
       }
