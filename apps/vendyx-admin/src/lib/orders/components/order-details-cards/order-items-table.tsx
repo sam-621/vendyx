@@ -7,7 +7,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  DefaultProductImage,
+  ImagePlaceholder,
   OrderStatusBadge,
   Table,
   TableBody,
@@ -52,7 +52,7 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
                       className="h-12 w-12 object-cover rounded-md"
                     />
                   ) : (
-                    <DefaultProductImage initial={line.productVariant.product.name} />
+                    <ImagePlaceholder initial={line.productVariant.product.name} />
                   )}
                   <div
                     className={cn(
