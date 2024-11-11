@@ -20,7 +20,7 @@ export class ProductResolver {
   ) {}
 
   @Query('products')
-  async products(@Args('input') input: ListInput) {
+  async products(@Args('input') input?: ListInput) {
     const [result, total] = await Promise.all([
       this.productService.find(input),
       this.productService.count()

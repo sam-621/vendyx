@@ -14,10 +14,10 @@ export class OrderFieldResolver {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
   @ResolveField('lines')
-  async lines(@Parent() order: Order, @Args('input') input: ListInput) {
+  async lines(@Parent() order: Order, @Args('input') input?: ListInput) {
     const [result, total] = await Promise.all([
       this.prisma.orderLine.findMany({
-        ...clean(input),
+        ...clean(input ?? {}),
         where: { orderId: order.id }
       }),
       this.prisma.orderLine.count({

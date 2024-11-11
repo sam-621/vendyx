@@ -27,7 +27,7 @@ export class CustomerFieldResolver {
   }
 
   @ResolveField('addresses')
-  async addresses(@Parent() customer: Customer, @Args('input') input: ListInput) {
+  async addresses(@Parent() customer: Customer, @Args('input') input?: ListInput) {
     const [result, total] = await Promise.all([
       this.prisma.address.findMany({
         ...clean({ skip: input?.skip, take: input?.take }),

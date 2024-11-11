@@ -41,13 +41,13 @@ export class ProductFieldResolver {
   }
 
   @ResolveField('assets')
-  async assets(@Parent() product: Product, @Args('input') input: ListInput) {
+  async assets(@Parent() product: Product, @Args('input') input?: ListInput) {
     const [result, count] = await Promise.all([
       this.prisma.productAsset.findMany({
         where: { productId: product.id },
         include: { asset: true },
         orderBy: { order: 'asc' },
-        ...clean(input)
+        ...clean(input ?? {})
       }),
       this.prisma.productAsset.count({ where: { productId: product.id } })
     ]);

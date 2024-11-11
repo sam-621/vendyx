@@ -14,15 +14,15 @@ export class ProductResolver {
   ) {}
 
   @Query('products')
-  async products(@Args('input') input: ProductListInput) {
+  async products(@Args('input') input?: ProductListInput) {
     const [result, total] = await Promise.all([
       this.productService.find({
         ...input,
-        filters: { ...input.filters, enabled: { equals: true } }
+        filters: { ...input?.filters, enabled: { equals: true } }
       }),
       this.productService.count({
         ...input,
-        filters: { ...input.filters, enabled: { equals: true } }
+        filters: { ...input?.filters, enabled: { equals: true } }
       })
     ]);
 
