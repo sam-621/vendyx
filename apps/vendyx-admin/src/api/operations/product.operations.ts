@@ -5,7 +5,6 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
     id
     createdAt
     name
-    slug
     description
     enabled
     variants {

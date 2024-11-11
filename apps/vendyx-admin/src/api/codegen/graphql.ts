@@ -57,6 +57,10 @@ export type Asset = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type AssetInCollectionInput = {
+  id: Scalars['ID']['input'];
+};
+
 export type AssetInProductInput = {
   id: Scalars['ID']['input'];
   order: Scalars['Int']['input'];
@@ -82,6 +86,55 @@ export type CheckoutSession = {
   sessionId: Scalars['String']['output'];
 };
 
+/** A collection is a group of products that are displayed together in the storefront. */
+export type Collection = Node & {
+  __typename?: 'Collection';
+  assets: AssetList;
+  createdAt: Scalars['Date']['output'];
+  /** The collection's description */
+  description: Scalars['String']['output'];
+  /** The collection's order user to decide to show the collection in the storefront */
+  enabled: Scalars['Boolean']['output'];
+  id: Scalars['ID']['output'];
+  /** The collection's name */
+  name: Scalars['String']['output'];
+  products: ProductList;
+  /** The collection's slug used in the URL */
+  slug: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+};
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionAssetsArgs = {
+  input?: InputMaybe<ListInput>;
+};
+
+/** A collection is a group of products that are displayed together in the storefront. */
+export type CollectionProductsArgs = {
+  input?: InputMaybe<ProductListInput>;
+};
+
+export type CollectionFilters = {
+  enabled?: InputMaybe<BooleanFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type CollectionList = List & {
+  __typename?: 'CollectionList';
+  count: Scalars['Int']['output'];
+  items: Array<Collection>;
+  pageInfo: PageInfo;
+};
+
+export type CollectionListInput = {
+  /** Filters to apply */
+  filters?: InputMaybe<CollectionFilters>;
+  /** Skip the first n results */
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  /** takes n result from where the skip position is */
+  take?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type Country = Node & {
   __typename?: 'Country';
   createdAt: Scalars['Date']['output'];
@@ -94,6 +147,14 @@ export type Country = Node & {
 export type CreateCheckoutSessionInput = {
   lookupKey: Scalars['String']['input'];
   userId: Scalars['ID']['input'];
+};
+
+export type CreateCollectionInput = {
+  assets?: InputMaybe<Array<AssetInCollectionInput>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  products?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 export type CreateOptionInput = {
@@ -265,6 +326,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   cancelOrder: OrderResult;
   createCheckoutSession: CheckoutSession;
+  createCollection: Collection;
   createOption: Option;
   createPaymentMethod: PaymentMethod;
   createProduct: Product;
@@ -276,6 +338,7 @@ export type Mutation = {
   generateUserAccessToken: UserAccessTokenResult;
   markOrderAsDelivered: OrderResult;
   markOrderAsShipped: OrderResult;
+  removeCollection: Scalars['Boolean']['output'];
   removePaymentMethod: Scalars['Boolean']['output'];
   removeShippingMethod: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
@@ -283,6 +346,7 @@ export type Mutation = {
   softRemoveOptionValues: Scalars['Boolean']['output'];
   softRemoveProduct: Scalars['Boolean']['output'];
   softRemoveVariant: Variant;
+  updateCollection: Collection;
   updateCustomer: CustomerResult;
   updateOption: Option;
   updatePaymentMethod: PaymentMethod;
@@ -299,6 +363,10 @@ export type MutationCancelOrderArgs = {
 
 export type MutationCreateCheckoutSessionArgs = {
   input: CreateCheckoutSessionInput;
+};
+
+export type MutationCreateCollectionArgs = {
+  input: CreateCollectionInput;
 };
 
 export type MutationCreateOptionArgs = {
@@ -348,6 +416,10 @@ export type MutationMarkOrderAsShippedArgs = {
   input: MarkOrderAsShippedInput;
 };
 
+export type MutationRemoveCollectionArgs = {
+  id: Scalars['ID']['input'];
+};
+
 export type MutationRemovePaymentMethodArgs = {
   id: Scalars['ID']['input'];
 };
@@ -374,6 +446,11 @@ export type MutationSoftRemoveProductArgs = {
 
 export type MutationSoftRemoveVariantArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type MutationUpdateCollectionArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateCollectionInput;
 };
 
 export type MutationUpdateCustomerArgs = {
@@ -677,6 +754,8 @@ export type ProductListInput = {
 
 export type Query = {
   __typename?: 'Query';
+  collection?: Maybe<Collection>;
+  collections: CollectionList;
   countries: Array<Country>;
   customer?: Maybe<Customer>;
   customers: CustomerList;
@@ -698,6 +777,14 @@ export type Query = {
   variant?: Maybe<Variant>;
   zone: Zone;
   zones: Array<Zone>;
+};
+
+export type QueryCollectionArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type QueryCollectionsArgs = {
+  input?: InputMaybe<CollectionListInput>;
 };
 
 export type QueryCustomerArgs = {
@@ -875,6 +962,14 @@ export enum SubscriptionStatus {
   Unpaid = 'UNPAID'
 }
 
+export type UpdateCollectionInput = {
+  assets?: InputMaybe<Array<AssetInCollectionInput>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  products?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
 export type UpdateCustomerInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1050,6 +1145,29 @@ export type Zone = Node & {
   shippingMethods: Array<ShippingMethod>;
   states: Array<State>;
   updatedAt: Scalars['Date']['output'];
+};
+
+export type GetAllCollectionsQueryVariables = Exact<{
+  input?: InputMaybe<CollectionListInput>;
+}>;
+
+export type GetAllCollectionsQuery = {
+  __typename?: 'Query';
+  collections: {
+    __typename?: 'CollectionList';
+    items: Array<{
+      __typename?: 'Collection';
+      id: string;
+      name: string;
+      slug: string;
+      enabled: boolean;
+      assets: {
+        __typename?: 'AssetList';
+        items: Array<{ __typename?: 'Asset'; id: string; source: string }>;
+      };
+      products: { __typename?: 'ProductList'; count: number };
+    }>;
+  };
 };
 
 export type CommonCountryFragment = {
@@ -1466,7 +1584,6 @@ export type CommonProductFragment = {
   id: string;
   createdAt: any;
   name: string;
-  slug: string;
   description?: string | null;
   enabled: boolean;
   variants: {
@@ -1961,7 +2078,6 @@ export const CommonProductFragmentDoc = new TypedDocumentString(
   id
   createdAt
   name
-  slug
   description
   enabled
   variants {
@@ -2052,6 +2168,27 @@ export const CommonZoneFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonZone' }
 ) as unknown as TypedDocumentString<CommonZoneFragment, unknown>;
+export const GetAllCollectionsDocument = new TypedDocumentString(`
+    query GetAllCollections($input: CollectionListInput) {
+  collections(input: $input) {
+    items {
+      id
+      name
+      slug
+      enabled
+      assets(input: {take: 1}) {
+        items {
+          id
+          source
+        }
+      }
+      products {
+        count
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetAllCollectionsQuery, GetAllCollectionsQueryVariables>;
 export const GetCountriesDocument = new TypedDocumentString(`
     query GetCountries {
   countries {
@@ -2454,7 +2591,6 @@ export const GetProductDocument = new TypedDocumentString(`
   id
   createdAt
   name
-  slug
   description
   enabled
   variants {
