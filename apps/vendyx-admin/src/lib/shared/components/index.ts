@@ -1,6 +1,7 @@
 export * from './data-table';
 export * from './dropzone';
 export * from './empty-states';
+export * from './entity-selector';
 export * from './file-uploader';
 export * from './illustrations';
 export * from './items-table';
