@@ -31,7 +31,8 @@
     "simple-import-sort/exports": "error",
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "@typescript-eslint/unbound-method": "off",
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "react-hooks/exhaustive-deps": "off"
   },
   "overrides": [
     {
