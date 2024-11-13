@@ -54,10 +54,7 @@ export const ZoneCountriesSelector = () => {
         </DialogHeader>
         <div className="flex flex-col gap-6">
           <div className="px-6">
-            <Input
-              // onChange={e => setSearchValue(e.target.value)}
-              placeholder="Search country..."
-            />
+            <Input placeholder="Search country..." />
           </div>
           <div>
             <div
@@ -107,8 +104,6 @@ export const ZoneCountriesSelector = () => {
                                 setSelectedStates(selectedStates.filter(s => s.id !== state.id));
                               }
                             }}
-                            // defaultChecked={selectedIds.includes(country.id)}
-                            // onCheckedChange={handleCheck(country.id)}
                           />
                           <p>{state.name}</p>
                         </label>
