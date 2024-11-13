@@ -31,21 +31,16 @@ export const ItemsTable = <T,>({
   title,
   headers,
   items,
-  renderBody,
-  onSearch,
-  onPaginate,
+  renderRow,
+  onChange,
   isLoading,
   emptyState
 }: Props<T>) => {
   const { page, search, handleSearch, nextPage, prevPage } = usePagination();
 
   useEffect(() => {
-    onSearch?.(search);
-  }, [search]);
-
-  useEffect(() => {
-    onPaginate?.(page);
-  }, [page]);
+    onChange?.(page, search);
+  }, [search, page]);
 
   return (
     <Card>
@@ -87,7 +82,7 @@ export const ItemsTable = <T,>({
           <TableBody>
             {!items.length
               ? emptyState ?? <ItemsTableEmptyState />
-              : items.map(item => renderBody(item))}
+              : items.map(item => renderRow(item))}
           </TableBody>
         </Table>
       </CardContent>
@@ -99,9 +94,11 @@ type Props<T> = {
   title: string;
   headers: string[];
   items: T[];
-  renderBody: (row: T) => ReactElement;
+  renderRow: (row: T) => ReactElement;
   onSearch?: (search: string) => void;
   onPaginate?: (page: number) => void;
+  // change both search and paginate
+  onChange?: (page: number, search: string) => void;
   isLoading?: boolean;
   emptyState?: ReactNode;
 };

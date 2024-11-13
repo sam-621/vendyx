@@ -3,6 +3,7 @@ export * from './dropzone';
 export * from './empty-states';
 export * from './file-uploader';
 export * from './illustrations';
+export * from './items-table';
 export * from './layout';
 export * from './logo';
 export * from './placeholders';
