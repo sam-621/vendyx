@@ -13,14 +13,15 @@ export const COMMON_COLLECTION_FRAGMENT = graphql(`
         source
       }
     }
-    products {
-      items {
-        id
-        name
-        slug
-        enabled
-      }
-    }
+  }
+`);
+
+export const COMMON_COLLECTION_PRODUCT_FRAGMENT = graphql(`
+  fragment CommonCollectionProduct on Product {
+    id
+    name
+    slug
+    enabled
   }
 `);
 
@@ -53,6 +54,19 @@ export const GET_COLLECTION_BY_ID_QUERY = graphql(`
   query GetCollection($id: ID) {
     collection(id: $id) {
       ...CommonCollection
+    }
+  }
+`);
+
+export const GET_ALL_COLLECTION_PRODUCTS_QUERY = graphql(`
+  query GetCollectionProducts($id: ID, $input: ProductListInput) {
+    collection(id: $id) {
+      products(input: $input) {
+        count
+        items {
+          ...CommonCollectionProduct
+        }
+      }
     }
   }
 `);

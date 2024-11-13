@@ -32,28 +32,6 @@ export const useCustomerOrdersTable = () => {
     setIsLoading(false);
   }, []);
 
-  // useEffect(() => {
-  //   void (async () => {
-  //     setIsLoading(true);
-  //     const searchParams = new URLSearchParams({
-  //       page: page.toString(),
-  //       size: PAGINATION_PAGE_SIZE.toString(),
-  //       search,
-  //       customerId: customer.id
-  //     });
-
-  //     const { data: orders } = await restFetcher<InternalApiOrders>('/customer/orders', {
-  //       queryParams: searchParams,
-  //       internal: true,
-  //       tags: ['client-customer-orders', customer.id]
-  //     });
-
-  //     setOrders(orders);
-  //     setIsLoading(false);
-  //   })();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [search, page]);
-
   return {
     isLoading,
     fetchOrders,

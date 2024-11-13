@@ -33,6 +33,7 @@ export const ItemsTable = <T,>({
   items,
   renderRow,
   onChange,
+  action,
   isLoading,
   emptyState
 }: Props<T>) => {
@@ -46,7 +47,10 @@ export const ItemsTable = <T,>({
     <Card>
       <CardHeader className="flex flex-row justify-between items-center space-y-0">
         <CardTitle>{title}</CardTitle>
-        {isLoading && <Loader2Icon size={16} className="animate-spin" />}
+        <div className="flex items-center gap-2">
+          {isLoading && <Loader2Icon size={16} className="animate-spin" />}
+          {action}
+        </div>
       </CardHeader>
 
       <CardContent>
@@ -95,10 +99,8 @@ type Props<T> = {
   headers: string[];
   items: T[];
   renderRow: (row: T) => ReactElement;
-  onSearch?: (search: string) => void;
-  onPaginate?: (page: number) => void;
-  // change both search and paginate
-  onChange?: (page: number, search: string) => void;
+  onChange: (page: number, search: string) => void;
+  action?: ReactNode;
   isLoading?: boolean;
   emptyState?: ReactNode;
 };

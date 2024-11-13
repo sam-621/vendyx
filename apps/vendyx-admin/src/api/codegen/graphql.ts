@@ -1157,17 +1157,15 @@ export type CommonCollectionFragment = {
     __typename?: 'AssetList';
     items: Array<{ __typename?: 'Asset'; id: string; name: string; source: string }>;
   };
-  products: {
-    __typename?: 'ProductList';
-    items: Array<{
-      __typename?: 'Product';
-      id: string;
-      name: string;
-      slug: string;
-      enabled: boolean;
-    }>;
-  };
 } & { ' $fragmentName'?: 'CommonCollectionFragment' };
+
+export type CommonCollectionProductFragment = {
+  __typename?: 'Product';
+  id: string;
+  name: string;
+  slug: string;
+  enabled: boolean;
+} & { ' $fragmentName'?: 'CommonCollectionProductFragment' };
 
 export type GetAllCollectionsQueryVariables = Exact<{
   input?: InputMaybe<CollectionListInput>;
@@ -1204,6 +1202,27 @@ export type GetCollectionQuery = {
         ' $fragmentRefs'?: { CommonCollectionFragment: CommonCollectionFragment };
       })
     | null;
+};
+
+export type GetCollectionProductsQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+  input?: InputMaybe<ProductListInput>;
+}>;
+
+export type GetCollectionProductsQuery = {
+  __typename?: 'Query';
+  collection?: {
+    __typename?: 'Collection';
+    products: {
+      __typename?: 'ProductList';
+      count: number;
+      items: Array<
+        { __typename?: 'Product' } & {
+          ' $fragmentRefs'?: { CommonCollectionProductFragment: CommonCollectionProductFragment };
+        }
+      >;
+    };
+  } | null;
 };
 
 export type CreateCollectionMutationVariables = Exact<{
@@ -2000,18 +2019,21 @@ export const CommonCollectionFragmentDoc = new TypedDocumentString(
       source
     }
   }
-  products {
-    items {
-      id
-      name
-      slug
-      enabled
-    }
-  }
 }
     `,
   { fragmentName: 'CommonCollection' }
 ) as unknown as TypedDocumentString<CommonCollectionFragment, unknown>;
+export const CommonCollectionProductFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonCollectionProduct on Product {
+  id
+  name
+  slug
+  enabled
+}
+    `,
+  { fragmentName: 'CommonCollectionProduct' }
+) as unknown as TypedDocumentString<CommonCollectionProductFragment, unknown>;
 export const CommonCountryFragmentDoc = new TypedDocumentString(
   `
     fragment CommonCountry on Country {
@@ -2297,15 +2319,27 @@ export const GetCollectionDocument = new TypedDocumentString(`
       source
     }
   }
-  products {
-    items {
-      id
-      name
-      slug
-      enabled
+}`) as unknown as TypedDocumentString<GetCollectionQuery, GetCollectionQueryVariables>;
+export const GetCollectionProductsDocument = new TypedDocumentString(`
+    query GetCollectionProducts($id: ID, $input: ProductListInput) {
+  collection(id: $id) {
+    products(input: $input) {
+      count
+      items {
+        ...CommonCollectionProduct
+      }
     }
   }
-}`) as unknown as TypedDocumentString<GetCollectionQuery, GetCollectionQueryVariables>;
+}
+    fragment CommonCollectionProduct on Product {
+  id
+  name
+  slug
+  enabled
+}`) as unknown as TypedDocumentString<
+  GetCollectionProductsQuery,
+  GetCollectionProductsQueryVariables
+>;
 export const CreateCollectionDocument = new TypedDocumentString(`
     mutation CreateCollection($input: CreateCollectionInput!) {
   createCollection(input: $input) {
