@@ -27,6 +27,7 @@ export const EntitySelector = <T,>({
   renderItem,
   onDone,
   onSearch,
+  isLoading,
   description,
   searchPlaceholder = 'Search...'
 }: Props<T>) => {
@@ -51,7 +52,7 @@ export const EntitySelector = <T,>({
             <div
               className={cn('border-y h-[calc(80px*2)] lg:h-[calc(80px*5)]', 'overflow-y-scroll')}
             >
-              {items.map(item => renderItem?.(item))}
+              {isLoading ? <p>Loading...</p> : items.map(item => renderItem?.(item))}
             </div>
           </div>
         </div>
@@ -75,6 +76,7 @@ type Props<T> = {
   triggerText: string;
   onDone: () => void;
   items: T[];
+  isLoading: boolean;
   renderItem: (item: T) => ReactElement;
   onSearch: (query: string) => void;
   description?: string;

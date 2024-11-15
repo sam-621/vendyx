@@ -86,8 +86,12 @@ const documents = {
     types.RemovePaymentMethodDocument,
   '\n  fragment CommonProduct on Product {\n    id\n    createdAt\n    name\n    description\n    enabled\n    variants {\n      items {\n        id\n        salePrice\n        sku\n        stock\n        comparisonPrice\n        costPerUnit\n        requiresShipping\n        optionValues {\n          id\n          name\n        }\n        asset {\n          id\n          source\n        }\n      }\n    }\n    options {\n      id\n      name\n      values {\n        id\n        name\n      }\n    }\n    assets {\n      items {\n        id\n        name\n        source\n        order\n      }\n    }\n  }\n':
     types.CommonProductFragmentDoc,
+  '\n  fragment CommonProductForSelector on Product {\n    id\n    name\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n':
+    types.CommonProductForSelectorFragmentDoc,
   '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n':
     types.GetProductsDocument,
+  '\n  query GetProductsForSelector($input: ProductListInput) {\n    products(input: $input) {\n      items {\n        ...CommonProductForSelector\n      }\n    }\n  }\n':
+    types.GetProductsForSelectorDocument,
   '\n  query GetProduct($id: ID) {\n    product(id: $id) {\n      ...CommonProduct\n    }\n  }\n':
     types.GetProductDocument,
   '\n  mutation CreateProduct($input: CreateProductInput!) {\n    createProduct(input: $input) {\n      id\n    }\n  }\n':
@@ -367,8 +371,20 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: '\n  fragment CommonProductForSelector on Product {\n    id\n    name\n    assets(input: { take: 1 }) {\n      items {\n        id\n        source\n      }\n    }\n  }\n'
+): typeof import('./graphql').CommonProductForSelectorFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: '\n  query GetProducts($input: ProductListInput) {\n    products(input: $input) {\n      count\n      pageInfo {\n        total\n      }\n      items {\n        id\n        createdAt\n        name\n        slug\n        enabled\n        variants {\n          items {\n            id\n            sku\n            stock\n            salePrice\n          }\n        }\n        assets(input: { take: 1 }) {\n          items {\n            id\n            source\n          }\n        }\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetProductsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query GetProductsForSelector($input: ProductListInput) {\n    products(input: $input) {\n      items {\n        ...CommonProductForSelector\n      }\n    }\n  }\n'
+): typeof import('./graphql').GetProductsForSelectorDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

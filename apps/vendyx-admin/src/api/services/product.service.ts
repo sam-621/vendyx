@@ -7,6 +7,7 @@ import {
 import {
   COMMON_PRODUCT_FRAGMENT,
   CREATE_PRODUCT_MUTATION,
+  GET_ALL_PRODUCTS_FOR_SELECTOR_QUERY,
   GET_ALL_PRODUCTS_QUERY,
   GET_PRODUCT_BY_ID_QUERY,
   REMOVE_PRODUCT_MUTATION,
@@ -17,6 +18,7 @@ import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 export const ProductService = {
   Tags: {
     products: 'products',
+    products_for_selector: 'products-for-selector',
     product: (id: string) => `product-${id}`
   },
 
@@ -28,6 +30,16 @@ export const ProductService = {
     );
 
     return products;
+  },
+
+  async getAllForSelector() {
+    const result = await serviceGqlFetcher(
+      GET_ALL_PRODUCTS_FOR_SELECTOR_QUERY,
+      { input: { filters: { enabled: { equals: true } } } },
+      { tags: [ProductService.Tags.products_for_selector] }
+    );
+
+    return result.products.items.map(product => getFragmentData(COMMON_PRODUCT_FRAGMENT, product));
   },
 
   async getById(id: string) {

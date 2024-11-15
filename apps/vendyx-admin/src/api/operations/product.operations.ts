@@ -45,6 +45,19 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
   }
 `);
 
+export const CommonProductForSelector = graphql(`
+  fragment CommonProductForSelector on Product {
+    id
+    name
+    assets(input: { take: 1 }) {
+      items {
+        id
+        source
+      }
+    }
+  }
+`);
+
 export const GET_ALL_PRODUCTS_QUERY = graphql(`
   query GetProducts($input: ProductListInput) {
     products(input: $input) {
@@ -72,6 +85,16 @@ export const GET_ALL_PRODUCTS_QUERY = graphql(`
             source
           }
         }
+      }
+    }
+  }
+`);
+
+export const GET_ALL_PRODUCTS_FOR_SELECTOR_QUERY = graphql(`
+  query GetProductsForSelector($input: ProductListInput) {
+    products(input: $input) {
+      items {
+        ...CommonProductForSelector
       }
     }
   }

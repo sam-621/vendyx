@@ -1,9 +1,10 @@
 import { type FC } from 'react';
 
 import { type CommonCollectionFragment } from '@/api/types';
-import { Button, ItemsTable } from '@/lib/shared/components';
+import { ItemsTable } from '@/lib/shared/components';
 import { useBase } from '@/lib/shared/hooks';
 
+import { CollectionProductSelector } from '../collection-product-selector';
 import { CollectionProductsTableRow } from './collection-products-table-row';
 import { useCollectionProductsTable } from './use-collection-products-table';
 
@@ -21,11 +22,7 @@ export const CollectionProductsTable: FC<Props> = ({ collection }) => {
       renderRow={product => (
         <CollectionProductsTableRow key={product.id} product={product} base={base} />
       )}
-      action={
-        <Button variant="ghost" size="sm">
-          Add products
-        </Button>
-      }
+      action={<CollectionProductSelector />}
     />
   );
 };
