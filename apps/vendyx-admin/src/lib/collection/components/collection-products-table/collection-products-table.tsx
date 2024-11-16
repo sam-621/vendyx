@@ -22,7 +22,13 @@ export const CollectionProductsTable: FC<Props> = ({ collection }) => {
       renderRow={product => (
         <CollectionProductsTableRow key={product.id} product={product} base={base} />
       )}
-      action={<CollectionProductSelector />}
+      action={
+        <CollectionProductSelector
+          collectionId={collection.id}
+          defaultProducts={products}
+          onFinishSelection={async () => await fetchProducts(1, '')}
+        />
+      }
     />
   );
 };

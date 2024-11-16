@@ -12,6 +12,7 @@ export const useCollectionProductsTable = (collectionId: ID) => {
 
   const fetchProducts = useCallback(async (page: number, search: string) => {
     setIsLoading(true);
+
     const searchParams = new URLSearchParams({
       page: page.toString(),
       size: PAGINATION_PAGE_SIZE.toString(),

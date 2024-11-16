@@ -34,6 +34,7 @@ export const ItemsTable = <T,>({
   renderRow,
   onChange,
   action,
+  actionFallback,
   isLoading,
   emptyState
 }: Props<T>) => {
@@ -49,7 +50,7 @@ export const ItemsTable = <T,>({
         <CardTitle>{title}</CardTitle>
         <div className="flex items-center gap-2">
           {isLoading && <Loader2Icon size={16} className="animate-spin" />}
-          {action}
+          {actionFallback && isLoading ? actionFallback : action}
         </div>
       </CardHeader>
 
@@ -101,6 +102,7 @@ type Props<T> = {
   renderRow: (row: T) => ReactElement;
   onChange: (page: number, search: string) => void;
   action?: ReactNode;
+  actionFallback?: ReactNode;
   isLoading?: boolean;
   emptyState?: ReactNode;
 };

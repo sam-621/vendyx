@@ -4,12 +4,18 @@ import { Checkbox } from '../ui';
 
 export const DefaultEntitySelectorRow: FC<Props> = ({ label, checked, onCheckedChange }) => {
   return (
-    <div className="flex items-center border-b pl-6 w-full sticky top-0 bg-background">
-      <Checkbox checked={checked} onCheckedChange={onCheckedChange} />
-      <div className="flex items-center gap-4 px-6 py-4 cursor-pointer">
-        <p>{label}</p>
-      </div>
-    </div>
+    <label
+      htmlFor={`state-${label}`}
+      className="flex items-center gap-4 py-4 hover:bg-muted cursor-pointer border-b"
+    >
+      <Checkbox
+        id={`state-${label}`}
+        className="ml-8"
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+      />
+      <p>{label}</p>
+    </label>
   );
 };
 

@@ -33,7 +33,7 @@ export const ZoneCountriesSelector = () => {
       description="Add countries to your zone"
       triggerText="Add countries"
       items={countries}
-      isLoading={false}
+      isFetching={false}
       onDone={() => setValue('states', selectedStates)}
       onSearch={query => console.log(query)}
       renderItem={country => (

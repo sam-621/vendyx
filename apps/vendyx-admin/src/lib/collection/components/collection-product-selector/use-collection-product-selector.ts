@@ -6,11 +6,12 @@ import { type InternalApiResponse } from '@/api/utils';
 
 export const useCollectionProductSelector = () => {
   const [products, setProducts] = useState<CommonProductForSelectorFragment[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
+  const [refetch, setRefetch] = useState(0);
 
   useEffect(() => {
     void (async () => {
-      setIsLoading(true);
+      setIsFetching(true);
 
       const result = await restFetcher<InternalApiProductsForSelector>('/product', {
         tags: ['products-for-selector'],
@@ -18,13 +19,14 @@ export const useCollectionProductSelector = () => {
       });
 
       setProducts(result.data);
-      setIsLoading(false);
+      setIsFetching(false);
     })();
-  }, []);
+  }, [refetch]);
 
   return {
-    isLoading,
-    products
+    isFetching,
+    products,
+    refetch: () => setRefetch(refetch + 1)
   };
 };
 

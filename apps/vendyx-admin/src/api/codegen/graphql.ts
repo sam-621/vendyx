@@ -1153,6 +1153,7 @@ export type CommonCollectionFragment = {
   name: string;
   description: string;
   enabled: boolean;
+  products: { __typename?: 'ProductList'; items: Array<{ __typename?: 'Product'; id: string }> };
   assets: {
     __typename?: 'AssetList';
     items: Array<{ __typename?: 'Asset'; id: string; name: string; source: string }>;
@@ -2038,6 +2039,11 @@ export const CommonCollectionFragmentDoc = new TypedDocumentString(
   name
   description
   enabled
+  products {
+    items {
+      id
+    }
+  }
   assets(input: {take: 1}) {
     items {
       id
@@ -2353,6 +2359,11 @@ export const GetCollectionDocument = new TypedDocumentString(`
   name
   description
   enabled
+  products {
+    items {
+      id
+    }
+  }
   assets(input: {take: 1}) {
     items {
       id

@@ -6,6 +6,11 @@ export const COMMON_COLLECTION_FRAGMENT = graphql(`
     name
     description
     enabled
+    products {
+      items {
+        id
+      }
+    }
     assets(input: { take: 1 }) {
       items {
         id

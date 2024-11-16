@@ -1,4 +1,6 @@
-import { type ReactElement } from 'react';
+'use client';
+
+import { type ReactElement, useState } from 'react';
 
 import { PlusIcon } from 'lucide-react';
 
@@ -27,14 +29,21 @@ export const EntitySelector = <T,>({
   renderItem,
   onDone,
   onSearch,
-  isLoading,
+  isFetching,
+  isDoneAPromise,
   description,
+  disabled,
   searchPlaceholder = 'Search...'
 }: Props<T>) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const close = () => setIsOpen(false);
+
   return (
-    <Dialog>
+    <Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="text-distinct" variant="link" type="button">
+        <Button className="text-distinct" variant="link" type="button" disabled={disabled}>
           <PlusIcon size={16} />
           {triggerText}
         </Button>
@@ -52,7 +61,7 @@ export const EntitySelector = <T,>({
             <div
               className={cn('border-y h-[calc(80px*2)] lg:h-[calc(80px*5)]', 'overflow-y-scroll')}
             >
-              {isLoading ? <p>Loading...</p> : items.map(item => renderItem?.(item))}
+              {isFetching ? <p>Loading...</p> : items.map(item => renderItem?.(item))}
             </div>
           </div>
         </div>
@@ -62,9 +71,22 @@ export const EntitySelector = <T,>({
               Cancel
             </Button>
           </DialogClose>
-          <DialogClose asChild>
-            <Button onClick={onDone}>Done</Button>
-          </DialogClose>
+          {isDoneAPromise ? (
+            <Button
+              onClick={async () => {
+                setIsLoading(true);
+                await onDone(close);
+                setIsLoading(false);
+              }}
+              isLoading={isLoading}
+            >
+              Done
+            </Button>
+          ) : (
+            <DialogClose asChild>
+              <Button onClick={async () => await onDone(close)}>Done</Button>
+            </DialogClose>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -74,11 +96,17 @@ export const EntitySelector = <T,>({
 type Props<T> = {
   title: string;
   triggerText: string;
-  onDone: () => void;
+  onDone: (close: () => void) => Promise<void> | void;
   items: T[];
-  isLoading: boolean;
+  isFetching: boolean;
   renderItem: (item: T) => ReactElement;
   onSearch: (query: string) => void;
+  /**
+   * If true, the dialog will not close when the done button is clicked. It will show a loading spinner instead.
+   * And then you can call close() manually.
+   */
+  isDoneAPromise?: boolean;
+  disabled?: boolean;
   description?: string;
   searchPlaceholder?: string;
 };

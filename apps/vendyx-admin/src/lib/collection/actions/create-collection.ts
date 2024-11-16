@@ -12,12 +12,13 @@ export const createCollection = async (input: Input) => {
     name: input.name,
     description: input.description,
     enabled: input.enabled,
-    assets: image ? [{ id: image[0].id }] : []
+    assets: image ? [{ id: image[0].id }] : [],
+    products: input.products
   });
 
   redirect(`${collection.id}`);
 };
 
-type Input = Pick<CreateCollectionInput, 'name' | 'description' | 'enabled'> & {
+type Input = Pick<CreateCollectionInput, 'name' | 'description' | 'enabled' | 'products'> & {
   image: FormData;
 };
