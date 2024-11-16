@@ -45,7 +45,7 @@ export const COMMON_PRODUCT_FRAGMENT = graphql(`
   }
 `);
 
-export const CommonProductForSelector = graphql(`
+export const COMMON_PRODUCT_FOR_SELECTOR = graphql(`
   fragment CommonProductForSelector on Product {
     id
     name

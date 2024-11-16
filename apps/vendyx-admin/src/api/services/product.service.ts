@@ -5,6 +5,7 @@ import {
   type UpdateProductInput
 } from '../codegen/graphql';
 import {
+  COMMON_PRODUCT_FOR_SELECTOR,
   COMMON_PRODUCT_FRAGMENT,
   CREATE_PRODUCT_MUTATION,
   GET_ALL_PRODUCTS_FOR_SELECTOR_QUERY,
@@ -39,7 +40,9 @@ export const ProductService = {
       { tags: [ProductService.Tags.products_for_selector] }
     );
 
-    return result.products.items.map(product => getFragmentData(COMMON_PRODUCT_FRAGMENT, product));
+    return result.products.items.map(product =>
+      getFragmentData(COMMON_PRODUCT_FOR_SELECTOR, product)
+    );
   },
 
   async getById(id: string) {
