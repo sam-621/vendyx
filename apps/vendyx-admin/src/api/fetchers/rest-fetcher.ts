@@ -9,7 +9,7 @@
  */
 export const restFetcher = async <R>(url: string, options?: RestFetcherOptions) => {
   const queryParams = options?.queryParams ? `?${options.queryParams.toString()}` : '';
-  const baseUrl = options?.internal ? '/api' : process.env.VENDYX_ADMIN_BASE_API_URL;
+  const baseUrl = options?.internal ? '/api' : process.env.VENDYX_API_URL;
 
   const result = await fetch(`${baseUrl}${url}${queryParams}`, {
     method: options?.method ?? 'GET',

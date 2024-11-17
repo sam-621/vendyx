@@ -9,7 +9,7 @@ export const gqlFetcher = async <R, V>(
   options?: GqlFetcherOptions
 ): Promise<R> => {
   try {
-    const result = await fetch(`${process.env.VENDYX_ADMIN_BASE_API_URL}/admin-api`, {
+    const result = await fetch(`${process.env.VENDYX_API_URL}/admin-api`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
