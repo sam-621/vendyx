@@ -42,37 +42,44 @@ export const OrderItemsTable: FC<Props> = ({ order }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {lines.map(line => (
-              <TableRow key={line.id}>
-                <TableCell className="flex items-center gap-2 w-max">
-                  {line.productVariant.asset?.source ? (
-                    <img
-                      src={line.productVariant.asset.source}
-                      alt={line.productVariant.product.name}
-                      className="h-12 w-12 object-cover rounded-md"
-                    />
-                  ) : (
-                    <ImagePlaceholder initial={line.productVariant.product.name} />
-                  )}
-                  <div
-                    className={cn(
-                      'flex flex-col justify-between',
-                      line.productVariant.optionValues.length && 'h-12'
+            {lines.map(line => {
+              const productImage = line.productVariant.product.assets.items[0]?.source;
+              const variantImage = line.productVariant.asset?.source;
+
+              const itemImage = variantImage ?? productImage;
+
+              return (
+                <TableRow key={line.id}>
+                  <TableCell className="flex items-center gap-2 w-max">
+                    {itemImage ? (
+                      <img
+                        src={itemImage}
+                        alt={line.productVariant.product.name}
+                        className="h-12 w-12 object-cover rounded-md"
+                      />
+                    ) : (
+                      <ImagePlaceholder initial={line.productVariant.product.name} />
                     )}
-                  >
-                    <span className="text-nowrap">{line.productVariant.product.name}</span>
-                    {Boolean(line.productVariant.optionValues?.length) && (
-                      <Badge variant="secondary" className="py-0 px-1 w-fit text-xs">
-                        {line.productVariant.optionValues?.map(v => v.name).join(' / ')}
-                      </Badge>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>{formatPrice(line.unitPrice)}</TableCell>
-                <TableCell>{line.quantity}</TableCell>
-                <TableCell>{formatPrice(line.linePrice)}</TableCell>
-              </TableRow>
-            ))}
+                    <div
+                      className={cn(
+                        'flex flex-col justify-between',
+                        line.productVariant.optionValues.length && 'h-12'
+                      )}
+                    >
+                      <span className="text-nowrap">{line.productVariant.product.name}</span>
+                      {Boolean(line.productVariant.optionValues?.length) && (
+                        <Badge variant="secondary" className="py-0 px-1 w-fit text-xs">
+                          {line.productVariant.optionValues?.map(v => v.name).join(' / ')}
+                        </Badge>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>{formatPrice(line.unitPrice)}</TableCell>
+                  <TableCell>{line.quantity}</TableCell>
+                  <TableCell>{formatPrice(line.linePrice)}</TableCell>
+                </TableRow>
+              );
+            })}
 
             <TableRow className="border-transparent">
               <TableCell>Subtotal</TableCell>

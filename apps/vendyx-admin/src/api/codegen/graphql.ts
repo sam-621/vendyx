@@ -787,6 +787,7 @@ export type Query = {
 
 export type QueryCollectionArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryCollectionsArgs = {
@@ -816,6 +817,7 @@ export type QueryPaymentMethodArgs = {
 
 export type QueryProductArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryProductsArgs = {
@@ -1465,7 +1467,15 @@ export type CommonOrderFragment = {
         sku?: string | null;
         optionValues: Array<{ __typename?: 'OptionValue'; id: string; name: string }>;
         asset?: { __typename?: 'Asset'; id: string; source: string } | null;
-        product: { __typename?: 'Product'; name: string; slug: string };
+        product: {
+          __typename?: 'Product';
+          name: string;
+          slug: string;
+          assets: {
+            __typename?: 'AssetList';
+            items: Array<{ __typename?: 'Asset'; id: string; source: string }>;
+          };
+        };
       };
     }>;
   };
@@ -2185,6 +2195,12 @@ export const CommonOrderFragmentDoc = new TypedDocumentString(
         product {
           name
           slug
+          assets(input: {take: 1}) {
+            items {
+              id
+              source
+            }
+          }
         }
       }
     }
@@ -2682,6 +2698,12 @@ export const GetOrderbyIdQueryDocument = new TypedDocumentString(`
         product {
           name
           slug
+          assets(input: {take: 1}) {
+            items {
+              id
+              source
+            }
+          }
         }
       }
     }

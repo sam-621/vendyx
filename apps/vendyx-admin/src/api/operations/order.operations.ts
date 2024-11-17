@@ -29,6 +29,12 @@ export const COMMON_ORDER_FRAGMENT = graphql(`
           product {
             name
             slug
+            assets(input: { take: 1 }) {
+              items {
+                id
+                source
+              }
+            }
           }
         }
       }
