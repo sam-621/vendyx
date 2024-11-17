@@ -34,8 +34,8 @@ export class CollectionService {
     });
   }
 
-  async findById(id: ID, filters?: CollectionFilters) {
-    return this.prisma.collection.findUnique({ where: { id, ...clean(filters ?? {}) } });
+  async findUnique(id: ID, slug: string, filters?: CollectionFilters) {
+    return this.prisma.collection.findUnique({ where: { id, slug, ...clean(filters ?? {}) } });
   }
 
   async create(input: CreateCollectionInput) {

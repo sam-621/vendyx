@@ -4,6 +4,7 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 import { ListResponse, ProductListInput, ShopApiKeyGuard } from '@/api/shared';
 import { ProductService } from '@/business/product';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { ID } from '@/persistance/types';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Product')
@@ -30,7 +31,7 @@ export class ProductResolver {
   }
 
   @Query('product')
-  async product(@Args('id') id: string) {
-    return this.productService.findById(id);
+  async product(@Args('id') id: ID, @Args('slug') slug: string) {
+    return this.productService.findUnique(id, slug, { enabled: { equals: true } });
   }
 }

@@ -26,8 +26,15 @@ export class ProductRepository {
     });
   }
 
-  findBySlug(slug: string, options?: FindOptions) {
-    return this.prisma.product.findUnique({ where: { slug, ...options } });
+  findBySlug(slug: string, filters?: ProductFilters) {
+    return this.prisma.product.findUnique({
+      where: {
+        slug,
+        name: clean(filters?.name ?? {}),
+        archived: clean(filters?.archived ?? {}),
+        enabled: clean(filters?.enabled ?? {})
+      }
+    });
   }
 
   findById(id: string, filters?: ProductFilters) {

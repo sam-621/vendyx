@@ -27,8 +27,8 @@ export class CollectionResolver {
   }
 
   @Query('collection')
-  async collection(@Args('id') id: ID) {
-    return this.collectionService.findById(id);
+  async collection(@Args('id') id: ID, @Args('slug') slug: string) {
+    return this.collectionService.findUnique(id, slug);
   }
 
   @Mutation('createCollection')

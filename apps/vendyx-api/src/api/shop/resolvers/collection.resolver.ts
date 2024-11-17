@@ -21,7 +21,7 @@ export class CollectionResolver {
   }
 
   @Query('collection')
-  async collection(@Args('id') id: ID) {
-    return this.collectionService.findById(id, { enabled: { equals: true } });
+  async collection(@Args('id') id: ID, @Args('slug') slug: string) {
+    return this.collectionService.findUnique(id, slug, { enabled: { equals: true } });
   }
 }

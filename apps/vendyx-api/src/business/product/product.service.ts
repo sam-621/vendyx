@@ -37,8 +37,16 @@ export class ProductService {
     });
   }
 
-  async findById(id: string, filters?: ProductFilters) {
-    return this.productRepository.findById(id, filters);
+  async findUnique(id: string, slug: string, filters?: ProductFilters) {
+    if (id) {
+      return this.productRepository.findById(id, filters);
+    }
+
+    if (slug) {
+      return this.productRepository.findBySlug(slug);
+    }
+
+    return null;
   }
 
   async create(input: CreateProductInput) {

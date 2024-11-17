@@ -10,6 +10,7 @@ import {
 } from '@/api/shared';
 import { ProductService } from '@/business/product';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { ID } from '@/persistance/types';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Product')
@@ -30,8 +31,8 @@ export class ProductResolver {
   }
 
   @Query('product')
-  async product(@Args('id') id: string) {
-    return this.productService.findById(id);
+  async product(@Args('id') id: ID, @Args('slug') slug: string) {
+    return this.productService.findUnique(id, slug);
   }
 
   @Mutation('createProduct')

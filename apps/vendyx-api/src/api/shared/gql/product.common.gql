@@ -39,5 +39,5 @@ type ProductList implements List {
 }
 
 type Query {
-  product(id: ID): Product
+  product(id: ID, slug: String): Product
 }
