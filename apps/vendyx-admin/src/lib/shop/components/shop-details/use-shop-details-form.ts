@@ -10,7 +10,7 @@ import { FormMessages } from '@/lib/shared/form';
 export const useShopDetailsForm = (shop: CommonShopFragment) => {
   const [isLoading, startTransition] = useTransition();
 
-  const form = useForm<FormInput>({
+  const form = useForm<ShopDetailsFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: shop.name,
@@ -18,7 +18,7 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
     }
   });
 
-  async function onSubmit(values: FormInput) {
+  async function onSubmit(values: ShopDetailsFormInput) {
     startTransition(async () => {
       console.log(values);
     });
@@ -33,7 +33,7 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
 
 const schema = z.object({
   name: z.string().min(1, FormMessages.required),
-  shopApiKey: z.string().readonly()
+  shopApiKey: z.string().readonly().optional()
 });
 
-type FormInput = z.infer<typeof schema>;
+export type ShopDetailsFormInput = z.infer<typeof schema>;
