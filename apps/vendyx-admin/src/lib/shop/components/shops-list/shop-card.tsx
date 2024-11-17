@@ -2,10 +2,10 @@
 
 import { type FC, useTransition } from 'react';
 
-import { ChevronRightIcon, Loader2Icon } from 'lucide-react';
+import { ChevronRightIcon } from 'lucide-react';
 
 import { type CommonShopFragment } from '@/api/types';
-import { Label } from '@/lib/shared/components';
+import { Label, LoaderSpiner } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
 import { selectShop } from '../../actions/select-shop';
@@ -42,13 +42,7 @@ export const ShopCard: FC<Props> = ({ shop }) => {
             </Label>
           </div>
         </div>
-        <div>
-          {isLoading ? (
-            <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <ChevronRightIcon size={16} />
-          )}
-        </div>
+        <div>{isLoading ? <LoaderSpiner /> : <ChevronRightIcon size={16} />}</div>
       </article>
     </button>
   );

@@ -5,6 +5,7 @@ import { type ReactElement, useState } from 'react';
 import { PlusIcon } from 'lucide-react';
 
 import { cn } from '../../utils';
+import { LoaderSpiner } from '../loaders';
 import {
   Button,
   Dialog,
@@ -61,7 +62,13 @@ export const EntitySelector = <T,>({
             <div
               className={cn('border-y h-[calc(80px*2)] lg:h-[calc(80px*5)]', 'overflow-y-scroll')}
             >
-              {isFetching ? <p>Loading...</p> : items.map(item => renderItem?.(item))}
+              {isFetching ? (
+                <div className="h-[57px] flex items-center justify-center">
+                  <LoaderSpiner />
+                </div>
+              ) : (
+                items.map(item => renderItem?.(item))
+              )}
             </div>
           </div>
         </div>

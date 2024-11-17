@@ -6,6 +6,7 @@ export * from './file-uploader';
 export * from './illustrations';
 export * from './items-table';
 export * from './layout';
+export * from './loaders';
 export * from './logo';
 export * from './placeholders';
 export * from './remove-entity';

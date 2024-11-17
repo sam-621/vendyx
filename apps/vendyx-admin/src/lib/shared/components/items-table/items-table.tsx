@@ -2,7 +2,7 @@
 
 import { type ReactElement, type ReactNode, useEffect } from 'react';
 
-import { ChevronLeftIcon, ChevronRightIcon, Loader2Icon } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
   Input,
+  LoaderSpiner,
   Table,
   TableBody,
   TableHead,
@@ -49,7 +50,7 @@ export const ItemsTable = <T,>({
       <CardHeader className="flex flex-row justify-between items-center space-y-0">
         <CardTitle>{title}</CardTitle>
         <div className="flex items-center gap-2">
-          {isLoading && <Loader2Icon size={16} className="animate-spin" />}
+          {isLoading && <LoaderSpiner />}
           {actionFallback && isLoading ? actionFallback : action}
         </div>
       </CardHeader>

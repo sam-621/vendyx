@@ -33,10 +33,10 @@ export const ProductService = {
     return products;
   },
 
-  async getAllForSelector() {
+  async getAllForSelector(query: string) {
     const result = await serviceGqlFetcher(
       GET_ALL_PRODUCTS_FOR_SELECTOR_QUERY,
-      { input: { filters: { enabled: { equals: true } } } },
+      { input: { filters: { enabled: { equals: true }, name: { contains: query } }, take: 30 } },
       { tags: [ProductService.Tags.products_for_selector] }
     );
 

@@ -13,7 +13,7 @@ export const CollectionProductSelector: FC<Props> = ({
   defaultProducts,
   onFinishSelection
 }) => {
-  const { products, isFetching } = useCollectionProductSelector();
+  const { products, handleSearch, isFetching } = useCollectionProductSelector();
 
   const [selected, setSelected] = useState<string[]>(defaultProducts.map(p => p.id));
 
@@ -35,7 +35,7 @@ export const CollectionProductSelector: FC<Props> = ({
         onFinishSelection();
         notification.success('Products updated');
       }}
-      onSearch={query => console.log(query)}
+      onSearch={handleSearch}
       renderItem={product => (
         <DefaultEntitySelectorRow
           key={product.id}

@@ -1,7 +1,8 @@
 import { type FC, type ReactNode } from 'react';
 
-import { Loader2Icon, XIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 
+import { LoaderSpiner } from '../loaders';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,7 +39,7 @@ export const RemoveEntityButton: FC<Props> = ({
             Remove
           </Button>
         ) : isLoading ? (
-          <Loader2Icon size={16} className="animate-spin" />
+          <LoaderSpiner />
         ) : (
           <XIcon size={16} className="cursor-pointer" />
         )}

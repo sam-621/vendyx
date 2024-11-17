@@ -1,8 +1,8 @@
 import { type FC, useEffect, useState } from 'react';
 
-import { Loader2Icon, XIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 
-import { Dropzone } from '@/lib/shared/components';
+import { Dropzone, LoaderSpiner } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
 import { useVariantContext } from '../../contexts';
@@ -48,9 +48,7 @@ export const VariantAssetUploader: FC<Props> = ({
             alt="Uploaded"
             className={cn(isLoading && 'opacity-50')}
           />
-          {isLoading && (
-            <Loader2Icon size={24} className={`absolute animate-spin top-1/3 right-1/3`} />
-          )}
+          {isLoading && <LoaderSpiner size={24} className="absolute top-1/3 right-1/3" />}
         </div>
       </div>
     );
