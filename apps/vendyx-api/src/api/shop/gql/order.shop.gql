@@ -11,7 +11,7 @@ type Mutation {
 
 type Query {
   availableShippingMethods(orderId: ID!): [ShippingMethod!]!
-  availablePaymentMethods(orderId: ID!): [PaymentMethod!]!
+  availablePaymentMethods: [PaymentMethod!]!
 }
 
 input CreateOrderInput {
