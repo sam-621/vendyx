@@ -5,6 +5,7 @@ import { type CommonCollectionFragment } from '@/api/types';
 import { CollectionAssetUploader } from '../collection-asset-uploader';
 import { CollectionGeneralInfoCard, CollectionStatusSwitchCard } from '../collection-details-cards';
 import { CollectionProductsTable } from '../collection-products-table';
+import { RemoveCollectionButton } from '../remove-collection';
 
 export const CollectionDetails: FC<Props> = ({ collection }) => {
   return (
@@ -14,11 +15,11 @@ export const CollectionDetails: FC<Props> = ({ collection }) => {
 
         {collection && <CollectionProductsTable collection={collection} />}
 
-        {/* {collection && (
+        {collection && (
           <div className="flex justify-end">
             <RemoveCollectionButton collection={collection} />
           </div>
-        )} */}
+        )}
       </div>
       <div className="col-span-1 flex flex-col gap-6">
         <CollectionStatusSwitchCard />

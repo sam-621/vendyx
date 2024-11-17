@@ -1,10 +1,11 @@
 import { useEffect, useState, useTransition } from 'react';
 
+import { type ID } from '@/api/scalars';
 import { notification } from '@/lib/shared/notifications';
 
-import { removeProduct } from '../../actions/remove-product';
+import { removeCollection } from '../../actions/remove-collection';
 
-export const useRemoveProduct = () => {
+export const useRemoveCollection = () => {
   const [isLoading, startTransition] = useTransition();
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -13,26 +14,20 @@ export const useRemoveProduct = () => {
     // So we put the notification in the cleanup function validating if operation is successful to show notification
     return () => {
       if (isSuccess) {
-        notification.success('Product removed');
+        notification.success('Collection removed');
       }
     };
   }, [isSuccess, isLoading]);
 
-  const exec = async (id: string) => {
+  const exec = async (id: ID) => {
     startTransition(async () => {
-      const result = await removeProduct(id);
-
-      if (result?.error) {
-        notification.error(result.error);
-        return;
-      }
-
+      await removeCollection(id);
       setIsSuccess(true);
     });
   };
 
   return {
     isLoading,
-    removeProduct: exec
+    removeCollection: exec
   };
 };
