@@ -1,11 +1,11 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Query, Resolver } from '@nestjs/graphql';
 
-import { UserJwtAuthGuard } from '@/api/shared';
+import { ShopApiKeyGuard } from '@/api/shared';
 import { CountryService } from '@/business/country';
 import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistance/prisma-clients';
 
-@UseGuards(UserJwtAuthGuard)
+@UseGuards(ShopApiKeyGuard)
 @Resolver('Country')
 export class CountryResolver {
   constructor(
@@ -15,6 +15,6 @@ export class CountryResolver {
 
   @Query('countries')
   async countries() {
-    return this.countryService.find();
+    return this.countryService.findInStore();
   }
 }

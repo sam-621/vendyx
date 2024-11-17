@@ -1,5 +1,6 @@
 import {
   CollectionFieldResolver,
+  CountryFieldResolver,
   CustomerFieldResolver,
   OptionFieldResolver,
   OrderFieldResolver,
@@ -15,5 +16,6 @@ export const COMMON_RESOLVERS = [
   VariantFieldResolver,
   CustomerFieldResolver,
   OptionFieldResolver,
-  CollectionFieldResolver
+  CollectionFieldResolver,
+  CountryFieldResolver
 ];

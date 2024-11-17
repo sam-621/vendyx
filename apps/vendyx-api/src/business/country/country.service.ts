@@ -9,4 +9,8 @@ export class CountryService {
   async find() {
     return this.countryRepository.find();
   }
+
+  async findInStore() {
+    return this.countryRepository.findInStore();
+  }
 }

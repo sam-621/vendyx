@@ -6,7 +6,13 @@ import { BusinessModule } from '@/business';
 import { PaymentModule } from '@/payment';
 import { ShipmentModule } from '@/shipments';
 
-import { CollectionResolver, CustomerResolver, OrderResolver, ProductResolver } from './resolvers';
+import {
+  CollectionResolver,
+  CountryResolver,
+  CustomerResolver,
+  OrderResolver,
+  ProductResolver
+} from './resolvers';
 import { COMMON_RESOLVERS, GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared';
 
 const SHOP_API_SCHEMA_PATH = './src/api/shop/gql/**/*.gql';
@@ -33,7 +39,8 @@ export class ShopApiModule {
     ProductResolver,
     OrderResolver,
     CustomerResolver,
-    CollectionResolver
+    CollectionResolver,
+    CountryResolver
   ]
 })
 class ShopModule {}
