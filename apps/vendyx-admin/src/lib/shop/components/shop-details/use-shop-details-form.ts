@@ -4,16 +4,17 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { type CommonShopFragment } from '@/api/types';
 import { FormMessages } from '@/lib/shared/form';
 
-export const useShopDetailsForm = () => {
+export const useShopDetailsForm = (shop: CommonShopFragment) => {
   const [isLoading, startTransition] = useTransition();
 
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
-      shopApiKey: '1234-5678-9012-3456'
+      name: shop.name,
+      shopApiKey: shop.shopApiKey
     }
   });
 

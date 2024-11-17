@@ -5,6 +5,15 @@ export const COMMON_SHOP_FRAGMENT = graphql(`
     id
     name
     slug
+    shopApiKey
+  }
+`);
+
+export const COMMON_LIST_SHOP_FRAGMENT = graphql(`
+  fragment CommonListShop on Shop {
+    id
+    name
+    slug
   }
 `);
 
@@ -12,13 +21,13 @@ export const GET_SHOPS_QUERY = graphql(`
   query getShops {
     shops {
       items {
-        ...CommonShop
+        ...CommonListShop
       }
     }
   }
 `);
 
-export const GET_SHOP_QUERY = graphql(`
+export const GET_SHOP_BY_SLUG_QUERY = graphql(`
   query Shop($slug: String!) {
     shop(slug: $slug) {
       ...CommonShop

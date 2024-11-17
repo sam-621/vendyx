@@ -1,12 +1,15 @@
 'use client';
 
+import { type FC } from 'react';
+
+import { type CommonShopFragment } from '@/api/types';
 import { CopyToClipboardButton, SettingsPageLayout } from '@/lib/shared/components';
 import { Form, FormInput } from '@/lib/shared/form';
 
 import { useShopDetailsForm } from './use-shop-details-form';
 
-export const ShopDetailsForm = () => {
-  const form = useShopDetailsForm();
+export const ShopDetailsForm: FC<Props> = ({ shop }) => {
+  const form = useShopDetailsForm(shop);
 
   return (
     <SettingsPageLayout title="Store details" subtitle="Update your store settings.">
@@ -20,12 +23,16 @@ export const ShopDetailsForm = () => {
               name="shopApiKey"
               disabled
               isPassword
-              description="This is your shop API key. It is used to authenticate your shop with the API."
-              rightElement={<CopyToClipboardButton variant="outline" value="29164-124124-244" />}
+              description="Use this key to access to the Shop API from your storefront."
+              rightElement={<CopyToClipboardButton variant="outline" value={shop.shopApiKey} />}
             />
           </div>
         </form>
       </Form>
     </SettingsPageLayout>
   );
+};
+
+type Props = {
+  shop: CommonShopFragment;
 };

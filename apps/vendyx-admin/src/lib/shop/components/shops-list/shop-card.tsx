@@ -4,7 +4,7 @@ import { type FC, useTransition } from 'react';
 
 import { ChevronRightIcon } from 'lucide-react';
 
-import { type CommonShopFragment } from '@/api/types';
+import { type CommonListShopFragment } from '@/api/types';
 import { Label, LoaderSpiner } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
@@ -49,5 +49,5 @@ export const ShopCard: FC<Props> = ({ shop }) => {
 };
 
 type Props = {
-  shop: CommonShopFragment;
+  shop: CommonListShopFragment;
 };

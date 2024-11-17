@@ -110,9 +110,11 @@ const documents = {
     types.UpdateShippingMethodDocument,
   '\n  mutation RemoveShippingMethod($id: ID!) {\n    removeShippingMethod(id: $id)\n  }\n':
     types.RemoveShippingMethodDocument,
-  '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n  }\n':
+  '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n    shopApiKey\n  }\n':
     types.CommonShopFragmentDoc,
-  '\n  query getShops {\n    shops {\n      items {\n        ...CommonShop\n      }\n    }\n  }\n':
+  '\n  fragment CommonListShop on Shop {\n    id\n    name\n    slug\n  }\n':
+    types.CommonListShopFragmentDoc,
+  '\n  query getShops {\n    shops {\n      items {\n        ...CommonListShop\n      }\n    }\n  }\n':
     types.GetShopsDocument,
   '\n  query Shop($slug: String!) {\n    shop(slug: $slug) {\n      ...CommonShop\n    }\n  }\n':
     types.ShopDocument,
@@ -443,13 +445,19 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n  }\n'
+  source: '\n  fragment CommonShop on Shop {\n    id\n    name\n    slug\n    shopApiKey\n  }\n'
 ): typeof import('./graphql').CommonShopFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query getShops {\n    shops {\n      items {\n        ...CommonShop\n      }\n    }\n  }\n'
+  source: '\n  fragment CommonListShop on Shop {\n    id\n    name\n    slug\n  }\n'
+): typeof import('./graphql').CommonListShopFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query getShops {\n    shops {\n      items {\n        ...CommonListShop\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GetShopsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

@@ -904,6 +904,8 @@ export type Shop = Node & {
   name: Scalars['String']['output'];
   /** The shop's owner */
   owner: User;
+  /** Api key for other stores to connect to this store */
+  shopApiKey: Scalars['String']['output'];
   /** The shop's slug */
   slug: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
@@ -1839,9 +1841,20 @@ export type RemoveShippingMethodMutation = {
   removeShippingMethod: boolean;
 };
 
-export type CommonShopFragment = { __typename?: 'Shop'; id: string; name: string; slug: string } & {
-  ' $fragmentName'?: 'CommonShopFragment';
-};
+export type CommonShopFragment = {
+  __typename?: 'Shop';
+  id: string;
+  name: string;
+  slug: string;
+  shopApiKey: string;
+} & { ' $fragmentName'?: 'CommonShopFragment' };
+
+export type CommonListShopFragment = {
+  __typename?: 'Shop';
+  id: string;
+  name: string;
+  slug: string;
+} & { ' $fragmentName'?: 'CommonListShopFragment' };
 
 export type GetShopsQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -1850,7 +1863,9 @@ export type GetShopsQuery = {
   shops: {
     __typename?: 'ShopList';
     items: Array<
-      { __typename?: 'Shop' } & { ' $fragmentRefs'?: { CommonShopFragment: CommonShopFragment } }
+      { __typename?: 'Shop' } & {
+        ' $fragmentRefs'?: { CommonListShopFragment: CommonListShopFragment };
+      }
     >;
   };
 };
@@ -2291,10 +2306,21 @@ export const CommonShopFragmentDoc = new TypedDocumentString(
   id
   name
   slug
+  shopApiKey
 }
     `,
   { fragmentName: 'CommonShop' }
 ) as unknown as TypedDocumentString<CommonShopFragment, unknown>;
+export const CommonListShopFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonListShop on Shop {
+  id
+  name
+  slug
+}
+    `,
+  { fragmentName: 'CommonListShop' }
+) as unknown as TypedDocumentString<CommonListShopFragment, unknown>;
 export const CommonZoneFragmentDoc = new TypedDocumentString(
   `
     fragment CommonZone on Zone {
@@ -2943,11 +2969,11 @@ export const GetShopsDocument = new TypedDocumentString(`
     query getShops {
   shops {
     items {
-      ...CommonShop
+      ...CommonListShop
     }
   }
 }
-    fragment CommonShop on Shop {
+    fragment CommonListShop on Shop {
   id
   name
   slug
@@ -2962,6 +2988,7 @@ export const ShopDocument = new TypedDocumentString(`
   id
   name
   slug
+  shopApiKey
 }`) as unknown as TypedDocumentString<ShopQuery, ShopQueryVariables>;
 export const CreateShopDocument = new TypedDocumentString(`
     mutation CreateShop($input: CreateShopInput!) {

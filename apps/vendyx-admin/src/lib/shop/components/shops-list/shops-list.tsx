@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { type CommonShopFragment } from '@/api/types';
+import { type CommonListShopFragment } from '@/api/types';
 import {
   Button,
   Card,
@@ -40,5 +40,5 @@ export const ShopsList: FC<Props> = ({ shops }) => {
 };
 
 type Props = {
-  shops: CommonShopFragment[];
+  shops: CommonListShopFragment[];
 };
