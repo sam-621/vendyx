@@ -11,6 +11,10 @@ type Shop implements Node {
   """
   slug: String!
   """
+  Api key for other stores to connect to this store
+  """
+  shopApiKey: String!
+  """
   The shop's owner
   """
   owner: User!
