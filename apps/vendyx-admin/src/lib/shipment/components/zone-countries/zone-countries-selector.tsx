@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { type CommonCountryFragment } from '@/api/types';
@@ -19,6 +19,7 @@ import { isStateInCountry } from '../../utils';
 import { type ZoneDetailsFormInput } from '../zone-details/use-zone-details-form';
 
 export const ZoneCountriesSelector = () => {
+  const [search, setSearch] = useState('');
   const { setValue, watch } = useFormContext<ZoneDetailsFormInput>();
   const {
     entity: { countries }
@@ -27,15 +28,20 @@ export const ZoneCountriesSelector = () => {
 
   const [selectedStates, setSelectedStates] = useState<CommonCountryFragment['states']>(states);
 
+  const filteredCountries = useMemo(
+    () => countries.filter(country => country.name.toLowerCase().includes(search.toLowerCase())),
+    [countries, search]
+  );
+
   return (
     <EntitySelector
       title="Add countries"
       description="Add countries to your zone"
       triggerText="Add countries"
-      items={countries}
+      items={filteredCountries}
       isFetching={false}
       onDone={() => setValue('states', selectedStates)}
-      onSearch={query => console.log(query)}
+      onSearch={query => setSearch(query)}
       renderItem={country => (
         <Accordion key={country.id} type="single" collapsible>
           <AccordionItem value={`entity-${country.id}`}>

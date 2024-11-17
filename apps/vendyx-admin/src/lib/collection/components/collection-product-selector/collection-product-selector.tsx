@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useMemo, useState } from 'react';
 
 import { type ID } from '@/api/scalars';
 import { type CommonCollectionProductFragment } from '@/api/types';
@@ -21,12 +21,20 @@ export const CollectionProductSelector: FC<Props> = ({
     setSelected(defaultProducts.map(p => p.id));
   }, [defaultProducts]);
 
+  const items = useMemo(() => {
+    return products.sort((a, b) => {
+      if (selected.includes(a.id)) return -1;
+      if (selected.includes(b.id)) return 1;
+      return 0;
+    });
+  }, [products]);
+
   return (
     <EntitySelector
       title="Add products"
       description="Add products to your zone"
       triggerText="Add products"
-      items={products}
+      items={items}
       isFetching={isFetching}
       isDoneAPromise
       onDone={async close => {
