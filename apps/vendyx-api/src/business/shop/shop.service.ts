@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateShopInput, ListInput } from '@/api/shared';
+import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared';
 import { AuthService } from '@/auth';
 import { ShopRepository } from '@/persistance/repositories';
 
-import { getSlugBy } from '../shared';
+import { clean, getSlugBy } from '../shared';
 
 @Injectable()
 export class ShopService {
@@ -34,6 +34,10 @@ export class ShopService {
       slug,
       shopApiKey
     });
+  }
+
+  async update(shopSlug: string, input: UpdateShopInput) {
+    return this.shopRepository.update(shopSlug, clean(input));
   }
 
   async validateShopApiKey(shopId: string, shopApiKey: string) {

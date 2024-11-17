@@ -120,6 +120,8 @@ const documents = {
     types.ShopDocument,
   '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      slug\n    }\n  }\n':
     types.CreateShopDocument,
+  '\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      id\n      slug\n    }\n  }\n':
+    types.UpdateShopDocument,
   '\n  query GetUser($accessToken: String!) {\n    user(accessToken: $accessToken) {\n      id\n    }\n  }\n':
     types.GetUserDocument,
   '\n  mutation CreateUser($input: CreateUserInput!) {\n    createUser(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      user {\n        id\n      }\n    }\n  }\n':
@@ -471,6 +473,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation CreateShop($input: CreateShopInput!) {\n    createShop(input: $input) {\n      id\n      slug\n    }\n  }\n'
 ): typeof import('./graphql').CreateShopDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      id\n      slug\n    }\n  }\n'
+): typeof import('./graphql').UpdateShopDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

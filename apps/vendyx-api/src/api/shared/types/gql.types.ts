@@ -401,6 +401,8 @@ export abstract class IMutation {
 
     abstract createShop(input: CreateShopInput): Shop | Promise<Shop>;
 
+    abstract updateShop(shopSlug: string, input: UpdateShopInput): Shop | Promise<Shop>;
+
     abstract createCheckoutSession(input: CreateCheckoutSessionInput): CheckoutSession | Promise<CheckoutSession>;
 
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;
@@ -625,6 +627,7 @@ export class Shop implements Node {
     updatedAt: Date;
     name: string;
     slug: string;
+    shopApiKey: string;
     owner: User;
 }
 

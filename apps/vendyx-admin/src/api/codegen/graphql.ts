@@ -352,6 +352,7 @@ export type Mutation = {
   updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
   updateShippingMethod: ShippingMethod;
+  updateShop: Shop;
   updateUser: UserResult;
   updateVariant: Variant;
   updateZone: Zone;
@@ -476,6 +477,11 @@ export type MutationUpdateProductArgs = {
 export type MutationUpdateShippingMethodArgs = {
   id: Scalars['ID']['input'];
   input: UpdateShippingMethodInput;
+};
+
+export type MutationUpdateShopArgs = {
+  input: UpdateShopInput;
+  shopSlug: Scalars['String']['input'];
 };
 
 export type MutationUpdateUserArgs = {
@@ -1890,6 +1896,16 @@ export type CreateShopMutation = {
   createShop: { __typename?: 'Shop'; id: string; slug: string };
 };
 
+export type UpdateShopMutationVariables = Exact<{
+  shopSlug: Scalars['String']['input'];
+  input: UpdateShopInput;
+}>;
+
+export type UpdateShopMutation = {
+  __typename?: 'Mutation';
+  updateShop: { __typename?: 'Shop'; id: string; slug: string };
+};
+
 export type GetUserQueryVariables = Exact<{
   accessToken: Scalars['String']['input'];
 }>;
@@ -2998,6 +3014,14 @@ export const CreateShopDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<CreateShopMutation, CreateShopMutationVariables>;
+export const UpdateShopDocument = new TypedDocumentString(`
+    mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {
+  updateShop(shopSlug: $shopSlug, input: $input) {
+    id
+    slug
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateShopMutation, UpdateShopMutationVariables>;
 export const GetUserDocument = new TypedDocumentString(`
     query GetUser($accessToken: String!) {
   user(accessToken: $accessToken) {

@@ -2,7 +2,13 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Shop } from '@prisma/client';
 
-import { CreateShopInput, ListInput, ListResponse, UserJwtAuthGuard } from '@/api/shared';
+import {
+  CreateShopInput,
+  ListInput,
+  ListResponse,
+  UpdateShopInput,
+  UserJwtAuthGuard
+} from '@/api/shared';
 import { ShopService } from '@/business/shop';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 
@@ -32,6 +38,11 @@ export class ShopResolver {
   @Mutation('createShop')
   async createShop(@Args('input') input: CreateShopInput) {
     return this.shopService.create(input);
+  }
+
+  @Mutation('updateShop')
+  async updateShop(@Args('shopSlug') shopSlug: string, @Args('input') input: UpdateShopInput) {
+    return this.shopService.update(shopSlug, input);
   }
 
   @ResolveField('owner')

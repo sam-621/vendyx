@@ -41,4 +41,8 @@ export class ShopRepository {
   async insert(input: Prisma.ShopCreateInput) {
     return this.prisma.shop.create({ data: input });
   }
+
+  async update(slug: string, input: Prisma.ShopUpdateInput) {
+    return this.prisma.shop.update({ where: { slug }, data: input });
+  }
 }
