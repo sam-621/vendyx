@@ -290,7 +290,10 @@ export class OrderService extends OrderFinders {
   }
 
   async addShipment(orderId: ID, input: AddShipmentToOrderInput) {
-    const order = await this.findOrderOrThrow(orderId);
+    const order = await this.prisma.order.findUniqueOrThrow({
+      where: { id: orderId },
+      include: { shipment: true }
+    });
 
     if (!order.shippingAddress) {
       return new MissingShippingAddress();
@@ -322,10 +325,26 @@ export class OrderService extends OrderFinders {
       method.handlerMetadata as Record<string, string>
     );
 
+    // If the order already has a shipment, update the amount and method
+    if (order.shipment) {
+      return await this.prisma.order.update({
+        where: { id: orderId },
+        data: {
+          shipment: {
+            update: { amount: shippingPrice, method: method.name }
+          },
+          total: order.total - order.shipment.amount + shippingPrice
+        }
+      });
+    }
+
+    // If the order doesn't have a shipment, create a new one
     return this.prisma.order.update({
       where: { id: orderId },
       data: {
-        shipment: { create: { amount: shippingPrice, method: method.name } },
+        shipment: {
+          create: { amount: shippingPrice, method: method.name }
+        },
         total: order.total + shippingPrice
       }
     });
