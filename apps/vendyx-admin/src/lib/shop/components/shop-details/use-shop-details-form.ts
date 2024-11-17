@@ -12,7 +12,8 @@ export const useShopDetailsForm = () => {
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: ''
+      name: '',
+      shopApiKey: '1234-5678-9012-3456'
     }
   });
 
@@ -30,7 +31,8 @@ export const useShopDetailsForm = () => {
 };
 
 const schema = z.object({
-  name: z.string().min(1, FormMessages.required)
+  name: z.string().min(1, FormMessages.required),
+  shopApiKey: z.string().readonly()
 });
 
 type FormInput = z.infer<typeof schema>;

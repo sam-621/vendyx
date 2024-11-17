@@ -1,4 +1,4 @@
-import { type ComponentProps, type HTMLInputTypeAttribute } from 'react';
+import { type ComponentProps, type HTMLInputTypeAttribute, type ReactNode } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
 import { Input } from '../components';
@@ -15,6 +15,8 @@ export const FormInput = <
   placeholder,
   type,
   isPrice,
+  isPassword,
+  rightElement: RightElement,
   className,
   ...rest
 }: Props<TFieldValues, TName>) => {
@@ -25,9 +27,18 @@ export const FormInput = <
       render={({ field }) => (
         <FormItem className={cn('w-full', className)}>
           {label && <FormLabel>{label}</FormLabel>}
-          <FormControl>
-            <Input type={type} placeholder={placeholder} isPrice={isPrice} {...field} />
-          </FormControl>
+          <div className="flex items-center gap-2 w-full">
+            <FormControl>
+              <Input
+                type={type}
+                placeholder={placeholder}
+                isPrice={isPrice}
+                isPassword={isPassword}
+                {...field}
+              />
+            </FormControl>
+            {RightElement && RightElement}
+          </div>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>
@@ -48,5 +59,7 @@ type Props<
   placeholder?: string;
   type?: HTMLInputTypeAttribute;
   isPrice?: boolean;
+  isPassword?: boolean;
+  rightElement?: ReactNode;
   className?: string;
 };
