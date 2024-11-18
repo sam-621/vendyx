@@ -9,7 +9,7 @@ export interface MailClient {
 }
 
 export type MailClientSendInput = {
-  from: string;
+  from: { email: string; name: string };
   to: string;
   subject: string;
   html: string;

@@ -12,7 +12,7 @@ export class MailService {
 
     const mail: MailClientSendInput = {
       to: recipient,
-      from: 'vendyxmail@gmail.com',
+      from: { email: 'vendyxmail@gmail.com', name: 'Vendyx' },
       subject: 'Test email',
       html
     };

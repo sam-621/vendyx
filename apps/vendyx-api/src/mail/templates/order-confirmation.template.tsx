@@ -25,7 +25,7 @@ const Component = () => {
       <Preview>Order #1003 confirmed</Preview>
       <Tailwind>
         <Body className="font-sans">
-          <Container className="w-[640px]">
+          <Container className="w-[600px] max-w-full">
             <Section>
               <Heading className="text-black text-[24px] font-normal mb-2">Acme store</Heading>
               <Text className="text-[#666666] !my-0">ORDER #0001</Text>
