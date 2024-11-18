@@ -2,12 +2,17 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { SendGridClient } from './clients/sendgrid-client';
-import { MailEventListener } from './mail-event-listener';
-import { MailService } from './mail.service';
+import { MailCustomerListener, MailCustomerService } from './listeners/customer';
+import { MailOrderListener, MailOrderService } from './listeners/order';
 
 @Module({
   imports: [ConfigModule.forRoot()],
-  providers: [MailService, SendGridClient, MailEventListener],
-  exports: [MailService]
+  providers: [
+    SendGridClient,
+    MailOrderService,
+    MailCustomerService,
+    MailOrderListener,
+    MailCustomerListener
+  ]
 })
 export class MailModule {}

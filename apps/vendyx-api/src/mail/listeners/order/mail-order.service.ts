@@ -1,14 +1,13 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import { formatOrderCode } from '@/business/order';
+import { MailClientSendInput, SendGridClient } from '@/mail/clients';
+import { MailError } from '@/mail/mail.error';
+import { EmailTemplates } from '@/mail/templates';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 import { ID } from '@/persistence/types';
 
-import { MailClientSendInput, SendGridClient } from './clients';
-import { EmailTemplates } from './templates';
-
 @Injectable()
-export class MailService {
+export class MailOrderService {
   constructor(
     private readonly sendGridClient: SendGridClient,
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
@@ -35,7 +34,9 @@ export class MailService {
       }
     });
 
-    if (!order || !order.customer) return;
+    if (!order || !order.customer) {
+      throw new MailError(`Order or customer doesn't exist for order id: ${orderId}`);
+    }
 
     const orderInput = {
       ...order,
@@ -54,33 +55,10 @@ export class MailService {
 
     const html = await EmailTemplates.OrderConfirmation({ order: orderInput, shop: order.shop });
 
-    // TODO: Log? throw?
-    if (!order.customer?.email) return;
-
     const mail: MailClientSendInput = {
       to: order.customer.email,
       from: { email: 'vendyxmail@gmail.com', name: order.shop.name },
       subject: 'We received your order',
-      html
-    };
-
-    await this.sendGridClient.send(mail);
-  }
-
-  async sendCustomerRegisteredEmail(customerId: ID): Promise<void> {
-    const customer = await this.prisma.customer.findUnique({
-      where: { id: customerId },
-      include: { shop: true }
-    });
-
-    if (!customer) return;
-
-    const html = await EmailTemplates.CustomerRegistered({ customer, shop: customer.shop });
-
-    const mail: MailClientSendInput = {
-      to: customer.email,
-      from: { email: 'vendyxmail@gmail.com', name: customer.shop.name },
-      subject: `Welcome to ${customer.shop.name}`,
       html
     };
 

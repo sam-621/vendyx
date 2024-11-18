@@ -5,7 +5,7 @@ export interface MailClient {
   /**
    * Send email
    */
-  send(input: MailClientSendInput): Promise<boolean>;
+  send(input: MailClientSendInput): Promise<void>;
 }
 
 export type MailClientSendInput = {
