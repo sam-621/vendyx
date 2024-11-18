@@ -3,7 +3,7 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 
 import { CreateZoneInput, UpdateZoneInput, UserJwtAuthGuard, Zone } from '@/api/shared';
 import { ZoneService } from '@/business/zone';
-import { PRISMA_FOR_ADMIN, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_ADMIN, PrismaForShop } from '@/persistence/prisma-clients';
 import { ShipmentService } from '@/shipments';
 
 @UseGuards(UserJwtAuthGuard)

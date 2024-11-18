@@ -5,11 +5,11 @@ import { ApiModule } from './api';
 import { AuthModule } from './auth';
 import { EventBusModule } from './event-bus';
 import { MailModule } from './mail';
-import { PersistanceModule } from './persistance';
+import { PersistenceModule } from './persistence';
 
 @Module({
   imports: [
-    PersistanceModule,
+    PersistenceModule,
     AuthModule,
     ApiModule,
     EventBusModule,

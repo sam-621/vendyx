@@ -3,8 +3,8 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 
 import { ListResponse, ProductListInput, ShopApiKeyGuard } from '@/api/shared';
 import { ProductService } from '@/business/product';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
-import { ID } from '@/persistance/types';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { ID } from '@/persistence/types';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Product')

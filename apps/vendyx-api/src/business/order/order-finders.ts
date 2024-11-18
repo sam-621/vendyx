@@ -1,8 +1,8 @@
 import { OrderState } from '@prisma/client';
 
 import { OrderListInput } from '@/api/shared';
-import { PrismaForShop } from '@/persistance/prisma-clients';
-import { ID } from '@/persistance/types';
+import { PrismaForShop } from '@/persistence/prisma-clients';
+import { ID } from '@/persistence/types';
 
 import { parseOrderCode } from './order.utils';
 import { clean } from '../shared';

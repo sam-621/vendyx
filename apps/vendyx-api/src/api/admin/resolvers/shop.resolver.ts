@@ -10,7 +10,7 @@ import {
   UserJwtAuthGuard
 } from '@/api/shared';
 import { ShopService } from '@/business/shop';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Shop')

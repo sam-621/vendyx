@@ -3,7 +3,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import { CreateOptionInput, UpdateOptionInput, UserJwtAuthGuard } from '@/api/shared';
 import { OptionService } from '@/business/option';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Option')

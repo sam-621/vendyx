@@ -14,8 +14,8 @@ import {
 import { EventBusService } from '@/event-bus';
 import { OrderDeliveredEvent, OrderPaidEvent, OrderShippedEvent } from '@/event-bus/events';
 import { PaymentService } from '@/payment';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
-import { ID } from '@/persistance/types';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { ID } from '@/persistence/types';
 import { ShipmentService } from '@/shipments';
 
 import { OrderFinders } from './order-finders';

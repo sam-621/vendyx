@@ -1,4 +1,4 @@
-import { ID } from '@/persistance/types';
+import { ID } from '@/persistence/types';
 
 import { VendyxEvent } from './vendyx.event';
 

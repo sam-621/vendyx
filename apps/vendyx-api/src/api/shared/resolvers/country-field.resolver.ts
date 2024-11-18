@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Country } from '@prisma/client';
 
-import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
 
 @Resolver('Country')
 export class CountryFieldResolver {

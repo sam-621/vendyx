@@ -3,7 +3,7 @@ import { OrderState } from '@prisma/client';
 import { differenceInDays, format, startOfMonth, startOfWeek } from 'date-fns';
 
 import { MetricsInput } from '@/api/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 @Injectable()
 export class MetricsService {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CreateShippingMethodInput, UpdateShippingMethodInput } from '@/api/shared';
-import { ShippingMethodRepository } from '@/persistance/repositories';
+import { ShippingMethodRepository } from '@/persistence/repositories';
 
 import { clean } from '../shared';
 

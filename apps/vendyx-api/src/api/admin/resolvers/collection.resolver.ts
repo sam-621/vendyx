@@ -9,7 +9,7 @@ import {
   UserJwtAuthGuard
 } from '@/api/shared';
 import { CollectionService } from '@/business/collection';
-import { ID } from '@/persistance/types';
+import { ID } from '@/persistence/types';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Collection')

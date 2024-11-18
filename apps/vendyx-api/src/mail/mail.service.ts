@@ -1,8 +1,8 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 import { formatOrderCode } from '@/business/order';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
-import { ID } from '@/persistance/types';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { ID } from '@/persistence/types';
 
 import { MailClientSendInput, SendGridClient } from './clients';
 import { orderConfirmationTemplate } from './templates';

@@ -2,7 +2,7 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { State, UserJwtAuthGuard } from '@/api/shared';
-import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('State')

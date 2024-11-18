@@ -4,7 +4,7 @@ import { Order } from '@prisma/client';
 
 import { formatOrderCode } from '@/business/order';
 import { clean } from '@/business/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 import { ListInput } from '../types';
 import { ListResponse } from '../utils';

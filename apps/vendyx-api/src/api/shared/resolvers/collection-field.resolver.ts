@@ -3,7 +3,7 @@ import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Collection } from '@prisma/client';
 
 import { ProductService } from '@/business/product';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 import { ProductListInput } from '../types';
 import { ListResponse } from '../utils';

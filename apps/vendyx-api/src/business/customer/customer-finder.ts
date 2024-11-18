@@ -1,5 +1,5 @@
 import { CustomerListInput, DEFAULT_STRING_FILTER } from '@/api/shared';
-import { PrismaForShop } from '@/persistance/prisma-clients';
+import { PrismaForShop } from '@/persistence/prisma-clients';
 
 import { clean } from '../shared';
 

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput } from '@/api/shared';
 import { AuthService } from '@/auth';
 import { UserJwtPayload } from '@/auth/strategies';
-import { UserRepository } from '@/persistance/repositories';
+import { UserRepository } from '@/persistence/repositories';
 
 import { EmailAlreadyExists, InvalidCredentials } from './user.errors';
 

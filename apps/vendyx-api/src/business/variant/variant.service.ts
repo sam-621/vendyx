@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 import { CreateVariantInput, UpdateVariantInput } from '@/api/shared';
-import { VariantRepository } from '@/persistance/repositories';
-import { ID } from '@/persistance/types';
+import { VariantRepository } from '@/persistence/repositories';
+import { ID } from '@/persistence/types';
 
 import { clean, convertToCent } from '../shared';
 

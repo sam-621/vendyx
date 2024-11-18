@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared';
 import { AuthService } from '@/auth';
-import { ShopRepository } from '@/persistance/repositories';
+import { ShopRepository } from '@/persistence/repositories';
 
 import { clean, getSlugBy } from '../shared';
 

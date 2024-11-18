@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Variant } from '@prisma/client';
 
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 import { FromOrders } from '../types';
 

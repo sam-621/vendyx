@@ -44,4 +44,4 @@ export const CLS_OWNER_ID = 'owner_id';
   providers: [PrismaForShopClientProvider, PrismaForAdminClientProvider, ...REPOSITORIES],
   exports: [PRISMA_FOR_SHOP, PRISMA_FOR_ADMIN, ...REPOSITORIES]
 })
-export class PersistanceModule {}
+export class PersistenceModule {}

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CreateOptionInput, UpdateOptionInput } from '@/api/shared';
-import { OptionRepository } from '@/persistance/repositories';
+import { OptionRepository } from '@/persistence/repositories';
 
 @Injectable()
 export class OptionService {

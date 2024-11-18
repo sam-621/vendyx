@@ -8,7 +8,7 @@ import {
   UserJwtAuthGuard
 } from '@/api/shared';
 import { ShippingMethodService } from '@/business/shipping-method';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 import { ShipmentService } from '@/shipments';
 
 @UseGuards(UserJwtAuthGuard)

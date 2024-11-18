@@ -13,7 +13,7 @@ import {
 } from '@/api/shared';
 import { OrderService } from '@/business/order/order.service';
 import { isErrorResult } from '@/business/shared';
-import { ID } from '@/persistance/types';
+import { ID } from '@/persistence/types';
 import { ShipmentService } from '@/shipments';
 
 @UseGuards(ShopApiKeyGuard)

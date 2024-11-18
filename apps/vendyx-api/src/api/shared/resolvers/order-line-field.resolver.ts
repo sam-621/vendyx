@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { OrderLine } from '@prisma/client';
 
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 @Resolver('OrderLine')
 export class OrderLineFieldResolver {

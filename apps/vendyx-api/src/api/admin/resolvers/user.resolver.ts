@@ -12,7 +12,7 @@ import {
 } from '@/api/shared';
 import { clean, isErrorResult } from '@/business/shared';
 import { UserService } from '@/business/user';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
 @Resolver('User')
 export class UserResolver {

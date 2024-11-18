@@ -2,7 +2,7 @@ import { ClsService } from 'nestjs-cls';
 import { PrismaService } from 'nestjs-prisma';
 
 import { modelHasDeletedAtProperty } from './prisma-client-utils';
-import { CLS_OWNER_ID, CLS_SHOP_ID } from '../persistance.module';
+import { CLS_OWNER_ID, CLS_SHOP_ID } from '../persistence.module';
 
 const useFactory = (prisma: PrismaService, store: ClsService) => {
   return prisma.$extends({

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { AssetRepository } from '@/persistance/repositories';
+import { AssetRepository } from '@/persistence/repositories';
 import { StorageService } from '@/storage';
 
 @Injectable()

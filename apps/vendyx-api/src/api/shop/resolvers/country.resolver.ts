@@ -3,7 +3,7 @@ import { Query, Resolver } from '@nestjs/graphql';
 
 import { ShopApiKeyGuard } from '@/api/shared';
 import { CountryService } from '@/business/country';
-import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistance/prisma-clients';
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Country')

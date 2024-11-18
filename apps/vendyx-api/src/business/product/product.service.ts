@@ -6,8 +6,8 @@ import {
   ProductListInput,
   UpdateProductInput
 } from '@/api/shared';
-import { ProductRepository } from '@/persistance/repositories';
-import { ID } from '@/persistance/types';
+import { ProductRepository } from '@/persistence/repositories';
+import { ID } from '@/persistence/types';
 
 import { clean, getSlugBy } from '../shared';
 

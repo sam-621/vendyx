@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { CountryRepository } from '@/persistance/repositories';
+import { CountryRepository } from '@/persistence/repositories';
 
 @Injectable()
 export class CountryService {

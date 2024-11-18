@@ -2,7 +2,7 @@ import { ClsMiddleware } from 'nestjs-cls';
 
 import { AuthService } from '@/auth';
 import { UserJwtPayload } from '@/auth/strategies';
-import { CLS_OWNER_ID, CLS_SHOP_ID } from '@/persistance';
+import { CLS_OWNER_ID, CLS_SHOP_ID } from '@/persistence';
 
 export const clsMiddleware = (authService: AuthService) => {
   return new ClsMiddleware({

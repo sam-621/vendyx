@@ -4,8 +4,8 @@ import { SubscriptionPlan, SubscriptionStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
 import { CreateCheckoutSessionInput } from '@/api/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
-import { ID } from '@/persistance/types';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { ID } from '@/persistence/types';
 
 @Injectable()
 export class SubscriptionService {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CreatePaymentMethodInput, UpdatePaymentMethodInput } from '@/api/shared';
-import { PaymentMethodRepository } from '@/persistance/repositories';
+import { PaymentMethodRepository } from '@/persistence/repositories';
 
 import { clean } from '../shared';
 
