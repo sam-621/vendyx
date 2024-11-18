@@ -88,7 +88,7 @@
   },
   "resolutions": {
     "wrap-ansi": "7.0.0",
-    "string-width": "5.1.2"
+    "string-width": "4.2.3"
   },
   "jest": {
     "moduleFileExtensions": [
