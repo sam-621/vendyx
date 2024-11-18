@@ -86,6 +86,9 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.0.0"
   },
+  "resolutions": {
+    "string-width": "4.2.3"
+  },
   "jest": {
     "moduleFileExtensions": [
       "js",
