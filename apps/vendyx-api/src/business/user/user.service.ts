@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserInput, UpdateUserInput } from '@/api/shared';
 import { AuthService } from '@/auth';
 import { UserJwtPayload } from '@/auth/strategies';
+import { MailService } from '@/mail';
 import { UserRepository } from '@/persistance/repositories';
 
 import { EmailAlreadyExists, InvalidCredentials } from './user.errors';
@@ -11,12 +12,14 @@ import { EmailAlreadyExists, InvalidCredentials } from './user.errors';
 export class UserService {
   constructor(
     private readonly authService: AuthService,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
+    private readonly emailService: MailService
   ) {}
 
   async findByAccessToken(accessToken: string) {
     const payload = await this.authService.decodeAccessToken<UserJwtPayload>(accessToken);
 
+    this.emailService.sendTestEmail('samuel.corrales621@gmail.com');
     return this.userRepository.findById(payload.sub);
   }
 

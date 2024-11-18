@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AuthModule } from '@/auth';
+import { MailModule } from '@/mail';
 import { PaymentModule } from '@/payment';
 import { ShipmentModule } from '@/shipments';
 import { StorageModule } from '@/storage';
@@ -41,7 +42,14 @@ const SERVICES = [
 ];
 
 @Module({
-  imports: [ConfigModule.forRoot(), AuthModule, StorageModule, ShipmentModule, PaymentModule],
+  imports: [
+    ConfigModule.forRoot(),
+    AuthModule,
+    StorageModule,
+    ShipmentModule,
+    PaymentModule,
+    MailModule
+  ],
   providers: [...SERVICES],
   exports: [...SERVICES]
 })
