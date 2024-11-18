@@ -28,6 +28,7 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/event-emitter": "^2.1.1",
     "@nestjs/graphql": "^12.2.0",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",

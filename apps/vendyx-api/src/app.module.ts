@@ -3,6 +3,7 @@ import { ClsModule } from 'nestjs-cls';
 
 import { ApiModule } from './api';
 import { AuthModule } from './auth';
+import { EventBusModule } from './event-bus';
 import { PersistanceModule } from './persistance';
 
 @Module({
@@ -10,6 +11,7 @@ import { PersistanceModule } from './persistance';
     PersistanceModule,
     AuthModule,
     ApiModule,
+    EventBusModule,
     ClsModule.forRoot({ global: true, middleware: { mount: true } })
   ]
 })
