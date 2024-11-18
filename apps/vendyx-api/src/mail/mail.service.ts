@@ -5,7 +5,7 @@ import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 import { ID } from '@/persistence/types';
 
 import { MailClientSendInput, SendGridClient } from './clients';
-import { orderConfirmationTemplate } from './templates';
+import { createCustomerRegisteredMail, createOrderConfirmationTemplate } from './templates';
 
 @Injectable()
 export class MailService {
@@ -50,7 +50,7 @@ export class MailService {
       }))
     };
 
-    const html = await orderConfirmationTemplate({ order: orderInput, shop: order.shop });
+    const html = await createOrderConfirmationTemplate({ order: orderInput, shop: order.shop });
 
     // TODO: Log? throw?
     if (!order.customer?.email) return;
@@ -75,6 +75,36 @@ export class MailService {
         `order confirmation email sent for order ${formatOrderCode(order.code)} in shop ${
           order.shop.name
         }`
+      );
+    }
+  }
+
+  async sendCustomerRegisteredEmail(customerId: ID): Promise<void> {
+    const customer = await this.prisma.customer.findUnique({
+      where: { id: customerId },
+      include: { shop: true }
+    });
+
+    if (!customer) return;
+
+    const html = await createCustomerRegisteredMail({ customer, shop: customer.shop });
+
+    const mail: MailClientSendInput = {
+      to: customer.email,
+      from: { email: 'vendyxmail@gmail.com', name: customer.shop.name },
+      subject: `Welcome to ${customer.shop.name}`,
+      html
+    };
+
+    const success = await this.sendGridClient.send(mail);
+
+    if (!success) {
+      Logger.error(
+        `customer registered email failed for customer ${customer.email} in shop ${customer.shop.name}`
+      );
+    } else {
+      Logger.log(
+        `customer registered email sent for customer ${customer.email} in shop ${customer.shop.name}`
       );
     }
   }

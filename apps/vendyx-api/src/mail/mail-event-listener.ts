@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { OrderEvent, OrderPaidEvent } from '@/event-bus/events';
+import {
+  CustomerEvent,
+  CustomerRegisteredEvent,
+  OrderEvent,
+  OrderPaidEvent
+} from '@/event-bus/events';
 
 import { MailService } from './mail.service';
 
@@ -10,7 +15,12 @@ export class MailEventListener {
   constructor(private readonly mailService: MailService) {}
 
   @OnEvent(OrderEvent.PAID)
-  async handleOrderPaidEvent1(payload: OrderPaidEvent) {
+  async handleOrderPaidEvent(payload: OrderPaidEvent) {
     await this.mailService.sendOrderConfirmationEmail(payload.orderId);
+  }
+
+  @OnEvent(CustomerEvent.REGISTERED)
+  async handleCustomerRegisteredEvent(payload: CustomerRegisteredEvent) {
+    await this.mailService.sendCustomerRegisteredEmail(payload.customerId);
   }
 }

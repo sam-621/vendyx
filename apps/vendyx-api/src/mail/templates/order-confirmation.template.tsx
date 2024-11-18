@@ -238,4 +238,4 @@ export type Props = {
 
 export default Component;
 
-export const orderConfirmationTemplate = (input: Props) => render(<Component {...input} />);
+export const createOrderConfirmationTemplate = (input: Props) => render(<Component {...input} />);
