@@ -1,1 +1,1 @@
-export * from './email';
+export * from './order-confirmation.template';
