@@ -1,5 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 
+import { formatOrderCode } from '@/business/order';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 import { ID } from '@/persistance/types';
 
@@ -61,6 +62,20 @@ export class MailService {
       html
     };
 
-    await this.sendGridClient.send(mail);
+    const success = await this.sendGridClient.send(mail);
+
+    if (!success) {
+      Logger.error(
+        `order confirmation email failed for order ${formatOrderCode(order.code)} in shop ${
+          order.shop.name
+        }`
+      );
+    } else {
+      Logger.log(
+        `order confirmation email sent for order ${formatOrderCode(order.code)} in shop ${
+          order.shop.name
+        }`
+      );
+    }
   }
 }

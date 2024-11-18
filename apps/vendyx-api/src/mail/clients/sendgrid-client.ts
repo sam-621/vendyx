@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as SendGrid from '@sendgrid/mail';
 
@@ -9,12 +9,16 @@ export class SendGridClient implements MailClient {
   constructor(private readonly configService: ConfigService) {
     SendGrid.setApiKey(configService.get('SENDGRID_API_KEY') ?? '');
   }
-  async send(input: MailClientSendInput): Promise<void> {
+  async send(input: MailClientSendInput): Promise<boolean> {
     try {
       await SendGrid.send(input);
+      return true;
     } catch (error) {
-      console.log(error);
-      throw error;
+      Logger.error({
+        type: 'SENDGRID_ERROR',
+        raw: error
+      });
+      return false;
     }
   }
 }

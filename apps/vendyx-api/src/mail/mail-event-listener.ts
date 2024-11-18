@@ -11,8 +11,6 @@ export class MailEventListener {
 
   @OnEvent(OrderEvent.PAID)
   async handleOrderPaidEvent1(payload: OrderPaidEvent) {
-    console.log('Order paid event received', payload);
-
     await this.mailService.sendOrderConfirmationEmail(payload.orderId);
   }
 }
