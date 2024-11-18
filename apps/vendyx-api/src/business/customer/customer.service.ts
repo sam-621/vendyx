@@ -7,6 +7,8 @@ import {
 } from '@/api/shared';
 import { AuthService } from '@/auth';
 import { CustomerJwtPayload } from '@/auth/strategies';
+import { EventBusService } from '@/event-bus';
+import { CustomerRegisteredEvent } from '@/event-bus/events';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 import { ID } from '@/persistence/types';
 
@@ -25,7 +27,8 @@ import { clean, validateEmail } from '../shared';
 export class CustomerService extends CustomerFinder {
   constructor(
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly eventBus: EventBusService
   ) {
     super(prisma);
   }
@@ -65,7 +68,7 @@ export class CustomerService extends CustomerFinder {
 
     const hashedPassword = await this.authService.hash(input.password);
 
-    return await this.prisma.customer.upsert({
+    const customer = await this.prisma.customer.upsert({
       where: { email: input.email },
       create: {
         ...clean(input),
@@ -76,6 +79,10 @@ export class CustomerService extends CustomerFinder {
         password: hashedPassword
       }
     });
+
+    this.eventBus.emit(new CustomerRegisteredEvent(customer.id));
+
+    return customer;
   }
 
   async updateByAccessToken(accessToken: string, input: UpdateCustomerInput) {
