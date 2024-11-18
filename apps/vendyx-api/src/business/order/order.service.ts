@@ -11,6 +11,8 @@ import {
   MarkOrderAsShippedInput,
   UpdateOrderLineInput
 } from '@/api/shared';
+import { EventBusService } from '@/event-bus';
+import { OrderDeliveredEvent, OrderPaidEvent, OrderShippedEvent } from '@/event-bus/events';
 import { PaymentService } from '@/payment';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistance/prisma-clients';
 import { ID } from '@/persistance/types';
@@ -37,7 +39,8 @@ export class OrderService extends OrderFinders {
   constructor(
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
     private readonly shipmentService: ShipmentService,
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
+    private readonly eventBus: EventBusService
   ) {
     super(prisma);
   }
@@ -431,6 +434,8 @@ export class OrderService extends OrderFinders {
       )
     );
 
+    this.eventBus.emit(new OrderPaidEvent(orderToReturn.id));
+
     return orderToReturn;
   }
 
@@ -446,6 +451,8 @@ export class OrderService extends OrderFinders {
         `Unable to transition to ${OrderState.SHIPPED} state in ${order.state} state.`
       );
     }
+
+    this.eventBus.emit(new OrderShippedEvent(orderId));
 
     return await this.prisma.order.update({
       where: { id: orderId },
@@ -468,6 +475,8 @@ export class OrderService extends OrderFinders {
         `Unable to transition to ${OrderState.DELIVERED} state in ${order.state} state.`
       );
     }
+
+    this.eventBus.emit(new OrderDeliveredEvent(orderId));
 
     return await this.prisma.order.update({
       where: { id: orderId },

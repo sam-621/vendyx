@@ -36,6 +36,14 @@ export const parseOrderCode = (code: string) => {
   return Number(code.replace('#', '')) || undefined;
 };
 
+/**
+ * Format order code to be displayed
+ *
+ * @example
+ * const orderCode = 1
+ * const formattedOrderCode = formatOrderCode(orderCode)
+ * console.log(formattedOrderCode) // #0001
+ */
 export const formatOrderCode = (code: number) => {
   return `#${code.toString().padStart(4, '0')}`;
 };
