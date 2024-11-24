@@ -1,5 +1,6 @@
-import { ID } from '@/persistence/types';
 import { User } from '@prisma/client';
+
+import { ID } from '@/persistence/types';
 
 export type UserJwtPayload = {
   email: string;

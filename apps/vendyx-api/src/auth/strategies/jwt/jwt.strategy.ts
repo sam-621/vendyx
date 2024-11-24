@@ -4,6 +4,8 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { UserRepository } from '@/persistence/repositories';
 
+import { UserJwtPayload } from './jwt.types';
+
 @Injectable()
 export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
   constructor(private readonly userRepository: UserRepository) {
@@ -16,18 +18,18 @@ export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
 
   /**
    * Receives the payload from the token and validate if its data contains a valid user.
-   * Is executed after the token is decoded and before the guard.handleRequest method.
+   * Executes after the `guard.canActivate` and before the `guard.handleRequest` method.
    */
-  async validate(payload: any) {
-    const { email } = payload;
+  async validate(payload: UserJwtPayload) {
+    const { sub } = payload;
 
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this.userRepository.findById(sub);
 
     if (!user) {
       // handled by the guard.handleRequest method
       return null;
     }
 
-    return { email: user.email, id: user.id };
+    return payload;
   }
 }

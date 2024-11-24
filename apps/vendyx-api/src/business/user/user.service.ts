@@ -1,11 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreateUserInput, UpdateUserInput } from '@/api/shared';
+import { CreateUserInput, UpdateUserInput, ValidateOtpInput } from '@/api/shared';
 import { AuthService } from '@/auth';
 import { UserJwtPayload } from '@/auth/strategies';
 import { EventBusService } from '@/event-bus';
 import { UserRegisteredEvent } from '@/event-bus/events';
-import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
+import {
+  PRISMA_FOR_ADMIN,
+  PRISMA_FOR_SHOP,
+  PrismaForAdmin,
+  PrismaForShop
+} from '@/persistence/prisma-clients';
 import { UserRepository } from '@/persistence/repositories';
 import { ID } from '@/persistence/types';
 
@@ -13,6 +18,8 @@ import {
   EmailAlreadyExists,
   InvalidCredentials,
   InvalidEmail,
+  InvalidOtp,
+  OtpExpired,
   PasswordInvalidLength
 } from './user.errors';
 import { validateEmail } from '../shared';
@@ -21,6 +28,7 @@ import { validateEmail } from '../shared';
 export class UserService {
   constructor(
     @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
     private readonly authService: AuthService,
     private readonly userRepository: UserRepository,
     private readonly eventBus: EventBusService
@@ -118,8 +126,13 @@ export class UserService {
 
       const EXPIRES_AT = new Date(Date.now() + 15 * 60 * 1000);
 
-      await this.prismaForAdmin.otp.create({
-        data: {
+      await this.prismaForAdmin.otp.upsert({
+        where: { userId },
+        update: {
+          otp,
+          expiresAt: EXPIRES_AT
+        },
+        create: {
           userId,
           otp,
           expiresAt: EXPIRES_AT
@@ -130,6 +143,27 @@ export class UserService {
     } catch (error) {
       return null;
     }
+  }
+
+  async validateOtp(userId: ID, input: ValidateOtpInput) {
+    const otp = await this.prismaForAdmin.otp.findUnique({ where: { userId, otp: input.otp } });
+
+    if (!otp) {
+      return new InvalidOtp();
+    }
+
+    if (otp.expiresAt < new Date()) {
+      return new OtpExpired();
+    }
+
+    await this.prismaForAdmin.otp.delete({ where: { id: otp.id } });
+
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: { emailVerified: true }
+    });
+
+    return user;
   }
 }
 

@@ -8,8 +8,11 @@ import {
   ListInput,
   ListResponse,
   UpdateUserInput,
-  UserJwtAuthGuard
+  UserJwtAuthGuard,
+  ValidateOtpInput
 } from '@/api/shared';
+import { CurrentUser } from '@/api/shared/decorator/current-user.decorator';
+import { UserJwtPayload } from '@/auth/strategies';
 import { clean, isErrorResult } from '@/business/shared';
 import { UserService } from '@/business/user';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
@@ -68,5 +71,13 @@ export class UserResolver {
     ]);
 
     return new ListResponse(result, result?.length, { total });
+  }
+
+  @UseGuards(UserJwtAuthGuard)
+  @Mutation('validateOtp')
+  async validateOtp(@CurrentUser() user: UserJwtPayload, @Args('input') input: ValidateOtpInput) {
+    const result = await this.userService.validateOtp(user.sub, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], user: result };
   }
 }

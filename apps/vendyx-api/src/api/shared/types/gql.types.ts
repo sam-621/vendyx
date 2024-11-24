@@ -51,7 +51,9 @@ export enum UserErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS",
     PASSWORD_INVALID_LENGTH = "PASSWORD_INVALID_LENGTH",
-    INVALID_EMAIL = "INVALID_EMAIL"
+    INVALID_EMAIL = "INVALID_EMAIL",
+    INVALID_OTP = "INVALID_OTP",
+    OTP_EXPIRED = "OTP_EXPIRED"
 }
 
 export enum AssetType {
@@ -261,6 +263,10 @@ export class GenerateUserAccessTokenInput {
     password: string;
 }
 
+export class ValidateOtpInput {
+    otp: string;
+}
+
 export class CreateVariantInput {
     salePrice: number;
     stock?: Nullable<number>;
@@ -422,6 +428,8 @@ export abstract class IMutation {
     abstract updateUser(id: string, input: UpdateUserInput): UserResult | Promise<UserResult>;
 
     abstract generateUserAccessToken(input: GenerateUserAccessTokenInput): UserAccessTokenResult | Promise<UserAccessTokenResult>;
+
+    abstract validateOtp(input: ValidateOtpInput): UserResult | Promise<UserResult>;
 
     abstract createVariant(productId: string, input: CreateVariantInput): Variant | Promise<Variant>;
 
@@ -657,6 +665,7 @@ export class User implements Node {
     createdAt: Date;
     updatedAt: Date;
     email: string;
+    emailVerified: boolean;
     shops: ShopList;
     subscription?: Nullable<UserSubscription>;
 }

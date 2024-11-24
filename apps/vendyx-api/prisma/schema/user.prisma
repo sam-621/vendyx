@@ -39,6 +39,8 @@ model User {
   password         String
   /// The user's stripe customer id
   stripeCustomerId String? @unique @map("stripe_customer_id")
+  /// Determines if the user's email has been verified
+  emailVerified    Boolean @default(false) @map("email_verified")
 
   /// The user's shops
   shops Shop[]

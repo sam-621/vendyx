@@ -11,8 +11,6 @@ export class MailUserListener {
 
   @OnEvent(UserEvent.REGISTERED)
   async handleCustomerRegisteredEvent(payload: UserRegisteredEvent) {
-    console.log('User registered event received', payload);
-
     try {
       await this.mailUserService.sendConfirmEmail(payload);
     } catch (error) {}

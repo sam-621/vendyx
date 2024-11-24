@@ -25,3 +25,15 @@ export class InvalidEmail extends ErrorResult<UserErrorCode> {
     super(UserErrorCode.INVALID_EMAIL, 'Invalid email');
   }
 }
+
+export class InvalidOtp extends ErrorResult<UserErrorCode> {
+  constructor() {
+    super(UserErrorCode.INVALID_OTP, `Invalid OTP`);
+  }
+}
+
+export class OtpExpired extends ErrorResult<UserErrorCode> {
+  constructor() {
+    super(UserErrorCode.OTP_EXPIRED, 'OTP expired');
+  }
+}

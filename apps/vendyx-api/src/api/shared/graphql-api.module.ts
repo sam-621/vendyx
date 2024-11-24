@@ -44,7 +44,8 @@ export class GraphqlApiModule {
             message: originalError.message,
             code: originalError.statusCode
           };
-        }
+        },
+        context: ({ req }) => ({ req })
       })
     };
   }
