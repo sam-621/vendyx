@@ -15,6 +15,26 @@ type Shop implements Node {
   """
   shopApiKey: String!
   """
+  Contact email for the shop
+  """
+  email: String!
+  """
+  Contact phone number for the shop
+  """
+  phoneNumber: String!
+  """
+  The shop's logo
+  """
+  logo: String
+  """
+  Physical address of the shop
+  """
+  address: AddressJson
+  """
+  The shop's storefront url
+  """
+  storefrontUrl: String
+  """
   The shop's owner
   """
   owner: User!
@@ -38,8 +58,18 @@ type Mutation {
 
 input CreateShopInput {
   name: String!
+  email: String!
+  phoneNumber: String!
+  address: CreateAddressInput
+  logo: String
+  storefrontUrl: String
 }
 
 input UpdateShopInput {
   name: String
+  email: String
+  phoneNumber: String
+  address: CreateAddressInput
+  logo: String
+  storefrontUrl: String
 }

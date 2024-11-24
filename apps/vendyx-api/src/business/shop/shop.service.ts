@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared';
 import { AuthService } from '@/auth';
@@ -30,9 +31,10 @@ export class ShopService {
     const shopApiKey = this.authService.generateShopApiKey();
 
     return this.shopRepository.insert({
-      name: input.name,
+      ...clean(input),
       slug,
-      shopApiKey
+      shopApiKey,
+      address: input.address as unknown as Prisma.JsonObject
     });
   }
 

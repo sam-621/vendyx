@@ -20,3 +20,13 @@ type AddressList implements List {
   count: Int!
   pageInfo: PageInfo!
 }
+
+input CreateAddressInput {
+  country: String!
+  streetLine1: String!
+  streetLine2: String
+  city: String!
+  province: String!
+  postalCode: String!
+  references: String
+}

@@ -49,7 +49,9 @@ export enum SubscriptionPlan {
 
 export enum UserErrorCode {
     INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
-    EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
+    EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS",
+    PASSWORD_INVALID_LENGTH = "PASSWORD_INVALID_LENGTH",
+    INVALID_EMAIL = "INVALID_EMAIL"
 }
 
 export enum AssetType {
@@ -224,10 +226,20 @@ export class UpdateShippingMethodInput {
 
 export class CreateShopInput {
     name: string;
+    email: string;
+    phoneNumber: string;
+    address?: Nullable<CreateAddressInput>;
+    logo?: Nullable<string>;
+    storefrontUrl?: Nullable<string>;
 }
 
 export class UpdateShopInput {
     name?: Nullable<string>;
+    email?: Nullable<string>;
+    phoneNumber?: Nullable<string>;
+    address?: Nullable<CreateAddressInput>;
+    logo?: Nullable<string>;
+    storefrontUrl?: Nullable<string>;
 }
 
 export class CreateCheckoutSessionInput {
@@ -281,6 +293,16 @@ export class UpdateZoneInput {
     stateIds?: Nullable<string[]>;
 }
 
+export class CreateAddressInput {
+    country: string;
+    streetLine1: string;
+    streetLine2?: Nullable<string>;
+    city: string;
+    province: string;
+    postalCode: string;
+    references?: Nullable<string>;
+}
+
 export class ListInput {
     skip?: Nullable<number>;
     take?: Nullable<number>;
@@ -326,16 +348,6 @@ export class AddCustomerToOrderInput {
     lastName: string;
     email: string;
     phoneNumber?: Nullable<string>;
-}
-
-export class CreateAddressInput {
-    country: string;
-    streetLine1: string;
-    streetLine2?: Nullable<string>;
-    city: string;
-    province: string;
-    postalCode: string;
-    references?: Nullable<string>;
 }
 
 export class AddPaymentToOrderInput {
@@ -455,8 +467,6 @@ export abstract class IMutation {
 export abstract class IQuery {
     abstract collections(input?: Nullable<ListInput>): CollectionList | Promise<CollectionList>;
 
-    abstract countries(): Country[] | Promise<Country[]>;
-
     abstract customers(input?: Nullable<CustomerListInput>): CustomerList | Promise<CustomerList>;
 
     abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
@@ -493,31 +503,17 @@ export abstract class IQuery {
 
     abstract zone(id: string): Zone | Promise<Zone>;
 
-    abstract collection(id?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
+    abstract collection(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Collection> | Promise<Nullable<Collection>>;
+
+    abstract countries(): Country[] | Promise<Country[]>;
 
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
-    abstract product(id?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+    abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
 
     abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
 
-    abstract availablePaymentMethods(orderId: string): PaymentMethod[] | Promise<PaymentMethod[]>;
-}
-
-export class Country implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    states: State[];
-}
-
-export class State implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    country: Country;
+    abstract availablePaymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 }
 
 export class Customer implements Node {
@@ -628,6 +624,11 @@ export class Shop implements Node {
     name: string;
     slug: string;
     shopApiKey: string;
+    email: string;
+    phoneNumber: string;
+    logo?: Nullable<string>;
+    address?: Nullable<AddressJson>;
+    storefrontUrl?: Nullable<string>;
     owner: User;
 }
 
@@ -748,6 +749,22 @@ export class PageInfo {
     total: number;
 }
 
+export class Country implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    states: State[];
+}
+
+export class State implements Node {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    name: string;
+    country: Country;
+}
+
 export class CustomerList implements List {
     items: Customer[];
     count: number;
@@ -788,12 +805,12 @@ export class Order implements Node {
     totalQuantity: number;
     lines?: OrderLineList;
     customer?: Nullable<Customer>;
-    shippingAddress?: Nullable<OrderShippingAddressJson>;
+    shippingAddress?: Nullable<AddressJson>;
     payment?: Nullable<Payment>;
     shipment?: Nullable<Shipment>;
 }
 
-export class OrderShippingAddressJson {
+export class AddressJson {
     country: string;
     fullName?: Nullable<string>;
     streetLine1: string;

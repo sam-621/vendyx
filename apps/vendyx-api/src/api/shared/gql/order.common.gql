@@ -50,12 +50,12 @@ type Order implements Node {
 
   lines(input: ListInput): OrderLineList!
   customer: Customer
-  shippingAddress: OrderShippingAddressJson
+  shippingAddress: AddressJson
   payment: Payment
   shipment: Shipment
 }
 
-type OrderShippingAddressJson {
+type AddressJson {
   country: String!
   fullName: String
   streetLine1: String!

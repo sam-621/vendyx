@@ -5,7 +5,13 @@ import { AuthService } from '@/auth';
 import { UserJwtPayload } from '@/auth/strategies';
 import { UserRepository } from '@/persistence/repositories';
 
-import { EmailAlreadyExists, InvalidCredentials } from './user.errors';
+import {
+  EmailAlreadyExists,
+  InvalidCredentials,
+  InvalidEmail,
+  PasswordInvalidLength
+} from './user.errors';
+import { validateEmail } from '../shared';
 
 @Injectable()
 export class UserService {
@@ -21,6 +27,14 @@ export class UserService {
   }
 
   async create(input: CreateUserInput) {
+    if (!validateEmail(input.email)) {
+      return new InvalidEmail();
+    }
+
+    if (input.password.length < 6) {
+      return new PasswordInvalidLength();
+    }
+
     const emailExists = await this.userRepository.findByEmailForAdmin(input.email);
 
     if (emailExists) {
@@ -34,6 +48,10 @@ export class UserService {
 
   async update(id: string, input: UpdateUserInput) {
     if (input.email) {
+      if (!validateEmail(input.email)) {
+        return new InvalidEmail();
+      }
+
       const userWithEmailExists = await this.userRepository.findByEmailForAdmin(input.email);
 
       if (userWithEmailExists && userWithEmailExists.id !== id) {

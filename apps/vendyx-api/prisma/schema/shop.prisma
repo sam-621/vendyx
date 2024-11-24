@@ -6,26 +6,36 @@ model Shop {
   deletedAt DateTime? @map("deleted_at")
 
   /// The shop's name
-  name       String
+  name          String
   /// The shop's slug
-  slug       String @unique
+  slug          String  @unique
   /// The shop's API key which is used to authenticate requests for the shop-api
-  shopApiKey String @unique @map("shop_api_key")
+  shopApiKey    String  @unique @map("shop_api_key")
+  /// Contact email for the shop
+  email         String  @unique
+  /// Contact phone number for the shop
+  phoneNumber   String  @map("phone_number") @db.VarChar(15)
+  /// The shop's logo
+  logo          String?
+  /// Physical address of the shop
+  address       Json?
+  /// The shop's storefront url
+  storefrontUrl String? @unique @map("storefront_url")
 
-  product             Product[]
-  variant             Variant[]
-  option              Option[]
-  optionValue         OptionValue[]
-  asset               Asset[]
-  payment             Payment[]
-  paymentMethod       PaymentMethod[]
-  shipment            Shipment[]
-  shippingMethod      ShippingMethod[]
-  zone                Zone[]
-  order               Order[]
-  orderLines          OrderLine[]
-  customer            Customer[]
-  customercollections Collection[]
+  product        Product[]
+  variant        Variant[]
+  option         Option[]
+  optionValue    OptionValue[]
+  asset          Asset[]
+  payment        Payment[]
+  paymentMethod  PaymentMethod[]
+  shipment       Shipment[]
+  shippingMethod ShippingMethod[]
+  zone           Zone[]
+  order          Order[]
+  orderLines     OrderLine[]
+  customer       Customer[]
+  collections    Collection[]
 
   /// The shop's owner
   owner   User   @relation(fields: [ownerId], references: [id])
