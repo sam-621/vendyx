@@ -53,7 +53,6 @@ export const OtpWrapper: FC<Props> = ({ children }) => {
     if (!otp) return;
 
     startTransition(async () => {
-      await wait(3000);
       const result = await validateOtp(otp);
 
       if (result?.error) {
