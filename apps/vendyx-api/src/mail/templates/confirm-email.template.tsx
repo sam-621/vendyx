@@ -28,6 +28,10 @@ const Component = ({ domain, otp }: ConfirmEmailInput) => {
                   Click here to confirm your account.
                 </Text>
               </Link>
+              <Text className="text-[#666666] text-[16px] !mt-2">
+                If you didn't request this email, there's nothing to worry about, you can safely
+                ignore it.
+              </Text>
             </Section>
           </Container>
         </Body>
