@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/lib/shared/components';
-import { FormInput } from '@/lib/shared/form';
+import { FormInput, FormPhoneInput } from '@/lib/shared/form';
 
 import { type CustomerDetailsFormInput } from '../customer-details';
 
@@ -18,7 +18,7 @@ export const CustomerContactInfoCard = () => {
         <FormInput control={control} name="firstName" label="First Name" />
         <FormInput control={control} name="lastName" label="Last Name" />
         <FormInput control={control} name="email" label="Email" />
-        <FormInput control={control} name="phoneNumber" label="Phone Number" />
+        <FormPhoneInput control={control} name="phoneNumber" label="Phone Number" />
       </CardContent>
     </Card>
   );
