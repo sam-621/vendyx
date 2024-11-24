@@ -40,6 +40,10 @@ export class UserService {
     return this.userRepository.findById(payload.sub);
   }
 
+  async findById(id: ID) {
+    return this.userRepository.findById(id);
+  }
+
   async create(input: CreateUserInput) {
     if (!validateEmail(input.email)) {
       return new InvalidEmail();

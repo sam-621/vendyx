@@ -798,9 +798,9 @@ export type Query = {
   shops: ShopList;
   totalOrders: MetricsResult;
   totalSales: MetricsResult;
-  user?: Maybe<User>;
   validateAccessToken?: Maybe<Scalars['Boolean']['output']>;
   variant?: Maybe<Variant>;
+  whoami?: Maybe<User>;
   zone: Zone;
   zones: Array<Zone>;
 };
@@ -858,10 +858,6 @@ export type QueryTotalOrdersArgs = {
 
 export type QueryTotalSalesArgs = {
   input: MetricsInput;
-};
-
-export type QueryUserArgs = {
-  accessToken: Scalars['String']['input'];
 };
 
 export type QueryVariantArgs = {
@@ -1964,13 +1960,20 @@ export type UpdateShopMutation = {
   updateShop: { __typename?: 'Shop'; id: string; slug: string };
 };
 
-export type GetUserQueryVariables = Exact<{
-  accessToken: Scalars['String']['input'];
-}>;
+export type CommonUserFragment = {
+  __typename?: 'User';
+  id: string;
+  email: string;
+  emailVerified: boolean;
+} & { ' $fragmentName'?: 'CommonUserFragment' };
 
-export type GetUserQuery = {
+export type WhoamiQueryVariables = Exact<{ [key: string]: never }>;
+
+export type WhoamiQuery = {
   __typename?: 'Query';
-  user?: { __typename?: 'User'; id: string } | null;
+  whoami?:
+    | ({ __typename?: 'User' } & { ' $fragmentRefs'?: { CommonUserFragment: CommonUserFragment } })
+    | null;
 };
 
 export type CreateUserMutationVariables = Exact<{
@@ -2416,6 +2419,16 @@ export const CommonListShopFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonListShop' }
 ) as unknown as TypedDocumentString<CommonListShopFragment, unknown>;
+export const CommonUserFragmentDoc = new TypedDocumentString(
+  `
+    fragment CommonUser on User {
+  id
+  email
+  emailVerified
+}
+    `,
+  { fragmentName: 'CommonUser' }
+) as unknown as TypedDocumentString<CommonUserFragment, unknown>;
 export const CommonZoneFragmentDoc = new TypedDocumentString(
   `
     fragment CommonZone on Zone {
@@ -3109,13 +3122,17 @@ export const UpdateShopDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UpdateShopMutation, UpdateShopMutationVariables>;
-export const GetUserDocument = new TypedDocumentString(`
-    query GetUser($accessToken: String!) {
-  user(accessToken: $accessToken) {
-    id
+export const WhoamiDocument = new TypedDocumentString(`
+    query Whoami {
+  whoami {
+    ...CommonUser
   }
 }
-    `) as unknown as TypedDocumentString<GetUserQuery, GetUserQueryVariables>;
+    fragment CommonUser on User {
+  id
+  email
+  emailVerified
+}`) as unknown as TypedDocumentString<WhoamiQuery, WhoamiQueryVariables>;
 export const CreateUserDocument = new TypedDocumentString(`
     mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {

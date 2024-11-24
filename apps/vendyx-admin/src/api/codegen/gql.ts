@@ -122,8 +122,9 @@ const documents = {
     types.CreateShopDocument,
   '\n  mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {\n    updateShop(shopSlug: $shopSlug, input: $input) {\n      id\n      slug\n    }\n  }\n':
     types.UpdateShopDocument,
-  '\n  query GetUser($accessToken: String!) {\n    user(accessToken: $accessToken) {\n      id\n    }\n  }\n':
-    types.GetUserDocument,
+  '\n  fragment CommonUser on User {\n    id\n    email\n    emailVerified\n  }\n':
+    types.CommonUserFragmentDoc,
+  '\n  query Whoami {\n    whoami {\n      ...CommonUser\n    }\n  }\n': types.WhoamiDocument,
   '\n  mutation CreateUser($input: CreateUserInput!) {\n    createUser(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      user {\n        id\n      }\n    }\n  }\n':
     types.CreateUserDocument,
   '\n  mutation GenerateAccessToken($input: GenerateUserAccessTokenInput!) {\n    generateUserAccessToken(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      accessToken\n    }\n  }\n':
@@ -485,8 +486,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query GetUser($accessToken: String!) {\n    user(accessToken: $accessToken) {\n      id\n    }\n  }\n'
-): typeof import('./graphql').GetUserDocument;
+  source: '\n  fragment CommonUser on User {\n    id\n    email\n    emailVerified\n  }\n'
+): typeof import('./graphql').CommonUserFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  query Whoami {\n    whoami {\n      ...CommonUser\n    }\n  }\n'
+): typeof import('./graphql').WhoamiDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

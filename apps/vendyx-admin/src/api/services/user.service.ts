@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { getFragmentData } from '../codegen';
 import {
+  type CommonUserFragment,
   type CreateUserInput,
   type GenerateUserAccessTokenInput,
   type UserErrorCode,
@@ -7,26 +9,36 @@ import {
 } from '../codegen/graphql';
 import { getUserError } from '../errors';
 import {
+  COMMON_USER_FRAGMENT,
   CREATE_USER_MUTATION,
   GENERATE_ACCESS_TOKEN_MUTATION,
-  GET_USER_QUERY,
   VALIDATE_ACCESS_TOKEN_QUERY,
-  VALIDATE_OTP_MUTATION
+  VALIDATE_OTP_MUTATION,
+  WHOAMI_QUERY
 } from '../operations';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const UserService = {
   Tags: {
-    user: (accessToken: string) => `user-${accessToken}`
+    user: 'user'
   },
 
-  async get(accessToken: string) {
-    const { user } = await serviceGqlFetcher(
-      GET_USER_QUERY,
-      { accessToken },
-      { tags: [UserService.Tags.user(accessToken)] }
+  async whoami() {
+    const result = await serviceGqlFetcher(
+      WHOAMI_QUERY,
+      {},
+      {
+        tags: [UserService.Tags.user]
+      }
     );
-    return user;
+
+    const user = getFragmentData(COMMON_USER_FRAGMENT, result.whoami);
+
+    if (!user) {
+      throw new Error('Whoami used in no authenticated context');
+    }
+
+    return user as CommonUserFragment;
   },
 
   async create(input: CreateUserInput): Promise<UserResult> {

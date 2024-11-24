@@ -1,5 +1,7 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
+
 import { UserService } from '@/api/services';
 
 export const validateOtp = async (otp: string) => {
@@ -8,4 +10,6 @@ export const validateOtp = async (otp: string) => {
   if (!result.success) {
     return { error: result.error };
   }
+
+  revalidateTag(UserService.Tags.user);
 };

@@ -15,3 +15,16 @@ export const ShopsListEmptyState = () => {
     </div>
   );
 };
+
+export const ShopsListUnauthorizedState = () => {
+  return (
+    <div className="px-4 py-6 rounded-xl border border-dashed max-w-[420px] mx-auto text-center flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <h1 className="h4">You have not confirm your account</h1>
+        <p className="muted text-muted-foreground">
+          Confirm your account to be able to create your first shop
+        </p>
+      </div>
+    </div>
+  );
+};

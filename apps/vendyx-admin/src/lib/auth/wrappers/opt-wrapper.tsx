@@ -1,48 +1,72 @@
 'use client';
 
-import { type FC, type PropsWithChildren, useEffect } from 'react';
+import {
+  type FC,
+  type MutableRefObject,
+  type PropsWithChildren,
+  useEffect,
+  useRef,
+  useState,
+  useTransition
+} from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { notification } from '@/lib/shared/notifications';
+import { wait } from '@/lib/shared/utils';
 
 import { validateOtp } from '../actions/validate-otp';
 
 export const OtpWrapper: FC<Props> = ({ children }) => {
+  const notificationRef: MutableRefObject<string | number | null> = useRef(null);
+  const [error, setError] = useState('');
+
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [isLoading, startTransition] = useTransition();
 
   useEffect(() => {
     void (async () => {
-      await wait(1);
-      const params = new URLSearchParams(searchParams);
-      const otp = params.get('otp');
+      if (isLoading) {
+        // wait 1 millisecond to prevent flickering
+        await wait(1);
+        notificationRef.current = notification.loading('Confirming account...');
+      }
 
-      if (!otp) return;
+      if (!isLoading && notificationRef.current) {
+        notification.dismiss(notificationRef.current);
 
-      const notificationId = notification.loading('Confirming account...');
+        if (error) {
+          notification.error(error);
+        } else {
+          notification.success('Account confirmed');
+        }
+      }
+    })();
+  }, [isLoading]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const otp = params.get('otp');
+
+    if (!otp) return;
+
+    startTransition(async () => {
       await wait(3000);
       const result = await validateOtp(otp);
 
       if (result?.error) {
-        notification.dismiss(notificationId);
-        notification.error(result.error);
-      } else {
-        notification.dismiss(notificationId);
-        notification.success('Account confirmed');
+        setError(result.error);
       }
 
       params.delete('otp');
 
       replace(pathname, { scroll: false });
-    })();
+    });
   }, []);
 
   return <>{children}</>;
 };
 
 type Props = PropsWithChildren;
-
-const wait = async (ms: number) => await new Promise(resolve => setTimeout(resolve, ms));

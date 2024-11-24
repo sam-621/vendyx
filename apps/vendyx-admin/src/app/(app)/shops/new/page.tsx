@@ -1,9 +1,17 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
+import { UserService } from '@/api/services';
 import { UserAvatar } from '@/lib/shared/components';
 import { CreateShopForm } from '@/lib/shop/components';
 
-export default function NewShopPage() {
+export default async function NewShopPage() {
+  const user = await UserService.whoami();
+
+  if (!user.emailVerified) {
+    redirect('/shops');
+  }
+
   return (
     <div className="grid h-screen">
       <div className="py-32">

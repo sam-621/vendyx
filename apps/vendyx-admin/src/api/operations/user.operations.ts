@@ -1,9 +1,17 @@
 import { graphql } from '../codegen';
 
-export const GET_USER_QUERY = graphql(`
-  query GetUser($accessToken: String!) {
-    user(accessToken: $accessToken) {
-      id
+export const COMMON_USER_FRAGMENT = graphql(`
+  fragment CommonUser on User {
+    id
+    email
+    emailVerified
+  }
+`);
+
+export const WHOAMI_QUERY = graphql(`
+  query Whoami {
+    whoami {
+      ...CommonUser
     }
   }
 `);

@@ -25,9 +25,9 @@ export class UserResolver {
   ) {}
 
   @UseGuards(UserJwtAuthGuard)
-  @Query('user')
-  async user(@Args('accessToken') accessToken: string) {
-    return this.userService.findByAccessToken(accessToken);
+  @Query('whoami')
+  async user(@CurrentUser() user: UserJwtPayload) {
+    return this.userService.findById(user.sub);
   }
 
   @UseGuards(UserJwtAuthGuard)
