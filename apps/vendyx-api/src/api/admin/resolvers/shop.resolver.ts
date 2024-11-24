@@ -47,7 +47,9 @@ export class ShopResolver {
 
   @Mutation('updateShop')
   async updateShop(@Args('shopSlug') shopSlug: string, @Args('input') input: UpdateShopInput) {
-    return this.shopService.update(shopSlug, input);
+    const result = await this.shopService.update(shopSlug, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], shop: result };
   }
 
   @ResolveField('owner')

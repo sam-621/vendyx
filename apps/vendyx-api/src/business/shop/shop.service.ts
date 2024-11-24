@@ -54,6 +54,17 @@ export class ShopService {
   }
 
   async update(shopSlug: string, input: UpdateShopInput) {
+    if (input.email) {
+      const emailExists = await this.prismaForAdmin.shop.findUnique({
+        where: { email: input.email },
+        select: { slug: true }
+      });
+
+      if (emailExists && emailExists.slug !== shopSlug) {
+        return new EmailAlreadyExists();
+      }
+    }
+
     return this.shopRepository.update(shopSlug, clean(input));
   }
 

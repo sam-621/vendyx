@@ -53,7 +53,7 @@ type Query {
 
 type Mutation {
   createShop(input: CreateShopInput!): ShopResult!
-  updateShop(shopSlug: String!, input: UpdateShopInput!): Shop!
+  updateShop(shopSlug: String!, input: UpdateShopInput!): ShopResult!
 }
 
 input CreateShopInput {
