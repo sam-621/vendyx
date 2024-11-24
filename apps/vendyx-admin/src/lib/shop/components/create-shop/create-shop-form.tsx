@@ -32,14 +32,7 @@ export const CreateShopForm = () => {
               placeholder="m@example.com"
               description="Email used for customers to contact you"
             />
-            {/* <FormInput
-              control={form.control}
-              name="phoneNumber"
-              label="Phone number"
-              placeholder="+1 234 567 8901"
-              description="Phone number used for customers to contact you"
-            /> */}
-            <FormPhoneInput control={form.control} name="phoneNumber" />
+            <FormPhoneInput label="Phone number" control={form.control} name="phoneNumber" />
             <div className="text-right">
               <Button isLoading={form.isLoading}>Create shop</Button>
             </div>

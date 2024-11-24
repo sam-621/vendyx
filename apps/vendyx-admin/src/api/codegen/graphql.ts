@@ -1894,6 +1894,8 @@ export type CommonShopFragment = {
   id: string;
   name: string;
   slug: string;
+  email: string;
+  phoneNumber: string;
   shopApiKey: string;
 } & { ' $fragmentName'?: 'CommonShopFragment' };
 
@@ -2370,6 +2372,8 @@ export const CommonShopFragmentDoc = new TypedDocumentString(
   id
   name
   slug
+  email
+  phoneNumber
   shopApiKey
 }
     `,
@@ -3058,6 +3062,8 @@ export const ShopDocument = new TypedDocumentString(`
   id
   name
   slug
+  email
+  phoneNumber
   shopApiKey
 }`) as unknown as TypedDocumentString<ShopQuery, ShopQueryVariables>;
 export const CreateShopDocument = new TypedDocumentString(`

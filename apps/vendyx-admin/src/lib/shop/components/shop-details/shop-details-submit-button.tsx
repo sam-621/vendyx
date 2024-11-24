@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { type DeepPartial, useFormContext, useWatch } from 'react-hook-form';
 
 import { type CommonShopFragment } from '@/api/types';
 import { Button } from '@/lib/shared/components';
@@ -11,7 +11,7 @@ export const ShopDetailsSubmitButton: FC<Props> = ({ shop }) => {
   const values = useWatch({ defaultValue: form.getValues() });
 
   const isLoading = (form as any).isLoading as boolean; // This exists in every form, i just need to add it to the type but i'm lazy
-  const hasChanged = values.name !== shop.name;
+  const hasChanged = valuesHasChanged(values, shop);
   const withRequiredValues = Boolean(values.name?.length);
 
   return (
@@ -19,6 +19,17 @@ export const ShopDetailsSubmitButton: FC<Props> = ({ shop }) => {
       Save
     </Button>
   );
+};
+
+const valuesHasChanged = (
+  formValues: DeepPartial<ShopDetailsFormInput>,
+  shop: CommonShopFragment
+) => {
+  // Omit shopApiKey from the comparison
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { shopApiKey, ...formInput } = formValues;
+
+  return Object.keys(formInput).some(key => (formValues as any)[key] !== (shop as any)[key]);
 };
 
 type Props = {

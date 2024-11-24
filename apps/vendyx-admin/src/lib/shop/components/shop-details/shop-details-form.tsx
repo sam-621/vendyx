@@ -3,8 +3,8 @@
 import { type FC } from 'react';
 
 import { type CommonShopFragment } from '@/api/types';
-import { CopyToClipboardButton, SettingsPageLayout } from '@/lib/shared/components';
-import { Form, FormInput } from '@/lib/shared/form';
+import { CopyToClipboardButton, Separator, SettingsPageLayout } from '@/lib/shared/components';
+import { Form, FormInput, FormPhoneInput } from '@/lib/shared/form';
 
 import { ShopDetailsSubmitButton } from './shop-details-submit-button';
 import { useShopDetailsForm } from './use-shop-details-form';
@@ -22,6 +22,14 @@ export const ShopDetailsForm: FC<Props> = ({ shop }) => {
         >
           <div className="flex flex-col gap-4">
             <FormInput control={form.control} label="Name" name="name" placeholder="Store name" />
+            <FormInput
+              control={form.control}
+              label="Email"
+              name="email"
+              placeholder="m@example.com"
+            />
+            <FormPhoneInput label="Phone number" control={form.control} name="phoneNumber" />
+            <Separator />
             <div className="flex items-center gap-2">
               <FormInput
                 control={form.control}

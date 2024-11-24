@@ -5,6 +5,8 @@ export const COMMON_SHOP_FRAGMENT = graphql(`
     id
     name
     slug
+    email
+    phoneNumber
     shopApiKey
   }
 `);

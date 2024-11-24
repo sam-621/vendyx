@@ -18,6 +18,8 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: shop.name,
+      email: shop.email,
+      phoneNumber: shop.phoneNumber,
       shopApiKey: shop.shopApiKey
     }
   });
@@ -45,6 +47,8 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
 
 const schema = z.object({
   name: z.string().min(1, FormMessages.required),
+  email: z.string().email(FormMessages.invalidEmail),
+  phoneNumber: z.string().min(1, FormMessages.invalidPhoneNumber),
   shopApiKey: z.string().readonly().optional()
 });
 
