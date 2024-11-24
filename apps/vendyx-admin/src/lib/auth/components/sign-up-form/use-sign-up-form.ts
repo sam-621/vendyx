@@ -14,7 +14,6 @@ export const useSignUpForm = () => {
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      store: '',
       email: '',
       password: ''
     }
@@ -43,9 +42,8 @@ export const useSignUpForm = () => {
 };
 
 const schema = z.object({
-  store: z.string().min(1, FormMessages.required),
   email: z.string().min(1, FormMessages.required),
-  password: z.string().min(1, FormMessages.required)
+  password: z.string().min(6, FormMessages.required)
 });
 
 type FormInput = z.infer<typeof schema>;

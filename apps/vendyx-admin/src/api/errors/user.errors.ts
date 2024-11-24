@@ -10,4 +10,14 @@ export const getUserError = (error?: UserErrorResult) => {
   if (error.code === UserErrorCode.InvalidCredentials) {
     return 'Invalid credentials';
   }
+
+  if (error.code === UserErrorCode.InvalidEmail) {
+    return 'Invalid email';
+  }
+
+  if (error.code === UserErrorCode.PasswordInvalidLength) {
+    return 'Invalid password length';
+  }
+
+  return 'Something went wrong';
 };

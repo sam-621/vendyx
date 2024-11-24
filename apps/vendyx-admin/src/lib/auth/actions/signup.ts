@@ -1,17 +1,20 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { ShopService, UserService } from '@/api/services';
+import { UserService } from '@/api/services';
 import { UserErrorCode } from '@/api/types';
-import { setActiveShop, setToken } from '@/lib/shared/cookies';
+import { setToken } from '@/lib/shared/cookies';
 
-export const signup = async ({ email, password, store }: Input) => {
+export const signup = async ({ email, password }: Input) => {
   const createUserResult = await UserService.create({ email, password });
 
   if (!createUserResult.success) {
-    if (createUserResult.errorCode === UserErrorCode.EmailAlreadyExists) {
+    if (
+      [UserErrorCode.EmailAlreadyExists, UserErrorCode.InvalidEmail].includes(
+        createUserResult.errorCode
+      )
+    ) {
       return { error: createUserResult.error, field: 'email' };
     }
     return { error: createUserResult.error };
@@ -24,13 +27,7 @@ export const signup = async ({ email, password, store }: Input) => {
   }
 
   setToken(accessTokenResult.accessToken);
-
-  const { id: shopId, slug: shopSlug } = await ShopService.create({ name: store });
-
-  setActiveShop({ id: shopId, slug: shopSlug });
-
-  revalidateTag(ShopService.Tags.shops);
-  redirect(`/shops/${shopSlug}`);
+  redirect('/shops');
 };
 
-type Input = { email: string; password: string; store: string };
+type Input = { email: string; password: string };

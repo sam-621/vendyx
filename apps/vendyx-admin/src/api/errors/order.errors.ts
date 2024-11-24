@@ -10,4 +10,6 @@ export const getOrderError = (error?: OrderErrorResult) => {
   if (error.code === OrderErrorCode.OrderTransitionError) {
     return 'Could not transition the order to the desired state';
   }
+
+  return 'Something went wrong';
 };

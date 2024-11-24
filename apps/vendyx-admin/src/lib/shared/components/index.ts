@@ -15,5 +15,6 @@ export * from './skeletons';
 export * from './status-badges';
 export * from './theme-provider';
 export * from './theme-switcher';
+export * from './tooltips';
 export * from './ui';
 export * from './user-avatar';

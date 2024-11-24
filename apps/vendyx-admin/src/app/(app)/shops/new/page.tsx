@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { ThemeSwitcher } from '@/lib/shared/components';
+import { UserAvatar } from '@/lib/shared/components';
 import { CreateShopForm } from '@/lib/shop/components';
 
 export default function NewShopPage() {
@@ -8,7 +8,7 @@ export default function NewShopPage() {
     <div className="grid h-screen">
       <div className="py-32">
         <div className="fixed top-6 right-6">
-          <ThemeSwitcher />
+          <UserAvatar />
         </div>
 
         <h1 className="text-center text-2xl font-medium mb-12 w-screen">

@@ -30,12 +30,6 @@ export const SignUpForm = () => {
             <div className="grid gap-4">
               <FormInput
                 control={form.control}
-                name="store"
-                placeholder="Your store name"
-                label="Store"
-              />
-              <FormInput
-                control={form.control}
                 name="email"
                 placeholder="m@example.com"
                 label="Email"

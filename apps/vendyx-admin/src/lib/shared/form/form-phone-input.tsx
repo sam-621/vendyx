@@ -1,24 +1,19 @@
-import { type ComponentProps, type HTMLInputTypeAttribute, type ReactNode } from 'react';
+import React, { type ComponentProps } from 'react';
 import { type FieldPath, type FieldValues } from 'react-hook-form';
 
-import { InfoTooltip, Input } from '../components';
+import { InfoTooltip, PhoneInput } from '../components';
 import { cn } from '../utils';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
 
-export const FormInput = <
+export const FormPhoneInput = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   name,
   label,
   description,
-  placeholder,
-  type,
-  isPrice,
-  isPassword,
-  rightElement: RightElement,
-  tooltip,
   className,
+  tooltip,
   ...rest
 }: Props<TFieldValues, TName>) => {
   return (
@@ -35,15 +30,8 @@ export const FormInput = <
           )}
           <div className="flex items-center gap-2 w-full">
             <FormControl>
-              <Input
-                type={type}
-                placeholder={placeholder}
-                isPrice={isPrice}
-                isPassword={isPassword}
-                {...field}
-              />
+              <PhoneInput {...field} />
             </FormControl>
-            {RightElement && RightElement}
           </div>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
@@ -63,10 +51,6 @@ type Props<
   label?: string;
   description?: string;
   placeholder?: string;
-  type?: HTMLInputTypeAttribute;
-  isPrice?: boolean;
-  isPassword?: boolean;
-  rightElement?: ReactNode;
   className?: string;
   tooltip?: string;
 };

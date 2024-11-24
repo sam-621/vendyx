@@ -39,6 +39,19 @@ export type Address = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type AddressJson = {
+  __typename?: 'AddressJson';
+  city: Scalars['String']['output'];
+  country: Scalars['String']['output'];
+  fullName?: Maybe<Scalars['String']['output']>;
+  postalCode: Scalars['String']['output'];
+  /** State or region */
+  province: Scalars['String']['output'];
+  references?: Maybe<Scalars['String']['output']>;
+  streetLine1: Scalars['String']['output'];
+  streetLine2?: Maybe<Scalars['String']['output']>;
+};
+
 export type AddressList = List & {
   __typename?: 'AddressList';
   count: Scalars['Int']['output'];
@@ -144,6 +157,16 @@ export type Country = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export type CreateAddressInput = {
+  city: Scalars['String']['input'];
+  country: Scalars['String']['input'];
+  postalCode: Scalars['String']['input'];
+  province: Scalars['String']['input'];
+  references?: InputMaybe<Scalars['String']['input']>;
+  streetLine1: Scalars['String']['input'];
+  streetLine2?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CreateCheckoutSessionInput = {
   lookupKey: Scalars['String']['input'];
   userId: Scalars['ID']['input'];
@@ -192,7 +215,12 @@ export type CreateShippingMethodInput = {
 };
 
 export type CreateShopInput = {
+  address?: InputMaybe<CreateAddressInput>;
+  email: Scalars['String']['input'];
+  logo?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  storefrontUrl?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateUserInput = {
@@ -544,7 +572,7 @@ export type Order = Node & {
   /** The date and time when a payment has been added to the order */
   placedAt?: Maybe<Scalars['Date']['output']>;
   shipment?: Maybe<Shipment>;
-  shippingAddress?: Maybe<OrderShippingAddressJson>;
+  shippingAddress?: Maybe<AddressJson>;
   state: OrderState;
   /** Order lines total less discounts */
   subtotal: Scalars['Int']['output'];
@@ -615,19 +643,6 @@ export type OrderResult = {
   __typename?: 'OrderResult';
   apiErrors: Array<OrderErrorResult>;
   order?: Maybe<Order>;
-};
-
-export type OrderShippingAddressJson = {
-  __typename?: 'OrderShippingAddressJson';
-  city: Scalars['String']['output'];
-  country: Scalars['String']['output'];
-  fullName?: Maybe<Scalars['String']['output']>;
-  postalCode: Scalars['String']['output'];
-  /** State or region */
-  province: Scalars['String']['output'];
-  references?: Maybe<Scalars['String']['output']>;
-  streetLine1: Scalars['String']['output'];
-  streetLine2?: Maybe<Scalars['String']['output']>;
 };
 
 export enum OrderState {
@@ -906,16 +921,26 @@ export type ShippingMethod = Node & {
 
 export type Shop = Node & {
   __typename?: 'Shop';
+  /** Physical address of the shop */
+  address?: Maybe<AddressJson>;
   createdAt: Scalars['Date']['output'];
+  /** Contact email for the shop */
+  email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  /** The shop's logo */
+  logo?: Maybe<Scalars['String']['output']>;
   /** The shop's name */
   name: Scalars['String']['output'];
   /** The shop's owner */
   owner: User;
+  /** Contact phone number for the shop */
+  phoneNumber: Scalars['String']['output'];
   /** Api key for other stores to connect to this store */
   shopApiKey: Scalars['String']['output'];
   /** The shop's slug */
   slug: Scalars['String']['output'];
+  /** The shop's storefront url */
+  storefrontUrl?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['Date']['output'];
 };
 
@@ -1025,7 +1050,12 @@ export type UpdateShippingMethodInput = {
 };
 
 export type UpdateShopInput = {
+  address?: InputMaybe<CreateAddressInput>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  logo?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  storefrontUrl?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateUserInput = {
@@ -1068,7 +1098,9 @@ export type UserAccessTokenResult = {
 
 export enum UserErrorCode {
   EmailAlreadyExists = 'EMAIL_ALREADY_EXISTS',
-  InvalidCredentials = 'INVALID_CREDENTIALS'
+  InvalidCredentials = 'INVALID_CREDENTIALS',
+  InvalidEmail = 'INVALID_EMAIL',
+  PasswordInvalidLength = 'PASSWORD_INVALID_LENGTH'
 }
 
 export type UserErrorResult = {
@@ -1488,7 +1520,7 @@ export type CommonOrderFragment = {
     phoneNumber?: string | null;
   } | null;
   shippingAddress?: {
-    __typename?: 'OrderShippingAddressJson';
+    __typename?: 'AddressJson';
     streetLine1: string;
     streetLine2?: string | null;
     postalCode: string;

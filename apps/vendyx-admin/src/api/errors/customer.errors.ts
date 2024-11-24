@@ -10,4 +10,6 @@ export const getCustomerError = (error?: CustomerErrorResult) => {
   if (error.code === CustomerErrorCode.InvalidEmail) {
     return 'Email is invalid';
   }
+
+  return 'Something went wrong';
 };

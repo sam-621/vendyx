@@ -14,10 +14,15 @@ import {
 } from '@/lib/shared/components';
 
 import { ShopCard } from './shop-card';
+import { ShopsListEmptyState } from './shops-list-empty-state';
 
 export const ShopsList: FC<Props> = ({ shops }) => {
+  if (!shops.length) {
+    return <ShopsListEmptyState />;
+  }
+
   return (
-    <Card className="w-[420px] mx-auto">
+    <Card className="max-w-[420px] mx-auto">
       <CardHeader className="flex items-center flex-row justify-between space-y-0">
         <div>
           <CardTitle>Shops</CardTitle>

@@ -14,7 +14,9 @@ export const useCreateShopForm = () => {
   const form = useForm<FormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: ''
+      name: '',
+      email: '',
+      phoneNumber: ''
     }
   });
 
@@ -32,7 +34,9 @@ export const useCreateShopForm = () => {
 };
 
 const schema = z.object({
-  name: z.string().min(1, FormMessages.required)
+  name: z.string().min(1, FormMessages.required),
+  email: z.string().email(FormMessages.invalidEmail),
+  phoneNumber: z.string().min(1, FormMessages.invalidPhoneNumber)
 });
 
 type FormInput = z.infer<typeof schema>;
