@@ -384,6 +384,7 @@ export type Mutation = {
   updateUser: UserResult;
   updateVariant: Variant;
   updateZone: Zone;
+  validateOtp: UserResult;
 };
 
 export type MutationCancelOrderArgs = {
@@ -525,6 +526,10 @@ export type MutationUpdateVariantArgs = {
 export type MutationUpdateZoneArgs = {
   id: Scalars['ID']['input'];
   input: UpdateZoneInput;
+};
+
+export type MutationValidateOtpArgs = {
+  input: ValidateOtpInput;
 };
 
 /** A node, each type that represents a entity should implement this interface */
@@ -1083,9 +1088,12 @@ export type User = Node & {
   createdAt: Scalars['Date']['output'];
   /** The user's email (unique) */
   email: Scalars['String']['output'];
+  /** Determines if the user's email has been verified */
+  emailVerified: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
   /** The user's shops */
   shops: ShopList;
+  /** The user's subscription */
   subscription?: Maybe<UserSubscription>;
   updatedAt: Scalars['Date']['output'];
 };
@@ -1100,6 +1108,8 @@ export enum UserErrorCode {
   EmailAlreadyExists = 'EMAIL_ALREADY_EXISTS',
   InvalidCredentials = 'INVALID_CREDENTIALS',
   InvalidEmail = 'INVALID_EMAIL',
+  InvalidOtp = 'INVALID_OTP',
+  OtpExpired = 'OTP_EXPIRED',
   PasswordInvalidLength = 'PASSWORD_INVALID_LENGTH'
 }
 
@@ -1135,6 +1145,10 @@ export type UserSubscription = Node & {
   /** The status of the subscription */
   status: SubscriptionStatus;
   updatedAt: Scalars['Date']['output'];
+};
+
+export type ValidateOtpInput = {
+  otp: Scalars['String']['input'];
 };
 
 /**
@@ -1990,6 +2004,19 @@ export type ValidateAccessTokenQueryVariables = Exact<{ [key: string]: never }>;
 export type ValidateAccessTokenQuery = {
   __typename?: 'Query';
   validateAccessToken?: boolean | null;
+};
+
+export type ValidateOtpMutationVariables = Exact<{
+  input: ValidateOtpInput;
+}>;
+
+export type ValidateOtpMutation = {
+  __typename?: 'Mutation';
+  validateOtp: {
+    __typename?: 'UserResult';
+    apiErrors: Array<{ __typename?: 'UserErrorResult'; code: UserErrorCode; message: string }>;
+    user?: { __typename?: 'User'; id: string } | null;
+  };
 };
 
 export type CreateVariantMutationVariables = Exact<{
@@ -3124,6 +3151,19 @@ export const ValidateAccessTokenDocument = new TypedDocumentString(`
   ValidateAccessTokenQuery,
   ValidateAccessTokenQueryVariables
 >;
+export const ValidateOtpDocument = new TypedDocumentString(`
+    mutation ValidateOtp($input: ValidateOtpInput!) {
+  validateOtp(input: $input) {
+    apiErrors {
+      code
+      message
+    }
+    user {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<ValidateOtpMutation, ValidateOtpMutationVariables>;
 export const CreateVariantDocument = new TypedDocumentString(`
     mutation CreateVariant($productId: ID!, $input: CreateVariantInput!) {
   createVariant(productId: $productId, input: $input) {

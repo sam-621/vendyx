@@ -39,3 +39,17 @@ export const VALIDATE_ACCESS_TOKEN_QUERY = graphql(`
     validateAccessToken
   }
 `);
+
+export const VALIDATE_OTP_MUTATION = graphql(`
+  mutation ValidateOtp($input: ValidateOtpInput!) {
+    validateOtp(input: $input) {
+      apiErrors {
+        code
+        message
+      }
+      user {
+        id
+      }
+    }
+  }
+`);

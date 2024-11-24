@@ -2,14 +2,16 @@
 import {
   type CreateUserInput,
   type GenerateUserAccessTokenInput,
-  type UserErrorCode
+  type UserErrorCode,
+  type ValidateOtpInput
 } from '../codegen/graphql';
 import { getUserError } from '../errors';
 import {
   CREATE_USER_MUTATION,
   GENERATE_ACCESS_TOKEN_MUTATION,
   GET_USER_QUERY,
-  VALIDATE_ACCESS_TOKEN_QUERY
+  VALIDATE_ACCESS_TOKEN_QUERY,
+  VALIDATE_OTP_MUTATION
 } from '../operations';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
@@ -61,6 +63,20 @@ export const UserService = {
     const result = await serviceGqlFetcher(VALIDATE_ACCESS_TOKEN_QUERY);
 
     return result.validateAccessToken;
+  },
+
+  async validateOtp(input: ValidateOtpInput): Promise<UserResult> {
+    const {
+      validateOtp: { apiErrors, user }
+    } = await serviceGqlFetcher(VALIDATE_OTP_MUTATION, { input });
+
+    const error = getUserError(apiErrors[0]);
+
+    if (error) {
+      return { success: false, error, errorCode: apiErrors[0].code };
+    }
+
+    return { success: true, userId: user?.id ?? '' };
   }
 };
 

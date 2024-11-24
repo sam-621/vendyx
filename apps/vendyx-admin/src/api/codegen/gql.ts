@@ -130,6 +130,8 @@ const documents = {
     types.GenerateAccessTokenDocument,
   '\n  query ValidateAccessToken {\n    validateAccessToken\n  }\n':
     types.ValidateAccessTokenDocument,
+  '\n  mutation ValidateOtp($input: ValidateOtpInput!) {\n    validateOtp(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      user {\n        id\n      }\n    }\n  }\n':
+    types.ValidateOtpDocument,
   '\n  mutation CreateVariant($productId: ID!, $input: CreateVariantInput!) {\n    createVariant(productId: $productId, input: $input) {\n      id\n    }\n  }\n':
     types.CreateVariantDocument,
   '\n  mutation UpdateVariant($id: ID!, $input: UpdateVariantInput!) {\n    updateVariant(id: $id, input: $input) {\n      id\n    }\n  }\n':
@@ -503,6 +505,12 @@ export function graphql(
 export function graphql(
   source: '\n  query ValidateAccessToken {\n    validateAccessToken\n  }\n'
 ): typeof import('./graphql').ValidateAccessTokenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation ValidateOtp($input: ValidateOtpInput!) {\n    validateOtp(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      user {\n        id\n      }\n    }\n  }\n'
+): typeof import('./graphql').ValidateOtpDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
