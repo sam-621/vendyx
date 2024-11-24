@@ -4,7 +4,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { ShopErrorCode } from '@/api/types';
 import { FormMessages } from '@/lib/shared/form';
+import { notification } from '@/lib/shared/notifications';
 
 import { createShop } from '../../actions/create-shop';
 
@@ -22,7 +24,16 @@ export const useCreateShopForm = () => {
 
   const onSubmit = (values: FormInput) => {
     startTransition(async () => {
-      await createShop(values);
+      const result = await createShop(values);
+
+      if (result.error) {
+        if (result.errorCode === ShopErrorCode.EmailAlreadyExists) {
+          form.setError('email', { message: result.error });
+          return;
+        }
+
+        notification.error(result.error);
+      }
     });
   };
 

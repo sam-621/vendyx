@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getFragmentData } from '../codegen';
 import {
-  type CommonUserFragment,
   type CreateUserInput,
   type GenerateUserAccessTokenInput,
   type UserErrorCode,
@@ -38,7 +37,7 @@ export const UserService = {
       throw new Error('Whoami used in no authenticated context');
     }
 
-    return user as CommonUserFragment;
+    return user;
   },
 
   async create(input: CreateUserInput): Promise<UserResult> {

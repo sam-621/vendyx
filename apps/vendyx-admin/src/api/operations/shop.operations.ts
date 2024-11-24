@@ -40,8 +40,14 @@ export const GET_SHOP_BY_SLUG_QUERY = graphql(`
 export const CREATE_SHOP_MUTATION = graphql(`
   mutation CreateShop($input: CreateShopInput!) {
     createShop(input: $input) {
-      id
-      slug
+      apiErrors {
+        message
+        code
+      }
+      shop {
+        id
+        slug
+      }
     }
   }
 `);
@@ -49,8 +55,14 @@ export const CREATE_SHOP_MUTATION = graphql(`
 export const UPDATE_SHOP_MUTATION = graphql(`
   mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {
     updateShop(shopSlug: $shopSlug, input: $input) {
-      id
-      slug
+      apiErrors {
+        message
+        code
+      }
+      shop {
+        id
+        slug
+      }
     }
   }
 `);

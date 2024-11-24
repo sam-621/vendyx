@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { type CommonShopFragment } from '@/api/types';
+import { type CommonShopFragment, ShopErrorCode } from '@/api/types';
 import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
 
@@ -33,7 +33,17 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
 
   async function onSubmit(values: ShopDetailsFormInput) {
     startTransition(async () => {
-      await updateShop(shop.slug, values);
+      const result = await updateShop(shop.slug, values);
+
+      if (result?.error) {
+        if (result.errorCode === ShopErrorCode.EmailAlreadyExists) {
+          form.setError('email', { message: result.error });
+          return;
+        }
+
+        notification.error(result.error);
+      }
+
       setIsSuccess(true);
     });
   }

@@ -1,5 +1,6 @@
 import { getFragmentData } from '../codegen';
-import { type CreateShopInput, type UpdateShopInput } from '../codegen/graphql';
+import { type CreateShopInput, type ShopErrorCode, type UpdateShopInput } from '../codegen/graphql';
+import { getShopError } from '../errors';
 import {
   COMMON_LIST_SHOP_FRAGMENT,
   COMMON_SHOP_FRAGMENT,
@@ -8,6 +9,7 @@ import {
   GET_SHOPS_QUERY,
   UPDATE_SHOP_MUTATION
 } from '../operations';
+import { type ID } from '../scalars';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const ShopService = {
@@ -34,15 +36,44 @@ export const ShopService = {
     return getFragmentData(COMMON_SHOP_FRAGMENT, result.shop);
   },
 
-  async create(input: CreateShopInput) {
-    const { createShop } = await serviceGqlFetcher(CREATE_SHOP_MUTATION, { input });
+  async create(input: CreateShopInput): Promise<ShopResult> {
+    const {
+      createShop: { apiErrors, shop }
+    } = await serviceGqlFetcher(CREATE_SHOP_MUTATION, { input });
 
-    return createShop;
+    const error = getShopError(apiErrors[0]);
+
+    if (error) {
+      return { success: false, error, errorCode: apiErrors[0].code };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return { success: true, shop: shop! };
   },
 
-  async update(shopSlug: string, input: UpdateShopInput) {
-    const { updateShop } = await serviceGqlFetcher(UPDATE_SHOP_MUTATION, { shopSlug, input });
+  async update(shopSlug: string, input: UpdateShopInput): Promise<ShopResult> {
+    const {
+      updateShop: { apiErrors, shop }
+    } = await serviceGqlFetcher(UPDATE_SHOP_MUTATION, { shopSlug, input });
 
-    return updateShop;
+    const error = getShopError(apiErrors[0]);
+
+    if (error) {
+      return { success: false, error, errorCode: apiErrors[0].code };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return { success: true, shop: shop! };
   }
 };
+
+type ShopResult =
+  | {
+      success: true;
+      shop: { id: ID; slug: string };
+    }
+  | {
+      success: false;
+      error: string;
+      errorCode: ShopErrorCode;
+    };

@@ -359,7 +359,7 @@ export type Mutation = {
   createPaymentMethod: PaymentMethod;
   createProduct: Product;
   createShippingMethod: ShippingMethod;
-  createShop: Shop;
+  createShop: ShopResult;
   createUser: UserResult;
   createVariant: Variant;
   createZone: Zone;
@@ -380,7 +380,7 @@ export type Mutation = {
   updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
   updateShippingMethod: ShippingMethod;
-  updateShop: Shop;
+  updateShop: ShopResult;
   updateUser: UserResult;
   updateVariant: Variant;
   updateZone: Zone;
@@ -945,11 +945,28 @@ export type Shop = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
+export enum ShopErrorCode {
+  EmailAlreadyExists = 'EMAIL_ALREADY_EXISTS',
+  EmailNotVerified = 'EMAIL_NOT_VERIFIED'
+}
+
+export type ShopErrorResult = {
+  __typename?: 'ShopErrorResult';
+  code: ShopErrorCode;
+  message: Scalars['String']['output'];
+};
+
 export type ShopList = List & {
   __typename?: 'ShopList';
   count: Scalars['Int']['output'];
   items: Array<Shop>;
   pageInfo: PageInfo;
+};
+
+export type ShopResult = {
+  __typename?: 'ShopResult';
+  apiErrors: Array<ShopErrorResult>;
+  shop?: Maybe<Shop>;
 };
 
 export type State = Node & {
@@ -1947,7 +1964,11 @@ export type CreateShopMutationVariables = Exact<{
 
 export type CreateShopMutation = {
   __typename?: 'Mutation';
-  createShop: { __typename?: 'Shop'; id: string; slug: string };
+  createShop: {
+    __typename?: 'ShopResult';
+    apiErrors: Array<{ __typename?: 'ShopErrorResult'; message: string; code: ShopErrorCode }>;
+    shop?: { __typename?: 'Shop'; id: string; slug: string } | null;
+  };
 };
 
 export type UpdateShopMutationVariables = Exact<{
@@ -1957,7 +1978,11 @@ export type UpdateShopMutationVariables = Exact<{
 
 export type UpdateShopMutation = {
   __typename?: 'Mutation';
-  updateShop: { __typename?: 'Shop'; id: string; slug: string };
+  updateShop: {
+    __typename?: 'ShopResult';
+    apiErrors: Array<{ __typename?: 'ShopErrorResult'; message: string; code: ShopErrorCode }>;
+    shop?: { __typename?: 'Shop'; id: string; slug: string } | null;
+  };
 };
 
 export type CommonUserFragment = {
@@ -3109,16 +3134,28 @@ export const ShopDocument = new TypedDocumentString(`
 export const CreateShopDocument = new TypedDocumentString(`
     mutation CreateShop($input: CreateShopInput!) {
   createShop(input: $input) {
-    id
-    slug
+    apiErrors {
+      message
+      code
+    }
+    shop {
+      id
+      slug
+    }
   }
 }
     `) as unknown as TypedDocumentString<CreateShopMutation, CreateShopMutationVariables>;
 export const UpdateShopDocument = new TypedDocumentString(`
     mutation UpdateShop($shopSlug: String!, $input: UpdateShopInput!) {
   updateShop(shopSlug: $shopSlug, input: $input) {
-    id
-    slug
+    apiErrors {
+      message
+      code
+    }
+    shop {
+      id
+      slug
+    }
   }
 }
     `) as unknown as TypedDocumentString<UpdateShopMutation, UpdateShopMutationVariables>;

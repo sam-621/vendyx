@@ -8,10 +8,16 @@ import { type CreateShopInput } from '@/api/types';
 import { setActiveShop } from '@/lib/shared/cookies';
 
 export const createShop = async (input: CreateShopInput) => {
-  const { id: shopId, slug: shopSlug } = await ShopService.create(input);
+  const result = await ShopService.create(input);
 
-  setActiveShop({ id: shopId, slug: shopSlug });
+  if (!result.success) {
+    return { error: result.error, errorCode: result.errorCode };
+  }
+
+  const { id, slug } = result.shop;
+
+  setActiveShop({ id, slug });
 
   revalidateTag(ShopService.Tags.shops);
-  redirect(`/shops/${shopSlug}`);
+  redirect(`/shops/${slug}`);
 };
