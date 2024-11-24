@@ -38,6 +38,10 @@ export class AuthService {
     return bcrypt.compare(str, hash);
   }
 
+  generateOtp() {
+    return String(Math.floor(100000 + Math.random() * 900000));
+  }
+
   private async generateSalt() {
     return await bcrypt.genSalt();
   }

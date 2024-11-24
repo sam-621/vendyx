@@ -20,7 +20,7 @@
     "db:push-local": "dotenv -e .env.local.migration prisma db push",
     "db:push-prod": "dotenv -e .env.prod.migration prisma db push",
     "------------------": "-----------------",
-    "email-templates": "email dev --dir ./src/mail/templates"
+    "emails": "email dev --dir ./src/mail/templates"
   },
   "dependencies": {
     "@apollo/server": "^4.10.5",

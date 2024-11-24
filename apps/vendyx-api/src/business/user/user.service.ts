@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateUserInput, UpdateUserInput } from '@/api/shared';
 import { AuthService } from '@/auth';
 import { UserJwtPayload } from '@/auth/strategies';
+import { EventBusService } from '@/event-bus';
+import { UserRegisteredEvent } from '@/event-bus/events';
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
 import { UserRepository } from '@/persistence/repositories';
+import { ID } from '@/persistence/types';
 
 import {
   EmailAlreadyExists,
@@ -16,8 +20,10 @@ import { validateEmail } from '../shared';
 @Injectable()
 export class UserService {
   constructor(
+    @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
     private readonly authService: AuthService,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
+    private readonly eventBus: EventBusService
   ) {}
 
   async findByAccessToken(accessToken: string) {
@@ -43,7 +49,11 @@ export class UserService {
 
     const hashedPassword = await this.authService.hash(input.password);
 
-    return await this.userRepository.insert({ email: input.email, password: hashedPassword });
+    const user = await this.userRepository.insert({ email: input.email, password: hashedPassword });
+
+    this.eventBus.emit(new UserRegisteredEvent({ id: user.id, email: user.email }));
+
+    return user;
   }
 
   async update(id: string, input: UpdateUserInput) {
@@ -81,6 +91,45 @@ export class UserService {
     });
 
     return accessToken;
+  }
+
+  async generateOtp(userId: ID) {
+    try {
+      const MAX_ATTEMPTS = 3;
+      let attempts = 0;
+      let isUnique = false;
+      let otp: string | null = null;
+
+      do {
+        otp = this.authService.generateOtp();
+
+        const otpExists = await this.prismaForAdmin.otp.findUnique({ where: { otp } });
+
+        if (!otpExists) {
+          isUnique = true;
+        }
+
+        attempts++;
+      } while (attempts < MAX_ATTEMPTS && !isUnique);
+
+      if (!isUnique) {
+        return null;
+      }
+
+      const EXPIRES_AT = new Date(Date.now() + 15 * 60 * 1000);
+
+      await this.prismaForAdmin.otp.create({
+        data: {
+          userId,
+          otp,
+          expiresAt: EXPIRES_AT
+        }
+      });
+
+      return otp;
+    } catch (error) {
+      return null;
+    }
   }
 }
 

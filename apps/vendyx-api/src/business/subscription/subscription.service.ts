@@ -99,9 +99,9 @@ export class SubscriptionService {
       customer: input.stripeCustomerId,
       mode: 'subscription',
       success_url: `${this.configService.get(
-        'CLIENT_DOMAIN'
+        'VENDYX_ADMIN_DOMAIN'
       )}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${this.configService.get('CLIENT_DOMAIN')}`
+      cancel_url: `${this.configService.get('VENDYX_ADMIN_DOMAIN')}`
     });
 
     return {
@@ -114,7 +114,7 @@ export class SubscriptionService {
 
     const portalSession = await this.stripe.billingPortal.sessions.create({
       customer: checkoutSession.customer as string,
-      return_url: `${this.configService.get('CLIENT_DOMAIN')}/account`
+      return_url: `${this.configService.get('VENDYX_ADMIN_DOMAIN')}/account`
     });
 
     return {
