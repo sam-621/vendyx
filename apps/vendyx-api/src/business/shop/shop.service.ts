@@ -1,15 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared';
 import { AuthService } from '@/auth';
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
 import { ShopRepository } from '@/persistence/repositories';
 
 import { clean, getSlugBy } from '../shared';
+import { EmailAlreadyExists, EmailNotVerified } from './shop.errors';
 
 @Injectable()
 export class ShopService {
   constructor(
+    @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
     private readonly shopRepository: ShopRepository,
     private readonly authService: AuthService
   ) {}
@@ -26,7 +29,19 @@ export class ShopService {
     return this.shopRepository.count(input);
   }
 
-  async create(input: CreateShopInput) {
+  async create(input: CreateShopInput, emailVerified: boolean) {
+    if (!emailVerified) {
+      return new EmailNotVerified();
+    }
+
+    const emailExists = await this.prismaForAdmin.shop.count({
+      where: { email: input.email }
+    });
+
+    if (emailExists) {
+      return new EmailAlreadyExists();
+    }
+
     const slug = await this.validateAndParseSlug(input.name);
     const shopApiKey = this.authService.generateShopApiKey();
 
@@ -69,6 +84,9 @@ export class ShopService {
     const slug = getSlugBy(name);
 
     const shopNameCount = await this.shopRepository.getTotalByName(name);
+    console.log({
+      shopNameCount
+    });
 
     if (!shopNameCount) return slug;
 

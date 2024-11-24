@@ -30,6 +30,6 @@ export class UserJwtStrategy extends PassportStrategy(Strategy, 'user-jwt') {
       return null;
     }
 
-    return payload;
+    return user;
   }
 }

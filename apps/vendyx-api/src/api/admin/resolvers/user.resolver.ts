@@ -4,15 +4,15 @@ import { User } from '@prisma/client';
 
 import {
   CreateUserInput,
+  CurrentUser,
   GenerateUserAccessTokenInput,
   ListInput,
   ListResponse,
+  TCurrentUser,
   UpdateUserInput,
   UserJwtAuthGuard,
   ValidateOtpInput
 } from '@/api/shared';
-import { CurrentUser } from '@/api/shared/decorator/current-user.decorator';
-import { UserJwtPayload } from '@/auth/strategies';
 import { clean, isErrorResult } from '@/business/shared';
 import { UserService } from '@/business/user';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
@@ -26,8 +26,8 @@ export class UserResolver {
 
   @UseGuards(UserJwtAuthGuard)
   @Query('whoami')
-  async user(@CurrentUser() user: UserJwtPayload) {
-    return this.userService.findById(user.sub);
+  async user(@CurrentUser() user: TCurrentUser) {
+    return this.userService.findById(user.id);
   }
 
   @UseGuards(UserJwtAuthGuard)
@@ -75,8 +75,8 @@ export class UserResolver {
 
   @UseGuards(UserJwtAuthGuard)
   @Mutation('validateOtp')
-  async validateOtp(@CurrentUser() user: UserJwtPayload, @Args('input') input: ValidateOtpInput) {
-    const result = await this.userService.validateOtp(user.sub, input);
+  async validateOtp(@CurrentUser() user: TCurrentUser, @Args('input') input: ValidateOtpInput) {
+    const result = await this.userService.validateOtp(user.id, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], user: result };
   }

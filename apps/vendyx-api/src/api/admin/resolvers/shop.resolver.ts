@@ -4,11 +4,14 @@ import { Shop } from '@prisma/client';
 
 import {
   CreateShopInput,
+  CurrentUser,
   ListInput,
   ListResponse,
+  TCurrentUser,
   UpdateShopInput,
   UserJwtAuthGuard
 } from '@/api/shared';
+import { isErrorResult } from '@/business/shared';
 import { ShopService } from '@/business/shop';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
 
@@ -36,8 +39,10 @@ export class ShopResolver {
   }
 
   @Mutation('createShop')
-  async createShop(@Args('input') input: CreateShopInput) {
-    return this.shopService.create(input);
+  async createShop(@CurrentUser() user: TCurrentUser, @Args('input') input: CreateShopInput) {
+    const result = await this.shopService.create(input, user.emailVerified);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], shop: result };
   }
 
   @Mutation('updateShop')

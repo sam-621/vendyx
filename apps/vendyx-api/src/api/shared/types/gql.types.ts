@@ -30,6 +30,11 @@ export enum OrderErrorCode {
     FORBIDDEN_ORDER_ACTION = "FORBIDDEN_ORDER_ACTION"
 }
 
+export enum ShopErrorCode {
+    EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
+    EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
+}
+
 export enum SubscriptionStatus {
     INCOMPLETE = "INCOMPLETE",
     INCOMPLETE_EXPIRED = "INCOMPLETE_EXPIRED",
@@ -417,7 +422,7 @@ export abstract class IMutation {
 
     abstract removeShippingMethod(id: string): boolean | Promise<boolean>;
 
-    abstract createShop(input: CreateShopInput): Shop | Promise<Shop>;
+    abstract createShop(input: CreateShopInput): ShopResult | Promise<ShopResult>;
 
     abstract updateShop(shopSlug: string, input: UpdateShopInput): Shop | Promise<Shop>;
 
@@ -501,7 +506,7 @@ export abstract class IQuery {
 
     abstract shops(input?: Nullable<ListInput>): ShopList | Promise<ShopList>;
 
-    abstract user(accessToken: string): Nullable<User> | Promise<Nullable<User>>;
+    abstract whoami(): Nullable<User> | Promise<Nullable<User>>;
 
     abstract validateAccessToken(): Nullable<boolean> | Promise<Nullable<boolean>>;
 
@@ -644,6 +649,16 @@ export class ShopList implements List {
     items: Shop[];
     count: number;
     pageInfo: PageInfo;
+}
+
+export class ShopResult {
+    shop?: Nullable<Shop>;
+    apiErrors: ShopErrorResult[];
+}
+
+export class ShopErrorResult {
+    code: ShopErrorCode;
+    message: string;
 }
 
 export class UserSubscription implements Node {

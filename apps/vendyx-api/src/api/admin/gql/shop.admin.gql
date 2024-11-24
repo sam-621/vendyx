@@ -52,7 +52,7 @@ type Query {
 }
 
 type Mutation {
-  createShop(input: CreateShopInput!): Shop!
+  createShop(input: CreateShopInput!): ShopResult!
   updateShop(shopSlug: String!, input: UpdateShopInput!): Shop!
 }
 
@@ -72,4 +72,19 @@ input UpdateShopInput {
   address: CreateAddressInput
   logo: String
   storefrontUrl: String
+}
+
+type ShopResult {
+  shop: Shop
+  apiErrors: [ShopErrorResult!]!
+}
+
+type ShopErrorResult {
+  code: ShopErrorCode!
+  message: String!
+}
+
+enum ShopErrorCode {
+  EMAIL_NOT_VERIFIED
+  EMAIL_ALREADY_EXISTS
 }

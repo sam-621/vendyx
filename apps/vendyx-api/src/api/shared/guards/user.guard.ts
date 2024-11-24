@@ -2,9 +2,10 @@ import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/com
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from '@prisma/client';
 import { Observable } from 'rxjs';
 
-import { type UserJwtPayload } from '@/auth/strategies';
+import { TCurrentUser } from '../decorator';
 
 @Injectable()
 export class UserJwtAuthGuard extends AuthGuard('user-jwt') {
@@ -33,11 +34,15 @@ export class UserJwtAuthGuard extends AuthGuard('user-jwt') {
    * @param err Error thrown from the validate method
    * @param user data returned from the validate method
    */
-  handleRequest<T = UserJwtPayload>(err: any, user: UserJwtPayload): T {
+  handleRequest<T = TCurrentUser>(err: any, user: User): T {
     if (err || !user) {
       throw new UnauthorizedException('Invalid access token');
     }
 
-    return { email: user.email, sub: user.sub } as T;
+    return {
+      id: user.id,
+      email: user.email,
+      emailVerified: user.emailVerified
+    } as T;
   }
 }
