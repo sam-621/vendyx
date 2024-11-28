@@ -1,9 +1,17 @@
-import { PrismaClient } from '@prisma/client';
+import { Country, PaymentIntegration, PrismaClient, ShippingHandler, Zone } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 import { generateSku } from './generators';
 
-export const generateShop = async (prisma: PrismaClient) => {
+type Input = {
+  stripe: PaymentIntegration;
+  paypal: PaymentIntegration;
+  flatPrice: ShippingHandler;
+  mx: Country;
+  us: Country;
+};
+
+export const generateShop = async (prisma: PrismaClient, input: Input) => {
   console.log();
 
   const user = await prisma.user.upsert({
@@ -31,6 +39,21 @@ export const generateShop = async (prisma: PrismaClient) => {
 
   console.log('Generating products... 🚀');
 
+  const [, , bags, tees] = await prisma.$transaction([
+    prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+    prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+    prisma.collection.upsert({
+      where: { slug: 'bags' },
+      create: { name: 'Bags', slug: 'bags' },
+      update: {}
+    }),
+    prisma.collection.upsert({
+      where: { slug: 'tees' },
+      create: { name: 'Tees', slug: 'tees' },
+      update: {}
+    })
+  ]);
+
   const [
     tee8PackSize,
     basicSize,
@@ -44,7 +67,25 @@ export const generateShop = async (prisma: PrismaClient) => {
     basic6packSize
   ] = await generateOptions(prisma, shop.id, user.id);
 
-  await prisma.$transaction([
+  const [
+    ,
+    ,
+    one,
+    two,
+    three,
+    four,
+    five,
+    six,
+    seven,
+    ///
+    eight,
+    nine,
+    ten,
+    eleven,
+    twelve,
+    thirteen,
+    fourteen
+  ] = await prisma.$transaction([
     prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
     prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
     prisma.product.upsert(
@@ -486,6 +527,7 @@ export const generateShop = async (prisma: PrismaClient) => {
         shop.id
       )
     ),
+    ////// Bags start here
     prisma.product.upsert(
       generateProduct(
         {
@@ -669,8 +711,206 @@ export const generateShop = async (prisma: PrismaClient) => {
     )
   ]);
 
+  // link products to collections
+  await prisma.$transaction([
+    prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+    prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: tees.id, productId: one.id } },
+      create: { collectionId: tees.id, productId: one.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: tees.id, productId: two.id } },
+      create: { collectionId: tees.id, productId: two.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: tees.id, productId: three.id } },
+      create: { collectionId: tees.id, productId: three.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: tees.id, productId: four.id } },
+      create: { collectionId: tees.id, productId: four.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: tees.id, productId: five.id } },
+      create: { collectionId: tees.id, productId: five.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: tees.id, productId: six.id } },
+      create: { collectionId: tees.id, productId: six.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: tees.id, productId: seven.id } },
+      create: { collectionId: tees.id, productId: seven.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: bags.id, productId: eight.id } },
+      create: { collectionId: bags.id, productId: eight.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: bags.id, productId: nine.id } },
+      create: { collectionId: bags.id, productId: nine.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: bags.id, productId: ten.id } },
+      create: { collectionId: bags.id, productId: ten.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: bags.id, productId: eleven.id } },
+      create: { collectionId: bags.id, productId: eleven.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: bags.id, productId: twelve.id } },
+      create: { collectionId: bags.id, productId: twelve.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: bags.id, productId: thirteen.id } },
+      create: { collectionId: bags.id, productId: thirteen.id },
+      update: {}
+    }),
+    prisma.productCollection.upsert({
+      where: { productId_collectionId: { collectionId: bags.id, productId: fourteen.id } },
+      create: { collectionId: bags.id, productId: fourteen.id },
+      update: {}
+    })
+  ]);
+
   console.log('Products generated! 🚀');
   console.log();
+
+  console.log('Generating methods... 🚀');
+
+  const [, , zones] = await prisma.$transaction([
+    prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+    prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+    prisma.zone.findMany()
+  ]);
+
+  let local: Zone;
+  let international: Zone;
+
+  // create zones and shipping methods
+  if (!zones.length) {
+    const [, , l, i] = await prisma.$transaction([
+      prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+      prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+      prisma.zone.create({
+        data: {
+          name: 'Local',
+          shippingMethods: {
+            create: [
+              {
+                name: 'Standard',
+                description: 'Delivery in 4-8 business days',
+                handlerMetadata: { price: 0 },
+                shippingHandlerId: input.flatPrice?.id ?? ''
+              },
+              {
+                name: 'Express',
+                description: 'Delivery in 2-3 business days',
+                handlerMetadata: { price: 1000 },
+                shippingHandlerId: input.flatPrice?.id ?? ''
+              }
+            ]
+          }
+        }
+      }),
+      prisma.zone.create({
+        data: {
+          name: 'International',
+          shippingMethods: {
+            create: [
+              {
+                name: 'Standard',
+                description: 'Delivery in 7-14 business days',
+                handlerMetadata: { price: 2500 },
+                shippingHandlerId: input.flatPrice?.id ?? ''
+              },
+              {
+                name: 'Express',
+                description: 'Delivery in 5-8 business days',
+                handlerMetadata: { price: 5000 },
+                shippingHandlerId: input.flatPrice?.id ?? ''
+              }
+            ]
+          }
+        }
+      })
+    ]);
+
+    local = l;
+    international = i;
+  }
+
+  const [mx, us] = await prisma.country.findMany({ include: { states: true } });
+
+  // link states to zones
+  await prisma.$transaction([
+    prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+    prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+    ...mx.states.map(s =>
+      prisma.stateZone.upsert({
+        where: { zoneId_stateId: { stateId: s.id, zoneId: local.id } },
+        create: {
+          state: { connect: { id: s.id } },
+          zone: { connect: { id: local.id } }
+        },
+        update: {}
+      })
+    ),
+    ...us.states.map(s =>
+      prisma.stateZone.upsert({
+        where: { zoneId_stateId: { stateId: s.id, zoneId: international.id } },
+        create: {
+          state: { connect: { id: s.id } },
+          zone: { connect: { id: international.id } }
+        },
+        update: {}
+      })
+    )
+  ]);
+
+  const [, , paymentMethods] = await prisma.$transaction([
+    prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+    prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+    prisma.paymentMethod.findMany()
+  ]);
+
+  // create payment methods
+  if (!paymentMethods.length) {
+    await prisma.$transaction([
+      prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+      prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+      prisma.paymentMethod.create({
+        data: {
+          paymentIntegrationId: input.stripe.id,
+          integrationMetadata: { secret_key: 'pk_test_51J3' }
+        }
+      }),
+      prisma.paymentMethod.create({
+        data: {
+          paymentIntegrationId: input.paypal.id,
+          integrationMetadata: { client_key: 'pk_test_51J3' }
+        }
+      })
+    ]);
+  }
+
+  console.log('Payment and shipping methods generated! 🚀');
+  console.log();
+
   console.log(`Email: ${user.email}`);
   console.log(`Password: 123456`);
   console.log(`Shop: ${shop.name}`);

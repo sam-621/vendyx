@@ -17,7 +17,7 @@ type Collection implements Node {
   """
   The collection's description
   """
-  description: String!
+  description: String
   """
   The collection's order user to decide to show the collection in the storefront
   """

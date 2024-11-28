@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 export const generatePaymentIntegrations = async (prisma: PrismaClient) => {
-  await prisma.$transaction([
+  return await prisma.$transaction([
     prisma.$executeRaw`SELECT set_config('app.bypass_rls', 'on', TRUE)`,
     prisma.paymentIntegration.upsert({
       where: { handlerCode: 'stripe' },

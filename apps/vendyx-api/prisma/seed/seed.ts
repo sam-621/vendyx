@@ -8,10 +8,10 @@ import { generateShop } from './shop.seed';
 const prisma = new PrismaClient();
 
 async function main() {
-  await generatePaymentIntegrations(prisma);
-  await generateShippingHandlers(prisma);
-  await generateCountries(prisma);
-  await generateShop(prisma);
+  const [, stripe, paypal] = await generatePaymentIntegrations(prisma);
+  const [, flatPrice] = await generateShippingHandlers(prisma);
+  const [, mx, us] = await generateCountries(prisma);
+  await generateShop(prisma, { stripe, paypal, flatPrice, mx, us });
 }
 main()
   .then(async () => {
