@@ -20,7 +20,7 @@ export const Dropzone: FC<Props> = ({ size, disabled, disabledMessage, onAcceptF
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <div className={cn(getSize(size), 'opacity-50 flex-shrink-0')}>
+            <div className={cn(getDropzoneSize(size), 'opacity-50 flex-shrink-0')}>
               <label
                 className={cn(
                   'rounded-md border border-dashed flex items-center justify-center w-full h-full cursor-not-allowed'
@@ -39,7 +39,7 @@ export const Dropzone: FC<Props> = ({ size, disabled, disabledMessage, onAcceptF
   }
 
   return (
-    <div className={cn(getSize(size), 'flex-shrink-0')}>
+    <div className={cn(getDropzoneSize(size), 'flex-shrink-0')}>
       <label
         className={cn(
           'rounded-md border border-dashed cursor-pointer flex items-center justify-center w-full h-full',
@@ -61,7 +61,7 @@ type Props = {
   onAcceptFiles: (files: File[]) => void;
 };
 
-const getSize = (size: Props['size']) => {
+export const getDropzoneSize = (size: Props['size']) => {
   if (size === 'sm') return 'w-[48px] h-[48px]';
 
   if (size === 'md') return 'w-[60px] h-[60px]';

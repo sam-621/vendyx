@@ -2,7 +2,7 @@ import { type FC, useEffect, useState } from 'react';
 
 import { XIcon } from 'lucide-react';
 
-import { Dropzone, LoaderSpiner } from '@/lib/shared/components';
+import { Dropzone, getDropzoneSize, LoaderSpiner } from '@/lib/shared/components';
 import { cn } from '@/lib/shared/utils';
 
 import { useVariantContext } from '../../contexts';
@@ -41,12 +41,11 @@ export const VariantAssetUploader: FC<Props> = ({
         >
           <XIcon size={12} className="" />
         </button>
-        <div className="relative">
+        <div className={cn('relative', getDropzoneSize(size))}>
           <img
-            {...getSize(size)}
             src={file ? URL.createObjectURL(file) : image ?? ''}
             alt="Uploaded"
-            className={cn(isLoading && 'opacity-50')}
+            className={cn('object-cover rounded', isLoading && 'opacity-50', getDropzoneSize(size))}
           />
           {isLoading && <LoaderSpiner size={24} className="absolute top-1/3 right-1/3" />}
         </div>
@@ -67,16 +66,6 @@ export const VariantAssetUploader: FC<Props> = ({
       }}
     />
   );
-};
-
-const getSize = (size: Size) => {
-  if (size === 'sm') {
-    return { width: 48, height: 48 };
-  }
-
-  if (size === 'md') {
-    return { width: 60, height: 60 };
-  }
 };
 
 type Props = {
