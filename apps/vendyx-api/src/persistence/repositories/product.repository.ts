@@ -11,8 +11,8 @@ import { ID } from '../types';
 export class ProductRepository {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}
 
-  findMany(input?: ProductListInput & { collectionId?: ID }) {
-    return this.prisma.product.findMany({
+  async findMany(input?: ProductListInput & { collectionId?: ID }) {
+    return await this.prisma.product.findMany({
       ...clean({ skip: input?.skip, take: input?.take }),
       where: {
         name: clean(input?.filters?.name ?? {}),
@@ -22,7 +22,7 @@ export class ProductRepository {
           ? { some: { collectionId: input?.collectionId } }
           : undefined
       },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { order: 'asc' }
     });
   }
 

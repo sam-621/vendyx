@@ -961,7 +961,7 @@ const generateOption =
   };
 
 const generateProduct = (input: ProductInput, shopId: string) => {
-  const slug = input.name.toLowerCase().replace(' ', '-');
+  const slug = input.name.toLowerCase().replaceAll(' ', '-');
 
   return {
     where: { slug },
