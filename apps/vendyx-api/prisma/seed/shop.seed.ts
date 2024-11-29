@@ -553,7 +553,7 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
               costPerUnit: 8500,
               requiresShipping: true,
               stock: 100,
-              optionValueId: lineWork3packSize.values[1].id,
+              optionValueId: nomadColor.values[1].id,
               asset:
                 'https://res.cloudinary.com/dnvp4s8pe/image/upload/v1732588296/vendyx/rxoidro8cc3wwcum7col.png'
             }
@@ -711,6 +711,10 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
     )
   ]);
 
+  console.log();
+  console.log('Generated collections:');
+  console.log();
+
   // link products to collections
   await prisma.$transaction([
     prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
@@ -798,11 +802,11 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
     prisma.zone.findMany()
   ]);
 
-  let local: Zone;
-  let international: Zone;
+  let local: Zone = zones[0];
+  let international: Zone = zones[1];
 
   // create zones and shipping methods
-  if (!zones.length) {
+  if (zones.length !== 2) {
     const [, , l, i] = await prisma.$transaction([
       prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
       prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
@@ -854,13 +858,20 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
     international = i;
   }
 
-  const [mx, us] = await prisma.country.findMany({ include: { states: true } });
+  const mx = await prisma.country.findUnique({
+    where: { id: input.mx.id },
+    include: { states: true }
+  });
+  const us = await prisma.country.findUnique({
+    where: { id: input.us.id },
+    include: { states: true }
+  });
 
   // link states to zones
   await prisma.$transaction([
     prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
     prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
-    ...mx.states.map(s =>
+    ...(mx?.states.map(s =>
       prisma.stateZone.upsert({
         where: { zoneId_stateId: { stateId: s.id, zoneId: local.id } },
         create: {
@@ -869,8 +880,8 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
         },
         update: {}
       })
-    ),
-    ...us.states.map(s =>
+    ) ?? []),
+    ...(us?.states.map(s =>
       prisma.stateZone.upsert({
         where: { zoneId_stateId: { stateId: s.id, zoneId: international.id } },
         create: {
@@ -879,7 +890,7 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
         },
         update: {}
       })
-    )
+    ) ?? [])
   ]);
 
   const [, , paymentMethods] = await prisma.$transaction([
