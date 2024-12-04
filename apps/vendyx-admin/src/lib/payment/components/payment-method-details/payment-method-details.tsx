@@ -47,6 +47,10 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
     [selectedIntegration]
   );
 
+  console.log({
+    metadata
+  });
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-end gap-4 w-full">

@@ -1,2 +1,2 @@
 export * from './paypal.module';
-export * from './paypal.service';
+export * from './paypal.handler';

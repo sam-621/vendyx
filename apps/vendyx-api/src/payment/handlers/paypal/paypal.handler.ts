@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthorizePaymentResult, CreatePaymentResult, PaymentHandler } from '../payment-handler';
 
 @Injectable()
-export class PaypalService implements PaymentHandler {
+export class PaypalHandler implements PaymentHandler {
   async createPayment(
     order: any,
     totalAmount: number,

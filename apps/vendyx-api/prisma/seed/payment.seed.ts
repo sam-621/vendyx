@@ -20,7 +20,10 @@ export const generatePaymentIntegrations = async (prisma: PrismaClient) => {
         name: 'PayPal',
         handlerCode: 'paypal',
         icon: 'icon.png',
-        metadata: [{ key: 'client_key', label: 'Client key', type: 'text' }]
+        metadata: [
+          { key: 'clientId', label: 'Client id', type: 'text' },
+          { key: 'secret', label: 'Secret', type: 'text' }
+        ]
       }
     })
   ]);

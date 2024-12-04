@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { PaypalService } from './paypal.service';
+import { PaypalHandler } from './paypal.handler';
 
 @Module({
-  providers: [PaypalService],
-  exports: [PaypalService]
+  providers: [PaypalHandler],
+  exports: [PaypalHandler]
 })
 export class PaypalModule {}

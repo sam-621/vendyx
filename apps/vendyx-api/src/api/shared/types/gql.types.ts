@@ -74,6 +74,11 @@ export enum OrderState {
     CANCELED = "CANCELED"
 }
 
+export enum PaypalErrorCode {
+    PAYPAL_ERROR = "PAYPAL_ERROR",
+    UNKNOWN_ERROR = "UNKNOWN_ERROR"
+}
+
 export class CreateCollectionInput {
     name: string;
     description?: Nullable<string>;
@@ -475,6 +480,8 @@ export abstract class IMutation {
     abstract addShipmentToOrder(orderId: string, input: AddShipmentToOrderInput): OrderResult | Promise<OrderResult>;
 
     abstract addPaymentToOrder(orderId: string, input: AddPaymentToOrderInput): OrderResult | Promise<OrderResult>;
+
+    abstract createPaypalOrder(orderId: string): PaypalResult | Promise<PaypalResult>;
 }
 
 export abstract class IQuery {
@@ -757,7 +764,7 @@ export class Collection implements Node {
     updatedAt: Date;
     name: string;
     slug: string;
-    description: string;
+    description?: Nullable<string>;
     enabled: boolean;
     assets?: AssetList;
     products?: ProductList;
@@ -915,6 +922,16 @@ export class VariantList implements List {
 export class GenerateCustomerAccessTokenResult {
     accessToken?: Nullable<string>;
     apiErrors: CustomerErrorResult[];
+}
+
+export class PaypalResult {
+    apiErrors: PaypalErrorResult[];
+    orderId?: Nullable<string>;
+}
+
+export class PaypalErrorResult {
+    message?: Nullable<string>;
+    code?: Nullable<PaypalErrorCode>;
 }
 
 export type JSON = any;

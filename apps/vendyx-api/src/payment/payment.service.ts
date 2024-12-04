@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Order } from '@prisma/client';
 
-import { PaypalService, StripeService } from './handlers';
+import { PaypalHandler, StripeService } from './handlers';
 import { PaymentHandler } from './handlers/payment-handler';
 
 @Injectable()
 export class PaymentService {
   constructor(
-    private readonly paypalService: PaypalService,
+    private readonly paypalService: PaypalHandler,
     private readonly stripeService: StripeService
   ) {}
 

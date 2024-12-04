@@ -14,6 +14,10 @@ import { type PaymentMethodFormInput } from '../payment-method-details/use-payme
 export const PaymentMethodSubmitButton: FC<Props> = ({ isLoading, method, integrations }) => {
   const form = useFormContext<PaymentMethodFormInput>();
   const values = useWatch({ defaultValue: form.getValues() });
+  console.log({
+    method,
+    values
+  });
 
   const integrationSelected = integrations.find(i => i.id === values.integration);
 
