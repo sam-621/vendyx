@@ -1,10 +1,15 @@
 import { getFragmentData } from '../codegen';
-import { type CreatePaymentMethodInput, type UpdatePaymentMethodInput } from '../codegen/graphql';
 import {
-  COMMON_PAYMENT_INTEGRATION_FRAGMENT,
+  type CreatePaymentMethodInput,
+  type PaymentMethodErrorCode,
+  type UpdatePaymentMethodInput
+} from '../codegen/graphql';
+import { getPaymentMethodError } from '../errors';
+import {
+  COMMON_PAYMENT_HANDLER_FRAGMENT,
   COMMON_PAYMENT_METHOD_FRAGMENT,
   CREATE_PAYMENT_METHOD,
-  GET_ALL_PAYMENT_INTEGRATIONS,
+  GET_ALL_PAYMENT_HANDLERS,
   GET_ALL_PAYMENT_METHODS,
   GET_PAYMENT_METHOD,
   REMOVE_PAYMENT_METHOD,
@@ -16,7 +21,7 @@ export const PaymentMethodService = {
   Tags: {
     methods: 'methods',
     method: (id: string) => `method-${id}`,
-    integrations: 'integrations'
+    handlers: 'handlers'
   },
 
   async getAll() {
@@ -31,19 +36,19 @@ export const PaymentMethodService = {
     return paymentMethods;
   },
 
-  async getAllIntegrations() {
+  async getAllHandlers() {
     const result = await serviceGqlFetcher(
-      GET_ALL_PAYMENT_INTEGRATIONS,
+      GET_ALL_PAYMENT_HANDLERS,
       {},
-      { tags: [PaymentMethodService.Tags.integrations] }
+      { tags: [PaymentMethodService.Tags.handlers] }
     );
 
-    const paymentIntegrations = getFragmentData(
-      COMMON_PAYMENT_INTEGRATION_FRAGMENT,
-      result.paymentIntegrations
+    const paymentHandlers = getFragmentData(
+      COMMON_PAYMENT_HANDLER_FRAGMENT,
+      result.paymentHandlers
     );
 
-    return paymentIntegrations;
+    return paymentHandlers;
   },
 
   async getById(id: string) {
@@ -58,10 +63,18 @@ export const PaymentMethodService = {
     return paymentMethod;
   },
 
-  async create(input: CreatePaymentMethodInput) {
-    const { createPaymentMethod } = await serviceGqlFetcher(CREATE_PAYMENT_METHOD, { input });
+  async create(input: CreatePaymentMethodInput): Promise<Result> {
+    const {
+      createPaymentMethod: { apiErrors, paymentMethod }
+    } = await serviceGqlFetcher(CREATE_PAYMENT_METHOD, { input });
 
-    return createPaymentMethod;
+    const error = getPaymentMethodError(apiErrors[0]);
+
+    if (error) {
+      return { success: false, error, errorCode: apiErrors[0].code };
+    }
+
+    return { success: true, paymentMethodId: paymentMethod?.id ?? '' };
   },
 
   async update(id: string, input: UpdatePaymentMethodInput) {
@@ -76,3 +89,14 @@ export const PaymentMethodService = {
     return result;
   }
 };
+
+type Result =
+  | {
+      success: true;
+      paymentMethodId: string;
+    }
+  | {
+      success: false;
+      error: string;
+      errorCode: PaymentMethodErrorCode;
+    };

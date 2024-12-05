@@ -2,10 +2,7 @@
 
 import { type FC } from 'react';
 
-import {
-  type CommonPaymentIntegrationFragment,
-  type CommonPaymentMethodFragment
-} from '@/api/types';
+import { type CommonPaymentHandlerFragment, type CommonPaymentMethodFragment } from '@/api/types';
 import { SettingsPageLayout } from '@/lib/shared/components';
 import { Form } from '@/lib/shared/form';
 
@@ -13,8 +10,8 @@ import { PaymentMethodSubmitButton } from '../payment-method-submit-button';
 import { PaymentMethodDetails } from './payment-method-details';
 import { usePaymentMethodForm } from './use-payment-method-form';
 
-export const PaymentMethodForm: FC<Props> = ({ integrations, method }) => {
-  const form = usePaymentMethodForm(integrations, method);
+export const PaymentMethodForm: FC<Props> = ({ handlers, method }) => {
+  const form = usePaymentMethodForm(handlers, method);
 
   return (
     <Form {...form}>
@@ -25,13 +22,13 @@ export const PaymentMethodForm: FC<Props> = ({ integrations, method }) => {
           backUrl="/settings/payments"
           actions={
             <PaymentMethodSubmitButton
-              integrations={integrations}
+              handlers={handlers}
               isLoading={form.isLoading}
               method={method}
             />
           }
         >
-          <PaymentMethodDetails integrations={integrations} method={method} />
+          <PaymentMethodDetails handlers={handlers} method={method} />
         </SettingsPageLayout>
       </form>
     </Form>
@@ -40,5 +37,5 @@ export const PaymentMethodForm: FC<Props> = ({ integrations, method }) => {
 
 type Props = {
   method?: CommonPaymentMethodFragment;
-  integrations: CommonPaymentIntegrationFragment[];
+  handlers: CommonPaymentHandlerFragment[];
 };

@@ -9,19 +9,25 @@ import { getBasePathFormHeaders } from '@/lib/shared/utils';
 
 export const createPaymentMethod = async (input: Input) => {
   const result = await PaymentMethodService.create({
-    integrationId: input.integrationId,
-    integrationMetadata: input.metadata,
+    handler: {
+      code: input.handlerCode,
+      args: input.args
+    },
     enabled: input.enabled
   });
+
+  if (!result.success) {
+    return { error: result.error, errorCode: result.errorCode };
+  }
 
   const basePath = getBasePathFormHeaders(headers());
 
   revalidateTag(PaymentMethodService.Tags.methods);
-  redirect(`${basePath}/settings/payments/${result.id}`);
+  redirect(`${basePath}/settings/payments/${result.paymentMethodId}`);
 };
 
 type Input = {
-  integrationId: string;
-  metadata: Record<string, string>;
+  handlerCode: string;
+  args: Record<string, string>;
   enabled: boolean;
 };

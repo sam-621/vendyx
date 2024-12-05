@@ -5,7 +5,7 @@ import { PaymentMethodForm } from '@/lib/payment/components';
 
 export default async function PaymentDetailsPage({ params }: { params: { id: string } }) {
   const [integrations, method] = await Promise.all([
-    PaymentMethodService.getAllIntegrations(),
+    PaymentMethodService.getAllHandlers(),
     PaymentMethodService.getById(params.id)
   ]);
 
@@ -13,5 +13,5 @@ export default async function PaymentDetailsPage({ params }: { params: { id: str
     return notFound();
   }
 
-  return <PaymentMethodForm method={method} integrations={integrations} />;
+  return <PaymentMethodForm method={method} handlers={integrations} />;
 }

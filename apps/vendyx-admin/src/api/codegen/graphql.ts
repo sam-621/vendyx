@@ -105,7 +105,7 @@ export type Collection = Node & {
   assets: AssetList;
   createdAt: Scalars['Date']['output'];
   /** The collection's description */
-  description: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
   /** The collection's order user to decide to show the collection in the storefront */
   enabled: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
@@ -146,6 +146,15 @@ export type CollectionListInput = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   /** takes n result from where the skip position is */
   take?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ConfigurableProperty = {
+  /**
+   * Specific data for the payment handler chosen
+   * Record<string, string | number | boolean>
+   */
+  args: Scalars['JSON']['input'];
+  code: Scalars['String']['input'];
 };
 
 export type Country = Node & {
@@ -193,8 +202,7 @@ export type CreateOptionValueInput = {
 
 export type CreatePaymentMethodInput = {
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  integrationId: Scalars['ID']['input'];
-  integrationMetadata: Scalars['JSON']['input'];
+  handler: ConfigurableProperty;
 };
 
 export type CreateProductInput = {
@@ -356,7 +364,7 @@ export type Mutation = {
   createCheckoutSession: CheckoutSession;
   createCollection: Collection;
   createOption: Option;
-  createPaymentMethod: PaymentMethod;
+  createPaymentMethod: PaymentMethodResult;
   createProduct: Product;
   createShippingMethod: ShippingMethod;
   createShop: ShopResult;
@@ -680,26 +688,32 @@ export type Payment = Node & {
   updatedAt: Scalars['Date']['output'];
 };
 
-/** A payment integration is am integration to be used in a payment method by any shop. */
-export type PaymentIntegration = {
-  __typename?: 'PaymentIntegration';
-  createdAt: Scalars['Date']['output'];
-  /** The payment integration's icon */
-  icon: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
+/** A payment handler is a handler to be used in a payment method by any shop. */
+export type PaymentHandler = {
+  __typename?: 'PaymentHandler';
   /**
-   * Specific data for the payment integration chosen
+   * Specific data for the payment handler chosen
    * Usually, this json stores the payment integration keys
+   * Record<string, Arg>
    */
-  metadata: Scalars['JSON']['output'];
-  /** The payment integration's name (e.g. 'Stripe') */
+  args: Scalars['JSON']['output'];
+  /** The payment handlers's code (e.g. 'stripe') */
+  code: Scalars['String']['output'];
+  /** The payment handlers's icon */
+  icon?: Maybe<Scalars['String']['output']>;
+  /** The payment handler's name (e.g. 'Stripe') */
   name: Scalars['String']['output'];
-  updatedAt: Scalars['Date']['output'];
 };
 
 /** A payment method is a way to pay for an order in your shop, like credit card, paypal, etc */
-export type PaymentMethod = {
+export type PaymentMethod = Node & {
   __typename?: 'PaymentMethod';
+  /**
+   * Specific data for the payment handler chosen
+   * Usually, this json stores the payment integration keys
+   * Record<string, string | number | boolean>
+   */
+  args: Scalars['JSON']['output'];
   createdAt: Scalars['Date']['output'];
   /**
    * Whether the payment method is enabled or not
@@ -708,16 +722,28 @@ export type PaymentMethod = {
    */
   enabled: Scalars['Boolean']['output'];
   /** The payment method's icon */
-  icon: Scalars['String']['output'];
+  icon?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  /**
-   * Specific data for the payment integration chosen
-   * Usually, this json stores the payment integration keys
-   */
-  integrationMetadata: Scalars['JSON']['output'];
   /** The payment method's name (e.g. 'Stripe') */
   name: Scalars['String']['output'];
   updatedAt: Scalars['Date']['output'];
+};
+
+export enum PaymentMethodErrorCode {
+  HandlerAlreadySelected = 'HANDLER_ALREADY_SELECTED',
+  HandlerNotFound = 'HANDLER_NOT_FOUND'
+}
+
+export type PaymentMethodErrorResult = {
+  __typename?: 'PaymentMethodErrorResult';
+  code: PaymentMethodErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type PaymentMethodResult = {
+  __typename?: 'PaymentMethodResult';
+  apiErrors: Array<PaymentMethodErrorResult>;
+  paymentMethod?: Maybe<PaymentMethod>;
 };
 
 export type Product = Node & {
@@ -787,7 +813,7 @@ export type Query = {
   customers: CustomerList;
   order?: Maybe<Order>;
   orders: OrderList;
-  paymentIntegrations: Array<PaymentIntegration>;
+  paymentHandlers: Array<PaymentHandler>;
   paymentMethod?: Maybe<PaymentMethod>;
   paymentMethods: Array<PaymentMethod>;
   product?: Maybe<Product>;
@@ -1048,8 +1074,12 @@ export type UpdateOptionValueInput = {
 };
 
 export type UpdatePaymentMethodInput = {
+  /**
+   * Specific data for the payment handler chosen
+   * Record<string, string | number | boolean>
+   */
+  args?: InputMaybe<Scalars['JSON']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  integrationMetadata?: InputMaybe<Scalars['JSON']['input']>;
 };
 
 export type UpdateProductInput = {
@@ -1220,7 +1250,7 @@ export type CommonCollectionFragment = {
   __typename?: 'Collection';
   id: string;
   name: string;
-  description: string;
+  description?: string | null;
   enabled: boolean;
   products: { __typename?: 'ProductList'; items: Array<{ __typename?: 'Product'; id: string }> };
   assets: {
@@ -1660,21 +1690,21 @@ export type CancelOrderMutation = {
   };
 };
 
-export type CommonPaymentIntegrationFragment = {
-  __typename?: 'PaymentIntegration';
-  id: string;
-  icon: string;
+export type CommonPaymentHandlerFragment = {
+  __typename?: 'PaymentHandler';
+  icon?: string | null;
   name: string;
-  metadata: any;
-} & { ' $fragmentName'?: 'CommonPaymentIntegrationFragment' };
+  code: string;
+  args: any;
+} & { ' $fragmentName'?: 'CommonPaymentHandlerFragment' };
 
 export type CommonPaymentMethodFragment = {
   __typename?: 'PaymentMethod';
   id: string;
   name: string;
-  icon: string;
+  icon?: string | null;
   enabled: boolean;
-  integrationMetadata: any;
+  args: any;
 } & { ' $fragmentName'?: 'CommonPaymentMethodFragment' };
 
 export type GetPaymentMethodsQueryVariables = Exact<{ [key: string]: never }>;
@@ -1701,13 +1731,13 @@ export type GetPaymentMethodQuery = {
     | null;
 };
 
-export type GetPaymentIntegrationsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetPaymentHandlersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetPaymentIntegrationsQuery = {
+export type GetPaymentHandlersQuery = {
   __typename?: 'Query';
-  paymentIntegrations: Array<
-    { __typename?: 'PaymentIntegration' } & {
-      ' $fragmentRefs'?: { CommonPaymentIntegrationFragment: CommonPaymentIntegrationFragment };
+  paymentHandlers: Array<
+    { __typename?: 'PaymentHandler' } & {
+      ' $fragmentRefs'?: { CommonPaymentHandlerFragment: CommonPaymentHandlerFragment };
     }
   >;
 };
@@ -1718,7 +1748,15 @@ export type CreatePaymentMethodMutationVariables = Exact<{
 
 export type CreatePaymentMethodMutation = {
   __typename?: 'Mutation';
-  createPaymentMethod: { __typename?: 'PaymentMethod'; id: string };
+  createPaymentMethod: {
+    __typename?: 'PaymentMethodResult';
+    apiErrors: Array<{
+      __typename?: 'PaymentMethodErrorResult';
+      code: PaymentMethodErrorCode;
+      message: string;
+    }>;
+    paymentMethod?: { __typename?: 'PaymentMethod'; id: string } | null;
+  };
 };
 
 export type UpdatePaymentMethodMutationVariables = Exact<{
@@ -2326,17 +2364,17 @@ export const CommonOrderFragmentDoc = new TypedDocumentString(
     `,
   { fragmentName: 'CommonOrder' }
 ) as unknown as TypedDocumentString<CommonOrderFragment, unknown>;
-export const CommonPaymentIntegrationFragmentDoc = new TypedDocumentString(
+export const CommonPaymentHandlerFragmentDoc = new TypedDocumentString(
   `
-    fragment CommonPaymentIntegration on PaymentIntegration {
-  id
+    fragment CommonPaymentHandler on PaymentHandler {
   icon
   name
-  metadata
+  code
+  args
 }
     `,
-  { fragmentName: 'CommonPaymentIntegration' }
-) as unknown as TypedDocumentString<CommonPaymentIntegrationFragment, unknown>;
+  { fragmentName: 'CommonPaymentHandler' }
+) as unknown as TypedDocumentString<CommonPaymentHandlerFragment, unknown>;
 export const CommonPaymentMethodFragmentDoc = new TypedDocumentString(
   `
     fragment CommonPaymentMethod on PaymentMethod {
@@ -2344,7 +2382,7 @@ export const CommonPaymentMethodFragmentDoc = new TypedDocumentString(
   name
   icon
   enabled
-  integrationMetadata
+  args
 }
     `,
   { fragmentName: 'CommonPaymentMethod' }
@@ -2888,7 +2926,7 @@ export const GetPaymentMethodsDocument = new TypedDocumentString(`
   name
   icon
   enabled
-  integrationMetadata
+  args
 }`) as unknown as TypedDocumentString<GetPaymentMethodsQuery, GetPaymentMethodsQueryVariables>;
 export const GetPaymentMethodDocument = new TypedDocumentString(`
     query GetPaymentMethod($id: ID!) {
@@ -2901,27 +2939,30 @@ export const GetPaymentMethodDocument = new TypedDocumentString(`
   name
   icon
   enabled
-  integrationMetadata
+  args
 }`) as unknown as TypedDocumentString<GetPaymentMethodQuery, GetPaymentMethodQueryVariables>;
-export const GetPaymentIntegrationsDocument = new TypedDocumentString(`
-    query GetPaymentIntegrations {
-  paymentIntegrations {
-    ...CommonPaymentIntegration
+export const GetPaymentHandlersDocument = new TypedDocumentString(`
+    query GetPaymentHandlers {
+  paymentHandlers {
+    ...CommonPaymentHandler
   }
 }
-    fragment CommonPaymentIntegration on PaymentIntegration {
-  id
+    fragment CommonPaymentHandler on PaymentHandler {
   icon
   name
-  metadata
-}`) as unknown as TypedDocumentString<
-  GetPaymentIntegrationsQuery,
-  GetPaymentIntegrationsQueryVariables
->;
+  code
+  args
+}`) as unknown as TypedDocumentString<GetPaymentHandlersQuery, GetPaymentHandlersQueryVariables>;
 export const CreatePaymentMethodDocument = new TypedDocumentString(`
     mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {
   createPaymentMethod(input: $input) {
-    id
+    apiErrors {
+      code
+      message
+    }
+    paymentMethod {
+      id
+    }
   }
 }
     `) as unknown as TypedDocumentString<

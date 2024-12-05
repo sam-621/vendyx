@@ -5,8 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import {
-  type CommonPaymentIntegrationFragment,
-  type CommonPaymentMethodFragment
+  type CommonPaymentHandlerFragment,
+  type CommonPaymentMethodFragment,
+  PaymentMethodErrorCode
 } from '@/api/types';
 import { FormMessages } from '@/lib/shared/form';
 import { notification } from '@/lib/shared/notifications';
@@ -15,33 +16,35 @@ import { createPaymentMethod } from '../../actions/create-payment-method';
 import { updatePaymentMethod } from '../../actions/update-payment-method';
 
 export const usePaymentMethodForm = (
-  integrations: CommonPaymentIntegrationFragment[],
+  handlers: CommonPaymentHandlerFragment[],
   method?: CommonPaymentMethodFragment
 ) => {
   const [isLoading, startTransition] = useTransition();
 
   const defaultIntegration = method
-    ? integrations.find(i => i.name === method.name) ?? integrations[0]
-    : integrations[0];
+    ? handlers.find(i => i.name === method.name) ?? handlers[0]
+    : handlers[0];
 
   const form = useForm<PaymentMethodFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      integration: defaultIntegration.id,
-      metadata: method?.integrationMetadata ?? {},
+      handlerCode: defaultIntegration.code,
+      args: method?.args ?? {},
       enabled: method?.enabled ?? true
     }
   });
 
   async function onSubmit(values: PaymentMethodFormInput) {
-    const integrationSelected = integrations.find(i => i.id === values.integration);
+    const handlerSelected = handlers.find(i => i.code === values.handlerCode);
+
+    const handlerValues = Object.values(handlerSelected?.args);
 
     const allMetadataIsFilled =
-      Object.values(values.metadata).every(value => !!value) &&
-      integrationSelected?.metadata.length === Object.values(values.metadata).length;
+      Object.values(values.args).every(value => !!value) &&
+      handlerValues.length === Object.values(values.args).length;
 
-    if (!Object.values(values.metadata).length || !allMetadataIsFilled) {
-      notification.error('Provider metadata is required');
+    if (!Object.values(values.args).length || !allMetadataIsFilled) {
+      notification.error('Provider args are required');
       return;
     }
 
@@ -51,11 +54,20 @@ export const usePaymentMethodForm = (
 
         notification.success('Payment method updated');
       } else {
-        await createPaymentMethod({
+        const result = await createPaymentMethod({
           enabled: values.enabled,
-          integrationId: values.integration,
-          metadata: values.metadata
+          handlerCode: values.handlerCode,
+          args: values.args
         });
+
+        if (result.error) {
+          if (result.errorCode === PaymentMethodErrorCode.HandlerAlreadySelected) {
+            form.setError('handlerCode', { message: result.error });
+            return;
+          }
+
+          notification.error(result.error);
+        }
       }
     });
   }
@@ -68,8 +80,8 @@ export const usePaymentMethodForm = (
 };
 
 const schema = z.object({
-  integration: z.string().min(1, FormMessages.required),
-  metadata: z.record(z.any(), z.any()),
+  handlerCode: z.string().min(1, FormMessages.required),
+  args: z.record(z.any(), z.any()),
   enabled: z.boolean().optional().default(true)
 });
 

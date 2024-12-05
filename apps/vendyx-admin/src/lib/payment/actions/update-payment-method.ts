@@ -6,7 +6,7 @@ import { PaymentMethodService } from '@/api/services';
 
 export const updatePaymentMethod = async (id: string, input: Input) => {
   const result = await PaymentMethodService.update(id, {
-    integrationMetadata: input.metadata,
+    args: input.args,
     enabled: input.enabled
   });
 
@@ -15,6 +15,6 @@ export const updatePaymentMethod = async (id: string, input: Input) => {
 };
 
 type Input = {
-  metadata: Record<string, string>;
+  args: Record<string, string>;
   enabled: boolean;
 };

@@ -3,11 +3,8 @@
 import { type FC, useMemo, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type Metadata } from '@/api/scalars';
-import {
-  type CommonPaymentIntegrationFragment,
-  type CommonPaymentMethodFragment
-} from '@/api/types';
+import { type Args } from '@/api/scalars';
+import { type CommonPaymentHandlerFragment, type CommonPaymentMethodFragment } from '@/api/types';
 import {
   Input,
   Label,
@@ -29,48 +26,37 @@ import {
 import { RemovePaymentMethodButton } from '../remove-payment-method';
 import { type PaymentMethodFormInput } from './use-payment-method-form';
 
-export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
-  const defaultIntegration = method
-    ? integrations.find(i => i.name === method.name) ?? integrations[0]
-    : integrations[0];
+export const PaymentMethodDetails: FC<Props> = ({ handlers, method }) => {
+  const defaultHandler = method
+    ? handlers.find(i => i.name === method.name) ?? handlers[0]
+    : handlers[0];
 
   const { control, setValue, getValues } = useFormContext<PaymentMethodFormInput>();
-  const [selectedIntegration, setSelectedIntegration] =
-    useState<CommonPaymentIntegrationFragment>(defaultIntegration);
+  const [selectedHandler, setSelectedHandler] =
+    useState<CommonPaymentHandlerFragment>(defaultHandler);
 
-  const metadata = useMemo(
-    () =>
-      (selectedIntegration.metadata as Metadata[]).map(metadata => ({
-        ...metadata,
-        id: Math.random().toString()
-      })),
-    [selectedIntegration]
-  );
-
-  console.log({
-    metadata
-  });
+  const args: Args = useMemo(() => selectedHandler.args, [selectedHandler]);
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-end gap-4 w-full">
         <FormField
           control={control}
-          name="integration"
+          name="handlerCode"
           render={({ field }) => (
             <FormItem className="w-full">
               <FormLabel>Provider</FormLabel>
               <Select
                 disabled={Boolean(method)}
                 onValueChange={value => {
-                  const integration = integrations.find(integration => integration.id === value);
+                  const integration = handlers.find(handler => handler.code === value);
 
                   if (integration) {
-                    setSelectedIntegration(integration);
+                    setSelectedHandler(integration);
                   }
 
                   field.onChange(value);
-                  setValue('metadata', {});
+                  setValue('args', {});
                 }}
                 defaultValue={field.value}
               >
@@ -80,9 +66,9 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {integrations.map(integration => (
-                    <SelectItem key={integration.id} value={integration.id}>
-                      {integration.name}
+                  {handlers.map(handler => (
+                    <SelectItem key={handler.code} value={handler.code}>
+                      {handler.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -95,23 +81,18 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
           <FormSwitch control={control} name="enabled" label="Active" />
         </div>
       </div>
-
-      {selectedIntegration && (
-        <div className="flex flex-col gap-4">
-          {metadata.map(({ id, label, key }) => (
-            <div key={id} className="flex flex-col gap-2">
-              <Label htmlFor={key}>{label}</Label>
-              <Input
-                id={key}
-                onChange={e =>
-                  setValue('metadata', { ...getValues('metadata'), [key]: e.target.value })
-                }
-                defaultValue={method?.integrationMetadata[key] ?? ''}
-                placeholder="*****"
-              />
-            </div>
-          ))}
-        </div>
+      {Object.entries(args).map(([key, arg]) =>
+        arg.type === 'text' ? (
+          <div key={key} className="flex flex-col gap-2">
+            <Label htmlFor={key}>{arg.label}</Label>
+            <Input
+              id={key}
+              onChange={e => setValue('args', { ...getValues('args'), [key]: e.target.value })}
+              defaultValue={method?.args[key] ?? ''}
+              placeholder={arg.placeholder}
+            />
+          </div>
+        ) : null
       )}
 
       {method && (
@@ -125,5 +106,5 @@ export const PaymentMethodDetails: FC<Props> = ({ integrations, method }) => {
 
 type Props = {
   method?: CommonPaymentMethodFragment;
-  integrations: CommonPaymentIntegrationFragment[];
+  handlers: CommonPaymentHandlerFragment[];
 };

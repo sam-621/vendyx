@@ -2,7 +2,7 @@ import { PaymentMethodService } from '@/api/services';
 import { PaymentMethodForm } from '@/lib/payment/components';
 
 export default async function NewPaymentMethodPage() {
-  const integrations = await PaymentMethodService.getAllIntegrations();
+  const integrations = await PaymentMethodService.getAllHandlers();
 
-  return <PaymentMethodForm integrations={integrations} />;
+  return <PaymentMethodForm handlers={integrations} />;
 }

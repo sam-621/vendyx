@@ -1,11 +1,11 @@
 import { graphql } from '../codegen';
 
-export const COMMON_PAYMENT_INTEGRATION_FRAGMENT = graphql(`
-  fragment CommonPaymentIntegration on PaymentIntegration {
-    id
+export const COMMON_PAYMENT_HANDLER_FRAGMENT = graphql(`
+  fragment CommonPaymentHandler on PaymentHandler {
     icon
     name
-    metadata
+    code
+    args
   }
 `);
 
@@ -15,7 +15,7 @@ export const COMMON_PAYMENT_METHOD_FRAGMENT = graphql(`
     name
     icon
     enabled
-    integrationMetadata
+    args
   }
 `);
 
@@ -35,10 +35,10 @@ export const GET_PAYMENT_METHOD = graphql(`
   }
 `);
 
-export const GET_ALL_PAYMENT_INTEGRATIONS = graphql(`
-  query GetPaymentIntegrations {
-    paymentIntegrations {
-      ...CommonPaymentIntegration
+export const GET_ALL_PAYMENT_HANDLERS = graphql(`
+  query GetPaymentHandlers {
+    paymentHandlers {
+      ...CommonPaymentHandler
     }
   }
 `);
@@ -46,7 +46,13 @@ export const GET_ALL_PAYMENT_INTEGRATIONS = graphql(`
 export const CREATE_PAYMENT_METHOD = graphql(`
   mutation CreatePaymentMethod($input: CreatePaymentMethodInput!) {
     createPaymentMethod(input: $input) {
-      id
+      apiErrors {
+        code
+        message
+      }
+      paymentMethod {
+        id
+      }
     }
   }
 `);
