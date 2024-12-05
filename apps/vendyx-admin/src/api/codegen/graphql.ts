@@ -216,8 +216,7 @@ export type CreateProductInput = {
 export type CreateShippingMethodInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  handlerId: Scalars['ID']['input'];
-  handlerMetadata: Scalars['JSON']['input'];
+  handler: ConfigurableProperty;
   name: Scalars['String']['input'];
   zoneId: Scalars['ID']['input'];
 };
@@ -366,7 +365,7 @@ export type Mutation = {
   createOption: Option;
   createPaymentMethod: PaymentMethodResult;
   createProduct: Product;
-  createShippingMethod: ShippingMethod;
+  createShippingMethod: ShippingMethodResult;
   createShop: ShopResult;
   createUser: UserResult;
   createVariant: Variant;
@@ -907,23 +906,32 @@ export type Shipment = Node & {
 };
 
 /** A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc */
-export type ShippingHandler = Node & {
+export type ShippingHandler = {
   __typename?: 'ShippingHandler';
-  createdAt: Scalars['Date']['output'];
-  id: Scalars['ID']['output'];
   /**
-   * Specific data for the shipping handler chosen.
-   * Usually, this json stores the shipping handler keys
+   * Specific data for the shipping handler chosen
+   * Usually, this json stores the shipping integration keys
+   * Record<string, Arg>
    */
-  metadata: Scalars['JSON']['output'];
+  args: Scalars['JSON']['output'];
+  /** The shipping handler's code (e.g. 'fedex') */
+  code: Scalars['String']['output'];
+  /** The shipping handlers's icon */
+  icon?: Maybe<Scalars['String']['output']>;
   /** The shipping handler's name (e.g. 'Fedex') */
   name: Scalars['String']['output'];
-  updatedAt: Scalars['Date']['output'];
 };
 
 /** A shipping method is a method chosen by the customer to ship the order to the customer's address */
 export type ShippingMethod = Node & {
   __typename?: 'ShippingMethod';
+  /**
+   * Specific data for the shipping handler chosen
+   * Usually, this json stores the shipping integration keys
+   * Record<string, string | number | boolean>
+   */
+  args: Scalars['JSON']['output'];
+  code: Scalars['String']['output'];
   createdAt: Scalars['Date']['output'];
   /** The shipping method's description */
   description?: Maybe<Scalars['String']['output']>;
@@ -933,17 +941,27 @@ export type ShippingMethod = Node & {
    * Useful for shipping methods that are not ready to be used yet
    */
   enabled: Scalars['Boolean']['output'];
-  handler: ShippingHandler;
-  /**
-   * Specific data for the shipping handler chosen
-   * Usually, this json stores the shipping handler keys
-   */
-  handlerMetadata: Scalars['JSON']['output'];
   id: Scalars['ID']['output'];
   /** The shipping method's name (e.g. 'Stripe') */
   name: Scalars['String']['output'];
   pricePreview: Scalars['Int']['output'];
   updatedAt: Scalars['Date']['output'];
+};
+
+export enum ShippingMethodErrorCode {
+  HandlerNotFound = 'HANDLER_NOT_FOUND'
+}
+
+export type ShippingMethodErrorResult = {
+  __typename?: 'ShippingMethodErrorResult';
+  code: ShippingMethodErrorCode;
+  message: Scalars['String']['output'];
+};
+
+export type ShippingMethodResult = {
+  __typename?: 'ShippingMethodResult';
+  apiErrors: Array<ShippingMethodErrorResult>;
+  shippingMethod?: Maybe<ShippingMethod>;
 };
 
 export type Shop = Node & {
@@ -1091,9 +1109,13 @@ export type UpdateProductInput = {
 };
 
 export type UpdateShippingMethodInput = {
+  /**
+   * Specific data for the payment handler chosen
+   * Record<string, string | number | boolean>
+   */
+  args?: InputMaybe<Scalars['JSON']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
-  handlerMetadata?: InputMaybe<Scalars['JSON']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1910,9 +1932,9 @@ export type RemoveProductMutation = { __typename?: 'Mutation'; softRemoveProduct
 
 export type CommonShippingHandlersFragment = {
   __typename?: 'ShippingHandler';
-  id: string;
-  metadata: any;
   name: string;
+  code: string;
+  args: any;
 } & { ' $fragmentName'?: 'CommonShippingHandlersFragment' };
 
 export type GetAllHandlersQueryVariables = Exact<{ [key: string]: never }>;
@@ -1932,7 +1954,15 @@ export type CreateShippingMethodMutationVariables = Exact<{
 
 export type CreateShippingMethodMutation = {
   __typename?: 'Mutation';
-  createShippingMethod: { __typename?: 'ShippingMethod'; id: string };
+  createShippingMethod: {
+    __typename?: 'ShippingMethodResult';
+    apiErrors: Array<{
+      __typename?: 'ShippingMethodErrorResult';
+      code: ShippingMethodErrorCode;
+      message: string;
+    }>;
+    shippingMethod?: { __typename?: 'ShippingMethod'; id: string } | null;
+  };
 };
 
 export type UpdateShippingMethodMutationVariables = Exact<{
@@ -2131,9 +2161,9 @@ export type CommonZoneFragment = {
     name: string;
     description?: string | null;
     enabled: boolean;
-    handlerMetadata: any;
+    args: any;
+    code: string;
     pricePreview: number;
-    handler: { __typename?: 'ShippingHandler'; id: string };
   }>;
 } & { ' $fragmentName'?: 'CommonZoneFragment' };
 
@@ -2452,9 +2482,9 @@ export const CommonProductForSelectorFragmentDoc = new TypedDocumentString(
 export const CommonShippingHandlersFragmentDoc = new TypedDocumentString(
   `
     fragment CommonShippingHandlers on ShippingHandler {
-  id
-  metadata
   name
+  code
+  args
 }
     `,
   { fragmentName: 'CommonShippingHandlers' }
@@ -2511,10 +2541,8 @@ export const CommonZoneFragmentDoc = new TypedDocumentString(
     name
     description
     enabled
-    handlerMetadata
-    handler {
-      id
-    }
+    args
+    code
     pricePreview
   }
 }
@@ -3113,14 +3141,20 @@ export const GetAllHandlersDocument = new TypedDocumentString(`
   }
 }
     fragment CommonShippingHandlers on ShippingHandler {
-  id
-  metadata
   name
+  code
+  args
 }`) as unknown as TypedDocumentString<GetAllHandlersQuery, GetAllHandlersQueryVariables>;
 export const CreateShippingMethodDocument = new TypedDocumentString(`
     mutation CreateShippingMethod($input: CreateShippingMethodInput!) {
   createShippingMethod(input: $input) {
-    id
+    apiErrors {
+      code
+      message
+    }
+    shippingMethod {
+      id
+    }
   }
 }
     `) as unknown as TypedDocumentString<
@@ -3317,10 +3351,8 @@ export const GetZoneDocument = new TypedDocumentString(`
     name
     description
     enabled
-    handlerMetadata
-    handler {
-      id
-    }
+    args
+    code
     pricePreview
   }
 }`) as unknown as TypedDocumentString<GetZoneQuery, GetZoneQueryVariables>;

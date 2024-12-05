@@ -2,9 +2,9 @@ import { graphql } from '../codegen';
 
 export const COMMON_SHIPPING_HANDLERS_FRAGMENT = graphql(`
   fragment CommonShippingHandlers on ShippingHandler {
-    id
-    metadata
     name
+    code
+    args
   }
 `);
 
@@ -19,7 +19,13 @@ export const GET_ALL_SHIPPING_HANDLERS_QUERY = graphql(`
 export const CREATE_SHIPPING_METHOD_MUTATION = graphql(`
   mutation CreateShippingMethod($input: CreateShippingMethodInput!) {
     createShippingMethod(input: $input) {
-      id
+      apiErrors {
+        code
+        message
+      }
+      shippingMethod {
+        id
+      }
     }
   }
 `);

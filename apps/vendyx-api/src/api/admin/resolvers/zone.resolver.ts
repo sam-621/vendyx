@@ -67,6 +67,7 @@ export class ZoneResolver {
     return result.map(shippingMethod => ({
       ...shippingMethod,
       args: (shippingMethod.handler as ConfigurableProperty).args,
+      code: (shippingMethod.handler as ConfigurableProperty).code,
       pricePreview: this.shipmentService.getPricePreview(
         shippingMethod.handler as ConfigurableProperty
       )

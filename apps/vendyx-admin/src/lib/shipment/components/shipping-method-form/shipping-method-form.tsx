@@ -1,6 +1,6 @@
 import { type FC, useEffect, useMemo } from 'react';
 
-import { type Metadata } from '@/api/scalars';
+import { type Args } from '@/api/scalars';
 import { type CommonShippingHandlersFragment, type CommonZoneFragment } from '@/api/types';
 import {
   Button,
@@ -22,10 +22,14 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
   const { method, setValue, handler, setHandler, isLoading, createShippingMethod } =
     useShippingMethodForm(shippingHandlers, methodToUpdate);
 
-  const form: Metadata[] = useMemo(() => JSON.parse(String(handler.metadata)), [handler]);
+  const form: Args = useMemo(() => handler.args, [handler]);
+
+  console.log({
+    method
+  });
 
   useEffect(() => {
-    setValue({ key: 'handlerId', value: handler.id });
+    setValue({ key: 'handlerId', value: handler.code });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handler]);
 
@@ -36,16 +40,16 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
         <Select
           // Editing handler id for a shipping method is not supported
           disabled={!!methodToUpdate}
-          value={handler.id}
+          value={handler.code}
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          onValueChange={value => setHandler(shippingHandlers.find(h => h.id === value)!)}
+          onValueChange={value => setHandler(shippingHandlers.find(h => h.code === value)!)}
         >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {shippingHandlers.map(handlers => (
-              <SelectItem key={handlers.id} value={handlers.id}>
+              <SelectItem key={handlers.code} value={handlers.code}>
                 {handlers.name}
               </SelectItem>
             ))}
@@ -66,12 +70,12 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
           onChange={e => setValue({ key: 'description', value: e.target.value })}
         />
       </div>
-      {form.map(({ key, label, type }) =>
-        type === 'price' ? (
+      {Object.entries(form).map(([key, arg]) =>
+        arg.type === 'price' ? (
           <div key={key} className="flex flex-col gap-2">
-            <Label>{label}</Label>
+            <Label>{arg.label}</Label>
             <Input
-              placeholder="$ 0.00"
+              placeholder={arg.placeholder}
               isPrice
               defaultValue={
                 method.args[key] !== undefined ? formatPrice(Number(method.args[key])) : ''
@@ -89,9 +93,9 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
           </div>
         ) : (
           <div key={key} className="flex flex-col gap-2">
-            <Label>{label}</Label>
+            <Label>{arg.label}</Label>
             <Input
-              type={type}
+              type={arg.type}
               defaultValue={method.args[key]}
               onChange={e =>
                 setValue({

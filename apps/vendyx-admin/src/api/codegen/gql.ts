@@ -100,11 +100,11 @@ const documents = {
     types.UpdateProductDocument,
   '\n  mutation RemoveProduct($ids: [ID!]!) {\n    softRemoveProduct(ids: $ids)\n  }\n':
     types.RemoveProductDocument,
-  '\n  fragment CommonShippingHandlers on ShippingHandler {\n    id\n    metadata\n    name\n  }\n':
+  '\n  fragment CommonShippingHandlers on ShippingHandler {\n    name\n    code\n    args\n  }\n':
     types.CommonShippingHandlersFragmentDoc,
   '\n  query GetAllHandlers {\n    shippingHandlers {\n      ...CommonShippingHandlers\n    }\n  }\n':
     types.GetAllHandlersDocument,
-  '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      id\n    }\n  }\n':
+  '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n':
     types.CreateShippingMethodDocument,
   '\n  mutation UpdateShippingMethod($id: ID!, $input: UpdateShippingMethodInput!) {\n    updateShippingMethod(id: $id, input: $input) {\n      id\n    }\n  }\n':
     types.UpdateShippingMethodDocument,
@@ -139,7 +139,7 @@ const documents = {
     types.UpdateVariantDocument,
   '\n  mutation SoftRemoveVariant($id: ID!) {\n    softRemoveVariant(id: $id) {\n      id\n    }\n  }\n':
     types.SoftRemoveVariantDocument,
-  '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n      country {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      id\n      name\n      description\n      enabled\n      handlerMetadata\n      handler {\n        id\n      }\n      pricePreview\n    }\n  }\n':
+  '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n      country {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      id\n      name\n      description\n      enabled\n      args\n      code\n      pricePreview\n    }\n  }\n':
     types.CommonZoneFragmentDoc,
   '\n  query getAllZones {\n    zones {\n      id\n      name\n      shippingMethods {\n        id\n      }\n    }\n  }\n':
     types.GetAllZonesDocument,
@@ -420,7 +420,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonShippingHandlers on ShippingHandler {\n    id\n    metadata\n    name\n  }\n'
+  source: '\n  fragment CommonShippingHandlers on ShippingHandler {\n    name\n    code\n    args\n  }\n'
 ): typeof import('./graphql').CommonShippingHandlersFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -432,7 +432,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      id\n    }\n  }\n'
+  source: '\n  mutation CreateShippingMethod($input: CreateShippingMethodInput!) {\n    createShippingMethod(input: $input) {\n      apiErrors {\n        code\n        message\n      }\n      shippingMethod {\n        id\n      }\n    }\n  }\n'
 ): typeof import('./graphql').CreateShippingMethodDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -540,7 +540,7 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n      country {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      id\n      name\n      description\n      enabled\n      handlerMetadata\n      handler {\n        id\n      }\n      pricePreview\n    }\n  }\n'
+  source: '\n  fragment CommonZone on Zone {\n    id\n    name\n    createdAt\n    states {\n      id\n      name\n      country {\n        id\n        name\n      }\n    }\n    shippingMethods {\n      id\n      name\n      description\n      enabled\n      args\n      code\n      pricePreview\n    }\n  }\n'
 ): typeof import('./graphql').CommonZoneFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.

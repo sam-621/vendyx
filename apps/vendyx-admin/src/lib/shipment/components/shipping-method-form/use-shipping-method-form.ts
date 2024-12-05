@@ -1,6 +1,5 @@
 import { useEffect, useState, useTransition } from 'react';
 
-import { type Metadata } from '@/api/scalars';
 import { type CommonShippingHandlersFragment, type CommonZoneFragment } from '@/api/types';
 import { useDialogContext } from '@/lib/shared/components';
 import { useEntityContext } from '@/lib/shared/contexts';
@@ -26,11 +25,11 @@ export const useShippingMethodForm = (
   const { setIsOpen } = useDialogContext();
 
   const [method, setMethod] = useState<FormInput>({
-    handlerId: methodToUpdate?.handler.id ?? '',
+    handlerCode: methodToUpdate?.code ?? '',
     name: methodToUpdate?.name ?? '',
     description: methodToUpdate?.description ?? '',
     enabled: methodToUpdate?.enabled ?? true,
-    args: methodToUpdate?.handlerMetadata ?? {}
+    args: methodToUpdate?.args ?? {}
   });
 
   useEffect(() => {
@@ -56,8 +55,7 @@ export const useShippingMethodForm = (
     const isNameOrDescriptionEmpty = !method.description || !method.name;
 
     const isAnyArgNotFilled =
-      (JSON.parse(handler.metadata as string) as Metadata[]).length !==
-      Object.keys(method.args).length;
+      Object.values(handler.args).length !== Object.keys(method.args).length;
 
     const isAnyArgWithEmptyValue = Object.values(method.args).some(arg => arg === '');
 
@@ -72,17 +70,24 @@ export const useShippingMethodForm = (
           name: method.name,
           description: method.description,
           enabled: method.enabled,
-          handlerMetadata: method.args
+          args: method.args
         });
       } else {
-        await createShippingMethod({
+        const result = await createShippingMethod({
           name: method.name,
           description: method.description,
           enabled: method.enabled,
           zoneId: zone.id,
-          handlerId: method.handlerId,
-          handlerMetadata: method.args
+          handler: {
+            code: handler.code,
+            args: method.args
+          }
         });
+
+        if (result?.error) {
+          notification.error(result.error);
+          return;
+        }
       }
 
       setIsSuccess(true);
@@ -114,7 +119,7 @@ type SetValueInput =
     };
 
 type FormInput = {
-  handlerId: string;
+  handlerCode: string;
   name: string;
   description: string;
   enabled: boolean;

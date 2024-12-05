@@ -18,10 +18,8 @@ export const COMMON_ZONE_FRAGMENT = graphql(`
       name
       description
       enabled
-      handlerMetadata
-      handler {
-        id
-      }
+      args
+      code
       pricePreview
     }
   }
