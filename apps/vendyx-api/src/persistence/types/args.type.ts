@@ -7,7 +7,7 @@ export type Arg =
       label?: string;
       defaultValue?: string;
       placeholder?: string;
-      conditions?: { min: number; max: number };
+      conditions?: { min?: number; max?: number };
     }
   | {
       type: 'number';
@@ -15,7 +15,7 @@ export type Arg =
       label?: string;
       defaultValue?: number;
       placeholder?: string;
-      conditions?: { min: number; max: number };
+      conditions?: { min?: number; max?: number };
     }
   | {
       type: 'boolean';
@@ -42,5 +42,5 @@ export type Arg =
       label?: string;
       defaultValue?: number;
       placeholder?: string;
-      conditions: { min: number; max: number };
+      conditions: { min?: number; max?: number };
     };

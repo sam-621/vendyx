@@ -85,13 +85,7 @@ export class OrderResolver {
       return [];
     }
 
-    return shippingMethods.map(shippingMethod => ({
-      ...shippingMethod,
-      pricePreview: this.shipmentService.getPricePreview(
-        shippingMethod.shippingHandler.handlerCode,
-        shippingMethod.handlerMetadata as Record<string, string>
-      )
-    }));
+    return shippingMethods;
   }
 
   @Query('availablePaymentMethods')

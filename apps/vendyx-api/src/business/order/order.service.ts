@@ -66,11 +66,17 @@ export class OrderService extends OrderFinders {
       return new MissingShippingAddress();
     }
 
-    return this.prisma.shippingMethod.findMany({
+    const result = await this.prisma.shippingMethod.findMany({
       where: { enabled: true, zone: { states: { some: { state: { name: state } } } } },
-      orderBy: { createdAt: 'desc' },
-      include: { shippingHandler: true }
+      orderBy: { createdAt: 'desc' }
     });
+
+    return result.map(shippingMethod => ({
+      ...shippingMethod,
+      pricePreview: this.shipmentService.getPricePreview(
+        shippingMethod.handler as ConfigurableProperty
+      )
+    }));
   }
 
   async findAvailablePaymentMethods() {
@@ -312,8 +318,7 @@ export class OrderService extends OrderFinders {
         id: input.methodId,
         enabled: true,
         zone: { states: { some: { state: { name: state } } } }
-      },
-      include: { shippingHandler: true }
+      }
     });
 
     // or not available for provided state
@@ -321,11 +326,9 @@ export class OrderService extends OrderFinders {
       return new ShippingMethodNotFound();
     }
 
-    const shippingPrice = await this.shipmentService.calculatePrice(
-      order,
-      method.shippingHandler.handlerCode,
-      method.handlerMetadata as Record<string, string>
-    );
+    const handler = method.handler as ConfigurableProperty;
+
+    const shippingPrice = await this.shipmentService.calculatePrice(order, handler);
 
     // If the order already has a shipment, update the amount and method
     if (order.shipment) {

@@ -25,11 +25,10 @@ type ShippingMethod implements Node {
 
   """
   Specific data for the shipping handler chosen
-  Usually, this json stores the shipping handler keys
+  Usually, this json stores the shipping integration keys
+  Record<string, string | number | boolean>
   """
-  handlerMetadata: JSON!
-
-  handler: ShippingHandler!
+  args: JSON!
 
   pricePreview: Int!
 }
@@ -37,21 +36,28 @@ type ShippingMethod implements Node {
 """
 A shipping handler is a way to manage the shipping of an order in your shop, manage include the shipping cost, the shipping time, etc
 """
-type ShippingHandler implements Node {
-  id: ID!
-  createdAt: Date!
-  updatedAt: Date!
-
+type ShippingHandler {
   """
   The shipping handler's name (e.g. 'Fedex')
   """
   name: String!
 
   """
-  Specific data for the shipping handler chosen.
-  Usually, this json stores the shipping handler keys
+  The shipping handler's code (e.g. 'fedex')
   """
-  metadata: JSON!
+  code: String!
+
+  """
+  The shipping handlers's icon
+  """
+  icon: String
+
+  """
+  Specific data for the shipping handler chosen
+  Usually, this json stores the shipping integration keys
+  Record<string, Arg>
+  """
+  args: JSON!
 }
 
 type Query {
@@ -60,23 +66,40 @@ type Query {
 }
 
 type Mutation {
-  createShippingMethod(input: CreateShippingMethodInput!): ShippingMethod!
+  createShippingMethod(input: CreateShippingMethodInput!): ShippingMethodResult!
   updateShippingMethod(id: ID!, input: UpdateShippingMethodInput!): ShippingMethod!
   removeShippingMethod(id: ID!): Boolean!
 }
 
 input CreateShippingMethodInput {
   name: String!
+  handler: ConfigurableProperty!
+  zoneId: ID!
   description: String
   enabled: Boolean
-  handlerMetadata: JSON!
-  handlerId: ID!
-  zoneId: ID!
 }
 
 input UpdateShippingMethodInput {
   name: String
   description: String
   enabled: Boolean
-  handlerMetadata: JSON
+  """
+  Specific data for the payment handler chosen
+  Record<string, string | number | boolean>
+  """
+  args: JSON
+}
+
+type ShippingMethodResult {
+  apiErrors: [ShippingMethodErrorResult!]!
+  shippingMethod: ShippingMethod
+}
+
+type ShippingMethodErrorResult {
+  code: ShippingMethodErrorCode!
+  message: String!
+}
+
+enum ShippingMethodErrorCode {
+  HANDLER_NOT_FOUND
 }

@@ -1,13 +1,33 @@
 import { Injectable } from '@nestjs/common';
 
+import { Args, ConfigurableOperationUi } from '@/persistence/types';
+
 import { ShipmentHandler } from '../shipment-handler';
 
 @Injectable()
 export class FlatPriceService implements ShipmentHandler {
-  calculatePrice(order: any, args: Record<string, string>): Promise<number> {
+  name = 'Flat price';
+  code = 'flat-price';
+
+  ui: ConfigurableOperationUi;
+
+  args: Args<ArgsKeys> = {
+    price: {
+      type: 'price',
+      required: true,
+      placeholder: '$0.00',
+      label: 'Price',
+      conditions: { min: 0 },
+      defaultValue: 0
+    }
+  };
+
+  calculatePrice(order: any, args: Record<ArgsKeys, string | number | boolean>): Promise<number> {
     return Promise.resolve(Number(args.price));
   }
-  getPricePreview(args: Record<string, string>): number {
+  getPricePreview(args: Record<ArgsKeys, string | number | boolean>): number {
     return Number(args.price);
   }
 }
+
+type ArgsKeys = 'price';

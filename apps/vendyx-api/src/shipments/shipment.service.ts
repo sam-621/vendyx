@@ -1,28 +1,43 @@
 import { Injectable } from '@nestjs/common';
 
-import { FlatPriceService } from './handlers';
+import { ConfigurableProperty } from '@/persistence/types';
+
+import { FlatPriceService, ShipmentHandler, ShipmentHandlerOrder } from './handlers';
 
 @Injectable()
 export class ShipmentService {
   constructor(private readonly flatPriceService: FlatPriceService) {}
 
-  async calculatePrice(order: any, handlerCode: string, args: Record<string, string>) {
-    const handler = this.getHandler(handlerCode);
+  async calculatePrice(order: ShipmentHandlerOrder, handler: ConfigurableProperty) {
+    const shipmentHandler = this.getHandler(handler.code);
 
-    return handler.calculatePrice(order, args);
+    return shipmentHandler.calculatePrice(order, handler.args);
   }
 
-  getPricePreview(handlerCode: string, args: Record<string, string>): number {
-    const handler = this.getHandler(handlerCode);
-    return handler.getPricePreview(args);
+  getPricePreview(handler: ConfigurableProperty): number {
+    const shipmentHandler = this.getHandler(handler.code);
+    return shipmentHandler.getPricePreview(handler.args);
   }
 
-  private getHandler(handlerCode: string) {
-    switch (handlerCode) {
-      case 'flat-price':
-        return this.flatPriceService;
-      default:
-        throw new Error(`Handler ${handlerCode} not found`);
+  safeGetHandler(handlerCode: string) {
+    return this._getHandler(handlerCode);
+  }
+
+  getHandler(handlerCode: string) {
+    const handler = this._getHandler(handlerCode);
+
+    if (!handler) {
+      throw new Error(`Handler ${handlerCode} not found`);
     }
+
+    return handler;
+  }
+
+  getHandlers(): ShipmentHandler[] {
+    return [this.flatPriceService];
+  }
+
+  private _getHandler(code: string): ShipmentHandler | undefined {
+    return this.getHandlers().find(handler => handler.code === code);
   }
 }

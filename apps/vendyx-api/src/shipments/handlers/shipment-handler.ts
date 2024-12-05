@@ -1,10 +1,17 @@
-export interface ShipmentHandler {
+import { Order } from '@prisma/client';
+
+import { ConfigurableOperation } from '@/persistence/types';
+
+export interface ShipmentHandler extends ConfigurableOperation {
   /**
    * Method to calculate the price of the shipping method. This method is called when the user is in the checkout process.
    *
    * @warning The price returned should not be formatted should be the raw price.
    */
-  calculatePrice(order: any, args: Record<string, string>): Promise<number>;
+  calculatePrice(
+    order: ShipmentHandlerOrder,
+    args: Record<string, string | number | boolean>
+  ): Promise<number>;
 
   /**
    * Method to get the preview price in the admin UI.
@@ -16,5 +23,7 @@ export interface ShipmentHandler {
    *
    * @warning If any arg is price type it will be received as an integer
    */
-  getPricePreview(args: Record<string, string>): number;
+  getPricePreview(args: Record<string, string | number | boolean>): number;
 }
+
+export type ShipmentHandlerOrder = Order;

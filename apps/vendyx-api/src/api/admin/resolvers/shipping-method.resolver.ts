@@ -1,14 +1,15 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
   CreateShippingMethodInput,
-  ShippingMethod,
   UpdateShippingMethodInput,
   UserJwtAuthGuard
 } from '@/api/shared';
+import { isErrorResult } from '@/business/shared';
 import { ShippingMethodService } from '@/business/shipping-method';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { ConfigurableProperty } from '@/persistence/types';
 import { ShipmentService } from '@/shipments';
 
 @UseGuards(UserJwtAuthGuard)
@@ -23,15 +24,14 @@ export class ShippingMethodResolver {
   @Query('shippingMethods')
   async shippingMethods() {
     const shippingMethods = await this.prisma.shippingMethod.findMany({
-      orderBy: { createdAt: 'desc' },
-      include: { shippingHandler: true }
+      orderBy: { createdAt: 'desc' }
     });
 
     return shippingMethods.map(shippingMethod => ({
       ...shippingMethod,
+      args: (shippingMethod.handler as ConfigurableProperty).args,
       pricePreview: this.shipmentService.getPricePreview(
-        shippingMethod.shippingHandler.handlerCode,
-        shippingMethod.handlerMetadata as Record<string, string>
+        shippingMethod.handler as ConfigurableProperty
       )
     }));
   }
@@ -43,7 +43,20 @@ export class ShippingMethodResolver {
 
   @Mutation('createShippingMethod')
   async createShippingMethod(@Args('input') input: CreateShippingMethodInput) {
-    return this.shippingMethodService.create(input);
+    const result = await this.shippingMethodService.create(input);
+
+    return isErrorResult(result)
+      ? { apiErrors: [result] }
+      : {
+          apiErrors: [],
+          shippingMethod: {
+            ...result,
+            args: (result.handler as ConfigurableProperty).args,
+            pricePreview: this.shipmentService.getPricePreview(
+              result.handler as ConfigurableProperty
+            )
+          }
+        };
   }
 
   @Mutation('updateShippingMethod')
@@ -51,21 +64,17 @@ export class ShippingMethodResolver {
     @Args('id') id: string,
     @Args('input') input: UpdateShippingMethodInput
   ) {
-    return this.shippingMethodService.update(id, input);
+    const result = await this.shippingMethodService.update(id, input);
+
+    return {
+      ...result,
+      args: (result.handler as ConfigurableProperty).args,
+      pricePreview: this.shipmentService.getPricePreview(result.handler as ConfigurableProperty)
+    };
   }
 
   @Mutation('removeShippingMethod')
   async removeShippingMethod(@Args('id') id: string) {
     return this.shippingMethodService.remove(id);
-  }
-
-  @ResolveField('handler')
-  async handler(@Parent() shippingMethod: ShippingMethod) {
-    const result = await this.prisma.shippingMethod.findUnique({
-      where: { id: shippingMethod.id },
-      select: { shippingHandler: true }
-    });
-
-    return result?.shippingHandler;
   }
 }

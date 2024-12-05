@@ -13,7 +13,6 @@ import {
   CustomerRepository,
   OptionRepository,
   ProductRepository,
-  ShippingMethodRepository,
   ShopRepository,
   UserRepository,
   VariantRepository,
@@ -29,7 +28,6 @@ const REPOSITORIES = [
   AssetRepository,
   CountryRepository,
   ZoneRepository,
-  ShippingMethodRepository,
   CustomerRepository
 ];
 

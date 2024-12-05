@@ -3,7 +3,13 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 
 import { CreateZoneInput, UpdateZoneInput, UserJwtAuthGuard, Zone } from '@/api/shared';
 import { ZoneService } from '@/business/zone';
-import { PRISMA_FOR_ADMIN, PrismaForShop } from '@/persistence/prisma-clients';
+import {
+  PRISMA_FOR_ADMIN,
+  PRISMA_FOR_SHOP,
+  PrismaForAdmin,
+  PrismaForShop
+} from '@/persistence/prisma-clients';
+import { ConfigurableProperty } from '@/persistence/types';
 import { ShipmentService } from '@/shipments';
 
 @UseGuards(UserJwtAuthGuard)
@@ -12,7 +18,8 @@ export class ZoneResolver {
   constructor(
     private readonly zoneService: ZoneService,
     private readonly shipmentService: ShipmentService,
-    @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForShop
+    @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {}
 
   @Query('zones')
@@ -52,17 +59,16 @@ export class ZoneResolver {
 
   @ResolveField('shippingMethods')
   async shippingMethods(@Parent() zone: Zone) {
-    const result = await this.prismaForAdmin.shippingMethod.findMany({
+    const result = await this.prisma.shippingMethod.findMany({
       where: { zoneId: zone.id },
-      include: { shippingHandler: true },
       orderBy: { createdAt: 'asc' }
     });
 
     return result.map(shippingMethod => ({
       ...shippingMethod,
+      args: (shippingMethod.handler as ConfigurableProperty).args,
       pricePreview: this.shipmentService.getPricePreview(
-        shippingMethod.shippingHandler.handlerCode,
-        shippingMethod.handlerMetadata as Record<string, string>
+        shippingMethod.handler as ConfigurableProperty
       )
     }));
   }

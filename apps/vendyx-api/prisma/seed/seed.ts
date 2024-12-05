@@ -1,15 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 
 import { generateCountries } from './countries.seed';
-import { generateShippingHandlers } from './shipment.seed';
 import { generateShop } from './shop.seed';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const [, flatPrice] = await generateShippingHandlers(prisma);
   const [, mx, us] = await generateCountries(prisma);
-  await generateShop(prisma, { flatPrice, mx, us });
+  await generateShop(prisma, { mx, us });
 }
 main()
   .then(async () => {

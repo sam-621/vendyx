@@ -35,6 +35,10 @@ export enum PaymentMethodErrorCode {
     HANDLER_NOT_FOUND = "HANDLER_NOT_FOUND"
 }
 
+export enum ShippingMethodErrorCode {
+    HANDLER_NOT_FOUND = "HANDLER_NOT_FOUND"
+}
+
 export enum ShopErrorCode {
     EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
@@ -231,18 +235,17 @@ export class ProductFilters {
 
 export class CreateShippingMethodInput {
     name: string;
+    handler: ConfigurableProperty;
+    zoneId: string;
     description?: Nullable<string>;
     enabled?: Nullable<boolean>;
-    handlerMetadata: JSON;
-    handlerId: string;
-    zoneId: string;
 }
 
 export class UpdateShippingMethodInput {
     name?: Nullable<string>;
     description?: Nullable<string>;
     enabled?: Nullable<boolean>;
-    handlerMetadata?: Nullable<JSON>;
+    args?: Nullable<JSON>;
 }
 
 export class CreateShopInput {
@@ -430,7 +433,7 @@ export abstract class IMutation {
 
     abstract softRemoveProduct(ids: string[]): boolean | Promise<boolean>;
 
-    abstract createShippingMethod(input: CreateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
+    abstract createShippingMethod(input: CreateShippingMethodInput): ShippingMethodResult | Promise<ShippingMethodResult>;
 
     abstract updateShippingMethod(id: string, input: UpdateShippingMethodInput): ShippingMethod | Promise<ShippingMethod>;
 
@@ -641,17 +644,25 @@ export class ShippingMethod implements Node {
     name: string;
     description?: Nullable<string>;
     enabled: boolean;
-    handlerMetadata: JSON;
-    handler: ShippingHandler;
+    args: JSON;
     pricePreview: number;
 }
 
-export class ShippingHandler implements Node {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+export class ShippingHandler {
     name: string;
-    metadata: JSON;
+    code: string;
+    icon?: Nullable<string>;
+    args: JSON;
+}
+
+export class ShippingMethodResult {
+    apiErrors: ShippingMethodErrorResult[];
+    shippingMethod?: Nullable<ShippingMethod>;
+}
+
+export class ShippingMethodErrorResult {
+    code: ShippingMethodErrorCode;
+    message: string;
 }
 
 export class Shop implements Node {

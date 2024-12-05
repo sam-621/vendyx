@@ -30,42 +30,23 @@ model ShippingMethod {
   deletedAt DateTime? @map("deleted_at")
 
   /// The shipping method's name, meant to be displayed to the customer at checkout
-  name            String
+  name        String
   /// The shipping method's description, meant to be displayed to the customer at checkout
-  description     String?
+  description String?
   /// Whether the shipping method is enabled or not, used to show/hide the method at checkout
-  enabled         Boolean @default(true)
-  /// Metadata only used by the handler
-  handlerMetadata Json    @map("handler_metadata")
+  enabled     Boolean @default(true)
+  /// Specific data for the shipment handler chosen
+  /// Usually, this json stores the shipment integration keys and the handler code
+  /// Type: ConfigurableProperty
+  handler     Json
 
-  zone              Zone            @relation(fields: [zoneId], references: [id])
-  zoneId            String          @db.Uuid
-  shippingHandler   ShippingHandler @relation(fields: [shippingHandlerId], references: [id])
-  shippingHandlerId String          @map("shipping_handler_id") @db.Uuid
+  zone   Zone   @relation(fields: [zoneId], references: [id])
+  zoneId String @db.Uuid
 
   shop   Shop   @relation(fields: [shopId], references: [id])
   shopId String @default(dbgenerated("(current_setting('app.current_shop_id'::text))::uuid")) @map("shop_id") @db.Uuid
 
   @@map("shipping_method")
-}
-
-/// A shipping handler is a service that is used to calculate shipping rates and create shipments
-model ShippingHandler {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-
-  /// The shipping handler's name. This is used to identify the handler in the system
-  name        String
-  /// The shipping handler's code. This is used to identify which handler is used in the order_flow
-  handlerCode String @unique @map("handler_code")
-  /// Metadata definition, used to define the metadata that the handler requires (api keys, etc)
-  metadata    Json
-
-  shippingMethods ShippingMethod[]
-
-  @@map("shipping_handler")
 }
 
 /// A zone is a collection of states that are used to group shipping rates

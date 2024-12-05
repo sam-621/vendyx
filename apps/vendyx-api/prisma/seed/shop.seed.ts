@@ -1,10 +1,9 @@
-import { Country, PrismaClient, ShippingHandler, Zone } from '@prisma/client';
+import { Country, PrismaClient, Zone } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 import { generateSku } from './generators';
 
 type Input = {
-  flatPrice: ShippingHandler;
   mx: Country;
   us: Country;
 };
@@ -816,14 +815,12 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
               {
                 name: 'Standard',
                 description: 'Delivery in 4-8 business days',
-                handlerMetadata: { price: 0 },
-                shippingHandlerId: input.flatPrice?.id ?? ''
+                handler: { code: 'flat-price', args: { price: 500 } }
               },
               {
                 name: 'Express',
                 description: 'Delivery in 2-3 business days',
-                handlerMetadata: { price: 1000 },
-                shippingHandlerId: input.flatPrice?.id ?? ''
+                handler: { code: 'flat-price', args: { price: 1000 } }
               }
             ]
           }
@@ -837,14 +834,12 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
               {
                 name: 'Standard',
                 description: 'Delivery in 7-14 business days',
-                handlerMetadata: { price: 2500 },
-                shippingHandlerId: input.flatPrice?.id ?? ''
+                handler: { code: 'flat-price', args: { price: 2500 } }
               },
               {
                 name: 'Express',
                 description: 'Delivery in 5-8 business days',
-                handlerMetadata: { price: 5000 },
-                shippingHandlerId: input.flatPrice?.id ?? ''
+                handler: { code: 'flat-price', args: { price: 5000 } }
               }
             ]
           }

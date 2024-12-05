@@ -5,6 +5,5 @@ export * from './variant.repository';
 export * from './option.repository';
 export * from './asset.repository';
 export * from './country.repository';
-export * from './shipping-method.repository';
 export * from './zone.repository';
 export * from './customer.repository';
