@@ -15,7 +15,7 @@ import { EventBusService } from '@/event-bus';
 import { OrderDeliveredEvent, OrderPaidEvent, OrderShippedEvent } from '@/event-bus/events';
 import { PaymentService } from '@/payment';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+import { ConfigurableProperty, ID } from '@/persistence/types';
 import { ShipmentService } from '@/shipments';
 
 import { OrderFinders } from './order-finders';
@@ -76,14 +76,13 @@ export class OrderService extends OrderFinders {
   async findAvailablePaymentMethods() {
     const result = await this.prisma.paymentMethod.findMany({
       where: { enabled: true },
-      orderBy: { createdAt: 'desc' },
-      include: { paymentIntegration: { select: { icon: true, name: true } } }
+      orderBy: { createdAt: 'desc' }
     });
 
     return result.map(item => ({
       ...item,
-      name: item.paymentIntegration.name,
-      icon: item.paymentIntegration.icon
+      name: this.paymentService.getHandler((item.handler as ConfigurableProperty).code).name,
+      icon: ''
     }));
   }
 
@@ -368,20 +367,18 @@ export class OrderService extends OrderFinders {
     }
 
     const method = await this.prisma.paymentMethod.findUnique({
-      where: { id: input.methodId, enabled: true },
-      include: { paymentIntegration: true }
+      where: { id: input.methodId, enabled: true }
     });
 
     if (!method) {
       return new PaymentMethodNotFound();
     }
 
+    const handler = method.handler as ConfigurableProperty;
+    const handlerName = this.paymentService.getHandler(handler.code).name;
+
     const paymentHandlerResult = await executeInSafe(() =>
-      this.paymentService.create(
-        order,
-        method.paymentIntegration.handlerCode,
-        method.integrationMetadata as Record<string, string>
-      )
+      this.paymentService.create(order, handler)
     );
 
     if (!paymentHandlerResult) {
@@ -399,7 +396,7 @@ export class OrderService extends OrderFinders {
         where: { id: orderId },
         data: {
           payment: {
-            create: { amount: paymentHandlerResult.amount, method: method.paymentIntegration.name }
+            create: { amount: paymentHandlerResult.amount, method: handlerName }
           },
           state: OrderState.PAYMENT_ADDED,
           placedAt: new Date()
@@ -414,7 +411,7 @@ export class OrderService extends OrderFinders {
           payment: {
             create: {
               amount: paymentHandlerResult.amount,
-              method: method.paymentIntegration.name,
+              method: handlerName,
               transactionId: paymentHandlerResult.transactionId
             }
           },

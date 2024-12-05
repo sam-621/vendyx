@@ -30,6 +30,11 @@ export enum OrderErrorCode {
     FORBIDDEN_ORDER_ACTION = "FORBIDDEN_ORDER_ACTION"
 }
 
+export enum PaymentMethodErrorCode {
+    HANDLER_ALREADY_SELECTED = "HANDLER_ALREADY_SELECTED",
+    HANDLER_NOT_FOUND = "HANDLER_NOT_FOUND"
+}
+
 export enum ShopErrorCode {
     EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED",
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
@@ -110,6 +115,11 @@ export class CollectionFilters {
     enabled?: Nullable<BooleanFilter>;
 }
 
+export class ConfigurableProperty {
+    code: string;
+    args: JSON;
+}
+
 export class UpdateCustomerInput {
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
@@ -177,13 +187,12 @@ export class OrderFilters {
 }
 
 export class CreatePaymentMethodInput {
-    integrationId: string;
-    integrationMetadata: JSON;
+    handler: ConfigurableProperty;
     enabled?: Nullable<boolean>;
 }
 
 export class UpdatePaymentMethodInput {
-    integrationMetadata?: Nullable<JSON>;
+    args?: Nullable<JSON>;
     enabled?: Nullable<boolean>;
 }
 
@@ -409,7 +418,7 @@ export abstract class IMutation {
 
     abstract cancelOrder(id: string): OrderResult | Promise<OrderResult>;
 
-    abstract createPaymentMethod(input: CreatePaymentMethodInput): PaymentMethod | Promise<PaymentMethod>;
+    abstract createPaymentMethod(input: CreatePaymentMethodInput): PaymentMethodResult | Promise<PaymentMethodResult>;
 
     abstract updatePaymentMethod(id: string, input: UpdatePaymentMethodInput): PaymentMethod | Promise<PaymentMethod>;
 
@@ -501,7 +510,7 @@ export abstract class IQuery {
 
     abstract paymentMethods(): PaymentMethod[] | Promise<PaymentMethod[]>;
 
-    abstract paymentIntegrations(): PaymentIntegration[] | Promise<PaymentIntegration[]>;
+    abstract paymentHandlers(): PaymentHandler[] | Promise<PaymentHandler[]>;
 
     abstract products(input?: Nullable<ProductListInput>): ProductList | Promise<ProductList>;
 
@@ -598,23 +607,31 @@ export class OrderErrorResult {
     message: string;
 }
 
-export class PaymentMethod {
+export class PaymentMethod implements Node {
     id: string;
     createdAt: Date;
     updatedAt: Date;
     name: string;
-    icon: string;
+    icon?: Nullable<string>;
     enabled: boolean;
-    integrationMetadata: JSON;
+    args: JSON;
 }
 
-export class PaymentIntegration {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+export class PaymentHandler {
     name: string;
-    icon: string;
-    metadata: JSON;
+    code: string;
+    icon?: Nullable<string>;
+    args: JSON;
+}
+
+export class PaymentMethodResult {
+    paymentMethod?: Nullable<PaymentMethod>;
+    apiErrors: PaymentMethodErrorResult[];
+}
+
+export class PaymentMethodErrorResult {
+    code: PaymentMethodErrorCode;
+    message: string;
 }
 
 export class ShippingMethod implements Node {

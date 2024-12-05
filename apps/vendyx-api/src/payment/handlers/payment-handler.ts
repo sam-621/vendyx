@@ -1,4 +1,8 @@
-export interface PaymentHandler {
+import { Order } from '@prisma/client';
+
+import { ConfigurableOperation, ConfigurableProperty } from '@/persistence/types';
+
+export interface PaymentHandler extends ConfigurableOperation {
   /**
    * @description
    * This method is called when the addPaymentToOrder mutation is called.
@@ -13,9 +17,9 @@ export interface PaymentHandler {
    * If the status returned is `declined`, that means that the payment has been declined and the order state keeps the same.
    */
   createPayment(
-    order: any,
+    order: PaymentHandlerOrder,
     totalAmount: number,
-    metadata: Record<string, any>
+    args: ConfigurableProperty['args']
   ): Promise<CreatePaymentResult>;
 
   /**
@@ -27,7 +31,10 @@ export interface PaymentHandler {
    * If {@link AuthorizePaymentResult.success} is true, that means that the payment is authorized and the money is in your account and the order is marked as paid
    * If {@link AuthorizePaymentResult.success} is false, that means that something went wrong and the order state keeps the same
    */
-  authorizePayment(order: any, metadata: Record<string, string>): Promise<AuthorizePaymentResult>;
+  authorizePayment(
+    order: PaymentHandlerOrder,
+    args: ConfigurableProperty['args']
+  ): Promise<AuthorizePaymentResult>;
 }
 
 export type CreatePaymentResult =
@@ -101,3 +108,5 @@ export enum PaymentStatus {
   AUTHORIZED,
   DECLINED
 }
+
+export type PaymentHandlerOrder = Order;

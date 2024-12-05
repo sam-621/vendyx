@@ -23,7 +23,6 @@ async function main() {
 
     prisma.payment.deleteMany(),
     prisma.paymentMethod.deleteMany(),
-    prisma.paymentIntegration.deleteMany(),
 
     prisma.stateZone.deleteMany(),
     prisma.state.deleteMany(),

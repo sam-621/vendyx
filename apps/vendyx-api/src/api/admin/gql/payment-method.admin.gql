@@ -1,0 +1,100 @@
+"""
+A payment method is a way to pay for an order in your shop, like credit card, paypal, etc
+"""
+type PaymentMethod implements Node {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+
+  """
+  The payment method's name (e.g. 'Stripe')
+  """
+  name: String!
+
+  """
+  The payment method's icon
+  """
+  icon: String
+
+  """
+  Whether the payment method is enabled or not
+  Not enabled payment methods will not be shown in the storefront
+  Useful for payment methods that are not ready to be used yet
+  """
+  enabled: Boolean!
+
+  """
+  Specific data for the payment handler chosen
+  Usually, this json stores the payment integration keys
+  Record<string, string | number | boolean>
+  """
+  args: JSON!
+}
+
+"""
+A payment handler is a handler to be used in a payment method by any shop.
+"""
+type PaymentHandler {
+  """
+  The payment handler's name (e.g. 'Stripe')
+  """
+  name: String!
+
+  """
+  The payment handlers's code (e.g. 'stripe')
+  """
+  code: String!
+
+  """
+  The payment handlers's icon
+  """
+  icon: String
+
+  """
+  Specific data for the payment handler chosen
+  Usually, this json stores the payment integration keys
+  Record<string, Arg>
+  """
+  args: JSON!
+}
+
+type Query {
+  paymentMethod(id: ID!): PaymentMethod
+  paymentMethods: [PaymentMethod!]!
+  paymentHandlers: [PaymentHandler!]!
+}
+
+type Mutation {
+  createPaymentMethod(input: CreatePaymentMethodInput!): PaymentMethodResult!
+  updatePaymentMethod(id: ID!, input: UpdatePaymentMethodInput!): PaymentMethod!
+  removePaymentMethod(id: ID!): Boolean!
+}
+
+input CreatePaymentMethodInput {
+  handler: ConfigurableProperty!
+  enabled: Boolean
+}
+
+input UpdatePaymentMethodInput {
+  """
+  Specific data for the payment handler chosen
+  Record<string, string | number | boolean>
+  """
+  args: JSON
+  enabled: Boolean
+}
+
+type PaymentMethodResult {
+  paymentMethod: PaymentMethod
+  apiErrors: [PaymentMethodErrorResult!]!
+}
+
+type PaymentMethodErrorResult {
+  code: PaymentMethodErrorCode!
+  message: String!
+}
+
+enum PaymentMethodErrorCode {
+  HANDLER_ALREADY_SELECTED
+  HANDLER_NOT_FOUND
+}

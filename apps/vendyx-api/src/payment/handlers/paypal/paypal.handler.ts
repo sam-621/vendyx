@@ -1,18 +1,48 @@
 import { Injectable } from '@nestjs/common';
 
-import { AuthorizePaymentResult, CreatePaymentResult, PaymentHandler } from '../payment-handler';
+import { Args, ConfigurableOperationUi, ConfigurableProperty } from '@/persistence/types';
+
+import {
+  AuthorizePaymentResult,
+  CreatePaymentResult,
+  PaymentHandler,
+  PaymentHandlerOrder
+} from '../payment-handler';
+import { PaypalConfig } from './paypal.types';
 
 @Injectable()
 export class PaypalHandler implements PaymentHandler {
+  name = 'Paypal';
+  code = 'paypal';
+
+  ui: ConfigurableOperationUi;
+
+  args: PaymentHandlerArgs = {
+    clientId: {
+      type: 'text',
+      required: true,
+      label: 'Client ID'
+    },
+    secret: {
+      type: 'text',
+      required: true,
+      label: 'Secret'
+    }
+  };
+
   async createPayment(
-    order: any,
+    order: PaymentHandlerOrder,
     totalAmount: number,
-    metadata?: Record<string, any>
+    args: ConfigurableProperty['args']
   ): Promise<CreatePaymentResult> {
     return { amount: totalAmount, status: 'authorized', transactionId: '123' };
   }
-
-  async authorizePayment(order: any): Promise<AuthorizePaymentResult> {
+  async authorizePayment(
+    order: PaymentHandlerOrder,
+    args: ConfigurableProperty['args']
+  ): Promise<AuthorizePaymentResult> {
     return { success: true };
   }
 }
+
+export type PaymentHandlerArgs = Args<keyof PaypalConfig>;

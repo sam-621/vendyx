@@ -96,9 +96,7 @@ export class OrderResolver {
 
   @Query('availablePaymentMethods')
   async availablePaymentMethods() {
-    const result = await this.orderService.findAvailablePaymentMethods();
-
-    return result;
+    return this.orderService.findAvailablePaymentMethods();
   }
 
   @Mutation('addShipmentToOrder')

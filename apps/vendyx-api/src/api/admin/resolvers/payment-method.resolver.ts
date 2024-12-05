@@ -3,6 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { CreatePaymentMethodInput, UpdatePaymentMethodInput, UserJwtAuthGuard } from '@/api/shared';
 import { PaymentMethodService } from '@/business/payment-method';
+import { isErrorResult } from '@/business/shared';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('PaymentMethod')
@@ -19,14 +20,18 @@ export class PaymentMethodResolver {
     return this.service.find();
   }
 
-  @Query('paymentIntegrations')
-  paymentIntegrations() {
-    return this.service.findIntegrations();
+  @Query('paymentHandlers')
+  paymentHandlers() {
+    return this.service.findHandlers();
   }
 
   @Mutation('createPaymentMethod')
-  createPaymentMethod(@Args('input') input: CreatePaymentMethodInput) {
-    return this.service.create(input);
+  async createPaymentMethod(@Args('input') input: CreatePaymentMethodInput) {
+    const result = await this.service.create(input);
+
+    return isErrorResult(result)
+      ? { apiErrors: [result] }
+      : { apiErrors: [], paymentMethod: result };
   }
 
   @Mutation('updatePaymentMethod')

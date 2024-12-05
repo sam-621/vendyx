@@ -14,12 +14,5 @@ type PaymentMethod {
   """
   The payment method's icon
   """
-  icon: String!
-
-  """
-  Whether the payment method is enabled or not
-  Not enabled payment methods will not be shown in the storefront
-  Useful for payment methods that are not ready to be used yet
-  """
-  enabled: Boolean!
+  icon: String
 }

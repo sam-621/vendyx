@@ -1,34 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { Order } from '@prisma/client';
 
-import { PaypalHandler, StripeService } from './handlers';
-import { PaymentHandler } from './handlers/payment-handler';
+import { ConfigurableProperty } from '@/persistence/types';
+
+import { PaymentHandler, PaypalHandler } from './handlers';
 
 @Injectable()
 export class PaymentService {
-  constructor(
-    private readonly paypalService: PaypalHandler,
-    private readonly stripeService: StripeService
-  ) {}
+  constructor(private readonly paypalHandler: PaypalHandler) {}
 
-  async create(order: Order, handlerCode: string, metadata: Record<string, string>) {
-    const handler = this.getHandler(handlerCode);
-    return handler.createPayment(order, order.total, metadata);
+  async create(order: Order, handler: ConfigurableProperty) {
+    const paymentHandler = this.getHandler(handler.code);
+    return paymentHandler.createPayment(order, order.total, handler.args);
   }
 
-  async authorize(order: any, handlerCode: string) {
-    const handler = this.getHandler(handlerCode);
-    return handler.authorizePayment(order, {});
+  async authorize(order: Order, handler: ConfigurableProperty) {
+    const paymentHandler = this.getHandler(handler.code);
+    return paymentHandler.authorizePayment(order, handler.args);
   }
 
-  private getHandler(paymentMethod: string): PaymentHandler {
-    switch (paymentMethod) {
-      case 'paypal':
-        return this.paypalService;
-      case 'stripe':
-        return this.stripeService;
-      default:
-        throw new Error('Invalid payment method');
+  safeGetHandler(code: string) {
+    return this._getHandler(code);
+  }
+
+  getHandler(code: string): PaymentHandler {
+    const handler = this._getHandler(code);
+
+    if (!handler) {
+      throw new Error(`Handler with code ${code} not found`);
     }
+
+    return handler;
+  }
+
+  getHandlers() {
+    return [this.paypalHandler];
+  }
+
+  private _getHandler(code: string): PaymentHandler | undefined {
+    return this.getHandlers().find(handler => handler.code === code);
   }
 }

@@ -1,48 +1,103 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { CreatePaymentMethodInput, UpdatePaymentMethodInput } from '@/api/shared';
-import { PaymentMethodRepository } from '@/persistence/repositories';
+import { PaymentService } from '@/payment';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { ConfigurableProperty, ID } from '@/persistence/types';
 
 import { clean } from '../shared';
+import { HandlerAlreadySelected, HandlerNotFound } from './payment-method.errors';
 
-// TODO: Handle errors
-// - Not more than 1 payment method with the same integration
 @Injectable()
 export class PaymentMethodService {
-  constructor(private readonly repository: PaymentMethodRepository) {}
+  constructor(
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
+    private readonly paymentService: PaymentService
+  ) {}
 
-  find() {
-    return this.repository.find();
+  async find() {
+    const methods = await this.prisma.paymentMethod.findMany();
+
+    return methods.map(method => ({
+      ...method,
+      name: this.paymentService.getHandler((method.handler as ConfigurableProperty).code).name,
+      icon: this.paymentService.getHandler((method.handler as ConfigurableProperty).code).ui?.icon,
+      args: (method.handler as ConfigurableProperty).args
+    }));
   }
 
-  findById(id: string) {
-    return this.repository.findById(id);
+  async findById(id: ID) {
+    const method = await this.prisma.paymentMethod.findUnique({ where: { id } });
+
+    if (!method) return null;
+
+    return {
+      ...method,
+      name: this.paymentService.getHandler((method.handler as ConfigurableProperty).code).name,
+      icon: this.paymentService.getHandler((method.handler as ConfigurableProperty).code).ui?.icon,
+      args: (method.handler as ConfigurableProperty).args
+    };
   }
 
-  findIntegrations() {
-    return this.repository.findIntegrations();
+  findHandlers() {
+    return this.paymentService.getHandlers().map(handler => ({
+      code: handler.code,
+      name: handler.name,
+      args: handler.args,
+      icon: handler.ui?.icon
+    }));
   }
 
   async create(input: CreatePaymentMethodInput) {
-    const result = await this.repository.insert({
-      enabled: input.enabled ?? undefined,
-      paymentIntegration: { connect: { id: input.integrationId } },
-      integrationMetadata: input.integrationMetadata
+    if (!this.paymentService.safeGetHandler(input.handler.code)) {
+      return new HandlerNotFound();
+    }
+
+    const existingHandler = await this.prisma.paymentMethod.findFirst({
+      where: {
+        handler: {
+          path: ['code'],
+          equals: input.handler.code
+        }
+      }
+    });
+
+    if (existingHandler) {
+      return new HandlerAlreadySelected();
+    }
+
+    const result = await this.prisma.paymentMethod.create({
+      data: {
+        ...clean(input)
+      }
     });
 
     return this.findById(result.id);
   }
 
-  async update(id: string, input: UpdatePaymentMethodInput) {
-    const result = await this.repository.update(id, {
-      ...clean(input)
+  async update(id: ID, input: UpdatePaymentMethodInput) {
+    const method = await this.prisma.paymentMethod.findUniqueOrThrow({ where: { id } });
+    const handler = method.handler as ConfigurableProperty;
+
+    const result = await this.prisma.paymentMethod.update({
+      where: { id },
+      data: {
+        enabled: input.enabled ?? undefined,
+        handler: {
+          ...handler,
+          args: {
+            ...handler.args,
+            ...clean(input.args ?? {})
+          }
+        } satisfies ConfigurableProperty
+      }
     });
 
     return this.findById(result.id);
   }
 
   async remove(id: string) {
-    await this.repository.remove(id);
+    await this.prisma.paymentMethod.delete({ where: { id } });
     return true;
   }
 }

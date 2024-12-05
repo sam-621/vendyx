@@ -1,11 +1,9 @@
-import { Country, PaymentIntegration, PrismaClient, ShippingHandler, Zone } from '@prisma/client';
+import { Country, PrismaClient, ShippingHandler, Zone } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 import { generateSku } from './generators';
 
 type Input = {
-  stripe: PaymentIntegration;
-  paypal: PaymentIntegration;
   flatPrice: ShippingHandler;
   mx: Country;
   us: Country;
@@ -906,14 +904,13 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
       prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
       prisma.paymentMethod.create({
         data: {
-          paymentIntegrationId: input.stripe.id,
-          integrationMetadata: { secret_key: 'pk_test_51J3' }
-        }
-      }),
-      prisma.paymentMethod.create({
-        data: {
-          paymentIntegrationId: input.paypal.id,
-          integrationMetadata: { client_key: 'pk_test_51J3' }
+          handler: {
+            code: 'paypal',
+            args: {
+              apiKey: 'sk_test_4eC39HqLyjWDarjtT1zdp7dc',
+              secret: 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+            }
+          }
         }
       })
     ]);

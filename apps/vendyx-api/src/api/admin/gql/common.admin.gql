@@ -1,0 +1,8 @@
+input ConfigurableProperty {
+  code: String!
+  """
+  Specific data for the payment handler chosen
+  Record<string, string | number | boolean>
+  """
+  args: JSON!
+}
