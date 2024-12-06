@@ -9,8 +9,6 @@ model Product {
   name        String          @db.VarChar(255)
   /// A human-friendly unique string for the Product automatically generated from its name
   slug        String          @unique @db.VarChar(255)
-  /// Order in which the product should be displayed in the storefront
-  order       Int             @default(autoincrement())
   /// The product's description
   description String?
   /// Whether the products is enabled or not.

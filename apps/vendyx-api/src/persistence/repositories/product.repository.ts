@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
-import { ListInput, ProductFilters, ProductListInput } from '@/api/shared';
+import { ProductFilters, ProductListInput } from '@/api/shared';
 import { clean } from '@/business/shared';
 
 import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
@@ -22,7 +22,7 @@ export class ProductRepository {
           ? { some: { collectionId: input?.collectionId } }
           : undefined
       },
-      orderBy: { order: 'asc' }
+      orderBy: { createdAt: 'asc' }
     });
   }
 
@@ -113,5 +113,3 @@ export class ProductRepository {
     });
   }
 }
-
-type FindOptions = ListInput & { filters?: ProductFilters };

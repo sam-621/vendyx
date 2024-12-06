@@ -6,7 +6,7 @@ import { generateShop } from './shop.seed';
 const prisma = new PrismaClient();
 
 async function main() {
-  const [, mx, us] = await generateCountries(prisma);
+  const [mx, us] = await generateCountries(prisma);
   await generateShop(prisma, { mx, us });
 }
 main()
