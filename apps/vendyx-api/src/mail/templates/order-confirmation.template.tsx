@@ -65,8 +65,8 @@ const Component: React.FC<Props> = ({ order, shop }) => {
               <Heading className="text-black text-[20px] font-normal mt-[80px]">
                 Order summary
               </Heading>
-              {order.lines.map(line => (
-                <Row key={line.id}>
+              {order.lines.map((line, i) => (
+                <Row key={line.id} className={order.lines.length - 1 === i ? '' : 'mb-8'}>
                   <Column>
                     {/* TODO: add image placeholder */}
                     <Img

@@ -781,6 +781,7 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
   let local: Zone = zones[0];
   let international: Zone = zones[1];
 
+  // TODO: create shipping methods separately
   // create zones and shipping methods
   if (zones.length !== 2) {
     const [l, i] = [
@@ -887,7 +888,7 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
           handler: {
             code: 'paypal',
             args: {
-              apiKey: 'sk_test_4eC39HqLyjWDarjtT1zdp7dc',
+              clientId: 'sk_test_4eC39HqLyjWDarjtT1zdp7dc',
               secret: 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
             }
           }
