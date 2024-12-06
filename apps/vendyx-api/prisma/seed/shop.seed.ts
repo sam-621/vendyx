@@ -1,4 +1,4 @@
-import { Country, PrismaClient, Zone } from '@prisma/client';
+import { Asset, Country, PrismaClient, Zone } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 import { generateSku } from './generators';
@@ -964,71 +964,99 @@ const generateOption =
 
 const createProduct =
   (prisma: PrismaClient) => async (input: ProductInput, shopId: string, userId: string) => {
+    const slug = input.name.toLowerCase().replaceAll(' ', '-');
+
     const r = await prisma.$transaction([
       prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shopId}, TRUE)`,
       prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${userId}, TRUE)`,
-      prisma.product.upsert(generateProduct(input, shopId))
+      prisma.product.upsert({
+        where: { slug },
+        update: {},
+        create: {
+          shopId,
+          slug,
+          name: input.name,
+          description: input.description,
+          assets: {
+            create: input.assets.map((a, i) => ({
+              asset: {
+                create: {
+                  name: slug + '-image-' + i,
+                  source: a
+                }
+              },
+              order: i
+            }))
+          },
+          options: {
+            createMany: {
+              data: input.options.map(o => ({ optionId: o }))
+            }
+          }
+        }
+      })
     ]);
 
-    return r[2];
-  };
+    const product = r[2];
 
-const generateProduct = (input: ProductInput, shopId: string) => {
-  const slug = input.name.toLowerCase().replaceAll(' ', '-');
+    const [, , hasVariants] = await prisma.$transaction([
+      prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shopId}, TRUE)`,
+      prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${userId}, TRUE)`,
+      prisma.variant.count({
+        where: { productId: product.id }
+      })
+    ]);
 
-  return {
-    where: { slug },
-    update: {},
-    create: {
-      shopId,
-      slug,
-      name: input.name,
-      description: input.description,
-      assets: {
-        create: input.assets.map((a, i) => ({
-          asset: {
-            create: {
-              name: slug + '-image-' + i,
-              source: a
+    if (hasVariants) return product;
+
+    for (let i = 0; i < input.variants.length; i++) {
+      const variant = input.variants[i];
+      const sku = generateSku();
+
+      let asset: Asset | undefined = undefined;
+
+      if (variant.asset) {
+        const [, , a] = await prisma.$transaction([
+          prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shopId}, TRUE)`,
+          prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${userId}, TRUE)`,
+          prisma.asset.create({
+            data: {
+              name: sku + '-image',
+              source: variant.asset
             }
-          },
-          order: i
-        }))
-      },
-      options: {
-        createMany: {
-          data: input.options.map(o => ({ optionId: o }))
-        }
-      },
-      variants: {
-        create: input.variants.map(v => {
-          const sku = generateSku();
-          return {
-            salePrice: v.salePrice,
-            comparisonPrice: v.comparisonPrice,
-            costPerUnit: v.costPerUnit,
-            requiresShipping: v.requiresShipping,
+          })
+        ]);
+
+        asset = a;
+      }
+
+      await prisma.$transaction([
+        prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shopId}, TRUE)`,
+        prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${userId}, TRUE)`,
+        prisma.variant.create({
+          data: {
+            productId: product.id,
+            salePrice: variant.salePrice,
+            comparisonPrice: variant.comparisonPrice,
+            costPerUnit: variant.costPerUnit,
+            requiresShipping: variant.requiresShipping,
             sku,
-            stock: v.stock,
-            variantOptionValues: v.optionValueId
+            stock: variant.stock,
+            variantOptionValues: variant.optionValueId
               ? {
-                  create: Array.isArray(v.optionValueId)
-                    ? v.optionValueId.map(v => ({ optionValueId: v }))
-                    : { optionValueId: v.optionValueId }
+                  create: Array.isArray(variant.optionValueId)
+                    ? variant.optionValueId.map(v => ({ optionValueId: v }))
+                    : { optionValueId: variant.optionValueId }
                 }
               : undefined,
-            asset: v.asset && {
-              create: {
-                name: sku + '-image',
-                source: v.asset
-              }
-            }
-          };
+            assetId: asset?.id
+          }
         })
-      }
+      ]);
     }
+
+    return product;
   };
-};
 
 type ProductInput = {
   name: string;
