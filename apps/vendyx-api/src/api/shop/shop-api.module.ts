@@ -7,6 +7,7 @@ import { PaymentModule } from '@/payment';
 import { ShipmentModule } from '@/shipments';
 
 import {
+  AddressResolver,
   CollectionResolver,
   CountryResolver,
   CustomerResolver,
@@ -40,7 +41,8 @@ export class ShopApiModule {
     OrderResolver,
     CustomerResolver,
     CollectionResolver,
-    CountryResolver
+    CountryResolver,
+    AddressResolver
   ]
 })
 class ShopModule {}

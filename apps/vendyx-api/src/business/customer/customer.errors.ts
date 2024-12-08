@@ -14,12 +14,6 @@ export class EmailAlreadyExists extends ErrorResult<CustomerErrorCode> {
   }
 }
 
-export class InvalidAccessToken extends ErrorResult<CustomerErrorCode> {
-  constructor() {
-    super(CustomerErrorCode.INVALID_ACCESS_TOKEN, 'Invalid access token');
-  }
-}
-
 export class InvalidCredentials extends ErrorResult<CustomerErrorCode> {
   constructor() {
     super(CustomerErrorCode.INVALID_CREDENTIALS, 'Invalid credentials');

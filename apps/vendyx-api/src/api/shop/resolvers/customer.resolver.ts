@@ -37,7 +37,7 @@ export class CustomerResolver {
     @CurrentCustomer() customer: TCurrentCustomer,
     @Args('input') input: UpdateCustomerInput
   ) {
-    const result = await this.customerService.updateById(customer.id, input);
+    const result = await this.customerService.update(customer.id, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { customer: result, apiErrors: [] };
   }

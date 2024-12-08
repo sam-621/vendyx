@@ -1,5 +1,0 @@
-type Mutation {
-  createCustomerAddress(input: CreateAddressInput!): Address!
-  removeCustomerAddress(addressId: ID!): Address!
-  updateCustomerAddress(addressId: ID!, input: CreateAddressInput!): Address!
-}

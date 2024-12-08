@@ -31,7 +31,8 @@ export class CustomerFieldResolver {
     const [result, total] = await Promise.all([
       this.prisma.address.findMany({
         ...clean({ skip: input?.skip, take: input?.take }),
-        where: { customerId: customer.id }
+        where: { customerId: customer.id },
+        orderBy: { createdAt: 'asc' }
       }),
       this.prisma.address.count({
         ...clean({ skip: input?.skip, take: input?.take }),

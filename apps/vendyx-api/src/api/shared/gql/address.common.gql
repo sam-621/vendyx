@@ -22,6 +22,12 @@ type AddressList implements List {
   pageInfo: PageInfo!
 }
 
+type Mutation {
+  createCustomerAddress(input: CreateAddressInput!): Address!
+  updateCustomerAddress(addressId: ID!, input: UpdateAddressInput!): Address!
+  removeCustomerAddress(addressId: ID!): Address!
+}
+
 input CreateAddressInput {
   country: String!
   streetLine1: String!
@@ -29,6 +35,17 @@ input CreateAddressInput {
   city: String!
   province: String!
   postalCode: String!
+  references: String
+  isDefault: Boolean
+}
+
+input UpdateAddressInput {
+  country: String
+  streetLine1: String
+  streetLine2: String
+  city: String
+  province: String
+  postalCode: String
   references: String
   isDefault: Boolean
 }

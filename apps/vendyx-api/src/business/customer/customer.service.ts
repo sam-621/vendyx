@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import {
-  CreateAddressInput,
   CreateCustomerInput,
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
@@ -16,7 +15,6 @@ import { ID } from '@/persistence/types';
 import { CustomerFinder } from './customer-finder';
 import {
   EmailAlreadyExists,
-  InvalidAccessToken,
   InvalidCredentials,
   InvalidEmail,
   PasswordsDoNotMatch
@@ -35,16 +33,6 @@ export class CustomerService extends CustomerFinder {
 
   async findById(id: ID) {
     return this.prisma.customer.findUnique({ where: { id } });
-  }
-
-  async findByAccessToken(accessToken: string) {
-    const { sub } = await this.verifyAccessToken(accessToken);
-
-    if (!sub) {
-      return new InvalidAccessToken();
-    }
-
-    return await this.findById(sub);
   }
 
   async create(input: CreateCustomerInput) {
@@ -85,7 +73,7 @@ export class CustomerService extends CustomerFinder {
     return customer;
   }
 
-  async updateById(id: ID, input: UpdateCustomerInput) {
+  async update(id: ID, input: UpdateCustomerInput) {
     if (input.email) {
       if (!validateEmail(input.email)) {
         return new InvalidEmail();
@@ -143,60 +131,6 @@ export class CustomerService extends CustomerFinder {
     return accessToken;
   }
 
-  async addAddress(accessToken: string, input: CreateAddressInput) {
-    const { sub } = await this.verifyAccessToken(accessToken);
-
-    if (!sub) {
-      return new InvalidAccessToken();
-    }
-
-    const hasDefaultAddress = await this.prisma.address.findFirst({
-      where: { customerId: sub, isDefault: true }
-    });
-
-    // If the address to add is default, we need to remove the default flag from the current default address
-    if (input.isDefault && hasDefaultAddress) {
-      await this.prisma.address.update({
-        where: { id: hasDefaultAddress.id },
-        data: { isDefault: false }
-      });
-
-      return await this.prisma.customer.update({
-        where: { id: sub },
-        data: {
-          addresses: {
-            create: {
-              ...clean(input)
-            }
-          }
-        }
-      });
-    }
-
-    // If the address to add is the first address, we set it as default
-    return await this.prisma.customer.update({
-      where: { id: sub },
-      data: {
-        addresses: {
-          create: {
-            ...clean(input),
-            isDefault: !hasDefaultAddress
-          }
-        }
-      }
-    });
-  }
-
-  async removeAddress(id: ID, accessToken: string) {
-    const { sub } = await this.verifyAccessToken(accessToken);
-
-    if (!sub) {
-      return new InvalidAccessToken();
-    }
-
-    return await this.prisma.address.delete({ where: { id } });
-  }
-
   async disable(id: ID) {
     return await this.prisma.customer.update({
       where: { id },
@@ -206,10 +140,6 @@ export class CustomerService extends CustomerFinder {
 
   private async verifyAccessToken(accessToken: string) {
     return await this.authService.decodeAccessToken<CustomerJwtPayloadInput>(accessToken);
-  }
-
-  private async findByIdOrThrow(id: ID) {
-    return await this.prisma.customer.findUniqueOrThrow({ where: { id } });
   }
 
   private async findByEmail(email: string) {

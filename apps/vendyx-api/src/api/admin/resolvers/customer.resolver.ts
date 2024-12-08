@@ -38,7 +38,7 @@ export class CustomerResolver {
 
   @Mutation('updateCustomer')
   async updateCustomer(@Args('id') id: ID, @Args('input') input: UpdateCustomerInput) {
-    const result = await this.customerService.updateById(id, input);
+    const result = await this.customerService.update(id, input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { customer: result, apiErrors: [] };
   }

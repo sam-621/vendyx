@@ -35,6 +35,7 @@ model Shop {
   order          Order[]
   orderLines     OrderLine[]
   customer       Customer[]
+  addresses      Address[]
   collections    Collection[]
 
   /// The shop's owner

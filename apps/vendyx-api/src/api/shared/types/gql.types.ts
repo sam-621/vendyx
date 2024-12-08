@@ -331,6 +331,17 @@ export class CreateAddressInput {
     isDefault?: Nullable<boolean>;
 }
 
+export class UpdateAddressInput {
+    country?: Nullable<string>;
+    streetLine1?: Nullable<string>;
+    streetLine2?: Nullable<string>;
+    city?: Nullable<string>;
+    province?: Nullable<string>;
+    postalCode?: Nullable<string>;
+    references?: Nullable<string>;
+    isDefault?: Nullable<boolean>;
+}
+
 export class ListInput {
     skip?: Nullable<number>;
     take?: Nullable<number>;
