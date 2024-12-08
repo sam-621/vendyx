@@ -13,6 +13,7 @@ type Address implements Node {
   province: String!
   postalCode: String!
   references: String
+  isDefault: Boolean!
 }
 
 type AddressList implements List {
@@ -29,4 +30,5 @@ input CreateAddressInput {
   province: String!
   postalCode: String!
   references: String
+  isDefault: Boolean
 }

@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import {
+  CreateAddressInput,
   CreateCustomerInput,
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
@@ -142,6 +143,85 @@ export class CustomerService extends CustomerFinder {
     });
 
     return accessToken;
+  }
+
+  async addAddress(accessToken: string, input: CreateAddressInput) {
+    const { sub } = await this.verifyAccessToken(accessToken);
+
+    if (!sub) {
+      return new InvalidAccessToken();
+    }
+
+    const customer = await this.findByIdOrThrow(sub);
+
+    if (!customer.enabled) {
+      return new DisabledCustomer();
+    }
+
+    const hasDefaultAddress = await this.prisma.address.findFirst({
+      where: { customerId: sub, isDefault: true }
+    });
+
+    // If the address to add is default, we need to remove the default flag from the current default address
+    if (input.isDefault && hasDefaultAddress) {
+      await this.prisma.address.update({
+        where: { id: hasDefaultAddress.id },
+        data: { isDefault: false }
+      });
+
+      return await this.prisma.customer.update({
+        where: { id: sub },
+        data: {
+          addresses: {
+            create: {
+              ...clean(input)
+            }
+          }
+        }
+      });
+    }
+
+    // If the address to add is the first address, we set it as default
+    return await this.prisma.customer.update({
+      where: { id: sub },
+      data: {
+        addresses: {
+          create: {
+            ...clean(input),
+            isDefault: !hasDefaultAddress
+          }
+        }
+      }
+    });
+  }
+
+  async removeAddress(id: ID, accessToken: string) {
+    const { sub } = await this.verifyAccessToken(accessToken);
+
+    if (!sub) {
+      return new InvalidAccessToken();
+    }
+
+    const customer = await this.findByIdOrThrow(sub);
+
+    if (!customer.enabled) {
+      return new DisabledCustomer();
+    }
+
+    return await this.prisma.address.delete({ where: { id } });
+  }
+
+  async disable(accessToken: string) {
+    const { sub } = await this.verifyAccessToken(accessToken);
+
+    if (!sub) {
+      return new InvalidAccessToken();
+    }
+
+    return await this.prisma.customer.update({
+      where: { id: sub },
+      data: { enabled: false }
+    });
   }
 
   /**

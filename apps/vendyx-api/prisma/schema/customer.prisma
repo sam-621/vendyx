@@ -42,6 +42,7 @@ model Address {
   province    String
   postalCode  String  @map("postal_code")
   references  String? @map("references") @db.Text
+  isDefault   Boolean @default(false) @map("is_default")
 
   customer   Customer @relation(fields: [customerId], references: [id])
   customerId String   @map("customer_id") @db.Uuid

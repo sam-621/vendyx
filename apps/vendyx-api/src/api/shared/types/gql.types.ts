@@ -329,6 +329,7 @@ export class CreateAddressInput {
     province: string;
     postalCode: string;
     references?: Nullable<string>;
+    isDefault?: Nullable<boolean>;
 }
 
 export class ListInput {
@@ -476,6 +477,8 @@ export abstract class IMutation {
     abstract requestRecoveryCustomerPassword(email: string): CustomerResult | Promise<CustomerResult>;
 
     abstract recoverCustomerPassword(urlToken: string, password: string): CustomerResult | Promise<CustomerResult>;
+
+    abstract disableCustomer(accessToken: string): CustomerResult | Promise<CustomerResult>;
 
     abstract createOrder(input: CreateOrderInput): OrderResult | Promise<OrderResult>;
 
@@ -645,6 +648,7 @@ export class ShippingMethod implements Node {
     description?: Nullable<string>;
     enabled: boolean;
     args: JSON;
+    code: string;
     pricePreview: number;
 }
 
@@ -762,6 +766,7 @@ export class Address implements Node {
     province: string;
     postalCode: string;
     references?: Nullable<string>;
+    isDefault: boolean;
 }
 
 export class AddressList implements List {
