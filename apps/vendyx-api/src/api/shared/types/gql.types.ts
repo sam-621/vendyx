@@ -13,8 +13,7 @@ export enum CustomerErrorCode {
     EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS",
     INVALID_ACCESS_TOKEN = "INVALID_ACCESS_TOKEN",
     PASSWORDS_DO_NOT_MATCH = "PASSWORDS_DO_NOT_MATCH",
-    INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
-    DISABLED_CUSTOMER = "DISABLED_CUSTOMER"
+    INVALID_CREDENTIALS = "INVALID_CREDENTIALS"
 }
 
 export enum OrderErrorCode {
@@ -355,8 +354,8 @@ export class CreateCustomerInput {
 }
 
 export class UpdateCustomerPasswordInput {
-    password: string;
     newPassword: string;
+    confirmPassword: string;
 }
 
 export class CreateOrderInput {
@@ -406,7 +405,7 @@ export abstract class IMutation {
 
     abstract removeCollection(id: string): boolean | Promise<boolean>;
 
-    abstract updateCustomer(id: string, input: UpdateCustomerInput, accessToken: string): CustomerResult | Promise<CustomerResult>;
+    abstract updateCustomer(id: string, input: UpdateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
     abstract createOption(productId: string, input: CreateOptionInput): Option | Promise<Option>;
 
@@ -466,11 +465,15 @@ export abstract class IMutation {
 
     abstract removeZone(id: string): boolean | Promise<boolean>;
 
+    abstract createCustomerAddress(input: CreateAddressInput): Address | Promise<Address>;
+
+    abstract removeCustomerAddress(addressId: string): Address | Promise<Address>;
+
+    abstract updateCustomerAddress(addressId: string, input: CreateAddressInput): Address | Promise<Address>;
+
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
-    abstract updateCustomerPassword(accessToken: string, input: UpdateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
-
-    abstract addAddressToCustomer(accessToken: string, input: CreateAddressInput): CustomerResult | Promise<CustomerResult>;
+    abstract updateCustomerPassword(input: UpdateCustomerPasswordInput): CustomerResult | Promise<CustomerResult>;
 
     abstract generateCustomerAccessToken(email: string, password: string): GenerateCustomerAccessTokenResult | Promise<GenerateCustomerAccessTokenResult>;
 
@@ -478,7 +481,7 @@ export abstract class IMutation {
 
     abstract recoverCustomerPassword(urlToken: string, password: string): CustomerResult | Promise<CustomerResult>;
 
-    abstract disableCustomer(accessToken: string): CustomerResult | Promise<CustomerResult>;
+    abstract disableCustomer(): CustomerResult | Promise<CustomerResult>;
 
     abstract createOrder(input: CreateOrderInput): OrderResult | Promise<OrderResult>;
 
@@ -504,7 +507,7 @@ export abstract class IQuery {
 
     abstract customers(input?: Nullable<CustomerListInput>): CustomerList | Promise<CustomerList>;
 
-    abstract customer(id: string, accessToken: string): Nullable<Customer> | Promise<Nullable<Customer>>;
+    abstract customer(id: string): Nullable<Customer> | Promise<Nullable<Customer>>;
 
     abstract totalSales(input: MetricsInput): MetricsResult | Promise<MetricsResult>;
 
@@ -545,6 +548,8 @@ export abstract class IQuery {
     abstract order(id?: Nullable<string>, code?: Nullable<string>): Nullable<Order> | Promise<Nullable<Order>>;
 
     abstract product(id?: Nullable<string>, slug?: Nullable<string>): Nullable<Product> | Promise<Nullable<Product>>;
+
+    abstract me(): Nullable<Customer> | Promise<Nullable<Customer>>;
 
     abstract availableShippingMethods(orderId: string): ShippingMethod[] | Promise<ShippingMethod[]>;
 

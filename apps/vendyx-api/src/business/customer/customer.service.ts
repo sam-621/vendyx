@@ -7,7 +7,7 @@ import {
   UpdateCustomerPasswordInput
 } from '@/api/shared';
 import { AuthService } from '@/auth';
-import { CustomerJwtPayload } from '@/auth/strategies';
+import { JwtPayload } from '@/auth/strategies';
 import { EventBusService } from '@/event-bus';
 import { CustomerRegisteredEvent } from '@/event-bus/events';
 import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
@@ -15,7 +15,6 @@ import { ID } from '@/persistence/types';
 
 import { CustomerFinder } from './customer-finder';
 import {
-  DisabledCustomer,
   EmailAlreadyExists,
   InvalidAccessToken,
   InvalidCredentials,
@@ -86,35 +85,34 @@ export class CustomerService extends CustomerFinder {
     return customer;
   }
 
-  async updateByAccessToken(accessToken: string, input: UpdateCustomerInput) {
-    const { sub } = await this.verifyAccessToken(accessToken);
-
-    if (!sub) {
-      return new InvalidAccessToken();
-    }
-
-    return await this.update(sub, input, true);
-  }
-
   async updateById(id: ID, input: UpdateCustomerInput) {
-    return await this.update(id, input, false);
-  }
+    if (input.email) {
+      if (!validateEmail(input.email)) {
+        return new InvalidEmail();
+      }
 
-  async updatePassword(accessToken: string, input: UpdateCustomerPasswordInput) {
-    const { sub } = await this.verifyAccessToken(accessToken);
+      const customerWithSameEmail = await this.findByEmail(input.email);
 
-    if (!sub) {
-      return new InvalidAccessToken();
+      if (customerWithSameEmail && customerWithSameEmail.id !== id) {
+        return new EmailAlreadyExists();
+      }
     }
 
-    if (input.password !== input.newPassword) {
+    return await this.prisma.customer.update({
+      where: { id },
+      data: clean(input)
+    });
+  }
+
+  async updatePassword(id: ID, input: UpdateCustomerPasswordInput) {
+    if (input.newPassword !== input.confirmPassword) {
       return new PasswordsDoNotMatch();
     }
 
     const newPasswordHashed = await this.authService.hash(input.newPassword);
 
     return await this.prisma.customer.update({
-      where: { id: sub },
+      where: { id: id },
       data: {
         password: newPasswordHashed
       }
@@ -150,12 +148,6 @@ export class CustomerService extends CustomerFinder {
 
     if (!sub) {
       return new InvalidAccessToken();
-    }
-
-    const customer = await this.findByIdOrThrow(sub);
-
-    if (!customer.enabled) {
-      return new DisabledCustomer();
     }
 
     const hasDefaultAddress = await this.prisma.address.findFirst({
@@ -202,57 +194,13 @@ export class CustomerService extends CustomerFinder {
       return new InvalidAccessToken();
     }
 
-    const customer = await this.findByIdOrThrow(sub);
-
-    if (!customer.enabled) {
-      return new DisabledCustomer();
-    }
-
     return await this.prisma.address.delete({ where: { id } });
   }
 
-  async disable(accessToken: string) {
-    const { sub } = await this.verifyAccessToken(accessToken);
-
-    if (!sub) {
-      return new InvalidAccessToken();
-    }
-
-    return await this.prisma.customer.update({
-      where: { id: sub },
-      data: { enabled: false }
-    });
-  }
-
-  /**
-   * Updates a customer with the given id.
-   *
-   * If onlyEnabled is true, the customer will only be updated if it is enabled.
-   * Useful for updating a customer in a storefront where the customer must be enabled
-   * to be able to execute operations.
-   */
-  private async update(id: ID, input: UpdateCustomerInput, onlyEnabled: boolean) {
-    const customerToUpdate = await this.findByIdOrThrow(id);
-
-    if (onlyEnabled && !customerToUpdate.enabled) {
-      return new DisabledCustomer();
-    }
-
-    if (input.email) {
-      if (!validateEmail(input.email)) {
-        return new InvalidEmail();
-      }
-
-      const customerWithSameEmail = await this.findByEmail(input.email);
-
-      if (customerWithSameEmail && customerWithSameEmail.id !== id) {
-        return new EmailAlreadyExists();
-      }
-    }
-
+  async disable(id: ID) {
     return await this.prisma.customer.update({
       where: { id },
-      data: clean(input)
+      data: { enabled: false }
     });
   }
 
@@ -269,4 +217,4 @@ export class CustomerService extends CustomerFinder {
   }
 }
 
-type CustomerJwtPayloadInput = Pick<CustomerJwtPayload, 'sub' | 'email'>;
+type CustomerJwtPayloadInput = Pick<JwtPayload, 'sub' | 'email'>;

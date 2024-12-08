@@ -1,8 +1,8 @@
 type Query {
   """
-  Get the customer by the access token.
+  Get authenticated customer
   """
-  customer(accessToken: String!): Customer
+  me: Customer
 }
 
 type Mutation {
@@ -13,13 +13,13 @@ type Mutation {
   """
   Update the customer's data.
   """
-  updateCustomer(accessToken: String!, input: UpdateCustomerInput!): CustomerResult!
+  updateCustomer(input: UpdateCustomerInput!): CustomerResult!
   """
   Update the customer's password providing the current password and the new password
   """
-  updateCustomerPassword(accessToken: String!, input: UpdateCustomerPasswordInput!): CustomerResult!
+  updateCustomerPassword(input: UpdateCustomerPasswordInput!): CustomerResult!
   """
-  Generate a token for the customer. This token is used to modify the customer's data.
+  Generate a token for a customer. This token is used to modify the customer's data.
   """
   generateCustomerAccessToken(email: String!, password: String!): GenerateCustomerAccessTokenResult!
   """
@@ -33,7 +33,7 @@ type Mutation {
   """
   Disable the customer account.
   """
-  disableCustomer(accessToken: String!): CustomerResult!
+  disableCustomer: CustomerResult!
 }
 
 input CreateCustomerInput {
@@ -52,8 +52,8 @@ input UpdateCustomerInput {
 }
 
 input UpdateCustomerPasswordInput {
-  password: String!
   newPassword: String!
+  confirmPassword: String!
 }
 
 type GenerateCustomerAccessTokenResult {
@@ -77,5 +77,4 @@ enum CustomerErrorCode {
   INVALID_ACCESS_TOKEN
   PASSWORDS_DO_NOT_MATCH
   INVALID_CREDENTIALS
-  DISABLED_CUSTOMER
 }

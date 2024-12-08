@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateUserInput, UpdateUserInput, ValidateOtpInput } from '@/api/shared';
 import { AuthService } from '@/auth';
-import { UserJwtPayload } from '@/auth/strategies';
+import { JwtPayload } from '@/auth/strategies';
 import { EventBusService } from '@/event-bus';
 import { UserRegisteredEvent } from '@/event-bus/events';
 import {
@@ -35,7 +35,7 @@ export class UserService {
   ) {}
 
   async findByAccessToken(accessToken: string) {
-    const payload = await this.authService.decodeAccessToken<UserJwtPayload>(accessToken);
+    const payload = await this.authService.decodeAccessToken<JwtPayload>(accessToken);
 
     return this.userRepository.findById(payload.sub);
   }
@@ -171,4 +171,4 @@ export class UserService {
   }
 }
 
-type UserJwtInput = Pick<UserJwtPayload, 'email' | 'sub'>;
+type UserJwtInput = Pick<JwtPayload, 'email' | 'sub'>;
