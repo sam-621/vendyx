@@ -34,7 +34,7 @@ model Address {
   deletedAt DateTime? @map("deleted_at")
 
   country     String
-  fullName    String? @map("full_name")
+  fullName    String  @map("full_name")
   streetLine1 String  @map("street_line1")
   streetLine2 String? @map("street_line2")
   city        String

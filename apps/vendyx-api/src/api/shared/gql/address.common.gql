@@ -3,7 +3,7 @@ type Address implements Node {
   createdAt: Date!
   updatedAt: Date!
   country: String!
-  fullName: String
+  fullName: String!
   streetLine1: String!
   streetLine2: String
   city: String!
@@ -30,6 +30,7 @@ type Mutation {
 }
 
 input CreateAddressInput {
+  fullName: String!
   country: String!
   streetLine1: String!
   streetLine2: String
@@ -42,6 +43,7 @@ input CreateAddressInput {
 }
 
 input UpdateAddressInput {
+  fullName: String
   country: String
   streetLine1: String
   streetLine2: String

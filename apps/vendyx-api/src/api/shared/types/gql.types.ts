@@ -321,6 +321,7 @@ export class UpdateZoneInput {
 }
 
 export class CreateAddressInput {
+    fullName: string;
     country: string;
     streetLine1: string;
     streetLine2?: Nullable<string>;
@@ -333,6 +334,7 @@ export class CreateAddressInput {
 }
 
 export class UpdateAddressInput {
+    fullName?: Nullable<string>;
     country?: Nullable<string>;
     streetLine1?: Nullable<string>;
     streetLine2?: Nullable<string>;
@@ -777,7 +779,7 @@ export class Address implements Node {
     createdAt: Date;
     updatedAt: Date;
     country: string;
-    fullName?: Nullable<string>;
+    fullName: string;
     streetLine1: string;
     streetLine2?: Nullable<string>;
     city: string;
