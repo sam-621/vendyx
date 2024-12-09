@@ -327,6 +327,7 @@ export class CreateAddressInput {
     city: string;
     province: string;
     postalCode: string;
+    phoneNumber: string;
     references?: Nullable<string>;
     isDefault?: Nullable<boolean>;
 }
@@ -338,6 +339,7 @@ export class UpdateAddressInput {
     city?: Nullable<string>;
     province?: Nullable<string>;
     postalCode?: Nullable<string>;
+    phoneNumber?: Nullable<string>;
     references?: Nullable<string>;
     isDefault?: Nullable<boolean>;
 }
@@ -478,9 +480,9 @@ export abstract class IMutation {
 
     abstract createCustomerAddress(input: CreateAddressInput): Address | Promise<Address>;
 
-    abstract removeCustomerAddress(addressId: string): Address | Promise<Address>;
+    abstract updateCustomerAddress(addressId: string, input: UpdateAddressInput): Address | Promise<Address>;
 
-    abstract updateCustomerAddress(addressId: string, input: CreateAddressInput): Address | Promise<Address>;
+    abstract removeCustomerAddress(addressId: string): Address | Promise<Address>;
 
     abstract createCustomer(input: CreateCustomerInput): CustomerResult | Promise<CustomerResult>;
 
@@ -781,6 +783,7 @@ export class Address implements Node {
     city: string;
     province: string;
     postalCode: string;
+    phoneNumber: string;
     references?: Nullable<string>;
     isDefault: boolean;
 }

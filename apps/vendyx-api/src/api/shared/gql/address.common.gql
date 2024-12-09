@@ -36,6 +36,7 @@ input CreateAddressInput {
   city: String!
   province: String!
   postalCode: String!
+  phoneNumber: String!
   references: String
   isDefault: Boolean
 }
@@ -47,6 +48,7 @@ input UpdateAddressInput {
   city: String
   province: String
   postalCode: String
+  phoneNumber: String
   references: String
   isDefault: Boolean
 }
