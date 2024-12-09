@@ -12,6 +12,7 @@ type Address implements Node {
   """
   province: String!
   postalCode: String!
+  phoneNumber: String!
   references: String
   isDefault: Boolean!
 }

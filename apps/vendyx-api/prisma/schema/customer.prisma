@@ -41,6 +41,7 @@ model Address {
   /// State
   province    String
   postalCode  String  @map("postal_code")
+  phoneNumber String  @map("phone_number") @db.VarChar(15) // Max length of phone number is 15
   references  String? @map("references") @db.Text
   isDefault   Boolean @default(false) @map("is_default")
 
