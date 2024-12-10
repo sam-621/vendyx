@@ -897,13 +897,15 @@ export class Order implements Node {
 
 export class AddressJson {
     country: string;
-    fullName?: Nullable<string>;
+    fullName: string;
     streetLine1: string;
     streetLine2?: Nullable<string>;
     city: string;
     province: string;
     postalCode: string;
+    phoneNumber: string;
     references?: Nullable<string>;
+    isDefault: boolean;
 }
 
 export class OrderList implements List {

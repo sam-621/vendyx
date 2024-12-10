@@ -57,7 +57,7 @@ type Order implements Node {
 
 type AddressJson {
   country: String!
-  fullName: String
+  fullName: String!
   streetLine1: String!
   streetLine2: String
   city: String!
@@ -66,7 +66,9 @@ type AddressJson {
   """
   province: String!
   postalCode: String!
+  phoneNumber: String!
   references: String
+  isDefault: Boolean!
 }
 
 type OrderList implements List {
