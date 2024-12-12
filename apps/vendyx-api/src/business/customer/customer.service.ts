@@ -14,6 +14,7 @@ import { ID } from '@/persistence/types';
 
 import { CustomerFinder } from './customer-finder';
 import {
+  DisabledCustomer,
   EmailAlreadyExists,
   InvalidCredentials,
   InvalidEmail,
@@ -110,6 +111,10 @@ export class CustomerService extends CustomerFinder {
   async generateAccessToken(email: string, password: string) {
     const customer = await this.findByEmail(email);
 
+    if (customer && !customer.enabled) {
+      return new DisabledCustomer();
+    }
+
     // Customer exists but has no password because it was created when adding the customer to an order
     // So the customer needs to create an account first to be able to login
     // or just the customer was not found
@@ -136,10 +141,6 @@ export class CustomerService extends CustomerFinder {
       where: { id },
       data: { enabled: false }
     });
-  }
-
-  private async verifyAccessToken(accessToken: string) {
-    return await this.authService.decodeAccessToken<CustomerJwtPayloadInput>(accessToken);
   }
 
   private async findByEmail(email: string) {

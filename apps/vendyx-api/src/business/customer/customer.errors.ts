@@ -25,3 +25,9 @@ export class PasswordsDoNotMatch extends ErrorResult<CustomerErrorCode> {
     super(CustomerErrorCode.PASSWORDS_DO_NOT_MATCH, 'Passwords do not match');
   }
 }
+
+export class DisabledCustomer extends ErrorResult<CustomerErrorCode> {
+  constructor() {
+    super(CustomerErrorCode.DISABLED_CUSTOMER, 'Disabled customer');
+  }
+}
