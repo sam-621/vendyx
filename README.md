@@ -27,9 +27,9 @@ We know there are so many other options for e-commerce platform, so why choose u
 - [x] Storefront API
 - [x] Shipments
 - [x] Payments
-- [ ] Multi-tenant 🚧
-- [ ] Collections
-- [ ] Coupons
+- [x] Collections
+- [x] Multi-tenant
+- [ ] Coupons 🚧
 - [ ] Roles
 - [ ] Internationalization
 
