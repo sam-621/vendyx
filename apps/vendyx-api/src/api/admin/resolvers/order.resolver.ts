@@ -1,15 +1,12 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import {
-  ListResponse,
-  MarkOrderAsShippedInput,
-  OrderListInput,
-  UserJwtAuthGuard
-} from '@/api/shared';
+import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
+import { MarkOrderAsShippedInput, OrderListInput } from '@/api/shared/types/gql.types';
+import { ListResponse } from '@/api/shared/utils/list-response';
 import { OrderService } from '@/business/order/order.service';
-import { isErrorResult } from '@/business/shared';
-import { ID } from '@/persistence/types';
+import { isErrorResult } from '@/business/shared/utils/error-result.utils';
+import { ID } from '@/persistence/types/scalars.type';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Order')

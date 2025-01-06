@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Order } from '@prisma/client';
 
-import { ConfigurableProperty } from '@/persistence/types';
+import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
 
-import { PaymentHandler, PaypalHandler } from './handlers';
+import { PaymentHandler } from './handlers/payment-handler';
+import { PaypalHandler } from './handlers/paypal/paypal.handler';
 
 @Injectable()
 export class PaymentService {

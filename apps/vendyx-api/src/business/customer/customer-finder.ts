@@ -1,7 +1,8 @@
-import { CustomerListInput, DEFAULT_STRING_FILTER } from '@/api/shared';
-import { PrismaForShop } from '@/persistence/prisma-clients';
+import { CustomerListInput } from '@/api/shared/types/gql.types';
+import { DEFAULT_STRING_FILTER } from '@/api/shared/utils/default-filters';
+import { PrismaForShop } from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
-import { clean } from '../shared';
+import { clean } from '../shared/utils/clean.utils';
 
 export class CustomerFinder {
   constructor(private readonly _prisma: PrismaForShop) {}

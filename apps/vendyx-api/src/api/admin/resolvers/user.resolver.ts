@@ -2,20 +2,23 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { User } from '@prisma/client';
 
+import { CurrentUser, TCurrentUser } from '@/api/shared/decorator/current-user.decorator';
+import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
 import {
   CreateUserInput,
-  CurrentUser,
   GenerateUserAccessTokenInput,
   ListInput,
-  ListResponse,
-  TCurrentUser,
   UpdateUserInput,
-  UserJwtAuthGuard,
   ValidateOtpInput
-} from '@/api/shared';
-import { clean, isErrorResult } from '@/business/shared';
-import { UserService } from '@/business/user';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+} from '@/api/shared/types/gql.types';
+import { ListResponse } from '@/api/shared/utils/list-response';
+import { clean } from '@/business/shared/utils/clean.utils';
+import { isErrorResult } from '@/business/shared/utils/error-result.utils';
+import { UserService } from '@/business/user/user.service';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
 @Resolver('User')
 export class UserResolver {

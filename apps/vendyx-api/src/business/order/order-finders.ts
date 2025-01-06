@@ -1,11 +1,11 @@
 import { OrderState } from '@prisma/client';
 
-import { OrderListInput } from '@/api/shared';
-import { PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+import { OrderListInput } from '@/api/shared/types/gql.types';
+import { PrismaForShop } from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ID } from '@/persistence/types/scalars.type';
 
 import { parseOrderCode } from './order.utils';
-import { clean } from '../shared';
+import { clean } from '../shared/utils/clean.utils';
 
 /**
  * Helper class to store methods related to find many orders managing the filters

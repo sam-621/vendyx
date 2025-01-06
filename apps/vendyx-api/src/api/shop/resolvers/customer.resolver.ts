@@ -2,16 +2,18 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
-  CreateCustomerInput,
   CurrentCustomer,
-  CustomerJwtAuthGuard,
-  ShopApiKeyGuard,
-  TCurrentCustomer,
+  TCurrentCustomer
+} from '@/api/shared/decorator/current-customer.decorator';
+import { CustomerJwtAuthGuard } from '@/api/shared/guards/customer.guard';
+import { ShopApiKeyGuard } from '@/api/shared/guards/shop-api-key.guard';
+import {
+  CreateCustomerInput,
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
-} from '@/api/shared';
-import { CustomerService } from '@/business/customer';
-import { isErrorResult } from '@/business/shared';
+} from '@/api/shared/types/gql.types';
+import { CustomerService } from '@/business/customer/customer.service';
+import { isErrorResult } from '@/business/shared/utils/error-result.utils';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Customer')

@@ -1,15 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
-import { ListInput } from '@/api/shared';
-import { clean } from '@/business/shared';
+import { ListInput } from '@/api/shared/types/gql.types';
+import { clean } from '@/business/shared/utils/clean.utils';
 
-import {
-  PRISMA_FOR_ADMIN,
-  PRISMA_FOR_SHOP,
-  PrismaForAdmin,
-  PrismaForShop
-} from '../prisma-clients';
+import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '../prisma-clients/prisma-for-admin.provider';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients/prisma-for-shop.provider';
 
 @Injectable()
 export class ShopRepository {

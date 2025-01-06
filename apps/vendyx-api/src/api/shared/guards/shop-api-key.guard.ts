@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { ShopService } from '@/business/shop';
+import { ShopService } from '@/business/shop/shop.service';
 
 @Injectable()
 export class ShopApiKeyGuard implements CanActivate {

@@ -1,9 +1,12 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Query, Resolver } from '@nestjs/graphql';
 
-import { ShopApiKeyGuard } from '@/api/shared';
-import { CountryService } from '@/business/country';
-import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
+import { ShopApiKeyGuard } from '@/api/shared/guards/shop-api-key.guard';
+import { CountryService } from '@/business/country/country.service';
+import {
+  PRISMA_FOR_ADMIN,
+  PrismaForAdmin
+} from '@/persistence/prisma-clients/prisma-for-admin.provider';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Country')

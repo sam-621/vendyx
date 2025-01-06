@@ -1,6 +1,9 @@
 import { Order } from '@prisma/client';
 
-import { ConfigurableOperation, ConfigurableProperty } from '@/persistence/types';
+import {
+  ConfigurableOperation,
+  ConfigurableProperty
+} from '@/persistence/types/configurable-operation.type';
 
 export interface PaymentHandler extends ConfigurableOperation {
   /**

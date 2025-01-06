@@ -1,4 +1,4 @@
-import { ID } from '@/persistence/types';
+import { ID } from '@/persistence/types/scalars.type';
 
 export type JwtPayload = {
   email: string;

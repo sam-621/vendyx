@@ -1,12 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreatePaymentMethodInput, UpdatePaymentMethodInput } from '@/api/shared';
-import { PaymentService } from '@/payment';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ConfigurableProperty, ID } from '@/persistence/types';
+import { CreatePaymentMethodInput, UpdatePaymentMethodInput } from '@/api/shared/types/gql.types';
+import { PaymentService } from '@/payment/payment.service';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import { ID } from '@/persistence/types/scalars.type';
 
-import { clean } from '../shared';
 import { HandlerAlreadySelected, HandlerNotFound } from './payment-method.errors';
+import { clean } from '../shared/utils/clean.utils';
 
 @Injectable()
 export class PaymentMethodService {

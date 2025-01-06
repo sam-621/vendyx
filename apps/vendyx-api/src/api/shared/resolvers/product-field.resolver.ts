@@ -2,11 +2,14 @@ import { Inject } from '@nestjs/common';
 import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Product } from '@prisma/client';
 
-import { clean } from '@/business/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { clean } from '@/business/shared/utils/clean.utils';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
-import { ListInput } from '../types';
-import { ListResponse } from '../utils';
+import { ListInput } from '../types/gql.types';
+import { ListResponse } from '../utils/list-response';
 
 @Resolver('Product')
 export class ProductFieldResolver {

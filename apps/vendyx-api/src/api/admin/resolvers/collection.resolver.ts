@@ -1,15 +1,15 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
 import {
   CreateCollectionInput,
   ListInput,
-  ListResponse,
-  UpdateCollectionInput,
-  UserJwtAuthGuard
-} from '@/api/shared';
-import { CollectionService } from '@/business/collection';
-import { ID } from '@/persistence/types';
+  UpdateCollectionInput
+} from '@/api/shared/types/gql.types';
+import { ListResponse } from '@/api/shared/utils/list-response';
+import { CollectionService } from '@/business/collection/collection.service';
+import { ID } from '@/persistence/types/scalars.type';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Collection')

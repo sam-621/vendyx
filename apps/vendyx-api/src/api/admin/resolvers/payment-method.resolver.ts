@@ -1,9 +1,10 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreatePaymentMethodInput, UpdatePaymentMethodInput, UserJwtAuthGuard } from '@/api/shared';
-import { PaymentMethodService } from '@/business/payment-method';
-import { isErrorResult } from '@/business/shared';
+import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
+import { CreatePaymentMethodInput, UpdatePaymentMethodInput } from '@/api/shared/types/gql.types';
+import { PaymentMethodService } from '@/business/payment-method/payment-method.service';
+import { isErrorResult } from '@/business/shared/utils/error-result.utils';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('PaymentMethod')

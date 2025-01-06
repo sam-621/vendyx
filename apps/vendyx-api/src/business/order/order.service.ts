@@ -10,13 +10,21 @@ import {
   CreateOrderLineInput,
   MarkOrderAsShippedInput,
   UpdateOrderLineInput
-} from '@/api/shared';
-import { EventBusService } from '@/event-bus';
-import { OrderDeliveredEvent, OrderPaidEvent, OrderShippedEvent } from '@/event-bus/events';
-import { PaymentService } from '@/payment';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ConfigurableProperty, ID } from '@/persistence/types';
-import { ShipmentService } from '@/shipments';
+} from '@/api/shared/types/gql.types';
+import { EventBusService } from '@/event-bus/event-bus.service';
+import {
+  OrderDeliveredEvent,
+  OrderPaidEvent,
+  OrderShippedEvent
+} from '@/event-bus/events/order.event';
+import { PaymentService } from '@/payment/payment.service';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import { ID } from '@/persistence/types/scalars.type';
+import { ShipmentService } from '@/shipments/shipment.service';
 
 import { OrderFinders } from './order-finders';
 import {
@@ -32,7 +40,9 @@ import {
   ShippingMethodNotFound
 } from './order.errors';
 import { ValidOrderTransitions, parseOrderCode } from './order.utils';
-import { clean, executeInSafe, validateEmail } from '../shared/utils';
+import { clean } from '../shared/utils/clean.utils';
+import { executeInSafe } from '../shared/utils/execute.utils';
+import { validateEmail } from '../shared/utils/validators.utils';
 
 @Injectable()
 export class OrderService extends OrderFinders {

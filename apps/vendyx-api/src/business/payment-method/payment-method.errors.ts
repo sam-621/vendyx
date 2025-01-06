@@ -1,6 +1,6 @@
-import { PaymentMethodErrorCode } from '@/api/shared';
+import { PaymentMethodErrorCode } from '@/api/shared/types/gql.types';
 
-import { ErrorResult } from '../shared';
+import { ErrorResult } from '../shared/utils/error-result.utils';
 
 export class HandlerAlreadySelected extends ErrorResult<PaymentMethodErrorCode> {
   constructor() {

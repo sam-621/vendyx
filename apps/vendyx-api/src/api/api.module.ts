@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 
 import { AdminApiModule } from './admin/admin-api.module';
 import { ShopApiModule } from './shop/shop-api.module';
-import { SubscriptionApiModule } from './subscription';
-import { UploadApiModule } from './upload';
+import { SubscriptionApiModule } from './subscription/subscription-api.module';
+import { UploadApiModule } from './upload/upload-api.module';
 
 @Module({
   imports: [

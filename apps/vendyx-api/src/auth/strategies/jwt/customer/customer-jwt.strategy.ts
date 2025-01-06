@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
 import { JwtPayload } from '../jwt.types';
 

@@ -1,10 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { MailClientSendInput, SendGridClient } from '@/mail/clients';
+import { MailClientSendInput } from '@/mail/clients/mail-client.interface';
+import { SendGridClient } from '@/mail/clients/sendgrid-client';
 import { MailError } from '@/mail/mail.error';
 import { EmailTemplates } from '@/mail/templates';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ID } from '@/persistence/types/scalars.type';
 
 @Injectable()
 export class MailCustomerService {

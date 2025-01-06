@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { ShopApiKeyGuard } from '@/api/shared/guards/shop-api-key.guard';
 import {
   AddCustomerToOrderInput,
   AddPaymentToOrderInput,
@@ -8,13 +9,12 @@ import {
   CreateAddressInput,
   CreateOrderInput,
   CreateOrderLineInput,
-  ShopApiKeyGuard,
   UpdateOrderLineInput
-} from '@/api/shared';
+} from '@/api/shared/types/gql.types';
 import { OrderService } from '@/business/order/order.service';
-import { isErrorResult } from '@/business/shared';
-import { ID } from '@/persistence/types';
-import { ShipmentService } from '@/shipments';
+import { isErrorResult } from '@/business/shared/utils/error-result.utils';
+import { ID } from '@/persistence/types/scalars.type';
+import { ShipmentService } from '@/shipments/shipment.service';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Order')

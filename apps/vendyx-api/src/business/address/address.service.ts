@@ -1,10 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreateAddressInput, UpdateAddressInput } from '@/api/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+import { CreateAddressInput, UpdateAddressInput } from '@/api/shared/types/gql.types';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ID } from '@/persistence/types/scalars.type';
 
-import { clean } from '../shared';
+import { clean } from '../shared/utils/clean.utils';
 
 @Injectable()
 export class AddressService {

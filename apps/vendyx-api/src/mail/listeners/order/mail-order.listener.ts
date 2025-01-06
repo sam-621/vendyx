@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { OrderEvent, OrderPaidEvent } from '@/event-bus/events';
+import { OrderEvent, OrderPaidEvent } from '@/event-bus/events/order.event';
 
 import { MailOrderService } from './mail-order.service';
 

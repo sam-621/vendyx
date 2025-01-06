@@ -3,21 +3,21 @@ import { PrismaModule } from 'nestjs-prisma';
 
 import {
   PRISMA_FOR_ADMIN,
-  PRISMA_FOR_SHOP,
-  PrismaForAdminClientProvider,
-  PrismaForShopClientProvider
-} from './prisma-clients';
+  PrismaForAdminClientProvider
+} from './prisma-clients/prisma-for-admin.provider';
 import {
-  AssetRepository,
-  CountryRepository,
-  CustomerRepository,
-  OptionRepository,
-  ProductRepository,
-  ShopRepository,
-  UserRepository,
-  VariantRepository,
-  ZoneRepository
-} from './repositories';
+  PRISMA_FOR_SHOP,
+  PrismaForShopClientProvider
+} from './prisma-clients/prisma-for-shop.provider';
+import { AssetRepository } from './repositories/asset.repository';
+import { CountryRepository } from './repositories/country.repository';
+import { CustomerRepository } from './repositories/customer.repository';
+import { OptionRepository } from './repositories/option.repository';
+import { ProductRepository } from './repositories/product.repository';
+import { ShopRepository } from './repositories/shop.repository';
+import { UserRepository } from './repositories/user.repository';
+import { VariantRepository } from './repositories/variant.repository';
+import { ZoneRepository } from './repositories/zone.repository';
 
 const REPOSITORIES = [
   UserRepository,

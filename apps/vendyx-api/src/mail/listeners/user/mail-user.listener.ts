@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
-import { UserEvent, UserRegisteredEvent } from '@/event-bus/events';
+import { UserEvent, UserRegisteredEvent } from '@/event-bus/events/user.event';
 
 import { MailUserService } from './mail-user.service';
 

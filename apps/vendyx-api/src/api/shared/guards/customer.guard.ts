@@ -5,7 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Customer } from '@prisma/client';
 import { Observable } from 'rxjs';
 
-import { TCurrentCustomer } from '../decorator';
+import { TCurrentCustomer } from '../decorator/current-customer.decorator';
 
 @Injectable()
 export class CustomerJwtAuthGuard extends AuthGuard('customer-jwt') {

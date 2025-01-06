@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ClsModule } from 'nestjs-cls';
 
-import { ApiModule } from './api';
-import { AuthModule } from './auth';
-import { EventBusModule } from './event-bus';
-import { MailModule } from './mail';
-import { PersistenceModule } from './persistence';
+import { ApiModule } from './api/api.module';
+import { AuthModule } from './auth/auth.module';
+import { EventBusModule } from './event-bus/event-bus.module';
+import { MailModule } from './mail/mail.module';
+import { PersistenceModule } from './persistence/persistence.module';
 
 @Module({
   imports: [

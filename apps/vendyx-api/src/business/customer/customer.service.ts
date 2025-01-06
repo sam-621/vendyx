@@ -4,13 +4,16 @@ import {
   CreateCustomerInput,
   UpdateCustomerInput,
   UpdateCustomerPasswordInput
-} from '@/api/shared';
-import { AuthService } from '@/auth';
-import { JwtPayload } from '@/auth/strategies';
-import { EventBusService } from '@/event-bus';
-import { CustomerRegisteredEvent } from '@/event-bus/events';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+} from '@/api/shared/types/gql.types';
+import { AuthService } from '@/auth/auth.service';
+import { JwtPayload } from '@/auth/strategies/jwt/jwt.types';
+import { EventBusService } from '@/event-bus/event-bus.service';
+import { CustomerRegisteredEvent } from '@/event-bus/events/customer.event';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ID } from '@/persistence/types/scalars.type';
 
 import { CustomerFinder } from './customer-finder';
 import {
@@ -20,7 +23,8 @@ import {
   InvalidEmail,
   PasswordsDoNotMatch
 } from './customer.errors';
-import { clean, validateEmail } from '../shared';
+import { clean } from '../shared/utils/clean.utils';
+import { validateEmail } from '../shared/utils/validators.utils';
 
 @Injectable()
 export class CustomerService extends CustomerFinder {

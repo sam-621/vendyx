@@ -1,9 +1,13 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { CreateVariantInput, UpdateVariantInput, UserJwtAuthGuard } from '@/api/shared';
-import { VariantService } from '@/business/variant';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
+import { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/gql.types';
+import { VariantService } from '@/business/variant/variant.service';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('Variant')

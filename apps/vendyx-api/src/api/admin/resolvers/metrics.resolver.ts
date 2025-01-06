@@ -1,7 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
-import { MetricsInput } from '@/api/shared';
-import { MetricsService } from '@/business/metrics';
+import { MetricsInput } from '@/api/shared/types/gql.types';
+import { MetricsService } from '@/business/metrics/metrics.service';
 
 @Resolver('Metric')
 export class MetricsResolver {

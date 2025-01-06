@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { AssetRepository } from '@/persistence/repositories';
-import { StorageService } from '@/storage';
+import { AssetRepository } from '@/persistence/repositories/asset.repository';
+import { StorageService } from '@/storage/storage.service';
 
 @Injectable()
 export class AssetService {

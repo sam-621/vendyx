@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { ConfigurableProperty } from '@/persistence/types';
+import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
 
-import { FlatPriceService, ShipmentHandler, ShipmentHandlerOrder } from './handlers';
+import { FlatPriceService } from './handlers/flat-price/flat-price.service';
+import { ShipmentHandler, ShipmentHandlerOrder } from './handlers/shipment-handler';
 
 @Injectable()
 export class ShipmentService {

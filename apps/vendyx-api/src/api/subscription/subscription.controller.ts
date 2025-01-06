@@ -1,6 +1,6 @@
 import { Controller, Headers, Post, RawBodyRequest, Req } from '@nestjs/common';
 
-import { SubscriptionService } from '@/business/subscription';
+import { SubscriptionService } from '@/business/subscription/subscription.service';
 
 @Controller('/subscription')
 export class SubscriptionController {

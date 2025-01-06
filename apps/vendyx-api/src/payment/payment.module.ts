@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
-import { StorageModule } from '@/storage';
+import { StorageModule } from '@/storage/storage.module';
 
-import { PaypalModule } from './handlers';
+import { PaypalModule } from './handlers/paypal/paypal.module';
 import { PaymentService } from './payment.service';
 
 @Module({

@@ -6,11 +6,15 @@ import {
   CollectionListInput,
   CreateCollectionInput,
   UpdateCollectionInput
-} from '@/api/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+} from '@/api/shared/types/gql.types';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ID } from '@/persistence/types/scalars.type';
 
-import { clean, getSlugBy } from '../shared';
+import { clean } from '../shared/utils/clean.utils';
+import { getSlugBy } from '../shared/utils/slug.utils';
 
 export class CollectionService {
   constructor(@Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop) {}

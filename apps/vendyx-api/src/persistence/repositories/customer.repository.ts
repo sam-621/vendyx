@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients';
-import { ID } from '../types';
+import { PRISMA_FOR_SHOP, PrismaForShop } from '../prisma-clients/prisma-for-shop.provider';
+import { ID } from '../types/scalars.type';
 
 @Injectable()
 export class CustomerRepository {

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { Args, ConfigurableOperationUi } from '@/persistence/types';
+import { Args } from '@/persistence/types/args.type';
+import { ConfigurableOperationUi } from '@/persistence/types/configurable-operation.type';
 
 import { ShipmentHandler } from '../shipment-handler';
 

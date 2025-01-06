@@ -1,8 +1,8 @@
 import { OrderState } from '@prisma/client';
 
-import { OrderErrorCode } from '@/api/shared';
+import { OrderErrorCode } from '@/api/shared/types/gql.types';
 
-import { ErrorResult } from '../shared';
+import { ErrorResult } from '../shared/utils/error-result.utils';
 
 /**
  * Error thrown when trying to transition an order to an invalid state

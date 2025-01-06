@@ -1,5 +1,5 @@
-import { PaypalErrorCode } from '@/api/shared';
-import { ErrorResult } from '@/business/shared';
+import { PaypalErrorCode } from '@/api/shared/types/gql.types';
+import { ErrorResult } from '@/business/shared/utils/error-result.utils';
 
 export class PaypalError extends ErrorResult<PaypalErrorCode> {
   constructor(cause: any) {

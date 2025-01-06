@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateVariantInput, UpdateVariantInput } from '@/api/shared';
-import { VariantRepository } from '@/persistence/repositories';
-import { ID } from '@/persistence/types';
+import { CreateVariantInput, UpdateVariantInput } from '@/api/shared/types/gql.types';
+import { VariantRepository } from '@/persistence/repositories/variant.repository';
+import { ID } from '@/persistence/types/scalars.type';
 
-import { clean, convertToCent } from '../shared';
+import { clean } from '../shared/utils/clean.utils';
+import { convertToCent } from '../shared/utils/price.utils';
 
 @Injectable()
 export class VariantService {

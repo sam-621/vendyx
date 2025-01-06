@@ -2,9 +2,12 @@ import { Inject } from '@nestjs/common';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Variant } from '@prisma/client';
 
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
-import { FromOrders } from '../types';
+import { FromOrders } from '../types/internal-extra-fields.types';
 
 @Resolver('Variant')
 export class VariantFieldResolver {

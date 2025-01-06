@@ -1,12 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreateShippingMethodInput, UpdateShippingMethodInput } from '@/api/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ConfigurableProperty } from '@/persistence/types';
-import { ShipmentService } from '@/shipments';
+import { CreateShippingMethodInput, UpdateShippingMethodInput } from '@/api/shared/types/gql.types';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import { ShipmentService } from '@/shipments/shipment.service';
 
-import { clean } from '../shared';
 import { HandlerNotFound } from './shipping-method.errors';
+import { clean } from '../shared/utils/clean.utils';
 
 @Injectable()
 export class ShippingMethodService {

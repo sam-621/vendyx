@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 
-import { BusinessModule } from '@/business';
+import { BusinessModule } from '@/business/business.module';
 
 import { uploadController } from './upload.controller';
 

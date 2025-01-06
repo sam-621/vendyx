@@ -1,16 +1,16 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
+import { CreateShippingMethodInput, UpdateShippingMethodInput } from '@/api/shared/types/gql.types';
+import { isErrorResult } from '@/business/shared/utils/error-result.utils';
+import { ShippingMethodService } from '@/business/shipping-method/shipping-method.service';
 import {
-  CreateShippingMethodInput,
-  UpdateShippingMethodInput,
-  UserJwtAuthGuard
-} from '@/api/shared';
-import { isErrorResult } from '@/business/shared';
-import { ShippingMethodService } from '@/business/shipping-method';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ConfigurableProperty } from '@/persistence/types';
-import { ShipmentService } from '@/shipments';
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import { ShipmentService } from '@/shipments/shipment.service';
 
 @UseGuards(UserJwtAuthGuard)
 @Resolver('ShippingMethod')

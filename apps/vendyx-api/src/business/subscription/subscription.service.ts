@@ -3,9 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { SubscriptionPlan, SubscriptionStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
-import { CreateCheckoutSessionInput } from '@/api/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+import { CreateCheckoutSessionInput } from '@/api/shared/types/gql.types';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ID } from '@/persistence/types/scalars.type';
 
 @Injectable()
 export class SubscriptionService {

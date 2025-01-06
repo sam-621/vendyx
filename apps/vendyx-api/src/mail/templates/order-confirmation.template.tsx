@@ -30,8 +30,8 @@ import {
 } from '@react-email/components';
 import * as React from 'react';
 
-import { formatOrderCode } from '@/business/order';
-import { getFormattedPrice } from '@/business/shared';
+import { formatOrderCode } from '@/business/order/order.utils';
+import { getFormattedPrice } from '@/business/shared/utils/price.utils';
 
 const Component: React.FC<Props> = ({ order, shop }) => {
   const customerName = order.customer?.firstName ?? order.customer?.lastName;

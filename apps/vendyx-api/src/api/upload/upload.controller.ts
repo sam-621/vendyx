@@ -4,9 +4,9 @@ import { Controller, Post, Res, UploadedFiles, UseGuards, UseInterceptors } from
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 
-import { AssetService } from '@/business/asset';
+import { AssetService } from '@/business/asset/asset.service';
 
-import { UserJwtAuthGuard } from '../shared';
+import { UserJwtAuthGuard } from '../shared/guards/user.guard';
 
 @Controller('upload')
 export class uploadController {

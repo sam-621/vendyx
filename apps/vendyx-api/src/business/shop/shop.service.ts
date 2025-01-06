@@ -1,13 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
-import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared';
-import { AuthService } from '@/auth';
-import { PRISMA_FOR_ADMIN, PrismaForAdmin } from '@/persistence/prisma-clients';
-import { ShopRepository } from '@/persistence/repositories';
+import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared/types/gql.types';
+import { AuthService } from '@/auth/auth.service';
+import {
+  PRISMA_FOR_ADMIN,
+  PrismaForAdmin
+} from '@/persistence/prisma-clients/prisma-for-admin.provider';
+import { ShopRepository } from '@/persistence/repositories/shop.repository';
 
-import { clean, getSlugBy } from '../shared';
 import { EmailAlreadyExists, EmailNotVerified } from './shop.errors';
+import { clean } from '../shared/utils/clean.utils';
+import { getSlugBy } from '../shared/utils/slug.utils';
 
 @Injectable()
 export class ShopService {

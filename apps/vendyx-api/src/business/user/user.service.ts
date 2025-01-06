@@ -1,18 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreateUserInput, UpdateUserInput, ValidateOtpInput } from '@/api/shared';
-import { AuthService } from '@/auth';
-import { JwtPayload } from '@/auth/strategies';
-import { EventBusService } from '@/event-bus';
-import { UserRegisteredEvent } from '@/event-bus/events';
+import { CreateUserInput, UpdateUserInput, ValidateOtpInput } from '@/api/shared/types/gql.types';
+import { AuthService } from '@/auth/auth.service';
+import { JwtPayload } from '@/auth/strategies/jwt/jwt.types';
+import { EventBusService } from '@/event-bus/event-bus.service';
+import { UserRegisteredEvent } from '@/event-bus/events/user.event';
 import {
   PRISMA_FOR_ADMIN,
+  PrismaForAdmin
+} from '@/persistence/prisma-clients/prisma-for-admin.provider';
+import {
   PRISMA_FOR_SHOP,
-  PrismaForAdmin,
   PrismaForShop
-} from '@/persistence/prisma-clients';
-import { UserRepository } from '@/persistence/repositories';
-import { ID } from '@/persistence/types';
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { UserRepository } from '@/persistence/repositories/user.repository';
+import { ID } from '@/persistence/types/scalars.type';
 
 import {
   EmailAlreadyExists,
@@ -22,7 +24,7 @@ import {
   OtpExpired,
   PasswordInvalidLength
 } from './user.errors';
-import { validateEmail } from '../shared';
+import { validateEmail } from '../shared/utils/validators.utils';
 
 @Injectable()
 export class UserService {

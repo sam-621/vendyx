@@ -2,27 +2,26 @@ import * as path from 'path';
 
 import { DynamicModule, Module } from '@nestjs/common';
 
-import { BusinessModule } from '@/business';
-import { ShipmentModule } from '@/shipments';
+import { BusinessModule } from '@/business/business.module';
+import { ShipmentModule } from '@/shipments/shipment.module';
 
-import {
-  CollectionResolver,
-  CountryResolver,
-  CustomerResolver,
-  MetricsResolver,
-  OptionResolver,
-  OrderResolver,
-  PaymentMethodResolver,
-  ProductResolver,
-  ShippingMethodResolver,
-  ShopResolver,
-  StateResolver,
-  SubscriptionResolver,
-  UserResolver,
-  VariantResolver,
-  ZoneResolver
-} from './resolvers';
-import { COMMON_RESOLVERS, GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared';
+import { COMMON_RESOLVERS } from '../shared/common-resolvers';
+import { GraphqlApiModule, SHARED_SCHEMA_PATH } from '../shared/graphql-api.module';
+import { CollectionResolver } from './resolvers/collection.resolver';
+import { CountryResolver } from './resolvers/country.resolver';
+import { CustomerResolver } from './resolvers/customer.resolver';
+import { MetricsResolver } from './resolvers/metrics.resolver';
+import { OptionResolver } from './resolvers/option.resolver';
+import { OrderResolver } from './resolvers/order.resolver';
+import { PaymentMethodResolver } from './resolvers/payment-method.resolver';
+import { ProductResolver } from './resolvers/product.resolver';
+import { ShippingMethodResolver } from './resolvers/shipping-method.resolver';
+import { ShopResolver } from './resolvers/shop.resolver';
+import { StateResolver } from './resolvers/state.resolver';
+import { SubscriptionResolver } from './resolvers/subscription.resolver';
+import { UserResolver } from './resolvers/user.resolver';
+import { VariantResolver } from './resolvers/variant.resolver';
+import { ZoneResolver } from './resolvers/zone.resolver';
 
 const ADMIN_API_SCHEMA_PATH = './src/api/admin/gql/**/*.gql';
 

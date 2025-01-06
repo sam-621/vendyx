@@ -2,15 +2,14 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import {
-  CreateAddressInput,
   CurrentCustomer,
-  CustomerJwtAuthGuard,
-  ShopApiKeyGuard,
-  TCurrentCustomer,
-  UpdateAddressInput
-} from '@/api/shared';
-import { AddressService } from '@/business/address';
-import { ID } from '@/persistence/types';
+  TCurrentCustomer
+} from '@/api/shared/decorator/current-customer.decorator';
+import { CustomerJwtAuthGuard } from '@/api/shared/guards/customer.guard';
+import { ShopApiKeyGuard } from '@/api/shared/guards/shop-api-key.guard';
+import { CreateAddressInput, UpdateAddressInput } from '@/api/shared/types/gql.types';
+import { AddressService } from '@/business/address/address.service';
+import { ID } from '@/persistence/types/scalars.type';
 
 @UseGuards(ShopApiKeyGuard, CustomerJwtAuthGuard)
 @Resolver('Address')

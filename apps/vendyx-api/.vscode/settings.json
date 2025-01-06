@@ -1,11 +1,11 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
   "workbench.iconTheme": "symbols",
   // This makes editor really slow
-  // "editor.codeActionsOnSave": {
-  //   "source.fixAll.eslint": "explicit",
-  //   "source.fixAll.format": "explicit"
-  // },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.format": "explicit"
+  },
   "symbols.folders.associations": {
     "sql": "folder-database",
     "common": "folder-shared",

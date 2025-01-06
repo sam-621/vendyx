@@ -1,8 +1,9 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation } from '@nestjs/graphql';
 
-import { CreateCheckoutSessionInput, UserJwtAuthGuard } from '@/api/shared';
-import { SubscriptionService } from '@/business/subscription';
+import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
+import { CreateCheckoutSessionInput } from '@/api/shared/types/gql.types';
+import { SubscriptionService } from '@/business/subscription/subscription.service';
 
 @UseGuards(UserJwtAuthGuard)
 export class SubscriptionResolver {

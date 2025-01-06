@@ -2,8 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrderState } from '@prisma/client';
 import { differenceInDays, format, startOfMonth, startOfWeek } from 'date-fns';
 
-import { MetricsInput } from '@/api/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { MetricsInput } from '@/api/shared/types/gql.types';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
 @Injectable()
 export class MetricsService {

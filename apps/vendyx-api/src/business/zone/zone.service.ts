@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateZoneInput, UpdateZoneInput } from '@/api/shared';
-import { ZoneRepository } from '@/persistence/repositories';
+import { CreateZoneInput, UpdateZoneInput } from '@/api/shared/types/gql.types';
+import { ZoneRepository } from '@/persistence/repositories/zone.repository';
 
 @Injectable()
 export class ZoneService {

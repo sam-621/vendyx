@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
 import { AuthService } from './auth.service';
-import { CustomerJwtStrategy, UserJwtStrategy } from './strategies';
+import { CustomerJwtStrategy } from './strategies/jwt/customer/customer-jwt.strategy';
+import { UserJwtStrategy } from './strategies/jwt/user/user-jwt.strategy';
 
 @Module({
   imports: [

@@ -2,12 +2,15 @@ import { Inject } from '@nestjs/common';
 import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Order } from '@prisma/client';
 
-import { formatOrderCode } from '@/business/order';
-import { clean } from '@/business/shared';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
+import { formatOrderCode } from '@/business/order/order.utils';
+import { clean } from '@/business/shared/utils/clean.utils';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 
-import { ListInput } from '../types';
-import { ListResponse } from '../utils';
+import { ListInput } from '../types/gql.types';
+import { ListResponse } from '../utils/list-response';
 
 @Resolver('Order')
 export class OrderFieldResolver {

@@ -1,6 +1,6 @@
-import { UserErrorCode } from '@/api/shared';
+import { UserErrorCode } from '@/api/shared/types/gql.types';
 
-import { ErrorResult } from '../shared';
+import { ErrorResult } from '../shared/utils/error-result.utils';
 
 export class EmailAlreadyExists extends ErrorResult<UserErrorCode> {
   constructor() {

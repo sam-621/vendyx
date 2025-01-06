@@ -1,6 +1,6 @@
-import { CustomerErrorCode } from '@/api/shared';
+import { CustomerErrorCode } from '@/api/shared/types/gql.types';
 
-import { ErrorResult } from '../shared';
+import { ErrorResult } from '../shared/utils/error-result.utils';
 
 export class InvalidEmail extends ErrorResult<CustomerErrorCode> {
   constructor() {

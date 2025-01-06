@@ -1,10 +1,15 @@
 import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
-import { ListResponse, ProductListInput, ShopApiKeyGuard } from '@/api/shared';
-import { ProductService } from '@/business/product';
-import { PRISMA_FOR_SHOP, PrismaForShop } from '@/persistence/prisma-clients';
-import { ID } from '@/persistence/types';
+import { ShopApiKeyGuard } from '@/api/shared/guards/shop-api-key.guard';
+import { ProductListInput } from '@/api/shared/types/gql.types';
+import { ListResponse } from '@/api/shared/utils/list-response';
+import { ProductService } from '@/business/product/product.service';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { ID } from '@/persistence/types/scalars.type';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Product')

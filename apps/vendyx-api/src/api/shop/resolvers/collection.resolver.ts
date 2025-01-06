@@ -1,9 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
-import { ListInput, ListResponse, ShopApiKeyGuard } from '@/api/shared';
-import { CollectionService } from '@/business/collection';
-import { ID } from '@/persistence/types';
+import { ShopApiKeyGuard } from '@/api/shared/guards/shop-api-key.guard';
+import { ListInput } from '@/api/shared/types/gql.types';
+import { ListResponse } from '@/api/shared/utils/list-response';
+import { CollectionService } from '@/business/collection/collection.service';
+import { ID } from '@/persistence/types/scalars.type';
 
 @UseGuards(ShopApiKeyGuard)
 @Resolver('Collection')

@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { Args, ConfigurableOperationUi, ConfigurableProperty } from '@/persistence/types';
+import { Args } from '@/persistence/types/args.type';
+import {
+  ConfigurableOperationUi,
+  ConfigurableProperty
+} from '@/persistence/types/configurable-operation.type';
 
 import {
   AuthorizePaymentResult,
