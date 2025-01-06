@@ -18,7 +18,8 @@ export class OrderFieldResolver {
     const [result, total] = await Promise.all([
       this.prisma.orderLine.findMany({
         ...clean(input ?? {}),
-        where: { orderId: order.id }
+        where: { orderId: order.id },
+        orderBy: { createdAt: 'asc' }
       }),
       this.prisma.orderLine.count({
         where: { orderId: order.id }
