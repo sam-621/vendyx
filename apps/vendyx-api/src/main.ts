@@ -1,4 +1,3 @@
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 
@@ -14,7 +13,6 @@ async function bootstrap() {
   });
 
   const authService = app.get(AuthService);
-  const configService = app.get(ConfigService);
 
   app.use(clsMiddleware(authService));
   app.useGlobalFilters(
@@ -23,6 +21,6 @@ async function bootstrap() {
     new PrismaClientExceptionFilter()
   );
 
-  await app.listen(configService.get('PORT') ?? '');
+  await app.listen(4000);
 }
 bootstrap();
