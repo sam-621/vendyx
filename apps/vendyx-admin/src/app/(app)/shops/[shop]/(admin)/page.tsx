@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
 
-import { type MetricRange } from '@/api/scalars';
-import { MetricsCharts } from '@/lib/metrics/components';
-import { getDefaultDateRange } from '@/lib/metrics/utils';
-import { AdminPageLayout, MetricsSkeleton } from '@/lib/shared/components';
+import { type MetricRange } from '@/api/scalars/scalars.type';
+import { MetricsCharts } from '@/core/metrics/components/metrics-charts/metrics-charts';
+import { getDefaultDateRange } from '@/core/metrics/utils/date-range';
+import { AdminPageLayout } from '@/shared/components/layout/admin-page-layout/admin-page-layout';
+import { MetricsSkeleton } from '@/shared/components/skeletons/metrics-skeleton';
 
 export default async function Home({ searchParams }: { searchParams: MetricRange }) {
   const isRangeInSearchParams = searchParams.startsAt && searchParams.endsAt;

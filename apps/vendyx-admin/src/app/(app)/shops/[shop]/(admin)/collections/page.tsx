@@ -2,13 +2,11 @@ import { Suspense } from 'react';
 
 import Link from 'next/link';
 
-import { CollectionsTable } from '@/lib/collection/components';
-import {
-  AdminPageLayout,
-  Button,
-  type DataTableSearchParams,
-  DataTableSkeleton
-} from '@/lib/shared/components';
+import { CollectionsTable } from '@/core/collection/components/collections-table/collections-table';
+import { type DataTableSearchParams } from '@/shared/components/data-table/data-table-utils';
+import { AdminPageLayout } from '@/shared/components/layout/admin-page-layout/admin-page-layout';
+import { DataTableSkeleton } from '@/shared/components/skeletons/data-table-skeletons';
+import { Button } from '@/shared/components/ui/button';
 
 export default function CollectionsPage({ searchParams }: Props) {
   return (

@@ -1,4 +1,4 @@
-import { serviceRestFetcher } from './service-fetchers';
+import { serviceRestFetcher } from './service-fetchers/service-rest-fetcher';
 
 const upload = async (formData: FormData) => {
   const assets = await serviceRestFetcher<Omit<VendyxAsset, 'order'>[]>('/upload', {

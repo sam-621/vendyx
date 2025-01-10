@@ -4,7 +4,7 @@ import {
   type PaymentMethodErrorCode,
   type UpdatePaymentMethodInput
 } from '../codegen/graphql';
-import { getPaymentMethodError } from '../errors';
+import { getPaymentMethodError } from '../errors/payment.errors';
 import {
   COMMON_PAYMENT_HANDLER_FRAGMENT,
   COMMON_PAYMENT_METHOD_FRAGMENT,
@@ -14,7 +14,7 @@ import {
   GET_PAYMENT_METHOD,
   REMOVE_PAYMENT_METHOD,
   UPDATE_PAYMENT_METHOD
-} from '../operations';
+} from '../operations/payment-methods.operations';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const PaymentMethodService = {

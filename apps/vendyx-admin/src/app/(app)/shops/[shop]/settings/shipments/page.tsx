@@ -1,6 +1,6 @@
-import { ZoneService } from '@/api/services';
-import { SettingsPageLayout } from '@/lib/shared/components';
-import { ZonesTable } from '@/lib/shipment/components';
+import { ZoneService } from '@/api/services/zone.service';
+import { ZonesTable } from '@/core/shipment/components/zones-table/zones-table';
+import { SettingsPageLayout } from '@/shared/components/layout/settings-page-layout/settings-page-layout';
 
 export default async function ShipmentsPage() {
   const zones = await ZoneService.getAll();

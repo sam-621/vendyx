@@ -1,16 +1,11 @@
 import { Suspense } from 'react';
 
 import { OrderState } from '@/api/types';
-import { OrdersTable } from '@/lib/orders/components';
-import {
-  AdminPageLayout,
-  type DataTableSearchParams,
-  DataTableSkeleton,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/lib/shared/components';
+import { OrdersTable } from '@/core/orders/components/orders-table/orders-table';
+import { type DataTableSearchParams } from '@/shared/components/data-table/data-table-utils';
+import { AdminPageLayout } from '@/shared/components/layout/admin-page-layout/admin-page-layout';
+import { DataTableSkeleton } from '@/shared/components/skeletons/data-table-skeletons';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 
 export default function OrdersPage({ searchParams }: Props) {
   return (

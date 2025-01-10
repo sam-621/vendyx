@@ -1,7 +1,8 @@
-import { ShopService, UserService } from '@/api/services';
-import { OtpWrapper } from '@/lib/auth/wrappers';
-import { UserAvatar } from '@/lib/shared/components';
-import { ShopsList } from '@/lib/shop/components';
+import { ShopService } from '@/api/services/shop.service';
+import { UserService } from '@/api/services/user.service';
+import { OtpWrapper } from '@/core/auth/wrappers/opt-wrapper';
+import { ShopsList } from '@/core/shop/components/shops-list/shops-list';
+import { UserAvatar } from '@/shared/components/user-avatar/user-avatar';
 
 export default async function ShopsPage() {
   const shops = await ShopService.getAll();

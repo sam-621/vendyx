@@ -1,8 +1,8 @@
 import { type NextRequest } from 'next/server';
 
-import { CustomerService } from '@/api/services';
-import { InternalApiResponse } from '@/api/utils';
-import { getSkip } from '@/lib/shared/components';
+import { CustomerService } from '@/api/services/customer.service';
+import { InternalApiResponse } from '@/api/utils/internal-api-response';
+import { getSkip } from '@/shared/components/data-table/data-table-utils';
 
 export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;

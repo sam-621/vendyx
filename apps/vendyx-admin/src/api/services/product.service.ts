@@ -13,7 +13,7 @@ import {
   GET_PRODUCT_BY_ID_QUERY,
   REMOVE_PRODUCT_MUTATION,
   UPDATE_PRODUCT_MUTATION
-} from '../operations';
+} from '../operations/product.operations';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const ProductService = {

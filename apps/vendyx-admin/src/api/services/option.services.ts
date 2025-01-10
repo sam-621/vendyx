@@ -3,7 +3,7 @@ import {
   CREATE_OPTION_MUTATION,
   REMOVE_OPTION_MUTATION,
   UPDATE_OPTION_MUTATION
-} from '../operations';
+} from '../operations/option.operations';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const OptionService = {

@@ -1,17 +1,15 @@
 import { notFound } from 'next/navigation';
 
-import { type ID } from '@/api/scalars';
-import { OrderService } from '@/api/services';
-import {
-  OrderActionsButton,
-  OrderCustomerCard,
-  OrderItemsTable,
-  OrderPaymentCard,
-  OrderShipmentCard,
-  OrderStatusTransitionButton
-} from '@/lib/orders/components';
-import { AdminPageLayout } from '@/lib/shared/components';
-import { EntityProvider } from '@/lib/shared/contexts';
+import { type ID } from '@/api/scalars/scalars.type';
+import { OrderService } from '@/api/services/order.service';
+import { OrderActionsButton } from '@/core/orders/components/order-actions/order-actions-button';
+import { OrderCustomerCard } from '@/core/orders/components/order-details-cards/order-customer-card';
+import { OrderItemsTable } from '@/core/orders/components/order-details-cards/order-items-table';
+import { OrderPaymentCard } from '@/core/orders/components/order-details-cards/order-payment-card';
+import { OrderShipmentCard } from '@/core/orders/components/order-details-cards/order-shipment-card';
+import { OrderStatusTransitionButton } from '@/core/orders/components/order-status/order-status-transition-button';
+import { AdminPageLayout } from '@/shared/components/layout/admin-page-layout/admin-page-layout';
+import { EntityProvider } from '@/shared/contexts/entity-context';
 
 export default async function OrderDetails({ params }: { params: { id: ID } }) {
   const order = await OrderService.getById(params.id);

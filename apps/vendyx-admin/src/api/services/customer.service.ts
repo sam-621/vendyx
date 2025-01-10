@@ -1,4 +1,4 @@
-import { getCustomerError } from '../errors';
+import { getCustomerError } from '../errors/customer.errors';
 import {
   COMMON_CUSTOMER_FRAGMENT,
   COMMON_CUSTOMER_ORDER_FRAGMENT,
@@ -6,8 +6,8 @@ import {
   GET_ALL_CUSTOMERS_QUERY,
   GET_CUSTOMER_BY_ID_QUERY,
   UPDATE_CUSTOMER_MUTATION
-} from '../operations';
-import { type ID } from '../scalars';
+} from '../operations/customer.operation';
+import { type ID } from '../scalars/scalars.type';
 import {
   type CustomerErrorCode,
   type CustomerListInput,

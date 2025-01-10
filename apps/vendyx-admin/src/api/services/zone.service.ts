@@ -7,8 +7,8 @@ import {
   GET_ZONE_QUERY,
   REMOVE_ZONE_MUTATION,
   UPDATE_ZONE_MUTATION
-} from '../operations';
-import { type ID } from '../scalars';
+} from '../operations/zone.operations';
+import { type ID } from '../scalars/scalars.type';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const ZoneService = {

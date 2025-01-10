@@ -3,7 +3,7 @@ import {
   CREATE_VARIANT_MUTATION,
   REMOVE_VARIANT_MUTATION,
   UPDATE_VARIANT_MUTATION
-} from '../operations';
+} from '../operations/variant.operations';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const VariantService = {

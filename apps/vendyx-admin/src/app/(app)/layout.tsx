@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 
-import { ThemeProvider } from '@/lib/shared/components';
-import { Notification } from '@/lib/shared/notifications';
+import { ThemeProvider } from '@/shared/components/theme-provider';
+import { Notification } from '@/shared/notifications/notification';
 
 import '../globals.css';
 

@@ -3,9 +3,9 @@ import {
   COMMON_METRICS_RESULT_FRAGMENT,
   GET_TOTAL_ORDERS_QUERY,
   GET_TOTAL_SALES_QUERY
-} from '../operations';
-import { type MetricRange } from '../scalars';
-import { serviceGqlFetcher } from './service-fetchers';
+} from '../operations/metrics.operations';
+import { type MetricRange } from '../scalars/scalars.type';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const MetricsService = {
   Tags: {

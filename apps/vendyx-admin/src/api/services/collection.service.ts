@@ -8,7 +8,7 @@ import {
   REMOVE_COLLECTION_MUTATION,
   UPDATE_COLLECTION_MUTATION
 } from '../operations/collection.operations';
-import { type ID } from '../scalars';
+import { type ID } from '../scalars/scalars.type';
 import {
   type CollectionListInput,
   type CreateCollectionInput,
@@ -16,7 +16,7 @@ import {
   type ProductListInput,
   type UpdateCollectionInput
 } from '../types';
-import { serviceGqlFetcher } from './service-fetchers';
+import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const CollectionService = {
   Tags: {

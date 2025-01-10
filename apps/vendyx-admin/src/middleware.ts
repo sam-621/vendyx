@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { validateAccessToken } from './lib/auth/actions/validate-access-token';
-import { getActiveShop } from './lib/shared/cookies';
+import { validateAccessToken } from './core/auth/actions/validate-access-token';
+import { getActiveShop } from './shared/cookies/cookies';
 
 const AUTH_PATHS = ['/login', '/signup'];
 const ALLOWED_PATHS = [...AUTH_PATHS, '/', '/confirm-account'];

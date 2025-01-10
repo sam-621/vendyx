@@ -1,5 +1,5 @@
-import { restFetcher, type RestFetcherOptions } from '@/api/fetchers';
-import { getActiveShop, getToken } from '@/lib/shared/cookies';
+import { restFetcher, type RestFetcherOptions } from '@/api/fetchers/rest-fetcher';
+import { getActiveShop, getToken } from '@/shared/cookies/cookies';
 
 /**
  * A fetcher created to work on the server side with services for rest requests

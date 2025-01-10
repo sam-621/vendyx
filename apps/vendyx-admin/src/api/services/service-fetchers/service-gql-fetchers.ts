@@ -1,5 +1,5 @@
-import { gqlFetcher, type GqlFetcherOptions } from '@/api/fetchers';
-import { getActiveShop, getToken } from '@/lib/shared/cookies';
+import { gqlFetcher, type GqlFetcherOptions } from '@/api/fetchers/gql-fetcher';
+import { getActiveShop, getToken } from '@/shared/cookies/cookies';
 
 import { type TypedDocumentString } from '../../codegen/graphql';
 

@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server';
 
-import { ProductService } from '@/api/services';
-import { InternalApiResponse } from '@/api/utils';
+import { ProductService } from '@/api/services/product.service';
+import { InternalApiResponse } from '@/api/utils/internal-api-response';
 
 export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;

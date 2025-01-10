@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { UserService } from '@/api/services';
-import { UserAvatar } from '@/lib/shared/components';
-import { CreateShopForm } from '@/lib/shop/components';
+import { UserService } from '@/api/services/user.service';
+import { CreateShopForm } from '@/core/shop/components/create-shop/create-shop-form';
+import { UserAvatar } from '@/shared/components/user-avatar/user-avatar';
 
 export default async function NewShopPage() {
   const user = await UserService.whoami();

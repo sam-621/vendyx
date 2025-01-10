@@ -1,7 +1,8 @@
 import { MoveRightIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { Button, LightLogo } from '@/lib/shared/components';
+import { LightLogo } from '@/shared/components/logo/light-logo';
+import { Button } from '@/shared/components/ui/button';
 
 import { PricingButton } from './components/pricing-button';
 import { TablePrice } from './components/table-price';

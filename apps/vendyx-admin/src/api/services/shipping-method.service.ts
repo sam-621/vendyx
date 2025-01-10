@@ -1,6 +1,6 @@
 import { getFragmentData } from '../codegen';
 import { type CreateShippingMethodInput, type UpdateShippingMethodInput } from '../codegen/graphql';
-import { getShippingMethodError } from '../errors';
+import { getShippingMethodError } from '../errors/shipment.errors';
 import {
   COMMON_SHIPPING_HANDLERS_FRAGMENT,
   CREATE_SHIPPING_METHOD_MUTATION,
@@ -8,7 +8,7 @@ import {
   REMOVE_SHIPPING_METHOD_MUTATION,
   UPDATE_SHIPPING_METHOD_MUTATION
 } from '../operations/shipping-method.operations';
-import { type ID } from '../scalars';
+import { type ID } from '../scalars/scalars.type';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const ShippingMethodService = {

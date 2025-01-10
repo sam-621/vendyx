@@ -1,6 +1,6 @@
 import { getFragmentData } from '../codegen';
 import { type CreateShopInput, type ShopErrorCode, type UpdateShopInput } from '../codegen/graphql';
-import { getShopError } from '../errors';
+import { getShopError } from '../errors/shop.errors';
 import {
   COMMON_LIST_SHOP_FRAGMENT,
   COMMON_SHOP_FRAGMENT,
@@ -8,8 +8,8 @@ import {
   GET_SHOP_BY_SLUG_QUERY,
   GET_SHOPS_QUERY,
   UPDATE_SHOP_MUTATION
-} from '../operations';
-import { type ID } from '../scalars';
+} from '../operations/shop.operations';
+import { type ID } from '../scalars/scalars.type';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const ShopService = {

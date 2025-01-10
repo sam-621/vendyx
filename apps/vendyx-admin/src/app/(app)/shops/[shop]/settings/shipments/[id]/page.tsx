@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation';
 
-import { type ID } from '@/api/scalars';
-import { CountryService, ShippingMethodService, ZoneService } from '@/api/services';
-import { EntityProvider } from '@/lib/shared/contexts';
-import { ZoneDetailsForm } from '@/lib/shipment/components';
+import { type ID } from '@/api/scalars/scalars.type';
+import { CountryService } from '@/api/services/country.service';
+import { ShippingMethodService } from '@/api/services/shipping-method.service';
+import { ZoneService } from '@/api/services/zone.service';
+import { ZoneDetailsForm } from '@/core/shipment/components/zone-details/zone-details-form';
+import { EntityProvider } from '@/shared/contexts/entity-context';
 
 export default async function ZoneDetailsPage({ params: { id } }: { params: { id: ID } }) {
   const [zone, countries, shippingHandlers] = await Promise.all([

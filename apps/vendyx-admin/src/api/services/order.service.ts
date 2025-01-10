@@ -12,8 +12,8 @@ import {
   GET_ORDER_BY_ID_QUERY,
   MARK_ORDER_AS_DELIVERED_MUTATION,
   MARK_ORDER_AS_SHIPPED_MUTATION
-} from '../operations';
-import { type ID } from '../scalars';
+} from '../operations/order.operations';
+import { type ID } from '../scalars/scalars.type';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const OrderService = {

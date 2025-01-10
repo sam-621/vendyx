@@ -6,7 +6,7 @@ import {
   type UserErrorCode,
   type ValidateOtpInput
 } from '../codegen/graphql';
-import { getUserError } from '../errors';
+import { getUserError } from '../errors/user.errors';
 import {
   COMMON_USER_FRAGMENT,
   CREATE_USER_MUTATION,
@@ -14,7 +14,7 @@ import {
   VALIDATE_ACCESS_TOKEN_QUERY,
   VALIDATE_OTP_MUTATION,
   WHOAMI_QUERY
-} from '../operations';
+} from '../operations/user.operations';
 import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 
 export const UserService = {

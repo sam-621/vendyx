@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { ThemeSwitcher } from '@/lib/shared/components';
+import { ThemeSwitcher } from '@/shared/components/theme-switcher/theme-switcher';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
