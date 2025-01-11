@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import { UserService } from '@/business/user/user.service';
+import { ConfigService } from '@/config/config.service';
 import { MailClientSendInput } from '@/mail/clients/mail-client.interface';
 import { SendGridClient } from '@/mail/clients/sendgrid-client';
 import { MailError } from '@/mail/mail.error';
@@ -22,7 +22,7 @@ export class MailUserService {
   ) {}
 
   async sendConfirmEmail(input: SendConfirmEmailInput) {
-    const domain = this.configService.get<string>('VENDYX_ADMIN_DOMAIN') ?? '';
+    const domain = this.configService.get('ADMIN.DOMAIN') ?? '';
     const otp = await this.userService.generateOtp(input.id);
 
     if (!otp) {

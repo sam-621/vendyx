@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 
 import { BusinessModule } from '@/business/business.module';
 
@@ -12,7 +11,7 @@ import { MailUserListener } from './listeners/user/mail-user.listener';
 import { MailUserService } from './listeners/user/mail-user.service';
 
 @Module({
-  imports: [ConfigModule.forRoot(), BusinessModule],
+  imports: [BusinessModule],
   providers: [
     SendGridClient,
     MailOrderService,

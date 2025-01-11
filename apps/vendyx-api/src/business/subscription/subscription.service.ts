@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { SubscriptionPlan, SubscriptionStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
 import { CreateCheckoutSessionInput } from '@/api/shared/types/gql.types';
+import { ConfigService } from '@/config/config.service';
 import {
   PRISMA_FOR_SHOP,
   PrismaForShop
@@ -18,7 +18,7 @@ export class SubscriptionService {
     private readonly configService: ConfigService,
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {
-    this.stripe = new Stripe(this.configService.get('STRIPE_SECRET_KEY') ?? '');
+    this.stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
   }
 
   async createCheckoutSession(input: CreateCheckoutSessionInput) {
@@ -35,7 +35,7 @@ export class SubscriptionService {
   }
 
   async webhook(event: any, signature: string) {
-    const endpointSecret = this.configService.get('STRIPE_WEBHOOK_SIGNING_SECRET');
+    const endpointSecret = this.configService.get('STRIPE.WEBHOOK_SECRET');
 
     // Only verify the event if you have an endpoint secret defined.
     // Otherwise use the basic event deserialized with JSON.parse
@@ -102,9 +102,9 @@ export class SubscriptionService {
       customer: input.stripeCustomerId,
       mode: 'subscription',
       success_url: `${this.configService.get(
-        'VENDYX_ADMIN_DOMAIN'
+        'ADMIN.DOMAIN'
       )}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${this.configService.get('VENDYX_ADMIN_DOMAIN')}`
+      cancel_url: `${this.configService.get('ADMIN.DOMAIN')}`
     });
 
     return {
@@ -117,7 +117,7 @@ export class SubscriptionService {
 
     const portalSession = await this.stripe.billingPortal.sessions.create({
       customer: checkoutSession.customer as string,
-      return_url: `${this.configService.get('VENDYX_ADMIN_DOMAIN')}/account`
+      return_url: `${this.configService.get('ADMIN.DOMAIN')}/account`
     });
 
     return {
