@@ -58,7 +58,7 @@ const schema = z.object({
   firstName: z.string().min(1, FormMessages.required),
   lastName: z.string().min(1, FormMessages.required),
   email: z.string().email({ message: FormMessages.invalidEmail }),
-  phoneNumber: z.string().min(10, FormMessages.invalidPhoneNumber),
+  phoneNumber: z.string().min(10, FormMessages.invalidPhoneNumber).optional(),
   enabled: z.boolean()
 });
 
