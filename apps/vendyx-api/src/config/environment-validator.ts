@@ -52,9 +52,6 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   ENCRYPT_PASSWORD: string;
-
-  @IsNumber()
-  PBKDF2_ITERATIONS: number;
 }
 
 export const environmentValidator = (config: Record<string, unknown>) => {
