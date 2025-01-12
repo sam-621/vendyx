@@ -20,7 +20,8 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
       name: shop.name,
       email: shop.email,
       phoneNumber: shop.phoneNumber,
-      shopApiKey: shop.shopApiKey
+      shopApiKey: shop.shopApiKey,
+      shopId: shop.id
     }
   });
 
@@ -30,7 +31,8 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
         name: shop.name,
         email: shop.email,
         phoneNumber: shop.phoneNumber,
-        shopApiKey: shop.shopApiKey
+        shopApiKey: shop.shopApiKey,
+        shopId: shop.id
       });
     },
     [shop]
@@ -71,7 +73,8 @@ const schema = z.object({
   name: z.string().min(1, FormMessages.required),
   email: z.string().email(FormMessages.invalidEmail),
   phoneNumber: z.string().min(1, FormMessages.invalidPhoneNumber),
-  shopApiKey: z.string().readonly().optional()
+  shopApiKey: z.string().readonly().optional(),
+  shopId: z.string().readonly().optional()
 });
 
 export type ShopDetailsFormInput = z.infer<typeof schema>;

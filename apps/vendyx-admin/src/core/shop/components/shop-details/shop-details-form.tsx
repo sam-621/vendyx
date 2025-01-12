@@ -35,6 +35,25 @@ export const ShopDetailsForm: FC<Props> = ({ shop }) => {
             />
             <FormPhoneInput label="Phone number" control={form.control} name="phoneNumber" />
             <Separator />
+            <div>
+              <h3 className="text-lg font-semibold">API keys</h3>
+              <p className="text-sm text-gray-500">
+                API keys are used to authenticate your store with our servers. Do not share them
+                with anyone.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <FormInput
+                control={form.control}
+                label="Shop ID"
+                name="shopId"
+                disabled
+                isPassword
+                rightElement={<CopyToClipboardButton variant="outline" value={shop.id} />}
+              />
+            </div>
+
             <div className="flex items-center gap-2">
               <FormInput
                 control={form.control}
@@ -42,12 +61,11 @@ export const ShopDetailsForm: FC<Props> = ({ shop }) => {
                 name="shopApiKey"
                 disabled
                 isPassword
-                description="Use this key to access to the Shop API from your storefront."
                 rightElement={
-                  <div className="flex items-center gap-2">
+                  <>
                     <CopyToClipboardButton variant="outline" value={shop.shopApiKey} />
                     <GenerateShopApiKeyButton />
-                  </div>
+                  </>
                 }
               />
             </div>

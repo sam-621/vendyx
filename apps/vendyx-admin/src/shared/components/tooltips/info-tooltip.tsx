@@ -1,23 +1,21 @@
-import { type FC } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 
 import { InfoIcon } from 'lucide-react';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
-export const InfoTooltip: FC<Props> = ({ message, size = 16 }) => {
+export const InfoTooltip: FC<Props> = ({ message, size = 16, children }) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <InfoIcon size={size} />
-        </TooltipTrigger>
+        <TooltipTrigger asChild>{children ?? <InfoIcon size={size} />}</TooltipTrigger>
         <TooltipContent>{message}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 };
 
-type Props = {
+type Props = PropsWithChildren & {
   message: string;
   /**
    * @default 16
