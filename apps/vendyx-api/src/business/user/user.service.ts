@@ -15,6 +15,7 @@ import {
 } from '@/persistence/prisma-clients/prisma-for-shop.provider';
 import { UserRepository } from '@/persistence/repositories/user.repository';
 import { ID } from '@/persistence/types/scalars.type';
+import { SecurityService } from '@/security/security.service';
 
 import {
   EmailAlreadyExists,
@@ -31,9 +32,10 @@ export class UserService {
   constructor(
     @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
-    private readonly authService: AuthService,
     private readonly userRepository: UserRepository,
-    private readonly eventBus: EventBusService
+    private readonly eventBus: EventBusService,
+    private readonly securityService: SecurityService,
+    private readonly authService: AuthService
   ) {}
 
   async findByAccessToken(accessToken: string) {
@@ -115,7 +117,7 @@ export class UserService {
       let otp: string | null = null;
 
       do {
-        otp = this.authService.generateOtp();
+        otp = this.securityService.generateOtp();
 
         const otpExists = await this.prismaForAdmin.otp.findUnique({ where: { otp } });
 

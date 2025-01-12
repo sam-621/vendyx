@@ -122,6 +122,16 @@ export class SecurityService {
     }
   }
 
+  generateShopApiKey() {
+    const rawApiKey = crypto.randomBytes(48).toString('hex');
+
+    return rawApiKey;
+  }
+
+  generateOtp() {
+    return String(Math.floor(100000 + Math.random() * 900000));
+  }
+
   private getAlgorithm(): crypto.CipherGCMTypes {
     return this.configService.get('SECURITY.ENCRYPT_ALGORITHM');
   }

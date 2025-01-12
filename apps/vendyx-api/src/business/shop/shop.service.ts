@@ -2,12 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared/types/gql.types';
-import { AuthService } from '@/auth/auth.service';
 import {
   PRISMA_FOR_ADMIN,
   PrismaForAdmin
 } from '@/persistence/prisma-clients/prisma-for-admin.provider';
 import { ShopRepository } from '@/persistence/repositories/shop.repository';
+import { SecurityService } from '@/security/security.service';
 
 import { EmailAlreadyExists, EmailNotVerified } from './shop.errors';
 import { clean } from '../shared/utils/clean.utils';
@@ -18,7 +18,7 @@ export class ShopService {
   constructor(
     @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
     private readonly shopRepository: ShopRepository,
-    private readonly authService: AuthService
+    private readonly securityService: SecurityService
   ) {}
 
   async findBySlug(slug: string) {
@@ -47,7 +47,7 @@ export class ShopService {
     }
 
     const slug = await this.validateAndParseSlug(input.name);
-    const shopApiKey = this.authService.generateShopApiKey();
+    const shopApiKey = this.securityService.generateShopApiKey();
 
     return this.shopRepository.insert({
       ...clean(input),
