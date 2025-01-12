@@ -28,7 +28,7 @@ export const usePaymentMethodForm = (
   const form = useForm<PaymentMethodFormInput>({
     resolver: zodResolver(schema),
     defaultValues: {
-      handlerCode: defaultIntegration.code,
+      handlerCode: defaultIntegration?.code,
       args: method?.args ?? {},
       enabled: method?.enabled ?? true
     }

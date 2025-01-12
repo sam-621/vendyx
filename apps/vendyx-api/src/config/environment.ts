@@ -1,3 +1,5 @@
+import { CipherGCMTypes } from 'node:crypto';
+
 import { Environment } from './config.types';
 
 export const loadEnvironment = (): Environment => ({
@@ -25,6 +27,8 @@ export const loadEnvironment = (): Environment => ({
     WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? ''
   },
   SECURITY: {
-    ENCRYPT_ALGORITHM: process.env.ENCRYPT_ALGORITHM ?? ''
+    ENCRYPT_ALGORITHM: process.env.ENCRYPT_ALGORITHM as CipherGCMTypes,
+    ENCRYPT_PASSWORD: process.env.ENCRYPT_PASSWORD ?? '',
+    PBKDF2_ITERATIONS: parseInt(process.env.PBKDF2_ITERATIONS ?? '') || 100000
   }
 });

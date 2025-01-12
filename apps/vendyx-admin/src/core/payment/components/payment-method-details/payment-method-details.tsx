@@ -26,10 +26,11 @@ export const PaymentMethodDetails: FC<Props> = ({ handlers, method }) => {
     : handlers[0];
 
   const { control, setValue, getValues } = useFormContext<PaymentMethodFormInput>();
-  const [selectedHandler, setSelectedHandler] =
-    useState<CommonPaymentHandlerFragment>(defaultHandler);
+  const [selectedHandler, setSelectedHandler] = useState<CommonPaymentHandlerFragment | undefined>(
+    defaultHandler
+  );
 
-  const args: Args = useMemo(() => selectedHandler.args, [selectedHandler]);
+  const args = useMemo(() => selectedHandler?.args as Args | undefined, [selectedHandler]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -75,7 +76,7 @@ export const PaymentMethodDetails: FC<Props> = ({ handlers, method }) => {
           <FormSwitch control={control} name="enabled" label="Active" />
         </div>
       </div>
-      {Object.entries(args).map(([key, arg]) =>
+      {Object.entries(args ?? {}).map(([key, arg]) =>
         arg.type === 'text' ? (
           <div key={key} className="flex flex-col gap-2">
             <Label htmlFor={key}>{arg.label}</Label>

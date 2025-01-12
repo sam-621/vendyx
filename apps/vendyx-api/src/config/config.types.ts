@@ -1,3 +1,5 @@
+import { CipherGCMTypes } from 'node:crypto';
+
 export type Environment = {
   PORT: number;
   ADMIN: {
@@ -23,7 +25,9 @@ export type Environment = {
     WEBHOOK_SECRET: string;
   };
   SECURITY: {
-    ENCRYPT_ALGORITHM: string;
+    ENCRYPT_ALGORITHM: CipherGCMTypes;
+    PBKDF2_ITERATIONS: number;
+    ENCRYPT_PASSWORD: string;
   };
 };
 
