@@ -15,6 +15,7 @@ import { Prisma } from '@prisma/client';
 )
 export class PrismaClientExceptionFilter implements GqlExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError): any {
+    console.log('prisma');
     Logger.error({
       type: 'PRISMA_ERROR',
       name: exception.name,

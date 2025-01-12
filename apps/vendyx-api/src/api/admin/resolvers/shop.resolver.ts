@@ -2,6 +2,7 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Shop } from '@prisma/client';
 
+import { CurrentShop, TCurrentShop } from '@/api/shared/decorator/current-shop.decorator';
 import { CurrentUser, TCurrentUser } from '@/api/shared/decorator/current-user.decorator';
 import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
 import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared/types/gql.types';
@@ -46,6 +47,13 @@ export class ShopResolver {
   @Mutation('updateShop')
   async updateShop(@Args('shopSlug') shopSlug: string, @Args('input') input: UpdateShopInput) {
     const result = await this.shopService.update(shopSlug, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], shop: result };
+  }
+
+  @Mutation('generateShopApiKey')
+  async generateShopApiKey(@CurrentShop() shop: TCurrentShop) {
+    const result = await this.shopService.generateShopApiKey(shop.id);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], shop: result };
   }

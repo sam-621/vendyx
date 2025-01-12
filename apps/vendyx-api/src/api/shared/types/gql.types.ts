@@ -462,6 +462,8 @@ export abstract class IMutation {
 
     abstract updateShop(shopSlug: string, input: UpdateShopInput): ShopResult | Promise<ShopResult>;
 
+    abstract generateShopApiKey(): ShopResult | Promise<ShopResult>;
+
     abstract createCheckoutSession(input: CreateCheckoutSessionInput): CheckoutSession | Promise<CheckoutSession>;
 
     abstract createUser(input: CreateUserInput): UserResult | Promise<UserResult>;

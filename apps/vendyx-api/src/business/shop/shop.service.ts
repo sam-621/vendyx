@@ -6,7 +6,12 @@ import {
   PRISMA_FOR_ADMIN,
   PrismaForAdmin
 } from '@/persistence/prisma-clients/prisma-for-admin.provider';
+import {
+  PRISMA_FOR_SHOP,
+  PrismaForShop
+} from '@/persistence/prisma-clients/prisma-for-shop.provider';
 import { ShopRepository } from '@/persistence/repositories/shop.repository';
+import { ID } from '@/persistence/types/scalars.type';
 import { SecurityService } from '@/security/security.service';
 
 import { EmailAlreadyExists, EmailNotVerified } from './shop.errors';
@@ -17,6 +22,7 @@ import { getSlugBy } from '../shared/utils/slug.utils';
 export class ShopService {
   constructor(
     @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
     private readonly shopRepository: ShopRepository,
     private readonly securityService: SecurityService
   ) {}
@@ -88,6 +94,12 @@ export class ShopService {
       isValid: isValidApiKey,
       cause: isValidApiKey ? null : 'Invalid shop API key'
     };
+  }
+
+  async generateShopApiKey(shopId: ID) {
+    const shopApiKey = this.securityService.generateShopApiKey();
+
+    return await this.prisma.shop.update({ where: { id: shopId }, data: { shopApiKey } });
   }
 
   /**

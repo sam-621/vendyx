@@ -54,6 +54,7 @@ type Query {
 type Mutation {
   createShop(input: CreateShopInput!): ShopResult!
   updateShop(shopSlug: String!, input: UpdateShopInput!): ShopResult!
+  generateShopApiKey: ShopResult!
 }
 
 input CreateShopInput {
