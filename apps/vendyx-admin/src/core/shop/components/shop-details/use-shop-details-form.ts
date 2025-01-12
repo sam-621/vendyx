@@ -47,7 +47,9 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
 
   async function onSubmit(values: ShopDetailsFormInput) {
     startTransition(async () => {
-      const result = await updateShop(shop.slug, values);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { shopApiKey, shopId, ...rest } = values;
+      const result = await updateShop(shop.slug, rest);
 
       if (result?.error) {
         if (result.errorCode === ShopErrorCode.EmailAlreadyExists) {

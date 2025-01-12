@@ -25,9 +25,9 @@ const valuesHasChanged = (
   formValues: DeepPartial<ShopDetailsFormInput>,
   shop: CommonShopFragment
 ) => {
-  // Omit shopApiKey from the comparison
+  // Omit shopApiKey and shopId from the comparison
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { shopApiKey, ...formInput } = formValues;
+  const { shopApiKey, shopId, ...formInput } = formValues;
 
   return Object.keys(formInput).some(key => (formValues as any)[key] !== (shop as any)[key]);
 };
