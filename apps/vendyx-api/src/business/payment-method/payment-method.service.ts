@@ -6,17 +6,22 @@ import {
   PRISMA_FOR_SHOP,
   PrismaForShop
 } from '@/persistence/prisma-clients/prisma-for-shop.provider';
-import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import {
+  ConfigurableProperty,
+  ConfigurablePropertyArgs
+} from '@/persistence/types/configurable-operation.type';
 import { ID } from '@/persistence/types/scalars.type';
+import { SecurityService } from '@/security/security.service';
 
-import { HandlerAlreadySelected, HandlerNotFound } from './payment-method.errors';
+import { FailedToSaveArgs, HandlerAlreadySelected, HandlerNotFound } from './payment-method.errors';
 import { clean } from '../shared/utils/clean.utils';
 
 @Injectable()
 export class PaymentMethodService {
   constructor(
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
+    private readonly securityService: SecurityService
   ) {}
 
   async find() {
@@ -35,11 +40,15 @@ export class PaymentMethodService {
 
     if (!method) return null;
 
+    const decryptedArgs = this.securityService.decrypt<ConfigurablePropertyArgs>(
+      (method.handler as ConfigurableProperty).args
+    );
+
     return {
       ...method,
       name: this.paymentService.getHandler((method.handler as ConfigurableProperty).code).name,
       icon: this.paymentService.getHandler((method.handler as ConfigurableProperty).code).ui?.icon,
-      args: (method.handler as ConfigurableProperty).args
+      args: decryptedArgs
     };
   }
 
@@ -70,9 +79,20 @@ export class PaymentMethodService {
       return new HandlerAlreadySelected();
     }
 
+    const handler = input.handler;
+    const encryptedArgs = this.securityService.encrypt(clean(handler.args));
+
+    if (!encryptedArgs) {
+      return new FailedToSaveArgs();
+    }
+
     const result = await this.prisma.paymentMethod.create({
       data: {
-        ...clean(input)
+        ...clean(input),
+        handler: {
+          ...handler,
+          args: encryptedArgs
+        }
       }
     });
 
@@ -82,6 +102,18 @@ export class PaymentMethodService {
   async update(id: ID, input: UpdatePaymentMethodInput) {
     const method = await this.prisma.paymentMethod.findUniqueOrThrow({ where: { id } });
     const handler = method.handler as ConfigurableProperty;
+    const decryptedArgs = this.securityService.decrypt<ConfigurablePropertyArgs>(handler.args);
+
+    const encryptedArgs = this.securityService.encrypt(
+      clean({
+        ...decryptedArgs,
+        ...clean(input.args ?? {})
+      })
+    );
+
+    if (!encryptedArgs) {
+      return new FailedToSaveArgs();
+    }
 
     const result = await this.prisma.paymentMethod.update({
       where: { id },
@@ -89,11 +121,8 @@ export class PaymentMethodService {
         enabled: input.enabled ?? undefined,
         handler: {
           ...handler,
-          args: {
-            ...handler.args,
-            ...clean(input.args ?? {})
-          }
-        } satisfies ConfigurableProperty
+          args: encryptedArgs
+        }
       }
     });
 

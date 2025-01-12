@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 
@@ -24,5 +25,6 @@ async function bootstrap() {
   );
 
   await app.listen(configService.get('PORT'));
+  Logger.log(`Server running on ${await app.getUrl()}`, 'Bootstrap');
 }
 bootstrap();

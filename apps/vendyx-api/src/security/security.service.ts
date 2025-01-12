@@ -1,8 +1,10 @@
-import crypto, { CipherGCM, CipherGCMTypes, DecipherGCM } from 'crypto';
+import * as crypto from 'node:crypto';
 
 import { Injectable, Logger } from '@nestjs/common';
 
 import { ConfigService } from '@/config/config.service';
+
+type Password = string | Buffer | NodeJS.TypedArray | DataView;
 
 @Injectable()
 export class SecurityService {
@@ -13,48 +15,77 @@ export class SecurityService {
    * @param plainText
    * @param password
    */
-  encrypt(input: string | object): string | null {
+  encrypt(text: string | object): string | undefined {
     try {
-      const password = this.getPassword();
+      const password = this.configService.get('SECURITY.ENCRYPT_PASSWORD');
+      const plainText = typeof text === 'object' ? JSON.stringify(text) : String(text);
+      const algorithm: crypto.CipherGCMTypes = this.getAlgorithm();
 
-      const plainText = typeof input === 'object' ? JSON.stringify(input) : String(input);
-      const algorithm = this.getAlgorithm();
+      // Generate random salt -> 64 bytes
+      const salt = crypto.randomBytes(64);
 
-      const salt = this.genSalt();
-      const iv = this.genIv();
-      const iterations = this.genIterations();
+      // Generate random initialization vector -> 16 bytes
+      const iv = crypto.randomBytes(16);
 
-      const encryptionKey = this.deriveKeyFromPassword(password, salt, iterations);
-      const cipher = this.genCipher(algorithm, encryptionKey, iv);
-      const encryptedData = this.encryptData(cipher, plainText);
+      // Generate random count of iterations between 10.000 - 99.999 -> 5 bytes
+      const iterations = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
 
-      const authTag = this.genAuthTag(cipher);
+      // Derive encryption key
+      const encryptionKey = this.deriveKeyFromPassword(
+        password,
+        salt,
+        Math.floor(iterations * 0.47 + 1337)
+      );
 
-      const output = this.buildEncryptedPayload(salt, iv, authTag, iterations, encryptedData);
+      // Create cipher
+      const cipher: crypto.CipherGCM = crypto.createCipheriv(algorithm, encryptionKey, iv);
+
+      // Update the cipher with data to be encrypted and close cipher
+      const encryptedData = Buffer.concat([cipher.update(plainText, 'utf8'), cipher.final()]);
+
+      // Get authTag from cipher for decryption // 16 bytes
+      const authTag = cipher.getAuthTag();
+
+      // Join all data into single string, include requirements for decryption
+      const output = Buffer.concat([
+        salt,
+        iv,
+        authTag,
+        Buffer.from(iterations.toString()),
+        encryptedData
+      ]).toString('hex');
 
       return this.getEncryptedPrefix() + output;
     } catch (error) {
-      console.log(error);
       Logger.error({
-        type: 'ENCRYPTION_ERROR'
+        type: 'SECURITY ERROR',
+        message: 'Could not encrypt input '
       });
 
-      return null;
+      return undefined;
     }
   }
 
   /**
    * Decrypt AES 256 GCM
+   * @param cipherText
+   * @param password
    */
-  decrypt<R>(encryption: string): R | null {
+  decrypt<R>(inputText: string): R | undefined {
     try {
-      const password = this.getPassword();
+      const password = this.configService.get('SECURITY.ENCRYPT_PASSWORD');
 
-      const algorithm: CipherGCMTypes = this.getAlgorithm();
-      const [, cipherText] = encryption.split(this.getEncryptedPrefix());
-
+      const algorithm: crypto.CipherGCMTypes = this.getAlgorithm();
+      const cipherTextParts = inputText.split(this.getEncryptedPrefix());
+      // If it's not encrypted by this, reject with undefined
+      if (cipherTextParts.length !== 2) {
+        console.error(
+          'Could not determine the beginning of the cipherText. Maybe not encrypted by this method.'
+        );
+        return undefined;
+      }
+      const [, cipherText] = cipherTextParts;
       const inputData: Buffer = Buffer.from(cipherText, 'hex');
-
       // Split cipherText into partials
       const salt: Buffer = inputData.subarray(0, 64);
       const iv: Buffer = inputData.subarray(64, 80);
@@ -68,12 +99,13 @@ export class SecurityService {
         salt,
         Math.floor(iterations * 0.47 + 1337)
       );
-
-      const decipher = this.getDecipher(algorithm, decryptionKey, iv);
+      // Create decipher
+      const decipher: crypto.DecipherGCM = crypto.createDecipheriv(algorithm, decryptionKey, iv);
       decipher.setAuthTag(authTag);
 
       // Decrypt data
-      const decrypted = this.decryptData(decipher, encryptedData);
+      const decrypted =
+        decipher.update(encryptedData, undefined, 'utf-8') + decipher.final('utf-8');
 
       try {
         return JSON.parse(decrypted) as R;
@@ -81,103 +113,24 @@ export class SecurityService {
         return decrypted as R;
       }
     } catch (error) {
-      console.log(error);
-
       Logger.error({
-        type: 'DECRYPTION_ERROR'
+        type: 'DECRYPTION ERROR',
+        message: 'Could not decrypt input'
       });
 
-      return null;
+      return undefined;
     }
   }
 
-  /**
-   * Derive 256 bit encryption key from password, using salt and iterations -> 32 bytes
-   */
-  private deriveKeyFromPassword(password: string, salt: Buffer, iterations: number): Buffer {
-    const digest = this.getDigestAlgorithm();
-    const keyLength = this.getKeyLength();
-
-    return crypto.pbkdf2Sync(password, salt, iterations, keyLength, digest);
-  }
-
-  private getDecipher(algorithm: CipherGCMTypes, decryptionKey: Buffer, iv: Buffer) {
-    return crypto.createDecipheriv(algorithm, decryptionKey, iv);
-  }
-
-  private genCipher(algorithm: CipherGCMTypes, encryptionKey: Buffer, iv: Buffer): CipherGCM {
-    return crypto.createCipheriv(algorithm, encryptionKey, iv);
-  }
-
-  /**
-   * Update the cipher with data to be encrypted and close cipher
-   */
-  private encryptData(cipher: CipherGCM, plainText: string): Buffer {
-    return Buffer.concat([cipher.update(plainText, 'utf8'), cipher.final()]);
-  }
-
-  /**
-   * Get authTag from cipher for decryption // 16 bytes
-   */
-  private genAuthTag(cipher: CipherGCM): Buffer {
-    return cipher.getAuthTag();
-  }
-
-  /**
-   * Decrypt data using decipher
-   */
-  private decryptData(decipher: DecipherGCM, encryptedData: Buffer): string {
-    return decipher.update(encryptedData, undefined, 'utf-8') + decipher.final('utf-8');
-  }
-
-  /**
-   * Join all data into single string, include requirements for decryption
-   */
-  private buildEncryptedPayload(
-    salt: Buffer,
-    iv: Buffer,
-    authTag: Buffer,
-    iterations: number,
-    encryptedData: Buffer
-  ): string {
-    return Buffer.concat([
-      salt,
-      iv,
-      authTag,
-      Buffer.from(iterations.toString()),
-      encryptedData
-    ]).toString('hex');
-  }
-
-  private getPassword() {
-    return this.configService.get('SECURITY.ENCRYPT_PASSWORD');
-  }
-
-  private getAlgorithm(): CipherGCMTypes {
+  private getAlgorithm(): crypto.CipherGCMTypes {
     return this.configService.get('SECURITY.ENCRYPT_ALGORITHM');
-  }
-
-  private getDigestAlgorithm(): string {
-    return 'sha256';
   }
 
   private getEncryptedPrefix(): string {
     return 'enc::';
   }
 
-  private getKeyLength(): number {
-    return 32;
-  }
-
-  private genSalt(): Buffer {
-    return crypto.randomBytes(64);
-  }
-
-  private genIv() {
-    return crypto.randomBytes(16);
-  }
-
-  private genIterations(): number {
-    return this.configService.get('SECURITY.PBKDF2_ITERATIONS');
+  private deriveKeyFromPassword(password: Password, salt: Buffer, iterations: number): Buffer {
+    return crypto.pbkdf2Sync(password, salt, iterations, 32, 'sha512');
   }
 }

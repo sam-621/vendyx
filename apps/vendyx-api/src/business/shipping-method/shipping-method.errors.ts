@@ -7,3 +7,9 @@ export class HandlerNotFound extends ErrorResult<ShippingMethodErrorCode> {
     super(ShippingMethodErrorCode.HANDLER_NOT_FOUND, 'Shipment handler not found');
   }
 }
+
+export class FailedToSaveArgs extends ErrorResult<ShippingMethodErrorCode> {
+  constructor() {
+    super(ShippingMethodErrorCode.FAILED_TO_SAVE_ARGS, 'Failed to save handler args');
+  }
+}

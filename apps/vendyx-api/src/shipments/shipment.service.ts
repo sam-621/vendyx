@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import {
+  ConfigurableProperty,
+  ConfigurablePropertyArgs
+} from '@/persistence/types/configurable-operation.type';
 
 import { FlatPriceService } from './handlers/flat-price/flat-price.service';
 import { ShipmentHandler, ShipmentHandlerOrder } from './handlers/shipment-handler';
@@ -9,14 +12,18 @@ import { ShipmentHandler, ShipmentHandlerOrder } from './handlers/shipment-handl
 export class ShipmentService {
   constructor(private readonly flatPriceService: FlatPriceService) {}
 
-  async calculatePrice(order: ShipmentHandlerOrder, handler: ConfigurableProperty) {
+  async calculatePrice(
+    order: ShipmentHandlerOrder,
+    handler: ConfigurableProperty<ConfigurablePropertyArgs>
+  ) {
     const shipmentHandler = this.getHandler(handler.code);
 
     return shipmentHandler.calculatePrice(order, handler.args);
   }
 
-  getPricePreview(handler: ConfigurableProperty): number {
+  getPricePreview(handler: ConfigurableProperty<ConfigurablePropertyArgs>): number {
     const shipmentHandler = this.getHandler(handler.code);
+
     return shipmentHandler.getPricePreview(handler.args);
   }
 

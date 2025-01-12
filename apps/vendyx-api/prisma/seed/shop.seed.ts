@@ -819,12 +819,12 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
                 {
                   name: 'Standard',
                   description: 'Delivery in 7-14 business days',
-                  handler: { code: 'flat-price', args: { price: 2500 } }
+                  handler: { code: 'flat-price', args: {} }
                 },
                 {
                   name: 'Express',
                   description: 'Delivery in 5-8 business days',
-                  handler: { code: 'flat-price', args: { price: 5000 } }
+                  handler: { code: 'flat-price', args: {} }
                 }
               ]
             }
@@ -887,10 +887,7 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
         data: {
           handler: {
             code: 'paypal',
-            args: {
-              clientId: 'sk_test_4eC39HqLyjWDarjtT1zdp7dc',
-              secret: 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
-            }
+            args: {}
           }
         }
       })

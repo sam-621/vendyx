@@ -50,10 +50,15 @@ export abstract class ConfigurableOperation {
   args: Args;
 }
 
-export type ConfigurableProperty = {
+export type ConfigurableProperty<T = string> = {
   code: string;
-  args: Record<string, string | number | boolean>;
+  args: T; // Encrypted string
 };
+
+/**
+ * Decrypted args
+ */
+export type ConfigurablePropertyArgs = Record<string, string | number | boolean>;
 
 export type ConfigurableOperationUi =
   | undefined

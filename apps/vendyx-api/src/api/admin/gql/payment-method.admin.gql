@@ -97,4 +97,5 @@ type PaymentMethodErrorResult {
 enum PaymentMethodErrorCode {
   HANDLER_ALREADY_SELECTED
   HANDLER_NOT_FOUND
+  FAILED_TO_SAVE_ARGS
 }

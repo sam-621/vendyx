@@ -36,8 +36,9 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 w-full">
-        <Label>Type of shipping method</Label>
+        <Label htmlFor="handlerId">Type of shipping method</Label>
         <Select
+          name="handlerId"
           // Editing handler id for a shipping method is not supported
           disabled={!!methodToUpdate}
           value={handler.code}
@@ -57,15 +58,17 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
         </Select>
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Name</Label>
+        <Label htmlFor="name">Name</Label>
         <Input
+          name="name"
           defaultValue={method.name}
           onChange={e => setValue({ key: 'name', value: e.target.value })}
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Description</Label>
+        <Label htmlFor="desc">Description</Label>
         <Textarea
+          name="desc"
           defaultValue={method.description}
           onChange={e => setValue({ key: 'description', value: e.target.value })}
         />
@@ -73,8 +76,9 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
       {Object.entries(form).map(([key, arg]) =>
         arg.type === 'price' ? (
           <div key={key} className="flex flex-col gap-2">
-            <Label>{arg.label}</Label>
+            <Label htmlFor={key}>{arg.label}</Label>
             <Input
+              name={key}
               placeholder={arg.placeholder}
               isPrice
               defaultValue={

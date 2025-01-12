@@ -16,3 +16,9 @@ export class HandlerNotFound extends ErrorResult<PaymentMethodErrorCode> {
     super(PaymentMethodErrorCode.HANDLER_NOT_FOUND, 'Payment handler not found');
   }
 }
+
+export class FailedToSaveArgs extends ErrorResult<PaymentMethodErrorCode> {
+  constructor() {
+    super(PaymentMethodErrorCode.FAILED_TO_SAVE_ARGS, 'Failed to save payment handler arguments');
+  }
+}

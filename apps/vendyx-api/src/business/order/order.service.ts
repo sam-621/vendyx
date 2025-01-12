@@ -22,14 +22,19 @@ import {
   PRISMA_FOR_SHOP,
   PrismaForShop
 } from '@/persistence/prisma-clients/prisma-for-shop.provider';
-import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import {
+  ConfigurableProperty,
+  ConfigurablePropertyArgs
+} from '@/persistence/types/configurable-operation.type';
 import { ID } from '@/persistence/types/scalars.type';
+import { SecurityService } from '@/security/security.service';
 import { ShipmentService } from '@/shipments/shipment.service';
 
 import { OrderFinders } from './order-finders';
 import {
   CustomerDisabled,
   CustomerInvalidEmail,
+  FailedAddingShippingMethod,
   ForbiddenOrderAction,
   MissingShippingAddress,
   NotEnoughStock,
@@ -50,7 +55,8 @@ export class OrderService extends OrderFinders {
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
     private readonly shipmentService: ShipmentService,
     private readonly paymentService: PaymentService,
-    private readonly eventBus: EventBusService
+    private readonly eventBus: EventBusService,
+    private readonly securityService: SecurityService
   ) {
     super(prisma);
   }
@@ -81,12 +87,23 @@ export class OrderService extends OrderFinders {
       orderBy: { createdAt: 'desc' }
     });
 
-    return result.map(shippingMethod => ({
-      ...shippingMethod,
-      pricePreview: this.shipmentService.getPricePreview(
-        shippingMethod.handler as ConfigurableProperty
-      )
-    }));
+    return result
+      .map(shippingMethod => {
+        const args = this.securityService.decrypt<ConfigurablePropertyArgs>(
+          (shippingMethod.handler as ConfigurableProperty).args
+        );
+
+        if (!args) return null;
+
+        return {
+          ...shippingMethod,
+          pricePreview: this.shipmentService.getPricePreview({
+            ...(shippingMethod.handler as ConfigurableProperty),
+            args
+          })
+        };
+      })
+      .filter(Boolean);
   }
 
   async findAvailablePaymentMethods() {
@@ -337,8 +354,16 @@ export class OrderService extends OrderFinders {
     }
 
     const handler = method.handler as ConfigurableProperty;
+    const decryptedArgs = this.securityService.decrypt<ConfigurablePropertyArgs>(handler.args);
 
-    const shippingPrice = await this.shipmentService.calculatePrice(order, handler);
+    if (!decryptedArgs) {
+      return new FailedAddingShippingMethod("Couldn't decrypt shipping method arguments.");
+    }
+
+    const shippingPrice = await this.shipmentService.calculatePrice(order, {
+      ...handler,
+      args: decryptedArgs
+    });
 
     // If the order already has a shipment, update the amount and method
     if (order.shipment) {

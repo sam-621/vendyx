@@ -13,7 +13,11 @@ import {
   PRISMA_FOR_SHOP,
   PrismaForShop
 } from '@/persistence/prisma-clients/prisma-for-shop.provider';
-import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import {
+  ConfigurableProperty,
+  ConfigurablePropertyArgs
+} from '@/persistence/types/configurable-operation.type';
+import { SecurityService } from '@/security/security.service';
 import { ShipmentService } from '@/shipments/shipment.service';
 
 @UseGuards(UserJwtAuthGuard)
@@ -22,6 +26,7 @@ export class ZoneResolver {
   constructor(
     private readonly zoneService: ZoneService,
     private readonly shipmentService: ShipmentService,
+    private readonly securityService: SecurityService,
     @Inject(PRISMA_FOR_ADMIN) private readonly prismaForAdmin: PrismaForAdmin,
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {}
@@ -68,13 +73,24 @@ export class ZoneResolver {
       orderBy: { createdAt: 'asc' }
     });
 
-    return result.map(shippingMethod => ({
-      ...shippingMethod,
-      args: (shippingMethod.handler as ConfigurableProperty).args,
-      code: (shippingMethod.handler as ConfigurableProperty).code,
-      pricePreview: this.shipmentService.getPricePreview(
-        shippingMethod.handler as ConfigurableProperty
-      )
-    }));
+    return result
+      .map(shippingMethod => {
+        const args = this.securityService.decrypt<ConfigurablePropertyArgs>(
+          (shippingMethod.handler as ConfigurableProperty).args
+        );
+
+        if (!args) return null;
+
+        return {
+          ...shippingMethod,
+          args,
+          code: (shippingMethod.handler as ConfigurableProperty).code,
+          pricePreview: this.shipmentService.getPricePreview({
+            ...(shippingMethod.handler as ConfigurableProperty),
+            args
+          })
+        };
+      })
+      .filter(Boolean);
   }
 }

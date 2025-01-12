@@ -3,6 +3,7 @@ import * as path from 'path';
 import { DynamicModule, Module } from '@nestjs/common';
 
 import { BusinessModule } from '@/business/business.module';
+import { SecurityModule } from '@/security/security.module';
 import { ShipmentModule } from '@/shipments/shipment.module';
 
 import { COMMON_RESOLVERS } from '../shared/common-resolvers';
@@ -41,7 +42,7 @@ export class AdminApiModule {
 }
 
 @Module({
-  imports: [ShipmentModule, BusinessModule],
+  imports: [SecurityModule, ShipmentModule, BusinessModule],
   providers: [
     ...COMMON_RESOLVERS,
     UserResolver,

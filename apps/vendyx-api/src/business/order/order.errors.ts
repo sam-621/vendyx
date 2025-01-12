@@ -84,3 +84,9 @@ export class PaymentDeclined extends ErrorResult<OrderErrorCode> {
     super(OrderErrorCode.PAYMENT_DECLINED, reason, rawError);
   }
 }
+
+export class FailedAddingShippingMethod extends ErrorResult<OrderErrorCode> {
+  constructor(reason: string) {
+    super(OrderErrorCode.FAILED_ADDING_SHIPPING_METHOD, reason);
+  }
+}

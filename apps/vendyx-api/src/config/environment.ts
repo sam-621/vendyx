@@ -28,7 +28,6 @@ export const loadEnvironment = (): Environment => ({
   },
   SECURITY: {
     ENCRYPT_ALGORITHM: process.env.ENCRYPT_ALGORITHM as CipherGCMTypes,
-    ENCRYPT_PASSWORD: process.env.ENCRYPT_PASSWORD ?? '',
-    PBKDF2_ITERATIONS: parseInt(process.env.PBKDF2_ITERATIONS ?? '') || 100000
+    ENCRYPT_PASSWORD: process.env.ENCRYPT_PASSWORD ?? ''
   }
 });

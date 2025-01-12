@@ -104,4 +104,5 @@ type ShippingMethodErrorResult {
 
 enum ShippingMethodErrorCode {
   HANDLER_NOT_FOUND
+  FAILED_TO_SAVE_ARGS
 }

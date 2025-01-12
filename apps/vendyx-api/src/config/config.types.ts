@@ -26,7 +26,6 @@ export type Environment = {
   };
   SECURITY: {
     ENCRYPT_ALGORITHM: CipherGCMTypes;
-    PBKDF2_ITERATIONS: number;
     ENCRYPT_PASSWORD: string;
   };
 };

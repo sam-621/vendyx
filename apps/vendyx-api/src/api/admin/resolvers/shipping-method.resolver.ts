@@ -9,7 +9,11 @@ import {
   PRISMA_FOR_SHOP,
   PrismaForShop
 } from '@/persistence/prisma-clients/prisma-for-shop.provider';
-import { ConfigurableProperty } from '@/persistence/types/configurable-operation.type';
+import {
+  ConfigurableProperty,
+  ConfigurablePropertyArgs
+} from '@/persistence/types/configurable-operation.type';
+import { SecurityService } from '@/security/security.service';
 import { ShipmentService } from '@/shipments/shipment.service';
 
 @UseGuards(UserJwtAuthGuard)
@@ -18,6 +22,7 @@ export class ShippingMethodResolver {
   constructor(
     private readonly shippingMethodService: ShippingMethodService,
     private readonly shipmentService: ShipmentService,
+    private readonly securityService: SecurityService,
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {}
 
@@ -27,14 +32,25 @@ export class ShippingMethodResolver {
       orderBy: { createdAt: 'desc' }
     });
 
-    return shippingMethods.map(shippingMethod => ({
-      ...shippingMethod,
-      args: (shippingMethod.handler as ConfigurableProperty).args,
-      code: (shippingMethod.handler as ConfigurableProperty).code,
-      pricePreview: this.shipmentService.getPricePreview(
-        shippingMethod.handler as ConfigurableProperty
-      )
-    }));
+    return shippingMethods
+      .map(shippingMethod => {
+        const args = this.securityService.decrypt<ConfigurablePropertyArgs>(
+          (shippingMethod.handler as ConfigurableProperty).args
+        );
+
+        if (!args) return null;
+
+        return {
+          ...shippingMethod,
+          args: args,
+          code: (shippingMethod.handler as ConfigurableProperty).code,
+          pricePreview: this.shipmentService.getPricePreview({
+            ...(shippingMethod.handler as ConfigurableProperty),
+            args
+          })
+        };
+      })
+      .filter(Boolean);
   }
 
   @Query('shippingHandlers')
@@ -52,10 +68,8 @@ export class ShippingMethodResolver {
           apiErrors: [],
           shippingMethod: {
             ...result,
-            args: (result.handler as ConfigurableProperty).args,
-            pricePreview: this.shipmentService.getPricePreview(
-              result.handler as ConfigurableProperty
-            )
+            args: result.handler.args,
+            pricePreview: this.shipmentService.getPricePreview(result.handler)
           }
         };
   }
@@ -67,11 +81,13 @@ export class ShippingMethodResolver {
   ) {
     const result = await this.shippingMethodService.update(id, input);
 
-    return {
-      ...result,
-      args: (result.handler as ConfigurableProperty).args,
-      pricePreview: this.shipmentService.getPricePreview(result.handler as ConfigurableProperty)
-    };
+    return isErrorResult(result)
+      ? { apiErrors: [result] }
+      : {
+          ...result,
+          args: (result.handler as ConfigurableProperty).args,
+          pricePreview: this.shipmentService.getPricePreview(result.handler)
+        };
   }
 
   @Mutation('removeShippingMethod')
