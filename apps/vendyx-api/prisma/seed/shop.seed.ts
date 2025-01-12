@@ -778,64 +778,64 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
     prisma.zone.findMany()
   ]);
 
-  let local: Zone = zones[0];
-  let international: Zone = zones[1];
+  const local: Zone = zones[0];
+  const international: Zone = zones[1];
 
   // TODO: create shipping methods separately
   // create zones and shipping methods
-  if (zones.length !== 2) {
-    const [l, i] = [
-      await prisma.$transaction([
-        prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
-        prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
-        prisma.zone.create({
-          data: {
-            name: 'Local',
-            shippingMethods: {
-              create: [
-                {
-                  name: 'Standard',
-                  description: 'Delivery in 4-8 business days',
-                  handler: { code: 'flat-price', args: { price: 500 } }
-                },
-                {
-                  name: 'Express',
-                  description: 'Delivery in 2-3 business days',
-                  handler: { code: 'flat-price', args: { price: 1000 } }
-                }
-              ]
-            }
-          }
-        })
-      ]),
-      await prisma.$transaction([
-        prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
-        prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
-        prisma.zone.create({
-          data: {
-            name: 'International',
-            shippingMethods: {
-              create: [
-                {
-                  name: 'Standard',
-                  description: 'Delivery in 7-14 business days',
-                  handler: { code: 'flat-price', args: {} }
-                },
-                {
-                  name: 'Express',
-                  description: 'Delivery in 5-8 business days',
-                  handler: { code: 'flat-price', args: {} }
-                }
-              ]
-            }
-          }
-        })
-      ])
-    ];
+  // if (zones.length !== 2) {
+  //   const [l, i] = [
+  //     await prisma.$transaction([
+  //       prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+  //       prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+  //       prisma.zone.create({
+  //         data: {
+  //           name: 'Local',
+  //           shippingMethods: {
+  //             create: [
+  //               {
+  //                 name: 'Standard',
+  //                 description: 'Delivery in 4-8 business days',
+  //                 handler: { code: 'flat-price', args: { price: 500 } }
+  //               },
+  //               {
+  //                 name: 'Express',
+  //                 description: 'Delivery in 2-3 business days',
+  //                 handler: { code: 'flat-price', args: { price: 1000 } }
+  //               }
+  //             ]
+  //           }
+  //         }
+  //       })
+  //     ]),
+  //     await prisma.$transaction([
+  //       prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+  //       prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+  //       prisma.zone.create({
+  //         data: {
+  //           name: 'International',
+  //           shippingMethods: {
+  //             create: [
+  //               {
+  //                 name: 'Standard',
+  //                 description: 'Delivery in 7-14 business days',
+  //                 handler: { code: 'flat-price', args: {} }
+  //               },
+  //               {
+  //                 name: 'Express',
+  //                 description: 'Delivery in 5-8 business days',
+  //                 handler: { code: 'flat-price', args: {} }
+  //               }
+  //             ]
+  //           }
+  //         }
+  //       })
+  //     ])
+  //   ];
 
-    local = l[2];
-    international = i[2];
-  }
+  //   local = l[2];
+  //   international = i[2];
+  // }
 
   const mx = await prisma.country.findUnique({
     where: { id: input.mx.id },
@@ -878,21 +878,21 @@ export const generateShop = async (prisma: PrismaClient, input: Input) => {
     prisma.paymentMethod.findMany()
   ]);
 
-  // create payment methods
-  if (!paymentMethods.length) {
-    await prisma.$transaction([
-      prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
-      prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
-      prisma.paymentMethod.create({
-        data: {
-          handler: {
-            code: 'paypal',
-            args: {}
-          }
-        }
-      })
-    ]);
-  }
+  // // create payment methods
+  // if (!paymentMethods.length) {
+  //   await prisma.$transaction([
+  //     prisma.$executeRaw`SELECT set_config('app.current_shop_id', ${shop.id}, TRUE)`,
+  //     prisma.$executeRaw`SELECT set_config('app.current_owner_id', ${user.id}, TRUE)`,
+  //     prisma.paymentMethod.create({
+  //       data: {
+  //         handler: {
+  //           code: 'paypal',
+  //           args: {}
+  //         }
+  //       }
+  //     })
+  //   ]);
+  // }
 
   console.log('Payment and shipping methods generated! 🚀');
   console.log();
