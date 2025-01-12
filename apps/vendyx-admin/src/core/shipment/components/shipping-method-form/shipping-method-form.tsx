@@ -24,10 +24,6 @@ export const ShippingMethodForm: FC<Props> = ({ shippingHandlers, methodToUpdate
 
   const form: Args = useMemo(() => handler.args, [handler]);
 
-  console.log({
-    method
-  });
-
   useEffect(() => {
     setValue({ key: 'handlerId', value: handler.code });
     // eslint-disable-next-line react-hooks/exhaustive-deps

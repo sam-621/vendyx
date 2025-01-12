@@ -111,9 +111,6 @@ export class ShopService {
     const slug = getSlugBy(name);
 
     const shopNameCount = await this.shopRepository.getTotalByName(name);
-    console.log({
-      shopNameCount
-    });
 
     if (!shopNameCount) return slug;
 

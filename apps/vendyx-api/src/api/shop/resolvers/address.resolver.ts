@@ -21,9 +21,7 @@ export class AddressResolver {
     @CurrentCustomer() customer: TCurrentCustomer,
     @Args('input') input: CreateAddressInput
   ) {
-    const r = await this.addressService.create(customer.id, input);
-    console.log(r);
-    return r;
+    return await this.addressService.create(customer.id, input);
   }
 
   @Mutation('updateCustomerAddress')
