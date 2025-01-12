@@ -66,3 +66,14 @@ export const UPDATE_SHOP_MUTATION = graphql(`
     }
   }
 `);
+
+export const GENERATE_SHOP_API_KEY_MUTATION = graphql(`
+  mutation GenerateShopApiKey {
+    generateShopApiKey {
+      shop {
+        id
+        slug
+      }
+    }
+  }
+`);

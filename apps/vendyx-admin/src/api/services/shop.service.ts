@@ -5,6 +5,7 @@ import {
   COMMON_LIST_SHOP_FRAGMENT,
   COMMON_SHOP_FRAGMENT,
   CREATE_SHOP_MUTATION,
+  GENERATE_SHOP_API_KEY_MUTATION,
   GET_SHOP_BY_SLUG_QUERY,
   GET_SHOPS_QUERY,
   UPDATE_SHOP_MUTATION
@@ -15,7 +16,7 @@ import { serviceGqlFetcher } from './service-fetchers/service-gql-fetchers';
 export const ShopService = {
   Tags: {
     shops: 'shops',
-    shop: (id: string) => `shop-${id}`
+    shop: (slug: string) => `shop-${slug}`
   },
 
   async getAll() {
@@ -64,6 +65,14 @@ export const ShopService = {
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return { success: true, shop: shop! };
+  },
+
+  async generateShopApiKey() {
+    const {
+      generateShopApiKey: { shop }
+    } = await serviceGqlFetcher(GENERATE_SHOP_API_KEY_MUTATION);
+
+    return shop;
   }
 };
 

@@ -24,6 +24,18 @@ export const useShopDetailsForm = (shop: CommonShopFragment) => {
     }
   });
 
+  useEffect(
+    function resetFormOnRefetch() {
+      form.reset({
+        name: shop.name,
+        email: shop.email,
+        phoneNumber: shop.phoneNumber,
+        shopApiKey: shop.shopApiKey
+      });
+    },
+    [shop]
+  );
+
   useEffect(() => {
     if (!isLoading && isSuccess) {
       notification.success('Shop updated successfully');

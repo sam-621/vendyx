@@ -10,6 +10,7 @@ import { Form } from '@/shared/form/form';
 import { FormInput } from '@/shared/form/form-input';
 import { FormPhoneInput } from '@/shared/form/form-phone-input';
 
+import { GenerateShopApiKeyButton } from '../generate-shop-api-key/generate-shop-api-key-button';
 import { ShopDetailsSubmitButton } from './shop-details-submit-button';
 import { useShopDetailsForm } from './use-shop-details-form';
 
@@ -42,7 +43,12 @@ export const ShopDetailsForm: FC<Props> = ({ shop }) => {
                 disabled
                 isPassword
                 description="Use this key to access to the Shop API from your storefront."
-                rightElement={<CopyToClipboardButton variant="outline" value={shop.shopApiKey} />}
+                rightElement={
+                  <div className="flex items-center gap-2">
+                    <CopyToClipboardButton variant="outline" value={shop.shopApiKey} />
+                    <GenerateShopApiKeyButton />
+                  </div>
+                }
               />
             </div>
           </div>

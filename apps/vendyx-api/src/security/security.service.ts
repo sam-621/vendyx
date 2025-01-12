@@ -123,7 +123,7 @@ export class SecurityService {
   }
 
   generateShopApiKey() {
-    const rawApiKey = crypto.randomBytes(48).toString('hex');
+    const rawApiKey = crypto.randomBytes(24).toString('hex');
 
     return rawApiKey;
   }

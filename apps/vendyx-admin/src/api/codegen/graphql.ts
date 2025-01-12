@@ -28,8 +28,10 @@ export type Address = Node & {
   city: Scalars['String']['output'];
   country: Scalars['String']['output'];
   createdAt: Scalars['Date']['output'];
-  fullName?: Maybe<Scalars['String']['output']>;
+  fullName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  isDefault: Scalars['Boolean']['output'];
+  phoneNumber: Scalars['String']['output'];
   postalCode: Scalars['String']['output'];
   /** State or region */
   province: Scalars['String']['output'];
@@ -43,7 +45,9 @@ export type AddressJson = {
   __typename?: 'AddressJson';
   city: Scalars['String']['output'];
   country: Scalars['String']['output'];
-  fullName?: Maybe<Scalars['String']['output']>;
+  fullName: Scalars['String']['output'];
+  isDefault: Scalars['Boolean']['output'];
+  phoneNumber: Scalars['String']['output'];
   postalCode: Scalars['String']['output'];
   /** State or region */
   province: Scalars['String']['output'];
@@ -169,6 +173,9 @@ export type Country = Node & {
 export type CreateAddressInput = {
   city: Scalars['String']['input'];
   country: Scalars['String']['input'];
+  fullName: Scalars['String']['input'];
+  isDefault?: InputMaybe<Scalars['Boolean']['input']>;
+  phoneNumber: Scalars['String']['input'];
   postalCode: Scalars['String']['input'];
   province: Scalars['String']['input'];
   references?: InputMaybe<Scalars['String']['input']>;
@@ -362,6 +369,7 @@ export type Mutation = {
   cancelOrder: OrderResult;
   createCheckoutSession: CheckoutSession;
   createCollection: Collection;
+  createCustomerAddress: Address;
   createOption: Option;
   createPaymentMethod: PaymentMethodResult;
   createProduct: Product;
@@ -370,10 +378,12 @@ export type Mutation = {
   createUser: UserResult;
   createVariant: Variant;
   createZone: Zone;
+  generateShopApiKey: ShopResult;
   generateUserAccessToken: UserAccessTokenResult;
   markOrderAsDelivered: OrderResult;
   markOrderAsShipped: OrderResult;
   removeCollection: Scalars['Boolean']['output'];
+  removeCustomerAddress: Address;
   removePaymentMethod: Scalars['Boolean']['output'];
   removeShippingMethod: Scalars['Boolean']['output'];
   removeZone: Scalars['Boolean']['output'];
@@ -383,6 +393,7 @@ export type Mutation = {
   softRemoveVariant: Variant;
   updateCollection: Collection;
   updateCustomer: CustomerResult;
+  updateCustomerAddress: Address;
   updateOption: Option;
   updatePaymentMethod: PaymentMethod;
   updateProduct: Product;
@@ -404,6 +415,10 @@ export type MutationCreateCheckoutSessionArgs = {
 
 export type MutationCreateCollectionArgs = {
   input: CreateCollectionInput;
+};
+
+export type MutationCreateCustomerAddressArgs = {
+  input: CreateAddressInput;
 };
 
 export type MutationCreateOptionArgs = {
@@ -457,6 +472,10 @@ export type MutationRemoveCollectionArgs = {
   id: Scalars['ID']['input'];
 };
 
+export type MutationRemoveCustomerAddressArgs = {
+  addressId: Scalars['ID']['input'];
+};
+
 export type MutationRemovePaymentMethodArgs = {
   id: Scalars['ID']['input'];
 };
@@ -493,6 +512,11 @@ export type MutationUpdateCollectionArgs = {
 export type MutationUpdateCustomerArgs = {
   id: Scalars['ID']['input'];
   input: UpdateCustomerInput;
+};
+
+export type MutationUpdateCustomerAddressArgs = {
+  addressId: Scalars['ID']['input'];
+  input: UpdateAddressInput;
 };
 
 export type MutationUpdateOptionArgs = {
@@ -729,6 +753,7 @@ export type PaymentMethod = Node & {
 };
 
 export enum PaymentMethodErrorCode {
+  FailedToSaveArgs = 'FAILED_TO_SAVE_ARGS',
   HandlerAlreadySelected = 'HANDLER_ALREADY_SELECTED',
   HandlerNotFound = 'HANDLER_NOT_FOUND'
 }
@@ -949,6 +974,7 @@ export type ShippingMethod = Node & {
 };
 
 export enum ShippingMethodErrorCode {
+  FailedToSaveArgs = 'FAILED_TO_SAVE_ARGS',
   HandlerNotFound = 'HANDLER_NOT_FOUND'
 }
 
@@ -1058,6 +1084,19 @@ export enum SubscriptionStatus {
   /** Indicates that the subscription has been unpaid */
   Unpaid = 'UNPAID'
 }
+
+export type UpdateAddressInput = {
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  fullName?: InputMaybe<Scalars['String']['input']>;
+  isDefault?: InputMaybe<Scalars['Boolean']['input']>;
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  postalCode?: InputMaybe<Scalars['String']['input']>;
+  province?: InputMaybe<Scalars['String']['input']>;
+  references?: InputMaybe<Scalars['String']['input']>;
+  streetLine1?: InputMaybe<Scalars['String']['input']>;
+  streetLine2?: InputMaybe<Scalars['String']['input']>;
+};
 
 export type UpdateCollectionInput = {
   assets?: InputMaybe<Array<AssetInCollectionInput>>;
@@ -2049,6 +2088,16 @@ export type UpdateShopMutation = {
   updateShop: {
     __typename?: 'ShopResult';
     apiErrors: Array<{ __typename?: 'ShopErrorResult'; message: string; code: ShopErrorCode }>;
+    shop?: { __typename?: 'Shop'; id: string; slug: string } | null;
+  };
+};
+
+export type GenerateShopApiKeyMutationVariables = Exact<{ [key: string]: never }>;
+
+export type GenerateShopApiKeyMutation = {
+  __typename?: 'Mutation';
+  generateShopApiKey: {
+    __typename?: 'ShopResult';
     shop?: { __typename?: 'Shop'; id: string; slug: string } | null;
   };
 };
@@ -3234,6 +3283,19 @@ export const UpdateShopDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<UpdateShopMutation, UpdateShopMutationVariables>;
+export const GenerateShopApiKeyDocument = new TypedDocumentString(`
+    mutation GenerateShopApiKey {
+  generateShopApiKey {
+    shop {
+      id
+      slug
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<
+  GenerateShopApiKeyMutation,
+  GenerateShopApiKeyMutationVariables
+>;
 export const WhoamiDocument = new TypedDocumentString(`
     query Whoami {
   whoami {
