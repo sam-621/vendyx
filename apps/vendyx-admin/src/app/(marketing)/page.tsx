@@ -2,7 +2,7 @@ import { ChevronsDownIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/shared/components/ui/badge';
-import { Button, buttonVariants } from '@/shared/components/ui/button';
+import { buttonVariants } from '@/shared/components/ui/button';
 
 import { Feature } from './components/feature';
 import { GithubIcon } from './components/github-icon';
