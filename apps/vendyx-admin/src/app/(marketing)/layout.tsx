@@ -21,17 +21,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body suppressHydrationWarning className={inter.className}>
         <ThemeProvider
           attribute="class"
-          forcedTheme="dark"
+          forcedTheme="light"
           storageKey="vendyx-marketing-theme"
           disableTransitionOnChange
         >
           <Notification />
           <NextTopLoader color="hsl(var(--primary))" />
-          <div className="mx-20">{children}</div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
