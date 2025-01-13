@@ -1,4 +1,5 @@
 import { ChevronsDownIcon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Badge } from '@/shared/components/ui/badge';
@@ -48,7 +49,7 @@ export default function Home() {
               </svg>
 
               <Badge variant="outline">Vendyx</Badge>
-              <div>
+              <div className="slide-in-bottom">
                 <h1 className="mb-6 text-pretty text-2xl font-bold lg:text-5xl">
                   E-Commerce Platform
                 </h1>
@@ -57,7 +58,7 @@ export default function Home() {
                   and also to simplify the way you manage a online store.
                 </p>
               </div>
-              <div className="mt-4 flex justify-center gap-2 items-center">
+              <div className="opacity-0 mt-4 flex justify-center gap-2 items-center slide-in-bottom !delay-150">
                 <Link href="/login" className={buttonVariants()}>
                   Get Started
                 </Link>
@@ -69,7 +70,14 @@ export default function Home() {
                 </a>
               </div>
 
-              <img src="/expo-3.png" alt="Vendyx" className="rounded-lg" />
+              <Image
+                src="/expo-3.webp"
+                alt="Vendyx"
+                className="opacity-0 rounded-lg slide-in-bottom !delay-300"
+                width={2880}
+                height={1800}
+                priority
+              />
             </div>
           </div>
         </div>

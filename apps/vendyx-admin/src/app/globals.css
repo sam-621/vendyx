@@ -294,6 +294,22 @@
   }
 }
 
+/* Animations */
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-bottom {
+  animation: slideInBottom 0.5s ease forwards;
+}
 /* Magic pattern */
 .magicpattern {
   width: 100%;
