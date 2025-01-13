@@ -88,7 +88,7 @@ export const Pricing = () => {
               </div>
             </div>
 
-            <div className="flex w-full flex-col rounded-lg border p-6 text-left">
+            <div className="flex w-full flex-col rounded-lg border bg-muted p-6 text-left">
               <Badge className="mb-8 block w-fit">Essential</Badge>
               <span className="text-4xl font-medium">{isAnnually ? '$590' : '$59'}</span>
               <p className="text-muted-foreground">Per month</p>
@@ -124,7 +124,7 @@ export const Pricing = () => {
               </div>
             </div>
 
-            <div className="flex w-full flex-col rounded-lg border bg-muted p-6 text-left">
+            <div className="flex w-full flex-col rounded-lg border p-6 text-left">
               <Badge className="mb-8 block w-fit">ENTREPRISE</Badge>
               <span className="text-4xl font-medium">Custom</span>
               <p className="invisible text-muted-foreground">Per user/month</p>

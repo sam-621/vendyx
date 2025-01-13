@@ -10,6 +10,8 @@ const ALLOWED_PATHS = [...AUTH_PATHS, '/', '/confirm-account'];
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  if (shouldExclude(request)) return NextResponse.next();
+
   const isAuth = await validateAccessToken();
   const isInAllowedPaths = ALLOWED_PATHS.includes(pathname);
   const isInAuthPaths = AUTH_PATHS.includes(pathname);
@@ -39,3 +41,13 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico|logo.svg).*)']
 };
+
+function shouldExclude(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+
+  return (
+    path.startsWith('/api') || //  exclude all API routes
+    path.startsWith('/static') || // exclude static files
+    path.includes('.') // exclude all files in the public folder
+  );
+}
