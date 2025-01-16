@@ -3,7 +3,6 @@ import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/g
 import { Shop } from '@prisma/client';
 
 import { CurrentShop, TCurrentShop } from '@/api/shared/decorator/current-shop.decorator';
-import { CurrentUser, TCurrentUser } from '@/api/shared/decorator/current-user.decorator';
 import { UserJwtAuthGuard } from '@/api/shared/guards/user.guard';
 import { CreateShopInput, ListInput, UpdateShopInput } from '@/api/shared/types/gql.types';
 import { ListResponse } from '@/api/shared/utils/list-response';
@@ -38,8 +37,8 @@ export class ShopResolver {
   }
 
   @Mutation('createShop')
-  async createShop(@CurrentUser() user: TCurrentUser, @Args('input') input: CreateShopInput) {
-    const result = await this.shopService.create(input, user.emailVerified);
+  async createShop(@Args('input') input: CreateShopInput) {
+    const result = await this.shopService.create(input);
 
     return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], shop: result };
   }

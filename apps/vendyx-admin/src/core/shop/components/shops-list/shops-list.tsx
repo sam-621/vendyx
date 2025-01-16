@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { type CommonListShopFragment, type CommonUserFragment } from '@/api/types';
+import { type CommonListShopFragment } from '@/api/types';
 import { Button } from '@/shared/components/ui/button';
 import {
   Card,
@@ -14,13 +14,9 @@ import {
 } from '@/shared/components/ui/card';
 
 import { ShopCard } from './shop-card';
-import { ShopsListEmptyState, ShopsListUnauthorizedState } from './shops-list-states';
+import { ShopsListEmptyState } from './shops-list-states';
 
-export const ShopsList: FC<Props> = ({ shops, user }) => {
-  if (!user.emailVerified) {
-    return <ShopsListUnauthorizedState />;
-  }
-
+export const ShopsList: FC<Props> = ({ shops }) => {
   if (!shops.length) {
     return <ShopsListEmptyState />;
   }
@@ -50,5 +46,4 @@ export const ShopsList: FC<Props> = ({ shops, user }) => {
 
 type Props = {
   shops: CommonListShopFragment[];
-  user: CommonUserFragment;
 };

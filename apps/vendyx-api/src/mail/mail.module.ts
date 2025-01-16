@@ -7,7 +7,6 @@ import { MailCustomerListener } from './listeners/customer/mail-customer.listene
 import { MailCustomerService } from './listeners/customer/mail-customer.service';
 import { MailOrderListener } from './listeners/order/mail-order.listener';
 import { MailOrderService } from './listeners/order/mail-order.service';
-import { MailUserListener } from './listeners/user/mail-user.listener';
 import { MailUserService } from './listeners/user/mail-user.service';
 
 @Module({
@@ -18,8 +17,7 @@ import { MailUserService } from './listeners/user/mail-user.service';
     MailCustomerService,
     MailUserService,
     MailOrderListener,
-    MailCustomerListener,
-    MailUserListener
+    MailCustomerListener
   ]
 })
 export class MailModule {}

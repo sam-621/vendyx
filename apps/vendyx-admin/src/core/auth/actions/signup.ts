@@ -27,7 +27,7 @@ export const signup = async ({ email, password }: Input) => {
   }
 
   setToken(accessTokenResult.accessToken);
-  redirect('/confirm-account');
+  redirect('/choose-plan');
 };
 
 type Input = { email: string; password: string };

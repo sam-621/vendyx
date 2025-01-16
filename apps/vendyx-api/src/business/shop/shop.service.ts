@@ -14,7 +14,7 @@ import { ShopRepository } from '@/persistence/repositories/shop.repository';
 import { ID } from '@/persistence/types/scalars.type';
 import { SecurityService } from '@/security/security.service';
 
-import { EmailAlreadyExists, EmailNotVerified } from './shop.errors';
+import { EmailAlreadyExists } from './shop.errors';
 import { clean } from '../shared/utils/clean.utils';
 import { getSlugBy } from '../shared/utils/slug.utils';
 
@@ -39,11 +39,7 @@ export class ShopService {
     return this.shopRepository.count(input);
   }
 
-  async create(input: CreateShopInput, emailVerified: boolean) {
-    if (!emailVerified) {
-      return new EmailNotVerified();
-    }
-
+  async create(input: CreateShopInput) {
     const emailExists = await this.prismaForAdmin.shop.count({
       where: { email: input.email }
     });

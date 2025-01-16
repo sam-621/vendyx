@@ -5,7 +5,7 @@ import { validateAccessToken } from './core/auth/actions/validate-access-token';
 import { getActiveShop } from './shared/cookies/cookies';
 
 const AUTH_PATHS = ['/login', '/signup'];
-const ALLOWED_PATHS = [...AUTH_PATHS, '/', '/confirm-account'];
+const ALLOWED_PATHS = [...AUTH_PATHS, '/', '/choose-plan'];
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
