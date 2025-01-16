@@ -4,7 +4,7 @@ import { CheckIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/shared/components/ui/badge';
-import { buttonVariants } from '@/shared/components/ui/button';
+import { Button, buttonVariants } from '@/shared/components/ui/button';
 import { Separator } from '@/shared/components/ui/separator';
 import { cn } from '@/shared/utils/theme';
 
@@ -14,7 +14,8 @@ export const PricingTable: FC<Props> = ({
   recurrence,
   features,
   buttonText,
-  isFeatured
+  isFeatured,
+  onClick
 }) => {
   return (
     <div
@@ -37,9 +38,13 @@ export const PricingTable: FC<Props> = ({
           ))}
         </ul>
 
-        <Link className={cn(buttonVariants(), 'w-full')} href="/choose-plan">
-          {buttonText}
-        </Link>
+        {onClick ? (
+          <Button>{buttonText}</Button>
+        ) : (
+          <Link className={cn(buttonVariants(), 'w-full')} href="/choose-plan">
+            {buttonText}
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -52,4 +57,5 @@ type Props = {
   features: string[];
   buttonText: string;
   isFeatured?: boolean;
+  onClick?: string;
 };

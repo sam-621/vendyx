@@ -73,6 +73,7 @@ export const Pricing = () => {
                 'Onboarding and personalized consulting'
               ]}
               buttonText="Choose ESSENTIAL"
+              isFeatured
             />
 
             <PricingTable
@@ -86,7 +87,6 @@ export const Pricing = () => {
                 'Onboarding and personalized consulting'
               ]}
               buttonText="Choose BUSINESS"
-              isFeatured
             />
           </div>
 
