@@ -51,13 +51,16 @@ export const Pricing = () => {
               </RadioGroup>
             </div>
           </div>
+
           <div className="flex w-full flex-col items-stretch gap-6 md:flex-row">
             <div className="flex w-full flex-col rounded-lg border p-6 text-left">
-              <Badge className="mb-8 block w-fit">BASIC</Badge>
-              <span className="text-4xl font-medium">{isAnnually ? '$190' : '$19'}</span>
+              <Badge className="mb-8 block w-fit">Basic</Badge>
+              <span className="text-4xl font-medium">
+                {isAnnually ? `$${Math.round((19 * 10) / 12)}` : '$19'}
+              </span>
               <p className="text-muted-foreground">Per month</p>
               <Separator className="my-6" />
-              <div className="flex flex-col justify-between gap-20">
+              <div className="flex flex-col justify-between gap-20 h-full">
                 <ul className="space-y-4 text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
@@ -65,23 +68,15 @@ export const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>1 payment gateway integration.</span>
+                    <span>1 payment gateway integrations</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>1 admin user</span>
+                    <span>24/7 support via email, chat, and calls</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Access to 5,000 API requests/mo</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>24/7 support via email, chat, and calls.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Onboarding and personalized consulting for integrations.</span>
+                    <span>Onboarding and personalized consulting</span>
                   </li>
                 </ul>
                 <Button className="w-full">Upgrade to BASIC</Button>
@@ -90,7 +85,9 @@ export const Pricing = () => {
 
             <div className="flex w-full flex-col rounded-lg border bg-muted p-6 text-left">
               <Badge className="mb-8 block w-fit">Essential</Badge>
-              <span className="text-4xl font-medium">{isAnnually ? '$590' : '$59'}</span>
+              <span className="text-4xl font-medium">
+                {isAnnually ? `$${Math.round((59 * 10) / 12)}` : '$59'}
+              </span>
               <p className="text-muted-foreground">Per month</p>
               <Separator className="my-6" />
               <div className="flex h-full flex-col justify-between gap-20">
@@ -101,23 +98,15 @@ export const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Multiple payment gateway integrations.</span>
+                    <span>Unlimited payment gateway integrations.</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>3 admin users.</span>
+                    <span>24/7 support via email, chat, and calls</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Access to 20,000 API requests/mo</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>24/7 support via email, chat, and calls.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Onboarding and personalized consulting for integrations.</span>
+                    <span>Onboarding and personalized consulting</span>
                   </li>
                 </ul>
                 <Button className="w-full">Upgrade to ESSENTIAL</Button>
@@ -125,9 +114,9 @@ export const Pricing = () => {
             </div>
 
             <div className="flex w-full flex-col rounded-lg border p-6 text-left">
-              <Badge className="mb-8 block w-fit">ENTREPRISE</Badge>
+              <Badge className="mb-8 block w-fit">Enterprise</Badge>
               <span className="text-4xl font-medium">Custom</span>
-              <p className="invisible text-muted-foreground">Per user/month</p>
+              <p className="text-muted-foreground">Contact sales</p>
               <Separator className="my-6" />
               <div className="flex h-full flex-col justify-between gap-20">
                 <ul className="space-y-4 text-muted-foreground">
@@ -137,25 +126,52 @@ export const Pricing = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Unlimited admin users.</span>
+                    <span>Unlimited payment gateway integrations.</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>Unlimited API access.</span>
+                    <span>24/7 support via email, chat, and calls</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="size-4" />
-                    <span>24/7 support via email, chat, and calls.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Onboarding and personalized consulting for integrations.</span>
+                    <span>Onboarding and personalized consulting</span>
                   </li>
                 </ul>
-                <Button className="w-full">Upgrade to ENTREPRISE</Button>
+                <Button className="w-full">Upgrade to ENTERPRISE</Button>
               </div>
             </div>
           </div>
+
+          {/* <div className="flex w-full flex-col rounded-lg border p-6 text-left">
+            <Badge className="mb-8 block w-fit">Starter</Badge>
+            <span className="text-4xl font-medium">Free</span>
+            <Separator className="my-6" />
+            <div className="flex h-full flex-col justify-between gap-20">
+              <ul className="space-y-4 text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <Check className="size-4" />
+                  <span>Up to 10 products</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="size-4" />
+                  <span>1 payment gateway integration</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="size-4" />
+                  <span>2% fee transaction</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="size-4" />
+                  <span>24/7 support via email, chat, and calls.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="size-4" />
+                  <span>Onboarding and personalized consulting.</span>
+                </li>
+              </ul>
+              <Button className="w-full">Start free</Button>
+            </div>
+          </div> */}
         </div>
       </div>
     </section>
