@@ -1,13 +1,9 @@
 'use client';
 import { useState } from 'react';
 
-import { Check } from 'lucide-react';
-
-import { Badge } from '@/shared/components/ui/badge';
-import { Button } from '@/shared/components/ui/button';
+import { PricingTable } from '@/core/subscription/components/pricing/pricing-table';
 import { Label } from '@/shared/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
-import { Separator } from '@/shared/components/ui/separator';
 
 export const Pricing = () => {
   const [isAnnually, setIsAnnually] = useState(false);
@@ -53,93 +49,45 @@ export const Pricing = () => {
           </div>
 
           <div className="flex w-full flex-col items-stretch gap-6 md:flex-row">
-            <div className="flex w-full flex-col rounded-lg border p-6 text-left">
-              <Badge className="mb-8 block w-fit">Basic</Badge>
-              <span className="text-4xl font-medium">
-                {isAnnually ? `$${Math.round((19 * 10) / 12)}` : '$19'}
-              </span>
-              <p className="text-muted-foreground">Per month</p>
-              <Separator className="my-6" />
-              <div className="flex flex-col justify-between gap-20 h-full">
-                <ul className="space-y-4 text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Up to 50 products</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>1 payment gateway integrations</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>24/7 support via email, chat, and calls</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Onboarding and personalized consulting</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Upgrade to BASIC</Button>
-              </div>
-            </div>
+            <PricingTable
+              title="Basic"
+              price={isAnnually ? `$${Math.round((19 * 10) / 12)}` : '$19'}
+              recurrence="Per month"
+              features={[
+                'Up to 50 products',
+                '1 payment gateway integrations',
+                '24/7 support via email, chat, and calls',
+                'Onboarding and personalized consulting'
+              ]}
+              buttonText="Choose BASIC"
+            />
 
-            <div className="flex w-full flex-col rounded-lg border bg-muted p-6 text-left">
-              <Badge className="mb-8 block w-fit">Essential</Badge>
-              <span className="text-4xl font-medium">
-                {isAnnually ? `$${Math.round((59 * 10) / 12)}` : '$59'}
-              </span>
-              <p className="text-muted-foreground">Per month</p>
-              <Separator className="my-6" />
-              <div className="flex h-full flex-col justify-between gap-20">
-                <ul className="space-y-4 text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Up to 500 active products.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Unlimited payment gateway integrations.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>24/7 support via email, chat, and calls</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Onboarding and personalized consulting</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Upgrade to ESSENTIAL</Button>
-              </div>
-            </div>
+            <PricingTable
+              title="Essential"
+              price={isAnnually ? `$${Math.round((59 * 10) / 12)}` : '$59'}
+              recurrence="Per month"
+              features={[
+                'Up to 500 active products',
+                'Unlimited payment gateway integrations',
+                '24/7 support via email, chat, and calls',
+                'Onboarding and personalized consulting'
+              ]}
+              buttonText="Choose ESSENTIAL"
+            />
 
-            <div className="flex w-full flex-col rounded-lg border p-6 text-left">
-              <Badge className="mb-8 block w-fit">Enterprise</Badge>
-              <span className="text-4xl font-medium">Custom</span>
-              <p className="text-muted-foreground">Contact sales</p>
-              <Separator className="my-6" />
-              <div className="flex h-full flex-col justify-between gap-20">
-                <ul className="space-y-4 text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Unlimited active products.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Unlimited payment gateway integrations.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>24/7 support via email, chat, and calls</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Onboarding and personalized consulting</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Upgrade to ENTERPRISE</Button>
-              </div>
-            </div>
+            <PricingTable
+              title="Enterprise"
+              price="Custom"
+              recurrence="Contact sales"
+              features={[
+                'Unlimited active products',
+                'Unlimited payment gateway integrations',
+                '24/7 support via email, chat, and calls',
+                'Onboarding and personalized consulting'
+              ]}
+              buttonText="Choose BUSINESS"
+              isFeatured
+            />
           </div>
 
           {/* <div className="flex w-full flex-col rounded-lg border p-6 text-left">
