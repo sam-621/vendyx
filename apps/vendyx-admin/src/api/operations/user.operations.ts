@@ -61,3 +61,13 @@ export const VALIDATE_OTP_MUTATION = graphql(`
     }
   }
 `);
+
+export const USER_HAS_SUBSCRIPTION_QUERY = graphql(`
+  query UserHasSubscription {
+    whoami {
+      subscription {
+        id
+      }
+    }
+  }
+`);

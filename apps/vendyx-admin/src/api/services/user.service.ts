@@ -11,6 +11,7 @@ import {
   COMMON_USER_FRAGMENT,
   CREATE_USER_MUTATION,
   GENERATE_ACCESS_TOKEN_MUTATION,
+  USER_HAS_SUBSCRIPTION_QUERY,
   VALIDATE_ACCESS_TOKEN_QUERY,
   VALIDATE_OTP_MUTATION,
   WHOAMI_QUERY
@@ -88,6 +89,12 @@ export const UserService = {
     }
 
     return { success: true, userId: user?.id ?? '' };
+  },
+
+  async hasSubscription() {
+    const { whoami: user } = await serviceGqlFetcher(USER_HAS_SUBSCRIPTION_QUERY);
+
+    return Boolean(user?.subscription?.id);
   }
 };
 

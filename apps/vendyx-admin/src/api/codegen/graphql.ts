@@ -2164,6 +2164,16 @@ export type ValidateOtpMutation = {
   };
 };
 
+export type UserHasSubscriptionQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UserHasSubscriptionQuery = {
+  __typename?: 'Query';
+  whoami?: {
+    __typename?: 'User';
+    subscription?: { __typename?: 'UserSubscription'; id: string } | null;
+  } | null;
+};
+
 export type CreateVariantMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   input: CreateVariantInput;
@@ -3355,6 +3365,18 @@ export const ValidateOtpDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ValidateOtpMutation, ValidateOtpMutationVariables>;
+export const UserHasSubscriptionDocument = new TypedDocumentString(`
+    query UserHasSubscription {
+  whoami {
+    subscription {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<
+  UserHasSubscriptionQuery,
+  UserHasSubscriptionQueryVariables
+>;
 export const CreateVariantDocument = new TypedDocumentString(`
     mutation CreateVariant($productId: ID!, $input: CreateVariantInput!) {
   createVariant(productId: $productId, input: $input) {
