@@ -52,6 +52,14 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   ENCRYPT_PASSWORD: string;
+
+  @IsString()
+  @IsNotEmpty()
+  STRIPE_BASIC_PRODUCT_ID: string;
+
+  @IsString()
+  @IsNotEmpty()
+  STRIPE_ESSENTIAL_PRODUCT_ID: string;
 }
 
 export const environmentValidator = (config: Record<string, unknown>) => {

@@ -11,7 +11,6 @@ import {
 import { RAW_PRISMA, RawPrisma } from '@/persistence/prisma-clients/raw-prisma.provider';
 import { ID } from '@/persistence/types/scalars.type';
 
-// TODO: Manage errors (try catch)
 @Injectable()
 export class SubscriptionService {
   private readonly stripe: Stripe;
@@ -22,7 +21,6 @@ export class SubscriptionService {
     @Inject(RAW_PRISMA) private readonly rawPrisma: RawPrisma
   ) {
     this.stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
-    console.log('Stripe secret key:', this.configService.get('STRIPE.SECRET_KEY'));
   }
 
   async createCheckoutSession(input: CreateCheckoutSessionInput) {
@@ -41,84 +39,56 @@ export class SubscriptionService {
   async webhook(event: any, signature: string) {
     const endpointSecret = this.configService.get('STRIPE.WEBHOOK_SECRET');
 
-    // Only verify the event if you have an endpoint secret defined.
-    // Otherwise use the basic event deserialized with JSON.parse
-    if (endpointSecret) {
-      // Get the signature sent by Stripe
-      // const signature = request.headers['stripe-signature'];
-      try {
-        event = this.stripe.webhooks.constructEvent(event, signature, endpointSecret);
-      } catch (err) {
-        console.log(`⚠️  Webhook signature verification failed.`, err.message);
-      }
+    try {
+      event = this.stripe.webhooks.constructEvent(event, signature, endpointSecret);
+    } catch (err) {
+      throw new Error(`Webhook signature verification failed`);
     }
+
     const stripeEvent = event as Stripe.Event;
 
-    // Handle the event
     switch (stripeEvent.type) {
-      // case 'customer.subscription.trial_will_end':
-      //   subscription = event.data.object;
-      //   status = subscription.status;
-      //   console.log(`Subscription status is ${status}.`);
-      //   // Then define and call a method to handle the subscription trial ending.
-      //   // handleSubscriptionTrialEnding(subscription);
-      //   break;
       case 'customer.subscription.updated':
       case 'customer.subscription.created':
       case 'customer.subscription.deleted':
         const subscription = stripeEvent.data.object as Stripe.Subscription;
+
         await this.manageSubscriptionStatusChange({
           stripeCustomerId: subscription.customer as string,
           subscriptionId: subscription.id
         });
-      // case 'entitlements.active_entitlement_summary.updated':
-      //   subscription = event.data.object;
-      //   console.log(`Active entitlement summary updated for ${subscription}.`);
-      //   console.log({
-      //     data: subscription
-      //   });
-      //   // Then define and call a method to handle active entitlement summary updated
-      //   // handleEntitlementUpdated(subscription);
-      //   break;
       default:
-      // Unexpected event type
     }
-    // Return a 200 response to acknowledge receipt of the event
-    return { received: true };
   }
 
+  // TODO: Manage errors (stripe throws errors)
   private async createCheckoutSessionWithStripe(input: CreateCheckoutSessionInputWithStripe) {
-    try {
-      const stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
-      const prices = await stripe.prices.list({
-        lookup_keys: [input.lookupKey],
-        expand: ['data.product']
-      });
+    const stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
+    const prices = await stripe.prices.list({
+      lookup_keys: [input.lookupKey],
+      expand: ['data.product']
+    });
 
-      const session = await stripe.checkout.sessions.create({
-        billing_address_collection: 'auto',
-        line_items: [
-          {
-            price: prices.data[0].id,
-            // For metered billing, do not pass quantity
-            quantity: 1
-          }
-        ],
-        customer: input.stripeCustomerId,
-        mode: 'subscription',
-        success_url: `${this.configService.get(
-          'ADMIN.DOMAIN'
-        )}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${this.configService.get('ADMIN.DOMAIN')}`
-      });
+    const session = await stripe.checkout.sessions.create({
+      billing_address_collection: 'auto',
+      line_items: [
+        {
+          price: prices.data[0].id,
+          // For metered billing, do not pass quantity
+          quantity: 1
+        }
+      ],
+      customer: input.stripeCustomerId,
+      mode: 'subscription',
+      success_url: `${this.configService.get(
+        'ADMIN.DOMAIN'
+      )}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${this.configService.get('ADMIN.DOMAIN')}`
+    });
 
-      return {
-        sessionUrl: session.url
-      };
-    } catch (error) {
-      console.log(error);
-      return {};
-    }
+    return {
+      sessionUrl: session.url
+    };
   }
 
   private async createPortalSession({ sessionId }: CreatePortalSessionInput) {
@@ -185,24 +155,38 @@ export class SubscriptionService {
 
     const stripeSubscription = await this.stripe.subscriptions.retrieve(input.subscriptionId);
 
-    await this.rawPrisma.$transaction([
-      this.rawPrisma.$executeRaw`SELECT set_config('app.current_owner_id', ${`${user?.id}`}, TRUE)`,
-      this.rawPrisma.subscription.upsert({
-        where: { id: subscription?.id ?? '' },
-        update: {
-          status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
-          plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
-          currentPeriodStart: new Date(stripeSubscription.current_period_start),
-          currentPeriodEnd: new Date(stripeSubscription.current_period_end)
-        },
-        create: {
-          status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
-          plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
-          currentPeriodStart: new Date(stripeSubscription.current_period_start),
-          currentPeriodEnd: new Date(stripeSubscription.current_period_end)
-        }
-      })
-    ]);
+    if (subscription?.id) {
+      await this.rawPrisma.$transaction([
+        this.rawPrisma
+          .$executeRaw`SELECT set_config('app.current_owner_id', ${`${user?.id}`}, TRUE)`,
+        this.rawPrisma.subscription.update({
+          where: { id: subscription.id },
+          data: {
+            status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
+            plan: this.getPlanByProductId(
+              stripeSubscription.items.data[0].plan.product?.toString() ?? ''
+            ),
+            currentPeriodStart: this.toDate(stripeSubscription.current_period_start),
+            currentPeriodEnd: this.toDate(stripeSubscription.current_period_end)
+          }
+        })
+      ]);
+    } else {
+      await this.rawPrisma.$transaction([
+        this.rawPrisma
+          .$executeRaw`SELECT set_config('app.current_owner_id', ${`${user?.id}`}, TRUE)`,
+        this.rawPrisma.subscription.create({
+          data: {
+            status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
+            plan: this.getPlanByProductId(
+              stripeSubscription.items.data[0].plan.product?.toString() ?? ''
+            ),
+            currentPeriodStart: this.toDate(stripeSubscription.current_period_start),
+            currentPeriodEnd: this.toDate(stripeSubscription.current_period_end)
+          }
+        })
+      ]);
+    }
   }
 
   private parseStripeSubscriptionStatus(status: Stripe.Subscription.Status) {
@@ -224,6 +208,29 @@ export class SubscriptionService {
       default:
         return SubscriptionStatus.CANCELED;
     }
+  }
+
+  private toDate(ms: number) {
+    const t = new Date(+0); // Unix epoch start.
+    t.setSeconds(ms);
+
+    return t;
+  }
+
+  private getPlanByProductId(productId: string) {
+    const [basic1, basic2] = this.configService.get('STRIPE.BASIC_PRODUCT_ID').split('/');
+    const [essential1, essential2] = this.configService
+      .get('STRIPE.ESSENTIAL_PRODUCT_ID')
+      .split('/');
+
+    const IDS = {
+      [basic1]: SubscriptionPlan.BASIC,
+      [basic2]: SubscriptionPlan.BASIC,
+      [essential1]: SubscriptionPlan.ESSENTIAL,
+      [essential2]: SubscriptionPlan.ESSENTIAL
+    };
+
+    return IDS[productId];
   }
 }
 
