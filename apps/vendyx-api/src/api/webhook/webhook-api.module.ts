@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 
 import { BusinessModule } from '@/business/business.module';
 
-import { SubscriptionController } from './subscription.controller';
+import { WebhookController } from './webhook.controller';
 
 @Module({
   imports: [BusinessModule],
-  controllers: [SubscriptionController]
+  controllers: [WebhookController]
 })
-export class SubscriptionApiModule {}
+export class WebhookApiModule {}
