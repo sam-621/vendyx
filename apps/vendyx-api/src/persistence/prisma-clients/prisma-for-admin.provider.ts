@@ -1,7 +1,14 @@
 import { ClsService } from 'nestjs-cls';
 import { PrismaService } from 'nestjs-prisma';
 
-import { modelHasDeletedAtProperty } from './prisma-client-utils';
+import { modelHasDeletedAtProperty } from '../utils/model.utils';
+
+/**
+ * Extends the PrismaService to return all records without any shop or owner filtering.
+ */
+export const PRISMA_FOR_ADMIN = Symbol('PRISMA_FOR_ADMIN');
+
+export type PrismaForAdmin = ReturnType<typeof useFactory>;
 
 const useFactory = (prisma: PrismaService) => {
   return prisma.$extends({
@@ -45,10 +52,6 @@ const useFactory = (prisma: PrismaService) => {
     }
   });
 };
-
-export type PrismaForAdmin = ReturnType<typeof useFactory>;
-
-export const PRISMA_FOR_ADMIN = Symbol('PRISMA_FOR_ADMIN');
 
 export const PrismaForAdminClientProvider = {
   provide: PRISMA_FOR_ADMIN,
