@@ -10,6 +10,7 @@ import {
 } from '@/persistence/prisma-clients/prisma-for-shop.provider';
 import { ID } from '@/persistence/types/scalars.type';
 
+// TODO: Manage errors (try catch)
 @Injectable()
 export class SubscriptionService {
   private readonly stripe: Stripe;
@@ -19,18 +20,22 @@ export class SubscriptionService {
     @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
   ) {
     this.stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
+    console.log('Stripe secret key:', this.configService.get('STRIPE.SECRET_KEY'));
   }
 
   async createCheckoutSession(input: CreateCheckoutSessionInput) {
     const { stripeCustomerId } = await this.findOrCreateStripeCustomer(input.userId);
+    console.log({
+      stripeCustomerId
+    });
 
-    const { sessionId } = await this.createCheckoutSessionWithStripe({
+    const { sessionUrl } = await this.createCheckoutSessionWithStripe({
       lookupKey: input.lookupKey,
       stripeCustomerId
     });
 
     return {
-      sessionId
+      sessionUrl
     };
   }
 
@@ -85,31 +90,37 @@ export class SubscriptionService {
   }
 
   private async createCheckoutSessionWithStripe(input: CreateCheckoutSessionInputWithStripe) {
-    const prices = await this.stripe.prices.list({
-      lookup_keys: [input.lookupKey],
-      expand: ['data.product']
-    });
+    try {
+      const stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
+      const prices = await stripe.prices.list({
+        lookup_keys: [input.lookupKey],
+        expand: ['data.product']
+      });
 
-    const session = await this.stripe.checkout.sessions.create({
-      billing_address_collection: 'auto',
-      line_items: [
-        {
-          price: prices.data[0].id,
-          // For metered billing, do not pass quantity
-          quantity: 1
-        }
-      ],
-      customer: input.stripeCustomerId,
-      mode: 'subscription',
-      success_url: `${this.configService.get(
-        'ADMIN.DOMAIN'
-      )}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${this.configService.get('ADMIN.DOMAIN')}`
-    });
+      const session = await stripe.checkout.sessions.create({
+        billing_address_collection: 'auto',
+        line_items: [
+          {
+            price: prices.data[0].id,
+            // For metered billing, do not pass quantity
+            quantity: 1
+          }
+        ],
+        customer: input.stripeCustomerId,
+        mode: 'subscription',
+        success_url: `${this.configService.get(
+          'ADMIN.DOMAIN'
+        )}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${this.configService.get('ADMIN.DOMAIN')}`
+      });
 
-    return {
-      sessionId: session.id
-    };
+      return {
+        sessionUrl: session.url
+      };
+    } catch (error) {
+      console.log(error);
+      return {};
+    }
   }
 
   private async createPortalSession({ sessionId }: CreatePortalSessionInput) {

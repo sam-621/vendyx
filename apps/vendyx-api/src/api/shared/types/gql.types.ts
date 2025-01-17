@@ -737,7 +737,7 @@ export class UserSubscription implements Node {
 }
 
 export class CheckoutSession {
-    sessionId: string;
+    sessionUrl: string;
 }
 
 export class User implements Node {

@@ -77,5 +77,5 @@ input CreateCheckoutSessionInput {
 }
 
 type CheckoutSession {
-  sessionId: String!
+  sessionUrl: String!
 }
