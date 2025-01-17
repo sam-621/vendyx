@@ -12,6 +12,11 @@ const useFactory = (prisma: PrismaService, store: ClsService) => {
           const shopId = String(store.get(CLS_SHOP_ID) || '00000000-0000-0000-0000-000000000000');
           const ownerId = String(store.get(CLS_OWNER_ID) || '00000000-0000-0000-0000-000000000000');
 
+          console.log({
+            shopId,
+            ownerId
+          });
+
           if (
             (operation === 'findUnique' ||
               operation === 'findFirst' ||

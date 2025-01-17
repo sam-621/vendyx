@@ -1,13 +1,24 @@
-import { Controller, Headers, Post, RawBodyRequest, Req } from '@nestjs/common';
+import { Controller, Headers, Post, RawBodyRequest, Req, Res } from '@nestjs/common';
+import { Response } from 'express';
 
 import { SubscriptionService } from '@/business/subscription/subscription.service';
 
-@Controller('/subscription')
+@Controller('/webhook')
 export class WebhookController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @Post('/stripe-webhook')
-  webhook(@Req() req: RawBodyRequest<Request>, @Headers() headers: any) {
-    return this.subscriptionService.webhook(req.rawBody, headers['stripe-signature']);
+  @Post('/subscription')
+  async webhook(
+    @Req() req: RawBodyRequest<Request>,
+    @Headers() headers: any,
+    @Res() res: Response
+  ) {
+    try {
+      await this.subscriptionService.webhook(req.rawBody, headers['stripe-signature']);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      res.status(200).send();
+    }
   }
 }

@@ -24,7 +24,7 @@ export const loadEnvironment = (): Environment => ({
   },
   STRIPE: {
     SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? '',
-    WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ?? ''
+    WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SIGNING_SECRET ?? ''
   },
   SECURITY: {
     ENCRYPT_ALGORITHM: process.env.ENCRYPT_ALGORITHM as CipherGCMTypes,

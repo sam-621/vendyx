@@ -8,6 +8,7 @@ import {
   PRISMA_FOR_SHOP,
   PrismaForShop
 } from '@/persistence/prisma-clients/prisma-for-shop.provider';
+import { RAW_PRISMA, RawPrisma } from '@/persistence/prisma-clients/raw-prisma.provider';
 import { ID } from '@/persistence/types/scalars.type';
 
 // TODO: Manage errors (try catch)
@@ -17,7 +18,8 @@ export class SubscriptionService {
 
   constructor(
     private readonly configService: ConfigService,
-    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop
+    @Inject(PRISMA_FOR_SHOP) private readonly prisma: PrismaForShop,
+    @Inject(RAW_PRISMA) private readonly rawPrisma: RawPrisma
   ) {
     this.stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
     console.log('Stripe secret key:', this.configService.get('STRIPE.SECRET_KEY'));
@@ -25,9 +27,6 @@ export class SubscriptionService {
 
   async createCheckoutSession(input: CreateCheckoutSessionInput) {
     const { stripeCustomerId } = await this.findOrCreateStripeCustomer(input.userId);
-    console.log({
-      stripeCustomerId
-    });
 
     const { sessionUrl } = await this.createCheckoutSessionWithStripe({
       lookupKey: input.lookupKey,
@@ -82,8 +81,7 @@ export class SubscriptionService {
       //   // handleEntitlementUpdated(subscription);
       //   break;
       default:
-        // Unexpected event type
-        console.log(`Unhandled event type ${event.type}.`);
+      // Unexpected event type
     }
     // Return a 200 response to acknowledge receipt of the event
     return { received: true };
@@ -176,28 +174,35 @@ export class SubscriptionService {
   }
 
   private async manageSubscriptionStatusChange(input: ManageSubscriptionStatusChangeInput) {
-    const user = await this.prisma.user.findUniqueOrThrow({
-      where: { stripeCustomerId: input.stripeCustomerId },
-      include: { subscription: true }
+    const user = await this.prisma.user.findUnique({
+      where: { stripeCustomerId: input.stripeCustomerId }
     });
+
+    const [, subscription] = await this.rawPrisma.$transaction([
+      this.rawPrisma.$executeRaw`SELECT set_config('app.current_owner_id', ${`${user?.id}`}, TRUE)`,
+      this.rawPrisma.subscription.findFirst()
+    ]);
 
     const stripeSubscription = await this.stripe.subscriptions.retrieve(input.subscriptionId);
 
-    await this.prisma.subscription.upsert({
-      where: { id: user.subscription?.id },
-      create: {
-        status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
-        plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
-        currentPeriodStart: new Date(stripeSubscription.current_period_start),
-        currentPeriodEnd: new Date(stripeSubscription.current_period_end)
-      },
-      update: {
-        status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
-        plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
-        currentPeriodStart: new Date(stripeSubscription.current_period_start),
-        currentPeriodEnd: new Date(stripeSubscription.current_period_end)
-      }
-    });
+    await this.rawPrisma.$transaction([
+      this.rawPrisma.$executeRaw`SELECT set_config('app.current_owner_id', ${`${user?.id}`}, TRUE)`,
+      this.rawPrisma.subscription.upsert({
+        where: { id: subscription?.id ?? '' },
+        update: {
+          status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
+          plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
+          currentPeriodStart: new Date(stripeSubscription.current_period_start),
+          currentPeriodEnd: new Date(stripeSubscription.current_period_end)
+        },
+        create: {
+          status: this.parseStripeSubscriptionStatus(stripeSubscription.status),
+          plan: SubscriptionPlan.BASIC, // TODO: Get plan from stripe
+          currentPeriodStart: new Date(stripeSubscription.current_period_start),
+          currentPeriodEnd: new Date(stripeSubscription.current_period_end)
+        }
+      })
+    ]);
   }
 
   private parseStripeSubscriptionStatus(status: Stripe.Subscription.Status) {

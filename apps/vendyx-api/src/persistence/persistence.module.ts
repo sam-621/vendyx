@@ -9,6 +9,7 @@ import {
   PRISMA_FOR_SHOP,
   PrismaForShopClientProvider
 } from './prisma-clients/prisma-for-shop.provider';
+import { RAW_PRISMA, RawPrismaClientProvider } from './prisma-clients/raw-prisma.provider';
 import { AssetRepository } from './repositories/asset.repository';
 import { CountryRepository } from './repositories/country.repository';
 import { CustomerRepository } from './repositories/customer.repository';
@@ -37,7 +38,12 @@ export const CLS_OWNER_ID = 'owner_id';
 @Global()
 @Module({
   imports: [PrismaModule],
-  providers: [PrismaForShopClientProvider, PrismaForAdminClientProvider, ...REPOSITORIES],
-  exports: [PRISMA_FOR_SHOP, PRISMA_FOR_ADMIN, ...REPOSITORIES]
+  providers: [
+    PrismaForShopClientProvider,
+    PrismaForAdminClientProvider,
+    RawPrismaClientProvider,
+    ...REPOSITORIES
+  ],
+  exports: [PRISMA_FOR_SHOP, PRISMA_FOR_ADMIN, RAW_PRISMA, ...REPOSITORIES]
 })
 export class PersistenceModule {}
