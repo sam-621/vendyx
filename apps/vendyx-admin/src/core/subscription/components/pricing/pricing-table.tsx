@@ -15,7 +15,8 @@ export const PricingTable: FC<Props> = ({
   features,
   buttonText,
   isFeatured,
-  onClick
+  onClick,
+  isLoading
 }) => {
   return (
     <div
@@ -39,7 +40,9 @@ export const PricingTable: FC<Props> = ({
         </ul>
 
         {onClick ? (
-          <Button>{buttonText}</Button>
+          <Button isLoading={isLoading} onClick={onClick}>
+            {buttonText}
+          </Button>
         ) : (
           <Link className={cn(buttonVariants(), 'w-full')} href="/choose-plan">
             {buttonText}
@@ -57,5 +60,6 @@ type Props = {
   features: string[];
   buttonText: string;
   isFeatured?: boolean;
-  onClick?: string;
+  onClick?: () => void;
+  isLoading?: boolean;
 };

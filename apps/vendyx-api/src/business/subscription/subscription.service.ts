@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SubscriptionPlan, SubscriptionStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
@@ -82,8 +82,8 @@ export class SubscriptionService {
       mode: 'subscription',
       success_url: `${this.configService.get(
         'ADMIN.DOMAIN'
-      )}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${this.configService.get('ADMIN.DOMAIN')}`
+      )}/welcome?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${this.configService.get('ADMIN.DOMAIN')}/choose-plan`
     });
 
     return {
@@ -171,6 +171,8 @@ export class SubscriptionService {
           }
         })
       ]);
+
+      Logger.log(`Subscription UPDATED for user ${user?.email}`);
     } else {
       await this.rawPrisma.$transaction([
         this.rawPrisma
@@ -186,6 +188,7 @@ export class SubscriptionService {
           }
         })
       ]);
+      Logger.log(`Subscription CREATED for user ${user?.email}`);
     }
   }
 

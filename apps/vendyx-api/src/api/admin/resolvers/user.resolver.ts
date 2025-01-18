@@ -62,6 +62,13 @@ export class UserResolver {
   }
 
   @UseGuards(UserJwtAuthGuard)
+  @Mutation('validateOtp')
+  async validateOtp(@CurrentUser() user: TCurrentUser, @Args('input') input: ValidateOtpInput) {
+    const result = await this.userService.validateOtp(user.id, input);
+
+    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], user: result };
+  }
+
   @ResolveField('shops')
   async owner(@Parent() user: User, @Args('input') input?: ListInput) {
     const query = {
@@ -76,11 +83,8 @@ export class UserResolver {
     return new ListResponse(result, result?.length, { total });
   }
 
-  @UseGuards(UserJwtAuthGuard)
-  @Mutation('validateOtp')
-  async validateOtp(@CurrentUser() user: TCurrentUser, @Args('input') input: ValidateOtpInput) {
-    const result = await this.userService.validateOtp(user.id, input);
-
-    return isErrorResult(result) ? { apiErrors: [result] } : { apiErrors: [], user: result };
+  @ResolveField('subscription')
+  async subscription(@Parent() user: User) {
+    return this.prisma.subscription.findUnique({ where: { userId: user.id } });
   }
 }

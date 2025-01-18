@@ -185,7 +185,6 @@ export type CreateAddressInput = {
 
 export type CreateCheckoutSessionInput = {
   lookupKey: Scalars['String']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 export type CreateCollectionInput = {
