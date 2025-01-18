@@ -23,8 +23,8 @@ export class SubscriptionService {
     this.stripe = new Stripe(this.configService.get('STRIPE.SECRET_KEY'));
   }
 
-  async createCheckoutSession(input: CreateCheckoutSessionInput) {
-    const { stripeCustomerId } = await this.findOrCreateStripeCustomer(input.userId);
+  async createCheckoutSession(userId: ID, input: CreateCheckoutSessionInput) {
+    const { stripeCustomerId } = await this.findOrCreateStripeCustomer(userId);
 
     const { sessionUrl } = await this.createCheckoutSessionWithStripe({
       lookupKey: input.lookupKey,

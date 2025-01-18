@@ -271,7 +271,6 @@ export class UpdateShopInput {
 
 export class CreateCheckoutSessionInput {
     lookupKey: string;
-    userId: string;
 }
 
 export class CreateUserInput {

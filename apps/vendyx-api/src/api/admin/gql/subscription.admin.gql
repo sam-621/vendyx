@@ -73,7 +73,6 @@ type Mutation {
 
 input CreateCheckoutSessionInput {
   lookupKey: String!
-  userId: ID!
 }
 
 type CheckoutSession {
