@@ -100,7 +100,7 @@ export type BooleanFilter = {
 
 export type CheckoutSession = {
   __typename?: 'CheckoutSession';
-  sessionId: Scalars['String']['output'];
+  sessionUrl: Scalars['String']['output'];
 };
 
 /** A collection is a group of products that are displayed together in the storefront. */
@@ -2102,6 +2102,15 @@ export type GenerateShopApiKeyMutation = {
   };
 };
 
+export type CreateCheckoutSessionMutationVariables = Exact<{
+  input: CreateCheckoutSessionInput;
+}>;
+
+export type CreateCheckoutSessionMutation = {
+  __typename?: 'Mutation';
+  createCheckoutSession: { __typename?: 'CheckoutSession'; sessionUrl: string };
+};
+
 export type CommonUserFragment = {
   __typename?: 'User';
   id: string;
@@ -3305,6 +3314,16 @@ export const GenerateShopApiKeyDocument = new TypedDocumentString(`
     `) as unknown as TypedDocumentString<
   GenerateShopApiKeyMutation,
   GenerateShopApiKeyMutationVariables
+>;
+export const CreateCheckoutSessionDocument = new TypedDocumentString(`
+    mutation CreateCheckoutSession($input: CreateCheckoutSessionInput!) {
+  createCheckoutSession(input: $input) {
+    sessionUrl
+  }
+}
+    `) as unknown as TypedDocumentString<
+  CreateCheckoutSessionMutation,
+  CreateCheckoutSessionMutationVariables
 >;
 export const WhoamiDocument = new TypedDocumentString(`
     query Whoami {

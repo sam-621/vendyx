@@ -6,7 +6,7 @@ import { validateAccessToken } from './core/auth/actions/validate-access-token';
 import { getActiveShop } from './shared/cookies/cookies';
 
 const AUTH_PATHS = ['/login', '/signup'];
-const ALLOWED_PATHS = ['/', '/choose-plan'];
+const ALLOWED_PATHS = ['/'];
 const PUBLIC_PATHS = [...AUTH_PATHS, ...ALLOWED_PATHS];
 
 export async function middleware(request: NextRequest) {
@@ -16,7 +16,6 @@ export async function middleware(request: NextRequest) {
 
   const isAuth = await validateAccessToken();
   const isInPublicPaths = PUBLIC_PATHS.includes(pathname);
-  const isInAllowedPaths = ALLOWED_PATHS.includes(pathname);
   const isInAuthPaths = AUTH_PATHS.includes(pathname);
 
   if (isAuth && isInAuthPaths) {
@@ -30,7 +29,7 @@ export async function middleware(request: NextRequest) {
 
   const hasSubscription = await UserService.hasSubscription();
 
-  if (!hasSubscription && !isInAllowedPaths) {
+  if (isAuth && !hasSubscription && !isInPublicPaths && pathname !== '/choose-plan') {
     return NextResponse.redirect(new URL('/choose-plan', request.url));
   }
 

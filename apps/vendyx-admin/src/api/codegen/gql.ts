@@ -124,6 +124,8 @@ const documents = {
     types.UpdateShopDocument,
   '\n  mutation GenerateShopApiKey {\n    generateShopApiKey {\n      shop {\n        id\n        slug\n      }\n    }\n  }\n':
     types.GenerateShopApiKeyDocument,
+  '\n  mutation CreateCheckoutSession($input: CreateCheckoutSessionInput!) {\n    createCheckoutSession(input: $input) {\n      sessionUrl\n    }\n  }\n':
+    types.CreateCheckoutSessionDocument,
   '\n  fragment CommonUser on User {\n    id\n    email\n    emailVerified\n  }\n':
     types.CommonUserFragmentDoc,
   '\n  query Whoami {\n    whoami {\n      ...CommonUser\n    }\n  }\n': types.WhoamiDocument,
@@ -492,6 +494,12 @@ export function graphql(
 export function graphql(
   source: '\n  mutation GenerateShopApiKey {\n    generateShopApiKey {\n      shop {\n        id\n        slug\n      }\n    }\n  }\n'
 ): typeof import('./graphql').GenerateShopApiKeyDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  mutation CreateCheckoutSession($input: CreateCheckoutSessionInput!) {\n    createCheckoutSession(input: $input) {\n      sessionUrl\n    }\n  }\n'
+): typeof import('./graphql').CreateCheckoutSessionDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
